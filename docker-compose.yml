@@ -1,0 +1,73 @@
+services:
+  nginx:
+    container_name: ${APP_NAME}-${APP_ENV}-nginx
+    extra_hosts:
+      - 'host.docker.internal:host-gateway'
+    build:
+      context: '.docker/nginx'
+    links:
+      - app
+      - pgsql
+    restart: on-failure
+    ports:
+      - '${NGINX_PORT}:80'
+    volumes:
+      - '.:/var/www/html:ro,delegated'
+      - './.sail/logs/nginx:/var/log/nginx'
+    networks:
+      - sail
+
+  app:
+    container_name: ${APP_NAME}-${APP_ENV}-app
+    build:
+      context: .docker
+      dockerfile: 'php/Dockerfile'
+      args:
+        WWWUSER: '${WWWUSER}'
+        WWWGROUP: '${WWWGROUP}'
+    extra_hosts:
+      - 'host.docker.internal:host-gateway'
+    restart: on-failure
+    volumes:
+      - '.:/var/www/html/:delegated'
+      - './.sail/logs/php:/var/log/php'
+    environment:
+      XDEBUG_MODE: debug
+    networks:
+      - sail
+
+  pgsql:
+    image: 'postgres:17'
+    container_name: ${APP_NAME}-${APP_ENV}-psql
+    restart: on-failure
+    ports:
+      - "${DB_PORT}:5432"
+    environment:
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_DB: ${DB_DATABASE}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    volumes:
+      - ./sail/pgsql:/var/lib/postgresql/data
+    networks:
+      - sail
+
+  redis:
+    image: redis:latest
+    container_name: ${APP_NAME}-${APP_ENV}-redis
+    restart: on-failure
+    ports:
+      - "${REDIS_PORT}:6379"
+    volumes:
+      - 'sail-redis:/data'
+    networks:
+      - sail
+
+networks:
+    sail:
+        driver: bridge
+
+volumes:
+    sail-pgsql:
+        driver: local
+    sail-redis:
+        driver: local
