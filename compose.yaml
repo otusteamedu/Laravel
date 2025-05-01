@@ -1,0 +1,94 @@
+services:
+  app:
+    build:
+      context: ./
+      dockerfile: ./.docker/Dockerfile
+      args:
+        DOCKER_UID: ${DOCKER_UID:?err}
+        DOCKER_GID: ${DOCKER_GID:?err}
+        DOCKER_SYNC_UID_GID: ${DOCKER_SYNC_UID_GID:-"1"}
+        DOCKER_SYNC_VERBOSE: ${DOCKER_SYNC_VERBOSE:-"1"}
+        DOCKER_SYNC_WORKDIR_PERMS: ${DOCKER_SYNC_WORKDIR_PERMS:-"0"}
+    hostname: otus_laravel_app
+    container_name: otus_laravel_app
+    environment:
+      PHP_IDE_CONFIG: "serverName=otus_laravel_app"
+    networks:
+      - otus_laravel_network
+    expose:
+      - "80/tcp"
+    ports:
+      - "9095:80"
+    volumes:
+      - .:/var/www/html:delegated
+    #restart: unless-stopped
+
+  pgsql:
+    user: ${DOCKER_UID:?err}:${DOCKER_GID:?err}
+    build:
+      context: ./
+      dockerfile: ./.docker/pgsql/Dockerfile
+      args:
+        DOCKER_UID: ${DOCKER_UID:?err}
+        DOCKER_GID: ${DOCKER_GID:?err}
+    hostname: otus_laravel_pgsql
+    container_name: otus_laravel_pgsql
+    environment:
+      - POSTGRES_USER=${DB_USERNAME:?err}
+      - POSTGRES_PASSWORD=${DB_PASSWORD:?err}
+      - POSTGRES_DB=${DB_DATABASE:?err}
+      - PGDATA=/var/lib/postgresql/data/db_data/
+    networks:
+      - otus_laravel_network
+    expose:
+      - "5432/tcp"
+    ports:
+      - "54322:5432"
+    volumes:
+      - .docker/pgsql/data:/var/lib/postgresql/data:delegated
+      - .docker/pgsql/initdb.d:/docker-entrypoint-initdb.d:cached
+    #restart: unless-stopped
+
+  redis:
+    user: ${DOCKER_UID}:${DOCKER_GID}
+    image: eqalpha/keydb:latest
+    hostname: otus_laravel_redis
+    container_name: otus_laravel_redis
+    networks:
+      - otus_laravel_network
+    expose:
+      - "6379/tcp"
+    ports:
+      - "26379:6379"
+    volumes:
+      - .docker/redis/data:/data:delegated
+    #restart: unless-stopped
+
+  rabbitmq:
+    user: ${DOCKER_UID}:${DOCKER_GID}
+    image: rabbitmq:3.11.6-management
+    hostname: otus_laravel_rabbitmq
+    container_name: otus_laravel_rabbitmq
+    environment:
+      - RABBITMQ_SERVER_ADDITIONAL_ERL_ARGS=-rabbit disk_free_limit 2147483648
+      - RABBITMQ_DEFAULT_USER=${RABBIT_USER:?err}
+      - RABBITMQ_DEFAULT_PASS=${RABBIT_PASSWORD:?err}
+      - RABBITMQ_DEFAULT_VHOST=${RABBIT_VHOST:?err}
+    networks:
+      - otus_laravel_network
+    expose:
+      - "15672/tcp"
+      - "5672/tcp"
+      - "5671/tcp"
+    ports:
+      - "15672:15672"
+      - "5672/tcp"
+      - "5671/tcp"
+    volumes:
+      - .docker/rabbitmq:/var/lib/rabbitmq
+    #restart: unless-stopped
+
+networks:
+  otus_laravel_network:
+    name: otus_laravel_network
+    external: true

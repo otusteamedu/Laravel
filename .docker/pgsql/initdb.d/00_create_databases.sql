@@ -1,0 +1,5 @@
+CREATE DATABASE laravel;
+GRANT ALL PRIVILEGES ON DATABASE laravel to laravel;
+
+CREATE DATABASE testing;
+GRANT ALL PRIVILEGES ON DATABASE testing to laravel;
