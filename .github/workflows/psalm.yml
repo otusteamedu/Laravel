@@ -1,0 +1,25 @@
+name: psalm
+
+on:
+  push:
+    paths:
+      - '**.php'
+      - 'psalm.xml'
+
+jobs:
+  psalm:
+    name: psalm
+    runs-on: ubuntu-latest
+
+    container:
+      image: cr.yandex/crp5vqb7o300rt2pnmkk/dev-php8.3:latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install Dependencies
+        run: composer install --no-interaction --prefer-dist --optimize-autoloader
+
+      - name: Run psalm
+        run: ./vendor/bin/psalm --output-format=github
