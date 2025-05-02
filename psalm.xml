@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<psalm
+        resolveFromConfigFile="true"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="https://getpsalm.org/schema/config"
+        xsi:schemaLocation="https://getpsalm.org/schema/config vendor/vimeo/psalm/config.xsd"
+        errorLevel="5"
+        reportMixedIssues="false"
+        strictBinaryOperands="true"
+        findUnusedVariablesAndParams="false"
+        findUnusedPsalmSuppress="true"
+        findUnusedBaselineEntry="true"
+        findUnusedCode="false"
+        usePhpDocPropertiesWithoutMagicCall="true"
+        sealAllProperties="true"
+    errorBaseline="psalm-baseline.xml"
+>
+    <projectFiles>
+        <directory name="app"/>
+        <directory name="database/factories"/>
+        <directory name="database/seeders"/>
+        <ignoreFiles>
+            <directory name="vendor"/>
+        </ignoreFiles>
+    </projectFiles>
+    <plugins>
+        <pluginClass class="Psalm\LaravelPlugin\Plugin"/>
+    </plugins>
+</psalm>

@@ -1,0 +1,3 @@
+#!/command/execlineb -P
+
+foreground { su docker - -c "cd ${WORKDIR} ; composer install" }

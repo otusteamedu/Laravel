@@ -6,18 +6,24 @@
     "keywords": ["laravel", "framework"],
     "license": "MIT",
     "require": {
-        "php": "^8.2",
+        "php": "^8.3",
         "laravel/framework": "^12.0",
         "laravel/tinker": "^2.10.1"
     },
     "require-dev": {
+        "barryvdh/laravel-debugbar": "^3.15",
+        "barryvdh/laravel-ide-helper": "^3.5",
         "fakerphp/faker": "^1.23",
+        "friendsofphp/php-cs-fixer": "^3.75",
         "laravel/pail": "^1.2.2",
         "laravel/pint": "^1.13",
         "laravel/sail": "^1.41",
         "mockery/mockery": "^1.6",
         "nunomaduro/collision": "^8.6",
-        "phpunit/phpunit": "^11.5.3"
+        "phpunit/phpunit": "^11.5.3",
+        "psalm/plugin-laravel": "^3.0",
+        "roave/security-advisories": "dev-latest",
+        "vimeo/psalm": "^6.10"
     },
     "autoload": {
         "psr-4": {
@@ -34,7 +40,9 @@
     "scripts": {
         "post-autoload-dump": [
             "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
-            "@php artisan package:discover --ansi"
+            "@php artisan package:discover --ansi",
+            "a=$(php artisan list ide-helper --raw) && php artisan ide-helper:generate || true",
+            "a=$(php artisan list ide-helper --raw) && php artisan ide-helper:meta || true"
         ],
         "post-update-cmd": [
             "@php artisan vendor:publish --tag=laravel-assets --ansi --force"
@@ -54,7 +62,9 @@
         "test": [
             "@php artisan config:clear --ansi",
             "@php artisan test"
-        ]
+        ],
+        "psalm": "psalm --no-cache",
+        "psalm-update-baseline": "rm -f psalm-baseline.xml && ./vendor/bin/psalm --set-baseline=psalm-baseline.xml"
     },
     "extra": {
         "laravel": {
@@ -70,6 +80,6 @@
             "php-http/discovery": true
         }
     },
-    "minimum-stability": "stable",
+    "minimum-stability": "dev",
     "prefer-stable": true
 }
