@@ -1,0 +1,28 @@
+FROM php:8.3-fpm
+
+# Установим зависимости
+RUN apt-get update && apt-get install -y \
+    build-essential \
+    libpng-dev \
+    libonig-dev \
+    libxml2-dev \
+    zip \
+    curl \
+    unzip \
+    git \
+    libpq-dev \
+    && docker-php-ext-install pdo pdo_pgsql
+
+# Установка Node и npm (для работы на front)
+RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash - \
+    && apt-get install -y nodejs
+
+# Установка Composer
+COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+
+# Копируем файлы проекта в контейнер
+WORKDIR /var/www
+COPY . .
+
+# Установка зависимостей Composer
+RUN composer install --no-interaction --prefer-dist --optimize-autoloader
