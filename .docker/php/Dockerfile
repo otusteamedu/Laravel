@@ -26,7 +26,7 @@ RUN apt-get update && apt-get upgrade -y \
     php8.4-memcache \
     php8.4-mbstring \
     php8.4-common\
-    php8.4-pgsql \
+    php8.4-mysql \
     php8.4-intl \
     php8.4-xdebug \
     php8.4-interbase \

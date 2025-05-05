@@ -7,7 +7,7 @@ services:
       context: '.docker/nginx'
     links:
       - app
-      - pgsql
+      - db
     restart: on-failure
     ports:
       - '${NGINX_PORT}:80'
@@ -35,21 +35,37 @@ services:
       XDEBUG_MODE: debug
     networks:
       - sail
-
-  pgsql:
-    image: 'postgres:17'
-    container_name: ${APP_NAME}-${APP_ENV}-psql
+  db:
+    image: mariadb:latest
+    hostname: mariadb
     extra_hosts:
-      - 'host.docker.internal:host-gateway'
-    restart: on-failure
-    ports:
-      - "${DB_PORT}:5432"
+      - host.docker.internal:host-gateway
+    container_name: ${APP_NAME}-${APP_ENV}-db
+    restart: always
     environment:
-      POSTGRES_USER: ${DB_USERNAME}
-      POSTGRES_DB: ${DB_DATABASE}
-      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      MARIADB_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${DB_DATABASE}
+      MYSQL_USER: ${DB_USERNAME}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+    ports:
+      - ${DB_PORT}:3306
     volumes:
-      - sail-pgsql:/var/lib/postgresql/data
+      - 'sail-db:/var/lib/mysql'
+    networks:
+      - sail
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: ${APP_NAME}-${APP_ENV}-phpmyadmin
+    environment:
+      - PMA_HOST=mariadb
+      - PMA_PORT=${DB_PORT}
+      - UPLOAD_LIMIT=300M
+    restart: always
+    ports:
+      - ${PMA_PORT}:80
+    links:
+      - db
     networks:
       - sail
 
@@ -71,7 +87,7 @@ networks:
         driver: bridge
 
 volumes:
-    sail-pgsql:
+    sail-db:
         driver: local
     sail-redis:
         driver: local
