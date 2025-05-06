@@ -6,13 +6,15 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/hello', function () {
-    return "<h1>Hello world</h1>";
-});
-Route::get('/json', function () {
-    return ["ok" => true, "data" => ["name" => "laravel"]];
-});
+Route::view('/html', 'first');
 
-Route::get("/dfd", function () {
-    return view("");
-});
+Route::view('/php', 'second', [
+    'show' => true,
+    'name' => request('name', 'Anon')
+]);
+
+Route::view('/blade', 'third', [
+    'show' => true,
+    'name' => request('name', 'Anon'),
+    'users' => ['John', 'Mike', 'Kate']
+]);
