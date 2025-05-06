@@ -6,7 +6,9 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::view('/html', 'first');
+Route::get('/html', function () {
+    return view('first');
+});
 
 Route::view('/php', 'second', [
     'show' => true,
