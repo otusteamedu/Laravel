@@ -18,3 +18,5 @@ Route::view('/blade', 'third', [
     'name' => request('name', 'Anon'),
     'users' => ['John', 'Mike', 'Kate']
 ]);
+
+Route::view('/page', 'page');
