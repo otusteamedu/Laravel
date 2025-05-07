@@ -1,7 +1,7 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
-use Illuminate\Support\Facades\Route;
+use Illuminate\Http\Request;
 
 Route::get('/', function () {
     return view('welcome');
@@ -9,7 +9,10 @@ Route::get('/', function () {
 
 Route::view('/page', 'page');
 
-Route::get('/dashboard', function () {
+Route::get('/dashboard', function (Request $request) {
+    $locale = mb_substr($request->headers->get('accept-language'), 0, 2);
+    App::setLocale($locale);
+
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
