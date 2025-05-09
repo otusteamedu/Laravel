@@ -8,13 +8,13 @@
                 <div class="card-header">{{ __('Dashboard') }}</div>
                 <div class="card-body text-center">
                     <img src="https://jjji.ru/150x150" class="rounded-circle mb-3" alt="Аватар пользователя" width="120" height="120">
-                    <h3 class="card-title mb-1">{{ auth()->user()->name }}</h3>
+                    <h3 class="card-title mb-1">{{ auth()->user()->name ?? 'user_name'}}</h3>
                     <p class="text-muted mb-3">Веб-разработчик</p>
                     <p>Люблю создавать современные сайты и приложения. Открыт для новых проектов и сотрудничества.</p>
                     <ul class="list-inline mb-3">
                         <li class="list-inline-item">
                             <a href="mailto:ivan@example.com" class="text-decoration-none">
-                                <i class="bi bi-envelope"></i> {{ auth()->user()->email }}
+                                <i class="bi bi-envelope"></i> {{ auth()->user()->email ?? 'user_email' }}
                             </a>
                         </li>
                         <li class="list-inline-item">
