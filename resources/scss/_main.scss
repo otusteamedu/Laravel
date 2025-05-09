@@ -1,0 +1,37 @@
+.desktop-nav-menu {
+    display: none;
+}
+
+.text-justify  { 
+    text-align: justify !important; 
+}
+
+.navbar-nav {
+    --bs-nav-link-padding-x: 16px;
+    --bs-nav-link-padding-y: 8px;
+    --bs-link-color: #2b2b2b;
+    --bs-navbar-active-color: #ffc107;
+    --bs-navbar-hover-color: #ffc107;
+}
+
+.desktop-nav-menu {
+    .nav-link {
+        &.active {
+            border-bottom: 2px solid;
+            padding-bottom: 6px;
+            font-weight: bold;
+        }
+    }
+
+}
+
+.nav-left {
+    .nav-link {
+        &.active {
+            border-left: 2px solid;
+            font-weight: bold;
+            padding-left: 14px;
+        }
+    }
+}
+
