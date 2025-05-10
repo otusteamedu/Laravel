@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="h-100">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- CSRF Token -->
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+
+    <title>{{ config('app.name', 'Laravel') }}</title>
+
+    <!-- Fonts -->
+    <link rel="dns-prefetch" href="//fonts.bunny.net">
+    <link href="https://fonts.bunny.net/css?family=Nunito" rel="stylesheet">
+
+    <!-- Scripts -->
+    @vite(['resources/sass/app.scss', 'resources/css/carousel.css', 'resources/css/about.css', 'resources/js/app.js'])
+</head>
+<body class="d-flex flex-column h-100">
+    <header data-bs-theme="dark">
+        <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="{{ route('welcome') }}">Смартлайн</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" 
+                    aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="collapse navbar-collapse" id="navbarCollapse">
+                    <ul class="navbar-nav me-auto mb-2 mb-md-0">
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('about') }}">О магазине</a>
+                        </li>
+                        @auth
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('profile') }}">Профиль</a>
+                            </li>
+                            <li>
+                                <a class="nav-link" href="{{ route('logout') }}" 
+                                    onclick="event.preventDefault();document.getElementById('logout-form').submit();">
+                                    Выйти
+                                </a>
+                                <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                                    @csrf
+                                </form>
+                            </li>
+                        @else
+                            <li class="nav-item">
+                                <a href="{{ route('login') }}" class="nav-link">Войти</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ route('register') }}" class="nav-link">Регистрация</a>
+                            </li>
+                        @endauth
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main class="flex-shrink-0">
+        @yield('content')
+    </main>
+
+    <footer class="container footer py-5 mt-auto">
+        <p class="float-end"><a href="#">Вверх</a></p>
+        <p>&copy; 2025</p>
+    </footer>
+</body>
+</html>
