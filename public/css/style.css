@@ -1,0 +1,70 @@
+.main {
+    min-height: 1200px;
+	background: 
+		radial-gradient(ellipse farthest-corner at right bottom, #fedb37 0%, #FDB931 8%, #9f7928 30%, #8a6e2f 40%, transparent 80%),
+		radial-gradient(ellipse farthest-corner at left top, #ffffff 0%, #ffffac 8%, #d1b464 25%, #5d4a1f 62.5%, #5d4a1f 100%);
+}
+
+header {
+    padding-top: 40px;
+    padding-bottom: 40px;
+}
+
+a {
+    color: #00193F;
+
+}
+
+a:hover {
+    color: #1664DB;
+    transition: all 0.3s;
+}
+
+h1, h2 {
+    color: #00193F;
+    margin-bottom: 40px;
+}
+
+img {
+    padding-bottom: 40px;
+    width: auto;
+}
+
+.container {
+    padding-bottom: 40px;
+}
+
+.user-list {
+    margin-bottom: 60px;
+}
+
+.user-list a{
+    margin-right: 40px;
+    margin-bottom: 20px;
+    display: inline-block;
+}
+
+.menu-item {
+    margin-bottom: 20px;
+}
+
+.btn-blue {
+    background: #00193F;
+    border: 1px solid #00193F;
+
+}
+
+.btn-blue:hover {
+    background: #1664DB;
+
+}
+
+@media (max-width: 450px) {
+    header {
+        padding-bottom: 0;
+    }
+
+    .menu-item {
+        width: 50%;
+    }
+}
