@@ -1,0 +1,25 @@
+body
+{
+    background-color: rgba(200, 250, 200, 0.4);
+}
+
+#container /* главный блок в котором находится вся страница */
+{
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+
+}
+
+#mainMenu /* блок меню */
+{
+    text-align: center;
+    width: 95vw;
+}
+
+#content /* блок содержания */
+{
+    text-align: center;
+    width: 95vw;
+}
+

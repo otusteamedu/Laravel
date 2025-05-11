@@ -1,0 +1,75 @@
+#message /* окно информационного сообщения */
+{
+    display: none;
+}
+
+.errorMsg /* сообщения об ошибках внутри формы */
+{
+    color: red;
+    font-weight: bold;
+    font-size: 1em;
+}
+
+#welcomeISS /* блок содержания: приветствие */
+{
+    text-align: center;
+    width: 70%;
+    min-width: 330px;
+    margin: auto auto;
+}
+#welcomeISS h2 { font-size: 2.5vw; }
+#welcomeISS p { font-size: 1.5vw; }
+
+#loginForm /* блок содержания: форма для авторизации */
+{
+    background-color: rgb(123, 220, 169, 0.4); /*#20c997; /*rgba(200, 220, 200, 0.7);*/
+
+    margin: 5px auto;
+    width: 40vw;
+    min-width: 330px;
+}
+
+.myFormCorrectionInput
+{
+    margin: 5px auto;
+    width: 75%;
+}
+
+.myFormCorrectionButtons
+{
+    margin: 10px 5%;
+}
+
+.formButtonWrap
+{
+    display: flex;
+    justify-content: center;
+}
+
+
+@media screen and (min-width: 800px)  /* НАСТРОЙКА САЙТА для ПК и планшетов */
+{
+
+}
+@media screen and (max-width: 800px)  /* НАСТРОЙКА САЙТА для телефонов */
+{
+    #welcomeISS h2 { font-size: 30px; }
+    #welcomeISS p { font-size: 20px; }
+
+    #loginForm { width: 70vw; }
+
+    .myFormCorrectionLabel { font-size: 20px; }
+    .myFormCorrectionInput { font-size: 20px; }
+    .myFormCorrectionButtons { font-size: 20px;  width: 50vw; min-width: 150px; }
+    .formButtonWrap { flex-wrap: wrap; }
+
+}
+@media screen and (max-width: 330px)  /* НАСТРОЙКА САЙТА для телефонов */
+{
+    #welcomeISS h2 { font-size: 30px; }
+    #welcomeISS p { font-size: 20px; }
+
+    .myFormCorrectionLabel { font-size: 20px; }
+    .myFormCorrectionInput { font-size: 20px; }
+    .myFormCorrectionButtons { font-size: 20px; }
+}

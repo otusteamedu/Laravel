@@ -1,0 +1,123 @@
+/* Блок Данные пользователя */
+#userData /* Блок содержания: Блок с данными пользователя */
+{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    min-width: 330px;
+}
+
+#userAvatar /* Блок содержания: Блок с данными пользователя: аватар */
+{
+    width: 30%;
+}
+#userAvatar > div img { width: 100%; }
+
+#dataTable /* Блок содержания: Блок с данными пользователя: таблица с данными */
+{
+    background-color: #20c997;
+
+    width: 60%;
+    display: flex;
+    align-items: center;
+}
+
+
+
+/* Блок Маршруты обучения */
+#educationRoutes /* Блок содержания: Блок с маршрутами обучения */
+{
+    background-color: #ece1be;
+
+    margin: 30px auto;
+    min-width: 330px;
+}
+
+#educationRoutes > div
+{
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+}
+
+.routeChain
+{
+    margin-top: 5px;
+    text-align: left;
+    width: 70%;
+}
+.routeChain a { color: black; text-decoration: none; }
+.routeChain a:hover { color: blue; text-decoration: none; }
+.routeChain a:visited { color: black; text-decoration: none; }
+
+.cover
+{
+    width: 10%;
+    display: inline-block;
+    border: 1px green dotted;
+    background-color: #ece1be;
+    text-align: center;
+}
+
+.tooltip
+{
+    background-color: #20c997;
+    color: white;
+    position: absolute;
+    z-index: 10;
+}
+
+.hide { display: none; }
+.show { display: block; }
+.wait { background-color: #ece1be; }
+.pass { background-color: #20c997 }
+.expired { background-color: #dc3545 }
+
+.routeName /* Блок содержания: Блок с маршрутами обучения: название маршрута */
+{
+    font-weight: bold;
+}
+
+.readyPercent /* Блок содержания: Блок с маршрутами обучения: процент готовности */
+{
+    background-color: #20c997;
+
+    width: 10%;
+}
+
+
+
+
+
+/* Блок Диаграммы */
+.graphic
+{
+    margin-top: 10px;
+}
+
+
+
+
+
+
+
+
+@media screen and (min-width: 800px)  /* НАСТРОЙКА САЙТА для ПК и планшетов */
+{
+
+}
+@media screen and (max-width: 800px)  /* НАСТРОЙКА САЙТА для телефонов */
+{
+    #userData { justify-content: center; }
+    #userAvatar { width: 70%; }
+    #dataTable { width: 70%; }
+    #educationRoutes { width: 70%; }
+    #educationRoutes > div { align-items: center; }
+}
+@media screen and (max-width: 600px)  /* НАСТРОЙКА САЙТА для телефонов */
+{
+    #userAvatar { width: 90%; }
+    #dataTable { width: 90%; }
+    #educationRoutes { width: 90%; }
+    #educationRoutes > div { align-items: center; }
+}
