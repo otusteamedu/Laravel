@@ -1,0 +1,93 @@
+body {
+    background-color: #f8f9fa;
+    color: #212529;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+h1 {
+    color: #343a40;
+    margin-bottom: 50px;
+    text-align: center;
+}
+
+.navbar {
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.card {
+    border: none;
+    border-radius: 0.75rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.card-body {
+    padding: 1.5rem;
+}
+
+.user-form {
+    margin: 0 auto;
+}
+
+.row {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+form {
+    background-color: #ffffff;
+    padding: 2rem;
+    border-radius: 0.75rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+.form-label {
+    font-weight: 600;
+}
+
+.btn-primary {
+    background-color: #0d6efd;
+    border-color: #0d6efd;
+    border-radius: 0.5rem;
+    padding: 0.5rem 1.5rem;
+}
+
+body.dark-mode {
+    background-color: #212529;
+    color: #f8f9fa;
+}
+
+body.dark-mode .navbar {
+    background-color: #343a40 !important;
+}
+
+body.dark-mode .nav-link,
+body.dark-mode .navbar-brand {
+    color: #f8f9fa !important;
+}
+
+body.dark-mode form,
+body.dark-mode li,
+body.dark-mode .card {
+    background-color: #343a40;
+    color: #f8f9fa;
+    box-shadow: 0 4px 12px rgba(255, 255, 255, 0.05);
+}
+
+body.dark-mode input,
+body.dark-mode .form-control {
+    background-color: #495057;
+    color: #f8f9fa;
+    border: 1px solid #6c757d;
+}
+
+body.dark-mode input::placeholder {
+    color: #ced4da;
+}
+
+body.dark-mode h1 {
+    color: #ffffff;
+}
