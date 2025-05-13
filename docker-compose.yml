@@ -12,6 +12,7 @@ services:
       - postgres
     networks:
       - mynetwork
+    user: "1000:1000"
 
   nginx:
     image: nginx:alpine
