@@ -41,16 +41,16 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav">
                     <li class="nav-item">
-                        <a class="nav-link" href="/">Home</a>
+                        <a class="nav-link" href="{{ route('home') }}">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/user">User Profile</a>
+                        <a class="nav-link" href="{{ route('user') }}">User Profile</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/register">Register</a>
+                        <a class="nav-link" href="{{ route('register') }}">Register</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/static">Static Page</a>
+                        <a class="nav-link" href="{{ route('static') }}">Static Page</a>
                     </li>
                 </ul>
             </div>

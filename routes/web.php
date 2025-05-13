@@ -3,23 +3,20 @@
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\App;
 
-Route::get('/{locale}', function (string $locale) {
-    if (! in_array($locale, ['en', 'ru'])) {
-        abort(400);
-    }
-
-    App::setLocale($locale);
+Route::get('/', function () {
     return view('home');
-});
+})->name('home');
 
-Route::get('/user', function () {
-    return view('user');
-});
+Route::view('/user', 'user', [
+    'user_name' => request('name', 'John Doe'),
+    'position' => request('position', 'Full Stack Developer'),
+    'address' => request('address', 'New York, USA'),
+])->name('user');
 
 Route::get('/register', function () {
     return view('register');
-});
+})->name('register');
 
 Route::get('/static', function () {
     return view('static');
-});
+})->name('static');
