@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use Illuminate\Support\Facades\URL;
+use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Auth\Notifications\ResetPassword;
 
@@ -24,5 +25,7 @@ class AppServiceProvider extends ServiceProvider
         if (env('USE_HTTPS', false)) {
             URL::forceScheme('https');
         }
+
+        View::share('appLocale', str_replace('_', '-', $this->app->getLocale()));
     }
 }
