@@ -1,3 +1,8 @@
+@php
+/**
+ * @var \Illuminate\Support\ViewErrorBag $errors
+ */
+@endphp
 <form method="POST" action="{{ route('register') }}">
     @csrf
 

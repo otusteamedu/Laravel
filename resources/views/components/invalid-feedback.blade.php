@@ -1,5 +1,9 @@
+@php
+/**
+ * @var \Illuminate\Support\ViewErrorBag $errors
+ */
+@endphp
 @props(['errors'])
-
 @if ($errors)
     <ul class="invalid-feedback mb-0">
         @foreach ((array) $errors as $error)

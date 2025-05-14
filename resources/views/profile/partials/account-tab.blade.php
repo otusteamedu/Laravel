@@ -1,3 +1,9 @@
+@php
+/**
+ * @var \App\Models\User $user
+ * @var \Illuminate\Support\ViewErrorBag $errors
+ */
+@endphp
 <div class="p-4 tab-pane fade show active" id="account" role="tabpanel" aria-labelledby="account-tab">
     <div class="mb-4">
         <h4 class="mb-4">Персональная информация</h4>

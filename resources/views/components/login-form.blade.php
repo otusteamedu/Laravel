@@ -1,7 +1,10 @@
-
+@php
+/**
+ * @var \Illuminate\Support\ViewErrorBag $errors
+ */
+@endphp
 <form method="POST" action="{{ route('login') }}">
     @csrf
-
     <label for="email" class="form-label">Email адрес</label>
     <div class="mb-3 input-group">
         <input id="email" name="email" type="email" 

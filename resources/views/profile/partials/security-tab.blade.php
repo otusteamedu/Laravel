@@ -1,3 +1,8 @@
+@php
+/**
+ * @var \Illuminate\Support\ViewErrorBag $errors
+ */
+@endphp
 <div class="p-4 tab-pane col-md-6 fade" id="security" role="tabpanel" aria-labelledby="security-tab">
     <div class="mb-4">
         <h4 class="mb-4">Смена пароля</h4>
