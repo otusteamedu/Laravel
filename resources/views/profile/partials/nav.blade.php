@@ -25,6 +25,7 @@
     </div>
 </div>
 
+@push('scripts-bottom')
 <script>
     window.onload = function()
     {
@@ -38,3 +39,4 @@
         }
     }
 </script>
+@endpush

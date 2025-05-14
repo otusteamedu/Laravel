@@ -14,5 +14,6 @@
 <body>
     @yield('body')
     @yield('body-bottom')
+    @stack('scripts-bottom')
 </body>
 </html>
