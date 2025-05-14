@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProfileController;
 
-Route::view('/', 'pages.index')->name('index');
+Route::view('/', 'pages.index')->name('home');
 
 Route::view('/about', 'pages.about')->name('about');
 

@@ -8,6 +8,6 @@
 
         <x-register-form />
         
-        <p class="text-center py-3">Уже зарегистированы? <a href="/login" class="text-decoration-none ms-2">Войти</a></p>
+        <p class="text-center py-3">Уже зарегистированы? <a href="{{ route('login') }}" class="text-decoration-none ms-2">Войти</a></p>
     </div>
 @endsection

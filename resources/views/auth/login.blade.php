@@ -9,7 +9,7 @@
         <x-login-form />
 
         <div class="text-center py-3">
-            Еще не зарегистрированы? <a href="/register" class="text-decoration-none ms-2">Зарегистрироваться</a>
+            Еще не зарегистрированы? <a href="{{ route('register') }}" class="text-decoration-none ms-2">Зарегистрироваться</a>
         </div>
     </div>
 @endsection
