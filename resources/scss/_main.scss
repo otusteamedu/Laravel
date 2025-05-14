@@ -35,3 +35,8 @@
     }
 }
 
+@media (max-width: 991px) {
+    nav.border-end {
+        border: none !important;
+    }
+}
