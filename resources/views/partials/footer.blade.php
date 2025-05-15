@@ -1,4 +1,4 @@
-<footer class="bg-[#333333] text-white text-center py-3 mt-auto">
+<footer class="text-black text-center py-3 mt-auto bg-body-tertiary">
     <p>
         @php
             echo date("Y")

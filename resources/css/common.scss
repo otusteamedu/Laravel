@@ -1,0 +1,92 @@
+@import "@fortawesome/fontawesome-free/css/all.css";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+    font-family: 'Carlito', sans-serif;
+}
+h1, h2, h3, h4, h5 {
+    margin-bottom:16px;
+}
+h1 {
+    font-size: 2em;
+}
+h2 {
+    font-size: 1.5em;
+}
+p {
+    margin-bottom: 16px;
+}
+a.main-logo {
+    font-size: 31px;
+    svg {
+        float:left;
+        margin-right:10px;
+    }
+    span {
+        float:left;
+        display: block;
+        margin-top:7px;
+    }
+}
+
+.main-menu {
+    li {
+        margin-right: 20px;
+    }
+    li:last-child {
+        margin-right: 0;
+    }
+    i {
+        display: block;
+        float:left;
+        padding: 11px 0 0 0;
+        margin-right:5px;
+    }
+    a {
+        display: block;
+        float:left;
+    }
+}
+.page-contacts {
+    &__list {
+        margin-bottom: 30px;
+        &-item {
+            display: flex;
+            justify-content: flex-start;
+            font-size: 19px;
+            margin-bottom: 10px;
+        }
+        &-name {
+            width: 15%;
+            text-align: right;
+            padding-right: 20px;
+        }
+        &-value {
+            width: 80%;
+        }
+        a.phone:link, a.phone:visited {
+            color: #000000;
+            text-decoration: none;
+            &:hover {
+                color: red;
+            }
+        }
+        @media (max-width: 768px) {
+            &-item {
+                flex-wrap: wrap;
+                margin-bottom: 15px;
+            }
+            &-name {
+                width: 100%;
+                text-align: left;
+                padding-right:0;
+                margin-bottom: 5px;
+            }
+            &-value {
+                width: 100%;
+            }
+        }
+    }
+}
