@@ -1,5 +1,9 @@
 # Репозиторий для ДЗ курса Laravel
 
+wsl
+./vendor/bin/sail up -d
+./vendor/bin/sail stop
+
 ### Основные правила
 1. ДЗ сдается только в виде Pull Request (PR).
 2. Репозиторий один на всех (текущий)
