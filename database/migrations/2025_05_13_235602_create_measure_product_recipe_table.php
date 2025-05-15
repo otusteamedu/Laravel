@@ -13,9 +13,9 @@ return new class extends Migration
     {
         Schema::create('measure_product_recipe', function (Blueprint $table) {
             $table->id();
-            $table->unsignedInteger('product_id');
-            $table->unsignedInteger('recipe_id');
-            $table->unsignedInteger('measure_id');
+            $table->foreignId('product_id')->constrained('products');
+            $table->foreignId('recipe_id')->constrained('recipes');
+            $table->foreignId('measure_id')->constrained('measures');
             $table->string('value');
             $table->timestamps();
 

@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('recipe_tag', function (Blueprint $table) {
             $table->id();
-            $table->unsignedInteger('tag_id');
-            $table->unsignedInteger('recipe_id');
+            $table->foreignId('tag_id')->constrained('tags');
+            $table->foreignId('recipe_id')->constrained('recipes');
             $table->timestamps();
 
             $table->index(['tag_id', 'recipe_id']);

@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('photo_recipe', function (Blueprint $table) {
             $table->id();
-            $table->unsignedInteger('photo_id');
-            $table->unsignedInteger('recipe_id');
+            $table->foreignId('photo_id')->constrained('photos');
+            $table->foreignId('recipe_id')->constrained('recipes');
             $table->boolean('is_preview');
             $table->timestamps();
 

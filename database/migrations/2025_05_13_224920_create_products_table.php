@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('name_ru');
             $table->text('description_en');
             $table->text('description_ru');
-            $table->foreignId('photo_id')->constrained('photoes');
+            $table->foreignId('photo_id')->constrained('photos');
             $table->timestamps();
         });
     }
