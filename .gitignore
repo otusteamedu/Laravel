@@ -21,6 +21,7 @@ yarn-error.log
 /.nova
 /.vscode
 /.zed
+/.vite
 _ide_helper.php
 .phpstorm.meta.php
 .php-cs-fixer.cache
