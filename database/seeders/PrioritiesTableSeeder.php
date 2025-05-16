@@ -2,9 +2,8 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\Priority;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
 
 class PrioritiesTableSeeder extends Seeder {
     /**
@@ -12,14 +11,12 @@ class PrioritiesTableSeeder extends Seeder {
      */
     public function run(): void
     {
-        $arPriorities = ['Low', 'Medium', 'High'];
-        foreach ($arPriorities as $priority) {
-            DB::table('priorities')->insert(
-                [
-                    'name' => $priority
-                ]
-            );
-        }
+        $priorities = ['Low', 'Medium', 'High'];
 
+        foreach ($priorities as $priorityName) {
+            Priority::factory()->create([
+                'name' => $priorityName
+            ]);
+        }
     }
 }

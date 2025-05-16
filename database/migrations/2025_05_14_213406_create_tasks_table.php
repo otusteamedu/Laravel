@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('title');
             $table->longText('description');
-            $table->date('due_date');
+            $table->dateTime('due_date');
             $table->foreignId('priority_id')->references('id')->on('priorities');
             $table->foreignId('category_id')->references('id')->on('categories');
             $table->foreignId('executor_id')->references('id')->on('users');
