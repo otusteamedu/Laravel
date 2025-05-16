@@ -6,6 +6,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use App\Modules\ISS\src\Models\EducationRoute;
+use App\Modules\ISS\src\Models\UserData;
 
 class User extends Authenticatable
 {
@@ -44,5 +46,20 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function educationRoutePivot()
+    {
+        return $this->belongsToMany(
+            EducationRoute::class,
+            'education_route_user',
+            'user_id',
+            'route_id'
+        );
+    }
+
+    public function userData()
+    {
+        return $this->hasMany(UserData::class, 'user_id');
     }
 }
