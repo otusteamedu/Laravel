@@ -34,5 +34,14 @@ return [
             'channel' => env('SLACK_BOT_USER_DEFAULT_CHANNEL'),
         ],
     ],
-
+    'yandex' => [
+        'client_id' => env('YANDEX_CLIENT_ID'),
+        'client_secret' => env('YANDEX_CLIENT_SECRET'),
+        'redirect' => env('YANDEX_REDIRECT_URI')
+    ],
+    'vkid' => [
+        'client_id' => env('VKID_CLIENT_ID'),
+        'client_secret' => env('VKID_CLIENT_SECRET'),
+        'redirect' => env('VKID_REDIRECT_URI')
+    ],
 ];

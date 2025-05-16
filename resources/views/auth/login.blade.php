@@ -8,6 +8,11 @@
 
         <x-login-form />
 
+        <div class="divider-text">
+            <span class=bg-light>ИЛИ ПРОДОЛЖИТЬ ЧЕРЕЗ</span>
+        </div>
+        @include('partials.social-login')
+
         <div class="text-center py-3">
             Еще не зарегистрированы? <a href="{{ route('register') }}" class="text-decoration-none ms-2">Зарегистрироваться</a>
         </div>

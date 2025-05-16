@@ -40,3 +40,98 @@
         border: none !important;
     }
 }
+
+.divider-text {
+    position: relative;
+    text-align: center;
+    margin-top: 15px;
+    margin-bottom: 15px;
+    
+    span {
+        padding: 7px;
+        font-size: 12px;
+        position: relative;   
+        z-index: 2;
+    }
+
+    &:after {
+        content: "";
+        position: absolute;
+        width: 100%;
+        border-bottom: 1px solid #ddd;
+        top: 55%;
+        left: 0;
+        z-index: 1;
+    }
+}
+
+.btn {
+    &-vkontakte {
+        background-color: #0077FF;
+        color: #ffffff;
+
+        &:hover {
+            color: #000000;
+            background-color: #ffffff;
+            border-color: #0077FF;
+
+            .fa-vk {
+                color: #0077FF;
+            }
+        }
+    }
+    &-yandex {
+        background-color: #FC3F1D;
+        color: #ffffff;
+
+        &:hover {
+            color: #000000;
+            background-color: #ffffff;
+            border-color: #FC3F1D;
+
+            .fa-yandex {
+                color: #FC3F1D;
+            }
+        }
+    }
+
+}
+.btn-outline {
+    &-vkontakte {
+        color: #000000;
+        background-color: #ffffff;
+        border-color: #0077FF;
+        
+        .fa-vk {
+            color: #0077FF;
+        }
+
+        &:hover {
+            background-color: #0077FF;
+            color: #ffffff;
+            
+            .fa-vk {
+                color: #ffffff;
+            }
+        }
+    }
+
+    &-yandex {
+        color: #000000;
+        background-color: #ffffff;
+        border-color: #FC3F1D;
+
+        .fa-yandex {
+            color: #FC3F1D;
+        }
+
+        &:hover {
+            background-color: #FC3F1D;
+            color: #ffffff;
+
+            .fa-yandex {
+                color: #ffffff;
+            }
+        }
+    }
+}
