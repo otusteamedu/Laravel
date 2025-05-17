@@ -44,7 +44,7 @@
                 </div>
                 <div class="col-12">
                     <label class="form-label">О себе</label>
-                    <textarea name="biography"class="form-control" rows="4">TODO</textarea>
+                    <textarea name="biography"class="form-control" rows="4">{{ $user->profile->biography }}</textarea>
                 </div>
                 <div class="col-12">
                     <button type="submit" class="btn btn-primary">Сохранить</button>
