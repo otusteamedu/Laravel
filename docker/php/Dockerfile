@@ -14,8 +14,8 @@ RUN apt-get update && apt-get install -y \
     && docker-php-ext-install pdo pdo_pgsql
 
 # Установка Node и npm (для работы на front)
-RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash - \
-    && apt-get install -y nodejs
+# RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash - \
+#     && apt-get install -y nodejs
 
 # Установка Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
