@@ -1,5 +1,5 @@
 @extends('layouts.main')
-@section('title', 'ToDo - Профиль пользователя')
+@section('title', 'ToDo: Профиль пользователя.')
 
 @section('content')
 <div class="col-12">

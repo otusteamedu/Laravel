@@ -24,7 +24,7 @@ class YandexController extends Controller
 
             $request->session()->regenerate();
 
-            return redirect()->intended(route('user.todos', absolute: false));
+            return redirect()->intended(route('todo.list', absolute: false));
         } catch (AuthorizationException $e) {
             abort(403);
         } catch (Exception $e) {

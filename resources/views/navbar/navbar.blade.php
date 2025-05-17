@@ -11,7 +11,7 @@
                 </li>
                 @auth
                     <li class="nav-item">
-                        <a href="{{ route('user.todos') }}" @class(['nav-link', 'active' => request()->path() == 'todos'])>Задачи</a>
+                        <a href="{{ route('todo.list') }}" @class(['nav-link', 'active' => request()->path() == 'todos'])>Задачи</a>
                     </li>
                 @endauth
             </ul>
@@ -36,7 +36,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="{{ route('user.todos') }}" @class(['nav-link', 'active' => request()->path() == 'todos'])>
+                    <a href="{{ route('todo.list') }}" @class(['nav-link', 'active' => request()->path() == 'todos'])>
                         <i class="fa-solid fa-list-check pe-2"></i>Задачи
                     </a>
                 </li>

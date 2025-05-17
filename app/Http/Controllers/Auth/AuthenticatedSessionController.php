@@ -28,7 +28,7 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
-        return redirect()->intended(route('user.todos', absolute: false));
+        return redirect()->intended(route('todo.list', absolute: false));
     }
 
     /**
