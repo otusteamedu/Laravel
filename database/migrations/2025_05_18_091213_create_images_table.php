@@ -16,7 +16,7 @@ return new class extends Migration {
             $table->string('path', 255)->comment('Путь к изображению');
             $table->boolean('main')->default(false)->comment('Основное изображение');
             $table->morphs('image');
-            $table->foreignId('user_id')->comment('Id пользователя')->constrained('users')->cascadeOnDelete();
+            $table->foreignId('user_id')->comment('Id пользователя');
             $table->timestamps();
             $table->comment('Изображения');
 

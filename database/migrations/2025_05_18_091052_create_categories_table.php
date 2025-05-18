@@ -30,9 +30,7 @@ return new class extends Migration {
                 'updated_at' => now(),
             ],
         ];
-        foreach ($categories as $category) {
-            DB::table($this->tableName)->insert($category);
-        }
+        DB::table($this->tableName)->insert($categories);
     }
 
     public function down(): void

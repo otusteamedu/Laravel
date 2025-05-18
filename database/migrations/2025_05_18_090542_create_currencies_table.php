@@ -43,9 +43,7 @@ return new class extends Migration {
                 'updated_at' => now(),
             ],
         ];
-        foreach ($currencies as $currency) {
-            DB::table($this->tableName)->insert($currency);
-        }
+        DB::table($this->tableName)->insert($currencies);
     }
 
     public function down(): void
