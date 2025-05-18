@@ -17,10 +17,10 @@ services:
       - otus_laravel_network
     expose:
       - "80/tcp"
-      - "5173/tcp"
+      - "5175/tcp"
     ports:
       - "9095:80"
-      - "5173:5173"
+      - "5175:5175"
     volumes:
       - .:/var/www/html:delegated
     #restart: unless-stopped
