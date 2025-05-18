@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('user_data', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id')->nullable();
-            $table->foreign('user_id')->references('id')->on('users');
+            //$table->foreign('user_id')->references('id')->on('users');
             $table->unsignedBigInteger('role_id');
             $table->foreign('role_id')->references('id')->on('user_roles');
             $table->string('user_iss_login', 50);

@@ -3,12 +3,18 @@
 namespace App\Modules\ISS\src\Models;
 
 use App\Modules\ISS\src\Models\BaseModel;
-use App\Modules\ISS\src\Models\EducationRoutePoint;
-use App\Models\User;
+use App\Modules\ISS\src\Models\RealEducationRoutePoint;
+use App\Modules\ISS\src\Models\RealEducationRoutesOfUser;
 use App\Modules\ISS\database\factories\EducationRouteFactory;
 
 class EducationRoute extends BaseModel
 {
+    /**
+     * Поля модели:
+     * id -- код учебного маршрута (unsignedBigInteger)
+     * name -- название учебного маршрута (string)
+     */
+
     protected $fillable = ['name'];
 
     /**
@@ -19,24 +25,14 @@ class EducationRoute extends BaseModel
         return EducationRouteFactory::new();
     }
 
-    public function educationRoutePointPivot()
+    public function realEducationRoutePoint()
     {
-        return $this->belongsToMany(
-            EducationRoutePoint::class,
-            'education_route_education_route_point',
-            'route_id',
-            'route_point_id'
-        );
+        return $this->hasMany(RealEducationRoutePoint::class, 'route_id');
     }
 
-    public function userPivot()
+    public function realEducationRoutesOfUser()
     {
-        return $this->belongsToMany(
-            User::class,
-            'education_route_user',
-            'route_id',
-            'user_id'
-        );
+        return $this->hasMany(RealEducationRoutesOfUser::class, 'route_id');
     }
 
 }

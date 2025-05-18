@@ -47,19 +47,4 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
-
-    public function educationRoutePivot()
-    {
-        return $this->belongsToMany(
-            EducationRoute::class,
-            'education_route_user',
-            'user_id',
-            'route_id'
-        );
-    }
-
-    public function userData()
-    {
-        return $this->hasMany(UserData::class, 'user_id');
-    }
 }

@@ -5,11 +5,17 @@ namespace App\Modules\ISS\src\Models;
 use App\Modules\ISS\src\Models\BaseModel;
 use App\Modules\ISS\src\Models\EducationMaterial;
 use App\Modules\ISS\src\Models\ExamQuestion;
-use App\Modules\ISS\src\Models\EducationRoute;
+use App\Modules\ISS\src\Models\RealEducationRoutePoint;
 use App\Modules\ISS\database\factories\EducationRoutePointFactory;
 
 class EducationRoutePoint extends BaseModel
 {
+    /**
+     * Поля модели:
+     *  id -- код точки учебного маршрута (unsignedBigInteger)
+     * name -- название точки учебного маршрута (Справочник) (string)
+     */
+
     protected $fillable = ['name'];
 
     /**
@@ -30,13 +36,8 @@ class EducationRoutePoint extends BaseModel
         return $this->hasMany(ExamQuestion::class, 'point_id');
     }
 
-    public function educationRoutePivot()
+    public function realEducationRoutePoint()
     {
-        $this->belongsToMany(
-            EducationRoute::class,
-            'education_route_education_route_point',
-            'route_point_id',
-            'route_id'
-        );
+        return $this->hasMany(RealEducationRoutePoint::class, 'route_point_id');
     }
 }

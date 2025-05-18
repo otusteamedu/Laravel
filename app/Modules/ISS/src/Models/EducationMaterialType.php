@@ -7,6 +7,12 @@ use App\Modules\ISS\database\factories\EducationMaterialTypeFactory;
 
 class EducationMaterialType extends BaseModel
 {
+    /**
+     * Поля модели:
+     *  id -- код типа учебного материала (unsignedBigInteger)
+     * name -- название типа учебного материала (string)
+     */
+
     protected $fillable = ['name'];
 
     /**
