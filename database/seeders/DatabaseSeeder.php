@@ -2,15 +2,15 @@
 
 namespace Database\Seeders;
 
-use App\Models\Todo;
 use App\Models\User;
 use App\Models\Project;
-use App\Models\TodoUser;
 use App\Models\ProjectUser;
-use App\Models\TodoComment;
 use App\Models\UserProfile;
 use App\Enums\ProjectRoleEnum;
 use Illuminate\Database\Seeder;
+use Database\Seeders\TodoSeeder;
+use Database\Seeders\TodoUserSeeder;
+use Database\Seeders\TodoCommentSeeder;
 
 class DatabaseSeeder extends Seeder
 {
@@ -19,6 +19,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
+        /** Добавляем дефолтного поьзователя */
         User::factory()
             ->has(UserProfile::factory(), 'profile')
             ->create([
@@ -26,40 +27,19 @@ class DatabaseSeeder extends Seeder
                 'email' => 'test@example.com',
             ]);
 
-        User::factory()
-            ->has(UserProfile::factory(), 'profile')
-            ->hasAttached(
-                Project::factory(),
-                [
-                    'roles'      => [ProjectRoleEnum::ADMIN],
-                    'invited_at' => now(),
-                    'joined_at'  => now()
-                ]
-            )
-            ->count(5)
-            ->create();
+        /** Добавляем пользователей c проектами */
+        $this->callWith(UserWithProjectSeeder::class, ['count' => 5]);
 
-        ProjectUser::factory(['roles' => [ProjectRoleEnum::MEMBER]])
-            ->count(10)
-            ->create();
+        /** Добавляем пользователей к проектам */
+        $this->callWith(ProjectUserSeeder::class, ['count' => 50]);
 
-        Todo::factory()
-            ->has(TodoComment::factory()
-                ->state(function (array $attributes, Todo $todo) {
-                    return [
-                        'todo_id' => $todo->id,
-                        'user_id' => $todo->author_id,
-                    ];
-                }), 'comments')
-            ->count(20)
-            ->create();
+        /** Добавляем задачи с комментариями автора */
+        $this->callWith(TodoWithCommentSeeder::class, ['count' => 20]);
 
-        TodoUser::factory()
-            ->count(50)
-            ->create();
+        /** Добавляем пользователей к задачам */
+        $this->callWith(TodoUserSeeder::class, ['count' => 50]);
 
-        TodoComment::factory()
-            ->count(50)
-            ->create();
+        /** Добавляем комментарии к задачам */
+        $this->callWith(TodoCommentSeeder::class, ['count' => 100]);
     }
 }
