@@ -28,7 +28,6 @@ return new class extends Migration {
             $table->boolean('is_published')->default(false)->comment('Опубликован');
             $table->dateTimeTz('published_until')->nullable()->comment('Опубликован до');
             $table->timestamps();
-            $table->softDeletes();
             $table->comment('Товары');
 
             $table->index(['price']);
