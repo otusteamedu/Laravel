@@ -10,8 +10,8 @@ class UserRole extends BaseModel
 {
     /**
      * Поля модели:
-     * id -- код роли пользователя (unsignedBigInteger)
-     * name -- название роли пользователя (string)
+     * @var integer $id -- код роли пользователя
+     * @var string $name -- название роли пользователя
      */
 
     protected $fillable = ['name'];

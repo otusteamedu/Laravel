@@ -10,10 +10,10 @@ class ExamAnswer extends BaseModel
 {
     /**
      * Поля модели:
-     * id -- код ответа на вопрос для проверочного теста (unsignedBigInteger)
-     * short_answer_name -- название ответа (string)
-     * answer -- текст ответа (text)
-     * question_id -- код вопроса, к которому относится ответ (unsignedBigInteger)
+     * @var integer $id -- код ответа на вопрос для проверочного теста
+     * @var string $short_answer_name -- название ответа
+     * @var string $answer -- текст ответа
+     * @var integer $question_id -- код вопроса, к которому относится ответ
      */
 
     protected $fillable = ['short_answer_name', 'answer', 'question_id'];

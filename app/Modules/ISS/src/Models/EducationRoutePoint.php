@@ -12,8 +12,8 @@ class EducationRoutePoint extends BaseModel
 {
     /**
      * Поля модели:
-     *  id -- код точки учебного маршрута (unsignedBigInteger)
-     * name -- название точки учебного маршрута (Справочник) (string)
+     * @var integer id -- код точки учебного маршрута
+     * @var string name -- название точки учебного маршрута (Справочник)
      */
 
     protected $fillable = ['name'];

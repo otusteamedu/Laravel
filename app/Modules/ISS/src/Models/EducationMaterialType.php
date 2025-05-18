@@ -9,8 +9,8 @@ class EducationMaterialType extends BaseModel
 {
     /**
      * Поля модели:
-     *  id -- код типа учебного материала (unsignedBigInteger)
-     * name -- название типа учебного материала (string)
+     * @var integer  $id -- код типа учебного материала
+     * @var string $name -- название типа учебного материала
      */
 
     protected $fillable = ['name'];

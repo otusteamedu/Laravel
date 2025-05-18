@@ -11,10 +11,10 @@ class EducationMaterial extends BaseModel
 {
     /**
      * Поля модели:
-     * id -- код учебного материала (unsignedBigInteger)
-     * material_type_id -- ссылка на тип учебного материала (unsignedBigInteger)
-     * file_path -- путь к файлу учебного материала (string)
-     * point_id --ссылка на точку обучающего маршрута (из справочника) (unsignedBigInteger)
+     * @var integer $id -- код учебного материала
+     * @var integer $material_type_id -- ссылка на тип учебного материала
+     * @var string $file_path -- путь к файлу учебного материала
+     * @var integer $point_id --ссылка на точку обучающего маршрута (из справочника)
      */
 
     protected $fillable = ['material_type_id', 'file_path', 'point_id'];

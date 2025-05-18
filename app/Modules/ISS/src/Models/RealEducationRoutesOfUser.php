@@ -12,10 +12,10 @@ class RealEducationRoutesOfUser extends BaseModel
 {
     /**
      * Поля модели:
-     * id -- код обучающего маршрута для пользователя (unsignedBigInteger)
-     * user_data_id -- ссылка на данные пользователя ИОС (unsignedBigInteger)
-     * route_id -- ссылка на учебный маршрут (unsignedBigInteger)
-     * last_pass_point_id -- ссылка последнюю на реальную точку учебного маршрута, для которой тест сдан (unsignedBigInteger)
+     * @var integer $id -- код обучающего маршрута для пользователя
+     * @var integer $user_data_id -- ссылка на данные пользователя ИОС
+     * @var integer $route_id -- ссылка на учебный маршрут
+     * @var integer $last_pass_point_id -- ссылка последнюю на реальную точку учебного маршрута, для которой тест сдан
      */
 
     protected $fillable = ['user_data_id', 'route_id', 'last_pass_point_id'];

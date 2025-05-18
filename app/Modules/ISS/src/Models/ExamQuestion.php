@@ -12,10 +12,10 @@ class ExamQuestion extends BaseModel
 {
     /**
      * Поля модели:
-     * id -- код вопроса для проверочного теста (unsignedBigInteger)
-     * short_question_name -- название вопроса (string)
-     * question -- текст вопроса (text)
-     * point_id -- код точки учебного маршрута из справочника (unsignedBigInteger)
+     * @var integer $id -- код вопроса для проверочного теста
+     * @var string $short_question_name -- название вопроса
+     * @var string $question -- текст вопроса
+     * @var integer $point_id -- код точки учебного маршрута из справочника
      */
 
     protected $fillable = ['short_question_name', 'question', 'point_id'];
