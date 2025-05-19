@@ -3,16 +3,16 @@
 namespace App\Modules\ISS\database\factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
-use App\Modules\ISS\src\Models\EducationRouteEducationRoutePoint;
+use App\Modules\ISS\src\Models\RealEducationRoutePoint;
 use App\Modules\ISS\src\Models\EducationRoute;
 use App\Modules\ISS\src\Models\EducationRoutePoint;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Model>
  */
-class EducationRouteEducationRoutePointFactory extends Factory
+class RealEducationRoutePointFactory extends Factory
 {
-    protected $model = EducationRouteEducationRoutePoint::class; //задал свойство чтобы использовать модель с произвольным расположением
+    protected $model = RealEducationRoutePoint::class; //задал свойство чтобы использовать модель с произвольным расположением
 
     /**
      * Define the model's default state.

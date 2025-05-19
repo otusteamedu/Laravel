@@ -10,8 +10,8 @@ use App\Modules\ISS\database\seeders\EducationMaterialTypeSeeder;
 use App\Modules\ISS\database\seeders\EducationMaterialSeeder;
 use App\Modules\ISS\database\seeders\ExamQuestionSeeder;
 use App\Modules\ISS\database\seeders\ExamAnswerSeeder;
-use App\Modules\ISS\database\seeders\EducationRouteEducationRoutePointSeeder;
-use App\Modules\ISS\database\seeders\EducationRouteUserSeeder;
+use App\Modules\ISS\database\seeders\RealEducationRoutePointSeeder;
+use App\Modules\ISS\database\seeders\RealEducationRoutesOfUserSeeder;
 use App\Modules\ISS\database\seeders\UserRoleSeeder;
 use App\Modules\ISS\database\seeders\UserDataSeeder;
 
@@ -29,8 +29,8 @@ class BaseISSSeeder extends Seeder
         $this->call(EducationMaterialSeeder::class);
         $this->call(ExamQuestionSeeder::class);
         $this->call(ExamAnswerSeeder::class);
-        $this->call(EducationRouteEducationRoutePointSeeder::class);
-        $this->call(EducationRouteUserSeeder::class);
+        $this->call(RealEducationRoutePointSeeder::class);
+        $this->call(RealEducationRoutesOfUserSeeder::class);
         $this->call(UserRoleSeeder::class);
         $this->call(UserDataSeeder::class);
     }

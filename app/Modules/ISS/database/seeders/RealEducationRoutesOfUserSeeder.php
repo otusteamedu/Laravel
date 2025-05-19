@@ -4,15 +4,15 @@ namespace App\Modules\ISS\database\seeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use App\Modules\ISS\src\Models\EducationRouteUser;
+use App\Modules\ISS\src\Models\RealEducationRoutesOfUser;
 
-class EducationRouteUserSeeder extends Seeder
+class RealEducationRoutesOfUserSeeder extends Seeder
 {
     /**
      * Run the database seeds.
      */
     public function run(): void
     {
-        EducationRouteUser::factory(5)->create();
+        RealEducationRoutesOfUser::factory(5)->create();
     }
 }
