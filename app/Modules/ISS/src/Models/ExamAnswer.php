@@ -6,16 +6,16 @@ use App\Modules\ISS\src\Models\BaseModel;
 use App\Modules\ISS\src\Models\ExamQuestion;
 use App\Modules\ISS\database\factories\ExamAnswerFactory;
 
+/**
+ * Поля модели:
+ * @property integer $id -- код ответа на вопрос для проверочного теста
+ * @property string $short_answer_name -- название ответа
+ * @property string $answer -- текст ответа
+ * @property integer $question_id -- код вопроса, к которому относится ответ
+ */
+
 class ExamAnswer extends BaseModel
 {
-    /**
-     * Поля модели:
-     * @var integer $id -- код ответа на вопрос для проверочного теста
-     * @var string $short_answer_name -- название ответа
-     * @var string $answer -- текст ответа
-     * @var integer $question_id -- код вопроса, к которому относится ответ
-     */
-
     protected $fillable = ['short_answer_name', 'answer', 'question_id'];
     protected $casts = ['answer' => 'string'];
 

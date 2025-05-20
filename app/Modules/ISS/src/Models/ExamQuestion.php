@@ -7,17 +7,16 @@ use App\Modules\ISS\src\Models\EducationRoutePoint;
 use App\Modules\ISS\src\Models\ExamAnswer;
 use App\Modules\ISS\database\factories\ExamQuestionFactory;
 
+/**
+ * Поля модели:
+ * @property integer $id -- код вопроса для проверочного теста
+ * @property string $short_question_name -- название вопроса
+ * @property string $question -- текст вопроса
+ * @property integer $point_id -- код точки учебного маршрута из справочника
+ */
 
 class ExamQuestion extends BaseModel
 {
-    /**
-     * Поля модели:
-     * @var integer $id -- код вопроса для проверочного теста
-     * @var string $short_question_name -- название вопроса
-     * @var string $question -- текст вопроса
-     * @var integer $point_id -- код точки учебного маршрута из справочника
-     */
-
     protected $fillable = ['short_question_name', 'question', 'point_id'];
     protected $casts = ['question' => 'string'];
 

@@ -9,16 +9,16 @@ use App\Modules\ISS\src\Models\RealEducationRoutesOfUser;
 use App\Modules\ISS\database\factories\EducationRouteEducationRoutePointFactory;
 use Carbon\Carbon;
 
+/**
+ * Поля модели:
+ * @property integer $id -- код реальной точки учебного маршрута с датой экзамена
+ * @property integer $route_point_id -- ссылка на точку учебного маршрута из справочника
+ * @property integer $route_id -- ссылка на учебный маршрут
+ * @property Carbon $exam_date -- дата сдачи контрольного теста по этой точке учебного маршрута
+ */
+
 class RealEducationRoutePoint extends BaseModel
 {
-    /**
-     * Поля модели:
-     * @var integer $id -- код реальной точки учебного маршрута с датой экзамена
-     * @var integer $route_point_id -- ссылка на точку учебного маршрута из справочника
-     * @var integer $route_id -- ссылка на учебный маршрут
-     * @var Carbon $exam_date -- дата сдачи контрольного теста по этой точке учебного маршрута
-     */
-
     protected $fillable = ['route_point_id', 'route_id', 'exam_date'];
     protected $casts = ['exam_date' => 'datetime'];
 

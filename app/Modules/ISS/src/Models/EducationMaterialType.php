@@ -5,14 +5,14 @@ namespace App\Modules\ISS\src\Models;
 use App\Modules\ISS\src\Models\BaseModel;
 use App\Modules\ISS\database\factories\EducationMaterialTypeFactory;
 
+/**
+ * Поля модели:
+ * @property integer  $id -- код типа учебного материала
+ * @property string $name -- название типа учебного материала
+ */
+
 class EducationMaterialType extends BaseModel
 {
-    /**
-     * Поля модели:
-     * @var integer  $id -- код типа учебного материала
-     * @var string $name -- название типа учебного материала
-     */
-
     protected $fillable = ['name'];
 
     /**

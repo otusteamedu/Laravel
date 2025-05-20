@@ -8,16 +8,16 @@ use App\Modules\ISS\src\Models\EducationRoute;
 use App\Modules\ISS\src\Models\RealEducationRoutePoint;
 use App\Modules\ISS\database\factories\EducationRouteUserFactory;
 
+/**
+ * Поля модели:
+ * @property integer $id -- код обучающего маршрута для пользователя
+ * @property integer $user_data_id -- ссылка на данные пользователя ИОС
+ * @property integer $route_id -- ссылка на учебный маршрут
+ * @property integer $last_pass_point_id -- ссылка последнюю на реальную точку учебного маршрута, для которой тест сдан
+ */
+
 class RealEducationRoutesOfUser extends BaseModel
 {
-    /**
-     * Поля модели:
-     * @var integer $id -- код обучающего маршрута для пользователя
-     * @var integer $user_data_id -- ссылка на данные пользователя ИОС
-     * @var integer $route_id -- ссылка на учебный маршрут
-     * @var integer $last_pass_point_id -- ссылка последнюю на реальную точку учебного маршрута, для которой тест сдан
-     */
-
     protected $fillable = ['user_data_id', 'route_id', 'last_pass_point_id'];
 
     /**

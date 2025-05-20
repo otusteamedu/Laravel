@@ -6,14 +6,14 @@ use App\Modules\ISS\src\Models\BaseModel;
 use app\Modules\ISS\src\Models\UserData;
 use App\Modules\ISS\database\factories\UserRoleFactory;
 
+/**
+ * Поля модели:
+ * @property integer $id -- код роли пользователя
+ * @property string $name -- название роли пользователя
+ */
+
 class UserRole extends BaseModel
 {
-    /**
-     * Поля модели:
-     * @var integer $id -- код роли пользователя
-     * @var string $name -- название роли пользователя
-     */
-
     protected $fillable = ['name'];
 
     /**

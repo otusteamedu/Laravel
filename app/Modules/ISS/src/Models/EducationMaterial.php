@@ -7,16 +7,16 @@ use App\Modules\ISS\src\Models\EducationMaterialType;
 use App\Modules\ISS\src\Models\EducationRoutePoint;
 use App\Modules\ISS\database\factories\EducationMaterialFactory;
 
+/**
+ * Поля модели:
+ * @property integer $id -- код учебного материала
+ * @property integer $material_type_id -- ссылка на тип учебного материала
+ * @property string $file_path -- путь к файлу учебного материала
+ * @property integer $point_id --ссылка на точку обучающего маршрута (из справочника)
+ */
+
 class EducationMaterial extends BaseModel
 {
-    /**
-     * Поля модели:
-     * @var integer $id -- код учебного материала
-     * @var integer $material_type_id -- ссылка на тип учебного материала
-     * @var string $file_path -- путь к файлу учебного материала
-     * @var integer $point_id --ссылка на точку обучающего маршрута (из справочника)
-     */
-
     protected $fillable = ['material_type_id', 'file_path', 'point_id'];
 
     /**

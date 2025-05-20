@@ -8,14 +8,14 @@ use App\Modules\ISS\src\Models\ExamQuestion;
 use App\Modules\ISS\src\Models\RealEducationRoutePoint;
 use App\Modules\ISS\database\factories\EducationRoutePointFactory;
 
+/**
+ * Поля модели:
+ * @property integer id -- код точки учебного маршрута
+ * @property string name -- название точки учебного маршрута (Справочник)
+ */
+
 class EducationRoutePoint extends BaseModel
 {
-    /**
-     * Поля модели:
-     * @var integer id -- код точки учебного маршрута
-     * @var string name -- название точки учебного маршрута (Справочник)
-     */
-
     protected $fillable = ['name'];
 
     /**

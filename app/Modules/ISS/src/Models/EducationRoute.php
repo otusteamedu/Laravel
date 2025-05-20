@@ -7,14 +7,14 @@ use App\Modules\ISS\src\Models\RealEducationRoutePoint;
 use App\Modules\ISS\src\Models\RealEducationRoutesOfUser;
 use App\Modules\ISS\database\factories\EducationRouteFactory;
 
+/**
+ * Поля модели:
+ * @property integer $id -- код учебного маршрута
+ * @property string $name -- название учебного маршрута
+ */
+
 class EducationRoute extends BaseModel
 {
-    /**
-     * Поля модели:
-     * @var integer $id -- код учебного маршрута
-     * @var string $name -- название учебного маршрута
-     */
-
     protected $fillable = ['name'];
 
     /**
