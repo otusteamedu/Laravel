@@ -11,9 +11,9 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property integer $iuser_idd
  * @property string $driver
  * @property string $socialite_id
- * @property string $created_at
- * @property string $updated_at
- * @property string $deleted_at
+ * @property ?string $created_at
+ * @property ?string $updated_at
+ * @property ?string $deleted_at
  * @property User[] $users
  */
 class UserSocialite extends BaseModel

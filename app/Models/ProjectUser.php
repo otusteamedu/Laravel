@@ -11,9 +11,9 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  * @property integer $project_id
  * @property integer $user_id
  * @property string $roles
- * @property string $invited_at
- * @property string $joined_at
- * @property string $left_at
+ * @property ?string $invited_at
+ * @property ?string $joined_at
+ * @property ?string $left_at
  */
 class ProjectUser extends Pivot
 {

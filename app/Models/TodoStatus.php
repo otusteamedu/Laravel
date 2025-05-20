@@ -12,7 +12,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  * @property integer $project_id
  * @property string $name
  * @property integer $sort
- * @property string $deleted_at
+ * @property ?string $deleted_at
  * @property string $color
  * @property Project $project
  */

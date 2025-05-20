@@ -15,11 +15,11 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @property integer $id
  * @property string $name
  * @property string $email
- * @property string $email_verified_at
+ * @property ?string $email_verified_at
  * @property string $password
- * @property string $remember_token
- * @property string $created_at
- * @property string $updated_at
+ * @property ?string $remember_token
+ * @property ?string $created_at
+ * @property ?string $updated_at
  * @property UserProfile $profile
  * @property Project[] $allProjects
  * @property Project[] $activeProjects

@@ -20,10 +20,10 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @property integer $status_id
  * @property string $description
  * @property string $deadline
- * @property string $created_at
- * @property string $updated_at
- * @property string $deleted_at
- * @property string $options
+ * @property ?string $created_at
+ * @property ?string $updated_at
+ * @property ?string $deleted_at
+ * @property ?string $options
  * @property User $author
  * @property Project $project
  * @property TodoStatus $status
