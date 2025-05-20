@@ -14,6 +14,9 @@ use App\Modules\ISS\database\factories\EducationRouteUserFactory;
  * @property integer $user_data_id -- ссылка на данные пользователя ИОС
  * @property integer $route_id -- ссылка на учебный маршрут
  * @property integer $last_pass_point_id -- ссылка последнюю на реальную точку учебного маршрута, для которой тест сдан
+ * @property datetime $created_at
+ * @property datetime $updated_at
+ * @property datetime $deleted_at
  */
 
 class RealEducationRoutesOfUser extends BaseModel

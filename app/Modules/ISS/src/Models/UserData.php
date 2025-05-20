@@ -14,6 +14,9 @@ use App\Modules\ISS\database\factories\UserDataFactory;
  * @property integer $role_id -- ссылка на роль пользователя в ИОС
  * @property string $user_iss_login -- логин пользователя в ИОС
  * @property string $user_iss_password -- пароль пользователя в ИОС
+ * @property datetime $created_at
+ * @property datetime $updated_at
+ * @property datetime $deleted_at
  */
 
 class UserData extends BaseModel

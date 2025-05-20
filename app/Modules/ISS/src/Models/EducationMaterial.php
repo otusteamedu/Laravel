@@ -13,6 +13,9 @@ use App\Modules\ISS\database\factories\EducationMaterialFactory;
  * @property integer $material_type_id -- ссылка на тип учебного материала
  * @property string $file_path -- путь к файлу учебного материала
  * @property integer $point_id --ссылка на точку обучающего маршрута (из справочника)
+ * @property datetime $created_at
+ * @property datetime $updated_at
+ * @property datetime $deleted_at
  */
 
 class EducationMaterial extends BaseModel

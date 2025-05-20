@@ -13,6 +13,9 @@ use App\Modules\ISS\database\factories\ExamQuestionFactory;
  * @property string $short_question_name -- название вопроса
  * @property string $question -- текст вопроса
  * @property integer $point_id -- код точки учебного маршрута из справочника
+ * @property datetime $created_at
+ * @property datetime $updated_at
+ * @property datetime $deleted_at
  */
 
 class ExamQuestion extends BaseModel

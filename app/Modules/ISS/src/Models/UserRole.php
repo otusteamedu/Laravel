@@ -10,6 +10,9 @@ use App\Modules\ISS\database\factories\UserRoleFactory;
  * Поля модели:
  * @property integer $id -- код роли пользователя
  * @property string $name -- название роли пользователя
+ * @property datetime $created_at
+ * @property datetime $updated_at
+ * @property datetime $deleted_at
  */
 
 class UserRole extends BaseModel

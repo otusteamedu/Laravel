@@ -12,6 +12,9 @@ use App\Modules\ISS\database\factories\EducationRoutePointFactory;
  * Поля модели:
  * @property integer id -- код точки учебного маршрута
  * @property string name -- название точки учебного маршрута (Справочник)
+ * @property datetime $created_at
+ * @property datetime $updated_at
+ * @property datetime $deleted_at
  */
 
 class EducationRoutePoint extends BaseModel

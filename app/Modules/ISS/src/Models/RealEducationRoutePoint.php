@@ -15,6 +15,9 @@ use Carbon\Carbon;
  * @property integer $route_point_id -- ссылка на точку учебного маршрута из справочника
  * @property integer $route_id -- ссылка на учебный маршрут
  * @property Carbon $exam_date -- дата сдачи контрольного теста по этой точке учебного маршрута
+ * @property datetime $created_at
+ * @property datetime $updated_at
+ * @property datetime $deleted_at
  */
 
 class RealEducationRoutePoint extends BaseModel
