@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Database\Seeders;
 
-use App\Models\Item;
+use App\Models\Image;
 use Illuminate\Database\Seeder;
 
-class ItemsSeeder extends Seeder
+class ImageSeeder extends Seeder
 {
     public function run(): void
     {
-        Item::factory(1)->create();
+        Image::factory(1)->create();
     }
 }
