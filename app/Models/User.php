@@ -9,6 +9,22 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
+/**
+ * User model
+ *
+ * @property int $id Unique user identifier
+ * @property string $name User's full name
+ * @property string $email User's email address
+ * @property string $password Hashed password
+ * @property string|null $remember_token "Remember me" token
+ * @property int $role_id User role ID
+ * @property \Illuminate\Support\Carbon|null $email_verified_at Email verification timestamp
+ * @property \Illuminate\Support\Carbon $created_at Account creation date
+ * @property \Illuminate\Support\Carbon $updated_at Last account update date
+ * 
+ * @property-read \App\Models\Role $role User role
+ * @property-read \Illuminate\Database\Eloquent\Collection<\App\Models\Order> $orders Orders of this user
+ */
 class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
@@ -35,6 +51,13 @@ class User extends Authenticatable
         'password',
         'remember_token',
     ];
+
+    /**
+     * The table associated with the model.
+     *
+     * @var string
+     */
+    protected $table = 'users';
 
     /**
      * Get the attributes that should be cast.
