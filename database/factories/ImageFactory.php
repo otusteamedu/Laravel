@@ -20,7 +20,7 @@ class ImageFactory extends Factory
             'path' => fake()->imageUrl(),
             'main' => fake()->boolean(30),
             'image_id' => Item::factory(),
-            'image_type' => Item::class,
+            'image_type' => 'item',
         ];
     }
 }

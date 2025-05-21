@@ -26,8 +26,12 @@ class DatabaseSeeder extends Seeder
             'user_id' => $firstUser->id,
             'role_id' => 1,
         ]);
+        Image::factory()->create([
+            'image_id' => $firstUser->id,
+            'image_type' => 'user',
+        ]);
 
-        RoleUser::factory(9)->create();
+        RoleUser::factory(10)->create();
         Image::factory(10)->create();
     }
 }
