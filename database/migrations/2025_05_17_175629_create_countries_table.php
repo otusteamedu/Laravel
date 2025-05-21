@@ -14,7 +14,7 @@ return new class extends Migration {
         Schema::create($this->tableName, static function (Blueprint $table) {
             $table->id();
             $table->string('name', 255)->comment('Название страны');
-            $table->string('code', 2)->unique();
+            $table->string('code', 2)->comment('Символьный код')->unique();
             $table->timestamps();
             $table->comment('Страны');
 
