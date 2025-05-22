@@ -13,8 +13,9 @@ class TodoUserSeeder extends Seeder
      */
     public function run(int $count = 1): void
     {
-        TodoUser::factory()
-            ->count($count)
-            ->create();
+        for ($i = 1; $i < $count; $i++) {
+            TodoUser::factory()
+                ->create();
+        }
     }
 }

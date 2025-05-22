@@ -16,7 +16,7 @@ use Illuminate\Support\Carbon;
  * @property ?Carbon $updated_at
  * @property ?Carbon $deleted_at
  * @property User[] $users
- * @property ProjectUser[] $userProjects
+ * @property ProjectUser[] $projectUsers
  * @property TodoStatus[] $todoStatuses
  * @property Todo[] $todos
  */
@@ -36,7 +36,7 @@ class Project extends BaseModel
         return $this->belongsToMany(User::class, ProjectUser::class);
     }
 
-    public function userProjects(): HasMany
+    public function projectUsers(): HasMany
     {
         return $this->hasMany(ProjectUser::class);
     }

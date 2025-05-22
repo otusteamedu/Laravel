@@ -16,6 +16,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  * @property ?Carbon $invited_at
  * @property ?Carbon $joined_at
  * @property ?Carbon $left_at
+ * @property User[] $users
+ * @property Project[] $projects
  */
 class ProjectUser extends BaseModel
 {

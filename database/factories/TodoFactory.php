@@ -2,12 +2,12 @@
 
 namespace Database\Factories;
 
-use App\Enums\ProjectRoleEnum;
 use App\Models\Todo;
 use App\Models\TodoUser;
 use App\Models\TodoStatus;
-use App\Enums\TodoRoleEnum;
 use App\Models\ProjectUser;
+use App\Models\TodoRoleEnum;
+use App\Models\ProjectRoleEnum;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**

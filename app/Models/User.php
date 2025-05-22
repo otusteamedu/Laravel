@@ -3,7 +3,7 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
-use App\Models\Project;
+use App\Models\ProjectUser;
 use Illuminate\Support\Carbon;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Relations\HasOne;
@@ -22,10 +22,9 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @property ?Carbon $created_at
  * @property ?Carbon $updated_at
  * @property UserProfile $profile
- * @property Project[] $projects
+ * @property ProjectUser[] $userProjects
  * @property UserSocialite[] $socialites
- * @property Todo[] $authorTodos
- * @property Todo[] $todos
+ * @property TodoUser[] $userTodos
  */
 class User extends Authenticatable
 {
@@ -76,12 +75,12 @@ class User extends Authenticatable
     }
 
     /**
-     * Проекты в которые пользователь был приглашен, является или являлся участником
-     * @return BelongsToMany<Project, User, \Illuminate\Database\Eloquent\Relations\Pivot>
+     * Проекты пользователя
+     * @return HasMany<ProjectUser, User>
      */
-    public function projects(): BelongsToMany
+    public function userProjects(): HasMany
     {
-        return $this->belongsToMany(Project::class, ProjectUser::class);
+        return $this->hasMany(ProjectUser::class);
     }
 
     /**
@@ -94,21 +93,11 @@ class User extends Authenticatable
     }
 
     /**
-     * Задачи созданные пользователем
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany<Todo, User>
-     */
-    public function authorTodos(): HasMany
-    {
-        return $this->hasMany(Todo::class, 'author_id');
-    }
-
-    /**
      * Задачи в которых учавствует пользователь
-     * @return BelongsToMany<Todo, User, \Illuminate\Database\Eloquent\Relations\Pivot>
+     * @return HasMany<TodoUser, User>
      */
-    public function todos(): BelongsToMany
+    public function userTodos(): HasMany
     {
-        return $this->belongsToMany(Todo::class, TodoUser::class)
-            ->withPivot('roles');
+        return $this->hasMany(TodoUser::class);
     }
 }

@@ -4,8 +4,9 @@ namespace Database\Seeders;
 
 use App\Models\User;
 use App\Models\Project;
+use App\Models\ProjectUser;
 use App\Models\UserProfile;
-use App\Enums\ProjectRoleEnum;
+use App\Models\ProjectRoleEnum;
 use Illuminate\Database\Seeder;
 
 class UserWithProjectSeeder extends Seeder
@@ -16,17 +17,21 @@ class UserWithProjectSeeder extends Seeder
      */
     public function run(int $count = 1): void
     {
-        User::factory()
+        $users = User::factory()
             ->has(UserProfile::factory(), 'profile')
-            ->hasAttached(
-                Project::factory(),
-                [
-                    'roles'      => [ProjectRoleEnum::ADMIN],
-                    'invited_at' => now(),
-                    'joined_at'  => now()
-                ]
-            )
             ->count($count)
             ->create();
+
+        foreach ($users as $user) {
+            Project::factory()
+                ->has(ProjectUser::factory([
+                    'user_id'    => $user->id,
+                    'roles'      => [ProjectRoleEnum::ADMIN],
+                    'invited_at' => now(),
+                    'joined_at'  => now(),
+                    'left_at'    => null
+                ]), 'projectUsers')
+                ->create();
+        }
     }
 }

@@ -5,7 +5,7 @@ namespace Database\Factories;
 use App\Models\User;
 use App\Models\Project;
 use App\Models\ProjectUser;
-use App\Enums\ProjectRoleEnum;
+use App\Models\ProjectRoleEnum;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -40,10 +40,10 @@ class ProjectUserFactory extends Factory
             $project_and_user = explode('-', $project_and_user);
 
             $project_id = $project_and_user[0];
-            $user_id = $project_and_user[1];
+            $user_id    = $project_and_user[1];
         } else {
-            $project_id = Project::factory();
-            $user_id = User::factory();
+            $project_id = Project::factory()->create()->id;
+            $user_id    = User::factory()->create()->id;
         }
 
         return [

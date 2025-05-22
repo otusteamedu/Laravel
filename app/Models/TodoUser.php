@@ -2,8 +2,10 @@
 
 namespace App\Models;
 
+use App\Models\Todo;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Casts\Attribute;
-use Illuminate\Database\Eloquent\Relations\Pivot;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 /**
@@ -11,8 +13,10 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  * @property integer $todo_id
  * @property integer $user_id
  * @property string $roles
+ * @property User[] $users
+ * @property Todo[] $todos
  */
-class TodoUser extends Pivot
+class TodoUser extends BaseModel
 {
     /** @use HasFactory<\Database\Factories\TodoUserFactory> */
     use HasFactory;
@@ -29,5 +33,15 @@ class TodoUser extends Pivot
             get: fn($value) => json_decode($value, true),
             set: fn($value) => json_encode($value, JSON_UNESCAPED_UNICODE),
         );
+    }
+
+    public function users(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function todos(): BelongsTo
+    {
+        return $this->belongsTo(Todo::class);
     }
 }

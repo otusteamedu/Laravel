@@ -28,7 +28,7 @@ use Illuminate\Support\Carbon;
  * @property User $author
  * @property Project $project
  * @property TodoStatus $status
- * @property User[] $users
+ * @property TodoUser[] $todoUsers
  * @property TodoComment[] $comments
  * 
  * @method static member(User $user)
@@ -81,11 +81,11 @@ class Todo extends BaseModel
 
     /**
      * Список пользователей имеющих доступ к задаче
-     * @return BelongsToMany<User, Todo, \Illuminate\Database\Eloquent\Relations\Pivot>
+     * @return HasMany<TodoUser, Todo>
      */
-    public function users(): BelongsToMany
+    public function todoUsers(): HasMany
     {
-        return $this->belongsToMany(User::class, TodoUser::class);
+        return $this->hasMany(TodoUser::class);
     }
 
     /**
@@ -105,7 +105,7 @@ class Todo extends BaseModel
      */
     public function scopeMember(Builder $query, User $user): void
     {
-        $query->whereHas('users', function ($q) use ($user) {
+        $query->whereHas('todoUsers', function ($q) use ($user) {
             $q->where('user_id', $user->id);
         });
     }
@@ -118,7 +118,7 @@ class Todo extends BaseModel
      */
     public function scopeNotMember(Builder $query, User $user): void
     {
-        $query->whereDoesntHave('users', function ($q) use ($user) {
+        $query->whereDoesntHave('todoUsers', function ($q) use ($user) {
             $q->where('user_id', $user->id);
         });
     }

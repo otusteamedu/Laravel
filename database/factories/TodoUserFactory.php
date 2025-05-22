@@ -4,8 +4,8 @@ namespace Database\Factories;
 
 use App\Models\Todo;
 use App\Models\User;
-use App\Enums\TodoRoleEnum;
-use App\Enums\ProjectRoleEnum;
+use App\Models\TodoRoleEnum;
+use App\Models\ProjectRoleEnum;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -22,20 +22,32 @@ class TodoUserFactory extends Factory
     {
         $user = User::query()
             ->with([
-                'activeProjects' => function ($q) {
-                    $q->whereJsonContains('roles', ProjectRoleEnum::MEMBER);
+                'userProjects' => function ($q) {
+                    $q->whereNotNull('joined_at')
+                        ->whereNull('left_at')
+                        ->whereJsonContains('roles', ProjectRoleEnum::MEMBER);
                 }
             ])
-            ->whereHas('activeProjects', function ($q) {
-                $q->whereJsonContains('roles', ProjectRoleEnum::MEMBER);
+            ->whereHas('userProjects', function ($q) {
+                $q->whereNotNull('joined_at')
+                    ->whereNull('left_at')
+                    ->whereJsonContains('roles', ProjectRoleEnum::MEMBER);
             })
+            ->inRandomOrder()
             ->first();
 
         $todo = Todo::query()
             ->notMember($user)
-            ->whereIn('project_id', $user->projects->pluck('id')->toArray())
+            ->whereIn('project_id', $user->userProjects->pluck('project_id')->toArray())
             ->first();
 
+        if (!$todo) {
+            $todo = Todo::factory([
+                'author_id'  => $user->id,
+                'project_id' => fake()->randomElement($user->userProjects->pluck('project_id')->toArray()),
+            ])
+                ->create();
+        }
         return [
             'todo_id' => $todo->id,
             'user_id' => $user->id,

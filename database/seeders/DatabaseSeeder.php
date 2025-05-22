@@ -6,7 +6,7 @@ use App\Models\User;
 use App\Models\Project;
 use App\Models\ProjectUser;
 use App\Models\UserProfile;
-use App\Enums\ProjectRoleEnum;
+use App\Models\ProjectRoleEnum;
 use Illuminate\Database\Seeder;
 use Database\Seeders\TodoSeeder;
 use Database\Seeders\TodoUserSeeder;
@@ -31,7 +31,7 @@ class DatabaseSeeder extends Seeder
         $this->callWith(UserWithProjectSeeder::class, ['count' => 5]);
 
         /** Добавляем пользователей к проектам */
-        $this->callWith(ProjectUserSeeder::class, ['count' => 50]);
+        $this->callWith(ProjectUserSeeder::class, ['count' => 20]);
 
         /** Добавляем задачи с комментариями автора */
         $this->callWith(TodoWithCommentSeeder::class, ['count' => 20]);

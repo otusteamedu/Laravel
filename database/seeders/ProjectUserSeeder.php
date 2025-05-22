@@ -3,7 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\ProjectUser;
-use App\Enums\ProjectRoleEnum;
+use App\Models\ProjectRoleEnum;
 use Illuminate\Database\Seeder;
 
 class ProjectUserSeeder extends Seeder
@@ -14,8 +14,9 @@ class ProjectUserSeeder extends Seeder
      */
     public function run(int $count = 1): void
     {
-        ProjectUser::factory(['roles' => [ProjectRoleEnum::MEMBER]])
-            ->count($count)
-            ->create();
+        for ($i = 0; $i < $count; $i++) {
+            ProjectUser::factory(['roles' => [ProjectRoleEnum::MEMBER]])
+                ->create();
+        }
     }
 }

@@ -5,7 +5,7 @@ namespace Database\Factories;
 use App\Models\Project;
 use App\Models\TodoStatus;
 use App\Models\ProjectUser;
-use App\Enums\ProjectRoleEnum;
+use App\Models\ProjectRoleEnum;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -28,12 +28,6 @@ class ProjectFactory extends Factory
     public function configure(): static
     {
         return $this->afterCreating(function (Project $project) {
-            ProjectUser::factory()->create([
-                'project_id' => $project->id,
-                'roles'      => [ProjectRoleEnum::ADMIN],
-                'left_at'    => null,
-            ]);
-
             TodoStatus::factory()->create([
                 'project_id' => $project->id,
                 'name'       => 'Новая',
