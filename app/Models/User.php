@@ -4,6 +4,7 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use App\Models\Project;
+use Illuminate\Support\Carbon;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -18,11 +19,10 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @property ?string $email_verified_at
  * @property string $password
  * @property ?string $remember_token
- * @property ?string $created_at
- * @property ?string $updated_at
+ * @property ?Carbon $created_at
+ * @property ?Carbon $updated_at
  * @property UserProfile $profile
- * @property Project[] $allProjects
- * @property Project[] $activeProjects
+ * @property Project[] $projects
  * @property UserSocialite[] $socialites
  * @property Todo[] $authorTodos
  * @property Todo[] $todos
@@ -81,19 +81,7 @@ class User extends Authenticatable
      */
     public function projects(): BelongsToMany
     {
-        return $this->belongsToMany(Project::class, ProjectUser::class)
-            ->withPivot('roles', 'invited_at', 'joined_at', 'left_at');
-    }
-
-    /**
-     * Проекты в которых пользователь является участником в настоящий момент
-     * @return BelongsToMany<Project, User, \Illuminate\Database\Eloquent\Relations\Pivot>
-     */
-    public function activeProjects(): BelongsToMany
-    {
-        return $this->belongsToMany(Project::class, ProjectUser::class)
-            ->withPivot('roles', 'invited_at', 'joined_at')
-            ->wherePivotNull('left_at');
+        return $this->belongsToMany(Project::class, ProjectUser::class);
     }
 
     /**

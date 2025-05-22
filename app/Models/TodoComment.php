@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Models\Todo;
 use App\Models\User;
+use Illuminate\Support\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -14,9 +15,9 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  * @property integer $todo_id
  * @property integer $user_id
  * @property string $comment
- * @property ?string $created_at
- * @property ?string $updated_at
- * @property ?string $deleted_at
+ * @property ?Carbon $created_at
+ * @property ?Carbon $updated_at
+ * @property ?Carbon $deleted_at
  * @property Todo $todo
  * @property User $user
  */

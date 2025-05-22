@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Models\Project;
 use App\Models\BaseModel;
+use Illuminate\Support\Carbon;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -12,7 +13,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  * @property integer $project_id
  * @property string $name
  * @property integer $sort
- * @property ?string $deleted_at
+ * @property ?Carbon $deleted_at
  * @property string $color
  * @property Project $project
  */

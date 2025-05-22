@@ -7,14 +7,16 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Support\Carbon;
 
 /**
  * @property integer $id
  * @property string $name
- * @property ?string $created_at
- * @property ?string $updated_at
- * @property ?string $deleted_at
+ * @property ?Carbon $created_at
+ * @property ?Carbon $updated_at
+ * @property ?Carbon $deleted_at
  * @property User[] $users
+ * @property ProjectUser[] $userProjects
  * @property TodoStatus[] $todoStatuses
  * @property Todo[] $todos
  */
@@ -32,6 +34,11 @@ class Project extends BaseModel
     public function users(): BelongsToMany
     {
         return $this->belongsToMany(User::class, ProjectUser::class);
+    }
+
+    public function userProjects(): HasMany
+    {
+        return $this->hasMany(ProjectUser::class);
     }
 
     /**

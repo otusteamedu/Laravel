@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Support\Carbon;
 
 /**
  * @property integer $id
@@ -20,10 +21,10 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @property integer $status_id
  * @property string $description
  * @property string $deadline
- * @property ?string $created_at
- * @property ?string $updated_at
- * @property ?string $deleted_at
- * @property ?string $options
+ * @property ?Carbon $created_at
+ * @property ?Carbon $updated_at
+ * @property ?Carbon $deleted_at
+ * @property ?Carbon $options
  * @property User $author
  * @property Project $project
  * @property TodoStatus $status

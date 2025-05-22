@@ -2,8 +2,10 @@
 
 namespace App\Models;
 
+use App\Models\BaseModel;
+use Illuminate\Support\Carbon;
 use Illuminate\Database\Eloquent\Casts\Attribute;
-use Illuminate\Database\Eloquent\Relations\Pivot;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 /**
@@ -11,11 +13,11 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  * @property integer $project_id
  * @property integer $user_id
  * @property string $roles
- * @property ?string $invited_at
- * @property ?string $joined_at
- * @property ?string $left_at
+ * @property ?Carbon $invited_at
+ * @property ?Carbon $joined_at
+ * @property ?Carbon $left_at
  */
-class ProjectUser extends Pivot
+class ProjectUser extends BaseModel
 {
     /** @use HasFactory<\Database\Factories\ProjectUserFactory> */
     use HasFactory;
@@ -41,5 +43,15 @@ class ProjectUser extends Pivot
             get: fn($value) => json_decode($value, true),
             set: fn($value) => json_encode($value, JSON_UNESCAPED_UNICODE),
         );
+    }
+
+    public function users(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function projects(): BelongsTo
+    {
+        return $this->belongsTo(Project::class);
     }
 }
