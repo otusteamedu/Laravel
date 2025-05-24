@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace App\Infrastructure\Eloquent\Repositories;
 
 use App\Models\User;
