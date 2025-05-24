@@ -8,12 +8,12 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
  * Role model.
- * 
- * @property-read int $id Role ID
- * @property-read string $title Role name
- * @property-read \Illuminate\Support\Carbon $created_at Creation date
- * @property-read \Illuminate\Support\Carbon $updated_at Last update date
- * 
+ *
+ * @property int $id Role ID
+ * @property string $title Role name
+ * @property \Illuminate\Support\Carbon $created_at Creation date
+ * @property \Illuminate\Support\Carbon $updated_at Last update date
+ *
  * @property-read \Illuminate\Database\Eloquent\Collection<\App\Models\User> $users Users with this role
  */
 class Role extends Model
@@ -26,12 +26,27 @@ class Role extends Model
 
     public function getId(): int
     {
-        return $this->attributes['id'];
+        return $this->id;
     }
 
     public function getTitle(): string
     {
-        return $this->attributes['title'];
+        return $this->title;
+    }
+
+    public function getCreatedAt(): \Illuminate\Support\Carbon
+    {
+        return $this->created_at;
+    }
+
+    public function getUpdatedAt(): \Illuminate\Support\Carbon
+    {
+        return $this->updated_at;
+    }
+
+    public function getUsers(): \Illuminate\Database\Eloquent\Collection
+    {
+        return $this->users;
     }
 
     public function users(): HasMany

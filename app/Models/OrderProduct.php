@@ -7,14 +7,14 @@ use Illuminate\Database\Eloquent\Model;
 
 /**
  * Order-product relationship model.
- * 
- * @property-read int $id Table entry ID
- * @property-read int $order_id Order ID for realation
- * @property-read int $product_id Product ID for relation
- * @property-read int $count Quantity of products
- * @property-read int $price Price of the product at the time of order creation
- * @property-read \Illuminate\Support\Carbon $created_at Creation date
- * @property-read \Illuminate\Support\Carbon $updated_at Last update date
+ *
+ * @property int $id Table entry ID
+ * @property int $order_id Order ID for relation
+ * @property int $product_id Product ID for relation
+ * @property int $count Quantity of products
+ * @property int $price Price of the product at the time of order creation
+ * @property \Illuminate\Support\Carbon $created_at Creation date
+ * @property \Illuminate\Support\Carbon $updated_at Last update date
  */
 class OrderProduct extends Model
 {
@@ -26,34 +26,34 @@ class OrderProduct extends Model
 
     public function getId(): int
     {
-        return $this->attributes['id'];
+        return $this->id;
     }
 
     public function getOrderId(): int
     {
-        return $this->attributes['order_id'];
+        return $this->order_id;
     }
 
     public function getProductId(): int
     {
-        return $this->attributes['product_id'];
+        return $this->product_id;
     }
     public function getCount(): int
     {
-        return $this->attributes['count'];
+        return $this->count;
     }
     public function getPrice(): int
     {
-        return $this->attributes['price'];
+        return $this->price;
     }
 
     public function getCreatedAt(): \Illuminate\Support\Carbon
     {
-        return $this->attributes['created_at'];
+        return $this->created_at;
     }
 
     public function getUpdatedAt(): \Illuminate\Support\Carbon
     {
-        return $this->attributes['updated_at'];
+        return $this->updated_at;
     }
 }

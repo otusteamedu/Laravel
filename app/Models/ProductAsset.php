@@ -8,14 +8,14 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
  * Product asset model.
- * 
- * @property-read int $id Asset ID
- * @property-read int $product_id Asset product ID
- * @property-read string $asset_url Asset URL
+ *
+ * @property int $id Asset ID
+ * @property int $product_id Asset product ID
+ * @property string $asset_url Asset URL
  * @property 'image'|'video' $type Type of asset
- * @property-read \Illuminate\Support\Carbon $created_at Creation date
- * @property-read \Illuminate\Support\Carbon $updated_at Last update date
- * 
+ * @property \Illuminate\Support\Carbon $created_at Creation date
+ * @property \Illuminate\Support\Carbon $updated_at Last update date
+ *
  * @property-read \App\Models\Product $product Asset product
  */
 class ProductAsset extends Model
@@ -28,32 +28,37 @@ class ProductAsset extends Model
 
     public function getId(): int
     {
-        return $this->attributes['id'];
+        return $this->id;
     }
 
     public function getProductId(): int
     {
-        return $this->attributes['product_id'];
+        return $this->product_id;
     }
 
     public function getAssetUrl(): string
     {
-        return $this->attributes['asset_url'];
+        return $this->asset_url;
     }
 
     public function getType(): string
     {
-        return $this->attributes['type'];
+        return $this->type;
     }
 
     public function getCreatedAt(): \Illuminate\Support\Carbon
     {
-        return $this->attributes['created_at'];
+        return $this->created_at;
     }
 
     public function getUpdatedAt(): \Illuminate\Support\Carbon
     {
-        return $this->attributes['updated_at'];
+        return $this->updated_at;
+    }
+
+    public function getProduct(): \App\Models\Product
+    {
+        return $this->product;
     }
 
     public function product(): BelongsTo

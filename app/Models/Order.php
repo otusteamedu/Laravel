@@ -9,12 +9,12 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
  * Order model.
- * 
- * @property-read int $id Order ID
- * @property-read int $user_id ID of the user who placed the order
- * @property-read \Illuminate\Support\Carbon $created_at Creation date
- * @property-read \Illuminate\Support\Carbon $updated_at Last update date
- * 
+ *
+ * @property int $id Order ID
+ * @property int $user_id ID of the user who placed the order
+ * @property \Illuminate\Support\Carbon $created_at Creation date
+ * @property \Illuminate\Support\Carbon $updated_at Last update date
+ *
  * @property-read \Illuminate\Database\Eloquent\Collection<\App\Models\Product> $products Products in this order
  * @property-read \App\Models\User $user The user who placed this order
  */
@@ -28,22 +28,32 @@ class Order extends Model
 
     public function getId(): int
     {
-        return $this->attributes['id'];
+        return $this->id;
     }
 
     public function getUserId(): int
     {
-        return $this->attributes['user_id'];
+        return $this->user_id;
     }
 
     public function getCreatedAt(): \Illuminate\Support\Carbon
     {
-        return $this->attributes['created_at'];
+        return $this->created_at;
     }
 
     public function getUpdatedAt(): \Illuminate\Support\Carbon
     {
-        return $this->attributes['updated_at'];
+        return $this->updated_at;
+    }
+
+    public function getProducts(): \Illuminate\Database\Eloquent\Collection
+    {
+        return $this->products;
+    }
+
+    public function getUser(): \App\Models\User
+    {
+        return $this->user;
     }
 
     public function products(): BelongsToMany
