@@ -26,6 +26,11 @@ class UserSocialeteRepository implements UserSocialeteRepositoryInterface
         $userSocialite->save();
     }
 
+    public function save(UserSocialite $userSocialite): void
+    {
+        $userSocialite->save();
+    }
+
     public function destroy(UserSocialite $userSocialite): void
     {
         $userSocialite->delete();

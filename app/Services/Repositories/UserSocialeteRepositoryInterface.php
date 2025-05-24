@@ -26,6 +26,13 @@ interface UserSocialeteRepositoryInterface
     public function add(UserSocialite $userSocialite): void;
 
     /**
+     * Обновить привязку социальной сети к пользователю
+     * @param \App\Models\UserSocialite $userSocialite
+     * @return void
+     */
+    public function save(UserSocialite $userSocialite): void;
+
+    /**
      * Удалить привязку социальной сети у пользователя
      * @param \App\Models\UserSocialite $userSocialite
      * @return void
