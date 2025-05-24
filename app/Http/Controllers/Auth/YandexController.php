@@ -2,12 +2,15 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Infrastructure\Eloquent\Repositories\UserRepository;
+use App\Infrastructure\Eloquent\Repositories\UserSocialeteRepository;
 use Exception;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Services\Auth\YandexService;
 use Laravel\Socialite\Facades\Socialite;
 use Illuminate\Auth\Access\AuthorizationException;
+use App\Services\Commands\Auth\Socialete\AuthorizeCommand\Command;
+use App\Services\Commands\Auth\Socialete\AuthorizeCommand\Handler;
 
 class YandexController extends Controller
 {
@@ -20,14 +23,27 @@ class YandexController extends Controller
     {
         try {
             $yandexUser = Socialite::driver('yandex')->user();
-            (new YandexService)->authorize($yandexUser);
+
+            $command = new Command(
+                $yandexUser->id,
+                'yandex',
+                mb_strtolower($yandexUser->email),
+                $yandexUser->user['real_name'] ?? $yandexUser->user['display_name']
+            );
+
+            $handler = new Handler(
+                new UserRepository,
+                new UserSocialeteRepository,
+            );
+
+            $handler->handle($command);
 
             $request->session()->regenerate();
 
             return redirect()->intended(route('todo.list', absolute: false));
-        } catch (AuthorizationException $e) {
+        } catch (AuthorizationException) {
             abort(403);
-        } catch (Exception $e) {
+        } catch (Exception) {
             abort(419);
         }
     }

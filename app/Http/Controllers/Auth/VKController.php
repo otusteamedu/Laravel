@@ -2,12 +2,15 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Infrastructure\Eloquent\Repositories\UserRepository;
+use App\Infrastructure\Eloquent\Repositories\UserSocialeteRepository;
 use Exception;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Services\Auth\VKIDService;
 use Laravel\Socialite\Facades\Socialite;
 use Illuminate\Auth\Access\AuthorizationException;
+use App\Services\Commands\Auth\Socialete\AuthorizeCommand\Command;
+use App\Services\Commands\Auth\Socialete\AuthorizeCommand\Handler;
 
 class VKController extends Controller
 {
@@ -21,14 +24,24 @@ class VKController extends Controller
         try {
             $vkUser = Socialite::driver('vkid')->user();
 
-            (new VKIDService)->authorize($vkUser);
-            $request->session()->regenerate();
+            $command = new Command(
+                $vkUser->id,
+                'vkid',
+                mb_strtolower($vkUser->email),
+                $vkUser->name,
+            );
+
+            $handler = new Handler(
+                new UserRepository,
+                new UserSocialeteRepository,
+            );
+
+            $handler->handle($command);
 
             return redirect()->intended(route('todo.list', absolute: false));
-        } catch (AuthorizationException $e) {
+        } catch (AuthorizationException) {
             abort(403);
-        } catch (Exception $e) {
-            dd($e->getMessage());
+        } catch (Exception) {
             abort(419);
         }
     }

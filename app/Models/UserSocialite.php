@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
  * @property integer $id
- * @property integer $iuser_idd
+ * @property integer $user_id
  * @property string $driver
  * @property string $socialite_id
  * @property ?Carbon $created_at
