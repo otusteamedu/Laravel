@@ -18,7 +18,7 @@ class TodoListDataProfider extends AbstractPageDataProvider
             ->with('comments')
             ->with('project')
             ->with('status')
-            ->with('users')
+            ->with('todoUsers')
             ->get();
 
         $this->title = self::generateTitle();
