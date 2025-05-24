@@ -14,14 +14,13 @@ return new class extends Migration
         Schema::create('recipes', function (Blueprint $table) {
             $table->id();
             $table->unsignedInteger('api_id')->unique();
-            $table->string('name_en');
-            $table->string('name_ru');
-            $table->string('alternate');
+            $table->string('name_en')->nullable();
+            $table->string('name_ru')->nullable();
+            $table->string('alternate')->nullable();
             $table->foreignId('category_id')->constrained('categories')->index();
-            $table->text('instruction_en');
-            $table->text('instruction_ru');
+            $table->text('instruction_en')->nullable();
+            $table->text('instruction_ru')->nullable();
             $table->foreignId('area_id')->index();
-            $table->foreignId('video_id')->constrained('videos');
             $table->timestamps();
         });
     }

@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->text('url');
             $table->text('path');
+            $table->boolean('is_preview');
             $table->morphs('photo');
             $table->timestamps();
         });
