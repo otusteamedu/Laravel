@@ -9,12 +9,26 @@ use App\Models\UserSocialite;
 
 interface UserSocialeteRepositoryInterface
 {
+
     /**
-     * @return User
+     * Получить пользователя по его id в социальной сети
+     * @param string $socialeteId
+     * @param string $driver
+     * @return \App\Models\User|null
      */
     public function find(string $socialeteId, string $driver): ?User;
 
-    public function save(UserSocialite $userSocialite): void;
-
+    /**
+     * Добавить привязку социальной сети к пользователю
+     * @param \App\Models\UserSocialite $userSocialite
+     * @return void
+     */
     public function add(UserSocialite $userSocialite): void;
+
+    /**
+     * Удалить привязку социальной сети у пользователя
+     * @param \App\Models\UserSocialite $userSocialite
+     * @return void
+     */
+    public function destroy(UserSocialite $userSocialite): void;
 }

@@ -21,13 +21,13 @@ class UserSocialeteRepository implements UserSocialeteRepositoryInterface
             ->first();
     }
 
-    public function save(UserSocialite $userSocialite): void
+    public function add(UserSocialite $userSocialite): void
     {
         $userSocialite->save();
     }
 
-    public function add(UserSocialite $userSocialite): void
+    public function destroy(UserSocialite $userSocialite): void
     {
-        $userSocialite->save();
+        $userSocialite->delete();
     }
 }

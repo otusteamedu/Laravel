@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\Commands\Auth\Socialete\AuthorizeCommand;
+namespace App\Services\UseCases\Commands\Auth\Socialete\AuthorizeCommand;
 
 use App\Models\User;
 use Illuminate\Support\Str;
@@ -19,7 +19,7 @@ class Handler
         //
     }
 
-    public function __invoke(Command $command): User
+    public function handle(Command $command): User
     {
         if (
             $user = $this->userSocialeteRepository->find($command->id, $command->driver)

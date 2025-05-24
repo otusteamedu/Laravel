@@ -7,8 +7,8 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Laravel\Socialite\Facades\Socialite;
 use Illuminate\Auth\Access\AuthorizationException;
-use App\Services\Commands\Auth\Socialete\AuthorizeCommand\Command;
-use App\Services\Commands\Auth\Socialete\AuthorizeCommand\Handler;
+use App\Services\UseCases\Commands\Auth\Socialete\AuthorizeCommand\Command;
+use App\Services\UseCases\Commands\Auth\Socialete\AuthorizeCommand\Handler;
 
 class YandexController extends Controller
 {
@@ -17,12 +17,12 @@ class YandexController extends Controller
         return Socialite::driver('yandex')->redirect();
     }
 
-    public function callback(Request $request, Handler $loginUseCase)
+    public function callback(Request $request, Handler $handler)
     {
         try {
             $yandexUser = Socialite::driver('yandex')->user();
 
-            $loginUseCase(
+            $handler->handle(
                 new Command(
                     $yandexUser->id,
                     'yandex',
