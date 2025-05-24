@@ -7,13 +7,29 @@
         <div class="navbar-collapse desktop-nav-menu d-md-flex w-100">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0 flex-row">
                 <li class="nav-item">
-                  <a href="{{ route('about') }}" @class(['nav-link', 'active' => request()->path() == 'about'])>О сервисе</a>
+                  <a href="{{ route('about') }}" 
+                    @class([
+                        'nav-link', 
+                        'active' => request()->path() === trim(route(name: 'about', absolute: false ), '/')
+                    ])>О сервисе</a>
                 </li>
                 @auth
                     <li class="nav-item">
-                        <a href="{{ route('todo.list') }}" @class(['nav-link', 'active' => request()->path() == 'todos'])>Задачи</a>
+                        <a href="{{ route('projects.index') }}" 
+                            @class([
+                                'nav-link', 
+                                'active' => request()->path() === trim(route(name: 'projects.index', absolute: false), '/')
+                            ])>Проекты</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{ route('todo.list') }}" 
+                            @class([
+                                'nav-link', 
+                                'active' => request()->path() === trim(route(name: 'todo.list', absolute: false), '/')
+                            ])>Задачи</a>
                     </li>
                 @endauth
+                @endphp
             </ul>
             <div class="ms-auto navbar-nav ">
                 @include('navbar.sign-desktop')
@@ -36,14 +52,27 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="{{ route('todo.list') }}" @class(['nav-link', 'active' => request()->path() == 'todos'])>
-                        <i class="fa-solid fa-list-check pe-2"></i>Задачи
+                    <a href="{{ route('projects.index') }}" 
+                        @class([
+                            'nav-link', 
+                            'active' => request()->path() === trim(route(name: 'projects.index', absolute: false), '/')
+                        ])><i class="fa-solid fa-diagram-project pe-2"></i>Проекты
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ route('todo.list') }}" 
+                        @class([
+                            'nav-link', 
+                            'active' => request()->path() === trim(route(name: 'todo.list', absolute: false), '/')
+                        ])><i class="fa-solid fa-list-check pe-2"></i>Задачи
                     </a>
                 </li>
             @endauth
             <li class="nav-item">
-                <a href="{{ route('about') }}" @class(['nav-link', 'active' => request()->path() == 'about'])>
-                    <i class="fa-regular fa-circle-check pe-2"></i>О сервисе
+                    @class([
+                        'nav-link', 
+                        'active' => request()->path() === trim(route(name: 'about', absolute: false ), '/')
+                    ])><i class="fa-solid fa-circle-check pe-2"></i>О сервисе
                 </a>
             </li>
             @include('navbar.sign-mobile')
