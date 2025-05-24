@@ -2,6 +2,10 @@
 
 namespace App\Providers;
 
+use App\Infrastructure\Eloquent\Repositories\UserRepository;
+use App\Infrastructure\Eloquent\Repositories\UserSocialeteRepository;
+use App\Services\Repositories\UserRepositoryInterface;
+use App\Services\Repositories\UserSocialeteRepositoryInterface;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Event;
@@ -15,7 +19,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        $this->app->bind(UserRepositoryInterface::class, UserRepository::class);
+        $this->app->bind(UserSocialeteRepositoryInterface::class, UserSocialeteRepository::class);
     }
 
     /**

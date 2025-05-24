@@ -2,8 +2,6 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Infrastructure\Eloquent\Repositories\UserRepository;
-use App\Infrastructure\Eloquent\Repositories\UserSocialeteRepository;
 use Exception;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -19,24 +17,21 @@ class VKController extends Controller
         return Socialite::driver('vkid')->redirect();
     }
 
-    public function callback(Request $request)
+    public function callback(Request $request, Handler $loginUseCase)
     {
         try {
             $vkUser = Socialite::driver('vkid')->user();
 
-            $command = new Command(
-                $vkUser->id,
-                'vkid',
-                mb_strtolower($vkUser->email),
-                $vkUser->name,
+            $loginUseCase(
+                new Command(
+                    $vkUser->id,
+                    'vkid',
+                    mb_strtolower($vkUser->email),
+                    $vkUser->name,
+                )
             );
 
-            $handler = new Handler(
-                new UserRepository,
-                new UserSocialeteRepository,
-            );
-
-            $handler->handle($command);
+            $request->session()->regenerate();
 
             return redirect()->intended(route('todo.list', absolute: false));
         } catch (AuthorizationException) {

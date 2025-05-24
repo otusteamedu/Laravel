@@ -2,8 +2,6 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Infrastructure\Eloquent\Repositories\UserRepository;
-use App\Infrastructure\Eloquent\Repositories\UserSocialeteRepository;
 use Exception;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -19,24 +17,19 @@ class YandexController extends Controller
         return Socialite::driver('yandex')->redirect();
     }
 
-    public function callback(Request $request)
+    public function callback(Request $request, Handler $loginUseCase)
     {
         try {
             $yandexUser = Socialite::driver('yandex')->user();
 
-            $command = new Command(
-                $yandexUser->id,
-                'yandex',
-                mb_strtolower($yandexUser->email),
-                $yandexUser->user['real_name'] ?? $yandexUser->user['display_name']
+            $loginUseCase(
+                new Command(
+                    $yandexUser->id,
+                    'yandex',
+                    mb_strtolower($yandexUser->email),
+                    $yandexUser->user['real_name'] ?? $yandexUser->user['display_name']
+                )
             );
-
-            $handler = new Handler(
-                new UserRepository,
-                new UserSocialeteRepository,
-            );
-
-            $handler->handle($command);
 
             $request->session()->regenerate();
 

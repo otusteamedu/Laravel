@@ -19,7 +19,7 @@ class Handler
         //
     }
 
-    public function handle(Command $command): User
+    public function __invoke(Command $command): User
     {
         if (
             $user = $this->userSocialeteRepository->find($command->id, $command->driver)
