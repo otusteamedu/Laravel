@@ -18,7 +18,7 @@ class TagSeeder extends Seeder
         for ($i = 0; $i < 20; $i++) {
             $tag = Tag::inRandomOrder()->first()->id;
             $recipe = Recipe::inRandomOrder()->first();
-            $recipe->tag()->attach($tag);
+            $recipe->tags()->attach($tag);
         }
     }
 }

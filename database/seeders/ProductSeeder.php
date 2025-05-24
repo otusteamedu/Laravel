@@ -17,7 +17,7 @@ class ProductSeeder extends Seeder
         for ($i = 0; $i < 30; $i++) {
             $product = Product::inRandomOrder()->first()->id;
             $recipe = Recipe::inRandomOrder()->first();
-            $recipe->product()->attach($product);
+            $recipe->products()->attach($product);
         }
     }
 }

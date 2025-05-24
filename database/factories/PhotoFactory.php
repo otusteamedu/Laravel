@@ -16,8 +16,9 @@ class PhotoFactory extends Factory
      */
     public function definition(): array
     {
-        $model = 'App\\Models\\' . $this->faker->randomElement(['Recipe', 'Product']);
-        $id = $this->faker->randomElement($model::pluck('id')->toArray());
+        $model = $this->faker->randomElement(['recipe', 'product']);
+        $pathModel = 'App\\Models\\' . ucfirst($model);
+        $id = $this->faker->randomElement($pathModel::pluck('id')->toArray());
         return [
             'url' => $this->faker->url(),
             'path' => $this->faker->filePath(),
