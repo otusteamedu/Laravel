@@ -20,4 +20,8 @@
 <footer>
     @include('partials.footer')
 </footer>
+
+@if(session('error'))
+    <x-toast :success=false message="{{ session('error') }}"></x-toast>
+@endif
 @endsection
