@@ -48,15 +48,6 @@
                 </div>
                 <div class="col-12">
                     <button type="submit" class="btn btn-primary">Сохранить</button>
-                    @if (session('status') === 'profile-updated')
-                        <p
-                            x-data="{ show: true }"
-                            x-show="show"
-                            x-transition
-                            x-init="setTimeout(() => show = false, 2000)"
-                            class="text-success p-2"
-                        >Информация обновлена</p>
-                    @endif
                 </div>
             </div>
         </form>

@@ -51,15 +51,6 @@
                 </div>
                 <div class="col-12">
                     <button type="submit" class="btn btn-primary">Обновить пароль</button>
-                    @if (session('status') === 'password-updated')
-                        <p
-                            x-data="{ show: true }"
-                            x-show="show"
-                            x-transition
-                            x-init="setTimeout(() => show = false, 2000)"
-                            class="text-success p-2"
-                        >Пароль обновлен</p>
-                    @endif
                 </div>
             </div>
         </form>
