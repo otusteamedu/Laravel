@@ -19,11 +19,11 @@ class UpdateController extends Controller
      *
      * @return View
      */
-    public function edit(EditHandler $editCategoryUseCase, int $categoryId): View
+    public function edit(EditHandler $editCategoryUseCase, string $categoryId): View
     {
 
         try {
-            $category = $editCategoryUseCase($categoryId);
+            $category = $editCategoryUseCase((int)$categoryId);
         } catch (CategoryNotFoundException) {
             throw new NotFoundHttpException('Category not found');
         }
@@ -36,12 +36,12 @@ class UpdateController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateCategoryRequest $request, UpdateHandler $updateCategoryUseCase, int $categoryId): RedirectResponse
+    public function update(UpdateCategoryRequest $request, UpdateHandler $updateCategoryUseCase, string $categoryId): RedirectResponse
     {
         $request->validated();
 
         /** @var  $postDTO */
-        $postDTO = $updateCategoryUseCase(new CommandDTO($request->get('name'), $request->get('sort'), $categoryId));
+        $postDTO = $updateCategoryUseCase(new CommandDTO($request->get('name'), $request->get('sort'), (int)$categoryId));
 
         return redirect()->route('admin.categories.show', $postDTO->id);
     }

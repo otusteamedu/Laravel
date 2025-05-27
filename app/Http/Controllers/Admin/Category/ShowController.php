@@ -21,10 +21,10 @@ class ShowController extends Controller
      *
      * @return View
      */
-    public function __invoke(ShowHandler $showCategoryUseCase, ViewFactory $view, int $categoryId): View
+    public function __invoke(ShowHandler $showCategoryUseCase, ViewFactory $view, string $categoryId): View
     {
         try {
-            $category = $showCategoryUseCase($categoryId);
+            $category = $showCategoryUseCase((int)$categoryId);
         } catch (CategoryNotFoundException) {
             throw new NotFoundHttpException('Category not found');
         }

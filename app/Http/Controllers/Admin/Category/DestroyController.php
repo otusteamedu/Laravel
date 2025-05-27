@@ -13,11 +13,11 @@ class DestroyController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function __invoke(DestroyHandler $destroyCategoryUseCase, int $categoryId): RedirectResponse
+    public function __invoke(DestroyHandler $destroyCategoryUseCase, string $categoryId): RedirectResponse
     {
 
         try {
-            $destroyCategoryUseCase($categoryId);
+            $destroyCategoryUseCase((int)$categoryId);
         } catch (CategoryNotFoundException) {
             throw new NotFoundHttpException('Category not found');
         }
