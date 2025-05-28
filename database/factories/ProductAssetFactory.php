@@ -17,7 +17,7 @@ class ProductAssetFactory extends Factory
     public function definition(): array
     {
         $type = $this->faker->optional(0.5, 'image')->randomElement(['image', 'video']);
-        $url = $type == 'image' ? 'images/placeholder.jpg' : 'videos/placeholder.mp4';
+        $url = $type == 'image' ? 'uploads/placeholder.jpg' : 'uploads/placeholder.mp4';
 
         return [
             'product_id' => 1,

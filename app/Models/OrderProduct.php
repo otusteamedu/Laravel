@@ -12,7 +12,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $order_id Order ID for relation
  * @property int $product_id Product ID for relation
  * @property int $count Quantity of products
- * @property int $price Price of the product at the time of order creation
+ * @property int $paid_price Price of the product at the time of order creation
  * @property \Illuminate\Support\Carbon $created_at Creation date
  * @property \Illuminate\Support\Carbon $updated_at Last update date
  */
@@ -42,9 +42,9 @@ class OrderProduct extends Model
     {
         return $this->count;
     }
-    public function getPrice(): int
+    public function getPaidPrice(): int
     {
-        return $this->price;
+        return $this->paid_price;
     }
 
     public function getCreatedAt(): \Illuminate\Support\Carbon

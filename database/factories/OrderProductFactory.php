@@ -19,7 +19,7 @@ class OrderProductFactory extends Factory
         return [
             'order_id' => 1,
             'product_id' => 1,
-            'price' => 1,
+            'paid_price' => 1,
             'count' => 1,
             'created_at' => now(),
         ];

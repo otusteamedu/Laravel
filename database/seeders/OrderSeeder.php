@@ -29,7 +29,7 @@ class OrderSeeder extends Seeder
                 OrderProduct::factory()->create([
                     'order_id' => $order->id,
                     'product_id'=> $randomProduct->id,
-                    'price' => $randomProduct->price,
+                    'paid_price' => $randomProduct->price,
                     'count' => $productCount,
                 ]);
             }
