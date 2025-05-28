@@ -20,7 +20,7 @@ return new class extends Migration
             // Позиция на поле: "GK", "DF", "MF", "FW"
             $table->string('position');
             // ID команды, к которой принадлежит игрок (связь с таблицей teams)
-            $table->foreignId('team_id')->constrained()->onDelete('cascade');
+            $table->foreignId('team_id')->constrained();
             // Стоимость игрока в условных единицах
             $table->unsignedInteger('price')->default(0);
             // Фото или иконка

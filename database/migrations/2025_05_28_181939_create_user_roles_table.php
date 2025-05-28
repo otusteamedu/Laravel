@@ -11,14 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('fantasy_team_players', function (Blueprint $table) {
+        Schema::create('user_roles', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('player_id')->constrained();
-            $table->foreignId('fantasy_team_id')->constrained();
-
-            // Дополнительно: дата добавления в команду, роль, стоимость и т.п.
-            $table->unsignedInteger('price')->nullable();
+            $table->string('name');
             $table->timestamp('created_at')->useCurrent();
+        });
+
+        Schema::table('users', function (Blueprint $table) {
+            $table->foreignId('role_id')->after('id')->references('id')->on('user_roles');
         });
     }
 
@@ -27,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('fantasy_team_player');
+        Schema::dropIfExists('user_roles');
     }
 };
