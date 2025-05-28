@@ -16,7 +16,7 @@ return new class extends Migration
             $table->foreignId('order_id')->constrained();
             $table->foreignId('product_id')->constrained();
             $table->unsignedInteger('count');
-            $table->unsignedInteger('price');
+            $table->unsignedInteger('paid_price');
             $table->timestamps();
         });
     }

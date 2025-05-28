@@ -31,6 +31,9 @@
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('about') }}">О магазине</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('admin.index') }}">Панель управления</a>
+                        </li>
                         @auth
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ route('profile') }}">Профиль</a>
