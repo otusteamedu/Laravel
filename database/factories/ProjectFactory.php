@@ -32,28 +32,28 @@ class ProjectFactory extends Factory
                 'project_id' => $project->id,
                 'name'       => 'Новая',
                 'sort'       => 10,
-                'color'      => 'ffc107'
+                'color'      => '#ffc107'
             ]);
 
             TodoStatus::factory()->create([
                 'project_id' => $project->id,
                 'name'       => 'В работе',
                 'sort'       => 20,
-                'color'      => '0dcaf0'
+                'color'      => '#0dcaf0'
             ]);
 
             TodoStatus::factory()->create([
                 'project_id' => $project->id,
                 'name'       => 'Завершена',
                 'sort'       => 30,
-                'color'      => '198754'
+                'color'      => '#198754'
             ]);
 
             TodoStatus::factory()->create([
                 'project_id' => $project->id,
                 'name'       => 'Архив',
                 'sort'       => 40,
-                'color'      => 'f8f9fa'
+                'color'      => '#f8f9fa'
             ]);
         });
     }
