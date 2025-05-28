@@ -10,9 +10,6 @@
         <form method="POST" action="{{ route('profile.update') }}">
             @csrf
             @method('patch')
-            @if (session('status') === 'profile-updated')
-            @endif
-
             <div class="row g-3">
                 <div class="col-md-6">
                     <label class="form-label">Имя</label>

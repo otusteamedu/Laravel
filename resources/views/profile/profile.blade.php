@@ -17,12 +17,4 @@
         </div>
     </div>
 </div>
-@switch(session('status'))
-    @case('profile-updated'):
-        <x-toast :success=true message="Информация обновлена"></x-toast>
-        @break
-    @case('password-updated'):
-        <x-toast :success=true message="Пароль обновлен"></x-toast>
-        @break
-@endswitch
 @endsection
