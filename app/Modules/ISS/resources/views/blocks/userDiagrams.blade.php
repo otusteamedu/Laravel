@@ -13,7 +13,7 @@
 
                     <div class="initialData hide">
                         <div class="json">{{$value['json']}}</div>
-                        <div class="diagramName">{{$value['diagramName']}}</div>
+                        <div class="diagramName">{{__('iss::issUserPage.baseDiagramName', ['firm' => $value['diagramName']])}}</div>
                     </div>
                 </div>
                 @endif

@@ -4,6 +4,7 @@ namespace App\Modules\ISS\database\factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 use App\Modules\ISS\src\Models\ExamQuestion;
+use App\Modules\ISS\src\Models\ExamQuestionType;
 use App\Modules\ISS\src\Models\EducationRoutePoint;
 
 /**
@@ -24,6 +25,7 @@ class ExamQuestionFactory extends Factory
             'short_question_name' => fake()->word(),
             'question' => fake()->unique()->sentence(),  //временное реш-е т.к. жолжно быть уникально сочетание полей
             'point_id' => EducationRoutePoint::factory(),
+            'question_type_id' => ExamQuestionType::factory(),
         ];
     }
 }

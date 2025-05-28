@@ -9,9 +9,9 @@ use App\Modules\ISS\database\factories\EducationMaterialTypeFactory;
  * Поля модели:
  * @property integer  $id -- код типа учебного материала
  * @property string $name -- название типа учебного материала
- * @property datetime $created_at
- * @property datetime $updated_at
- * @property datetime $deleted_at
+ * @property \datetime $created_at
+ * @property \datetime $updated_at
+ * @property \datetime $deleted_at
  */
 
 class EducationMaterialType extends BaseModel

@@ -20,7 +20,7 @@ return new class extends Migration
             $table->foreign('user_data_id')->references('id')->on('user_data');
             $table->unsignedBigInteger('route_id');
             $table->foreign('route_id')->references('id')->on('education_routes');
-            $table->unsignedBigInteger('last_pass_point_id');
+            $table->unsignedBigInteger('last_pass_point_id')->nullable();
             $table->foreign('last_pass_point_id')
                 ->references('id')->on('real_education_route_points');
             $table->timestamps();

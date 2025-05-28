@@ -70,7 +70,7 @@
 .hide { display: none; }
 .show { display: block; }
 .wait { background-color: #ece1be; }
-.pass { background-color: #20c997 }
+.passed { background-color: #20c997 }
 .expired { background-color: #dc3545 }
 
 .routeName /* Блок содержания: Блок с маршрутами обучения: название маршрута */

@@ -6,7 +6,7 @@ return [
     'instructionTabName' => 'Instructions',
     'examTabName' => 'Exam test',
     'mainDescription' => 'There are placed education instructions and control test for study route ":routeName"
-                          and current route node ":nodeName". Navigate among them by tabs above.',
+                          and current route point ":pointName". Navigate among them by tabs above.',
     'selectVideo' => 'Select video',
     'selectInstruction' => 'Select instruction file',
     'loadVideo' => 'Load video file',
@@ -16,6 +16,7 @@ return [
     'examResult' => 'Exam for this education route step is :result. Exam date is :examDate',
     'examHeader' => 'Exam for this step of education route',
     'enterAnswer' => 'Enter your answer',
+    'questionIsDamaged' => 'Question is damaged',
     'resetExam' => 'Clean form',
     'sendExam' => 'Send answers',
     'refToUser' => 'To user page',

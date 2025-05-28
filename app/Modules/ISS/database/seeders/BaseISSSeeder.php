@@ -27,6 +27,7 @@ class BaseISSSeeder extends Seeder
         $this->call(EducationRoutePointSeeder::class);
         $this->call(EducationMaterialTypeSeeder::class);
         $this->call(EducationMaterialSeeder::class);
+        $this->call(ExamQuestionTypeSeeder::class);
         $this->call(ExamQuestionSeeder::class);
         $this->call(ExamAnswerSeeder::class);
         $this->call(RealEducationRoutePointSeeder::class);

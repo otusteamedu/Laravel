@@ -9,4 +9,9 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class BaseModel extends Model
 {
     use SoftDeletes, HasFactory;
+
+    //public $timestamps = false; //чтобы отключить
+    //public $timestamps = true; //чтобы включить
+
+
 }

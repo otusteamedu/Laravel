@@ -21,6 +21,8 @@ class DatabaseSeeder extends Seeder
             'email' => 'test@example.com',
         ]);*/
 
+        User::factory(2)->create();
+
         $this->call(BaseISSSeeder::class);
 
     }

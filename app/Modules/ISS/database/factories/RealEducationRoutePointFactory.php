@@ -25,6 +25,7 @@ class RealEducationRoutePointFactory extends Factory
             'route_point_id' => EducationRoutePoint::factory(), //должно быть уникально сочетание полей
             'route_id' => EducationRoute::factory(), //должно быть уникально сочетание полей
             'exam_date' => fake()->datetime(),
+            'position' => fake()->unique()->numberBetween(1, 10000), //должно быть уникально сочетание полей
         ];
     }
 }

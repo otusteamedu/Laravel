@@ -19,6 +19,13 @@ return new class extends Migration
             $table->foreign('role_id')->references('id')->on('user_roles');
             $table->string('user_iss_login', 50);
             $table->string('user_iss_password', 50);
+            $table->string('user_iss_avatar_path')->nullable();
+
+            $table->string('organization')->nullable();
+            $table->string('name', 50)->nullable();
+            $table->string('second_name', 50)->nullable()->comment('Father name');
+            $table->string('last_name', 50)->nullable();
+
             $table->softDeletes();
             $table->timestamps();
 

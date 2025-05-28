@@ -14,15 +14,22 @@ use App\Modules\ISS\database\factories\UserDataFactory;
  * @property integer $role_id -- ссылка на роль пользователя в ИОС
  * @property string $user_iss_login -- логин пользователя в ИОС
  * @property string $user_iss_password -- пароль пользователя в ИОС
- * @property datetime $created_at
- * @property datetime $updated_at
- * @property datetime $deleted_at
+ * @property string $user_iss_avatar_path -- путь к файлу пользователя в ИОС
+ * @property string $organization -- название организации, в которой работает сотрудник (загружается из основного приложения)
+ * @property string $name -- имя сотрудника (загружается из основного приложения)
+ * @property string $second_name -- отчество сотрудника (загружается из основного приложения)
+ * @property string $last_name -- фамилия сотрудника (загружается из основного приложения)
+ * @property \datetime $created_at
+ * @property \datetime $updated_at
+ * @property \datetime $deleted_at
  */
 
 class UserData extends BaseModel
 {
-    protected $fillable = ['user_id', 'role_id', 'user_iss_login', 'user_iss_password'];
+    protected $fillable = ['user_id', 'role_id', 'user_iss_login', 'user_iss_password', 'user_iss_avatar_path',
+        'organization', 'name', 'second_name', 'last_name'];
     protected $hidden = ['user_iss_login', 'user_iss_password'];
+    //protected $casts = ['created_at' => 'datetime', 'updated_at' => 'datetime'];
 
     /**
      * Переопределил метод трейта чтобы расположить фабрику в произвольной папке

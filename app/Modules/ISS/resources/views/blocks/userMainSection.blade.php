@@ -7,7 +7,8 @@
 <div id="userData">
     <div id="userAvatar">
         <div>
-            <img src="{{asset('images/iss/defaultUserAvatar.png')}}" alt="{{__('iss::issUserPage.altAvatar')}}" />
+            <img src="@isset($userParameters['userAvatar']){{asset('images/iss/'.$userParameters['userAvatar'])}}
+            @else{{asset('images/iss/defaultUserAvatar.png')}}@endisset" alt="{{__('iss::issUserPage.altAvatar')}}" />
         </div>
     </div>
     <div id="dataTable">
@@ -32,18 +33,22 @@
 </div>
 <div id="educationRoutes">
     <h2>{{__('iss::issUserPage.educationRoutes')}}</h2>
-    @isset($educationChains)
-        @foreach($educationChains as $chain)
+    @isset($routes)
+        @foreach($routes as $route)
             <div>
                 <div class="routeChain">
-                    @isset($chain['nodes'])
-                        @foreach($chain['nodes'] as $nodeKey => $nodeValue)
-                            <a href="{{route('issEducationChainNode', ['chainId' => $chain['chainId'], 'nodeId' => $nodeKey])}}">
-                                <div class="cover @isset($nodeValue['pass']){{$nodeValue['pass']}}@else wait @endisset">
-                                    {{$nodeKey}}
+                    @isset($route['points'])
+                        @foreach($route['points'] as $pointKey => $pointValue)
+                            <a href="{{route('issEducationRoutePoint', ['routeId' => $route['routeId'], 'pointId' => $pointValue['realRoutePointId']])}}">
+                                <div class="cover @isset($pointValue['pass']){{$pointValue['pass']}}@else wait @endisset">
+                                    {{$pointKey}}
                                     <div class="tooltip hide">
-                                        @isset($nodeValue['examDate'])
-                                            {{__('iss::issUserPage.examDate')}}{{$nodeValue['examDate']}}
+                                        @isset($pointValue['routePointName'])
+                                            {{__('iss::issUserPage.routePointName')}}{{$pointValue['routePointName']}}
+                                        @endisset
+                                        </br>
+                                        @isset($pointValue['examDate'])
+                                            {{__('iss::issUserPage.examDate')}}{{$pointValue['examDate']}}
                                         @endisset
                                     </div>
                                 </div>
@@ -52,10 +57,10 @@
                     @endisset
                 </div>
                 <div class="routeName">
-                    @isset($chain['routeName']){{$chain['routeName']}}@else{{__('iss::issUserPage.defaultRouteName')}}@endisset:
+                    @isset($route['routeName']){{$route['routeName']}}@else{{__('iss::issUserPage.defaultRouteName')}}@endisset:
                 </div>
                 <div class="readyPercent">
-                    @isset($chain['readyPercent']){{$chain['readyPercent']}}%@else 0% @endisset
+                    @isset($route['readyPercent']){{$route['readyPercent']}}%@else 0% @endisset
                 </div>
             </div>
         @endforeach

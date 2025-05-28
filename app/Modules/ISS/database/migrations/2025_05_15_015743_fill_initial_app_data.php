@@ -14,6 +14,7 @@ return new class extends Migration
     {
         DB::insert('insert into user_roles(name) values (\'employee\'), (\'manager\'), (\'admin\');');
         DB::insert('insert into education_material_types(name) values(\'video\'), (\'text\'), (\'pdf\');');
+        DB::insert('insert into exam_question_types(name) values(\'simple\'), (\'complicated\');');
     }
 
     /**
@@ -23,5 +24,6 @@ return new class extends Migration
     {
         DB::delete('delete from user_roles');
         DB::delete(' delete from education_material_types');
+        DB::delete(' delete from exam_question_types');
     }
 };

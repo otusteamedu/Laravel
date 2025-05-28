@@ -11,9 +11,9 @@ use App\Modules\ISS\database\factories\EducationRouteFactory;
  * Поля модели:
  * @property integer $id -- код учебного маршрута
  * @property string $name -- название учебного маршрута
- * @property datetime $created_at
- * @property datetime $updated_at
- * @property datetime $deleted_at
+ * @property \datetime $created_at
+ * @property \datetime $updated_at
+ * @property \datetime $deleted_at
  */
 
 class EducationRoute extends BaseModel

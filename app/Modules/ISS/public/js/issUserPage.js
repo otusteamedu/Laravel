@@ -30,6 +30,7 @@
 
         //получение данных
         let initialData = JSON.parse($(this).find('.initialData').find('.json').text());
+        let diagramName = $(this).find('.initialData').find('.diagramName').text();
 
         for (let emp in initialData) { //перебор сотрудников
             //сотрудники (ось х диаграммы)
@@ -91,7 +92,7 @@
                     },
                     title: {
                         display: true,
-                        text: 'Education routes chart'
+                        text: diagramName/*'Education routes chart'*/
                     }
                 }
             },

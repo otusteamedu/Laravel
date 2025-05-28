@@ -24,6 +24,7 @@ class ExamAnswerFactory extends Factory
             'short_answer_name' => $this->faker->word(),
             'answer' => $this->faker->unique()->sentence(), //временное реш-е т.к. должно быть уникально сочетание полей
             'question_id' => ExamQuestion::factory(),
+            'is_right' => fake()->randomElement(['Y', 'N']),
         ];
     }
 }

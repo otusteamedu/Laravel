@@ -26,9 +26,9 @@
 
         <div id="main">
             <p>{{__('iss::issNodePage.mainDescription',
-                ['routeName' => $nodeData['routeName'], 'nodeName' => $nodeData['nodeName']])}}</p>
+                ['routeName' => $pointData['routeName'], 'pointName' => $pointData['pointName']])}}</p>
             <h2>{{__('iss::issNodePage.examResult',
-                ['result' => $nodeData['examResult'], 'examDate' => $nodeData['examDate']])}}</h2>
+                ['result' => $pointData['examResult'], 'examDate' => $pointData['examDate']])}}</h2>
         </div>
         <div id="videoInstructions">
             <select id="videoSelector">
@@ -51,15 +51,36 @@
             <h2>{{__('iss::issNodePage.examHeader')}}</h2>
             <form action="" method="POST"> <!-- КОГДА СДЕЛАЮ КОНТРОЛЛЕР ДОБАВИТЬ МАРШРУТ -->
                 @csrf
-                @foreach ($nodeData['questions'] as $qName => $qText)
-                <div class="mb-3">
-                    <label class="form-label" for="{{$qName}}">{{$qText}}</label>
-                    <input type="text" id="{{$qName}}" class="form-control myFormCorrectionInput"
-                           name="{{$qName}}" placeholder="{{__('iss::issNodePage.enterAnswer')}}"
-                           value="{{old($qName)}}" />
-                    <div class="errorMsg">
-                        @error($qName) {{__($message)}}  @enderror
-                    </div>
+                @foreach ($pointData['questions'] as $question)
+                <div class="mb-3 correctQuestion">
+                    @isset($question['answers'])
+                        @empty($question['answers'])
+                            <label class="form-label" for="{{$question['questionName']}}">{{$question['questionText']}}</label>
+                            <input type="text" id="{{$question['questionName']}}" class="form-control myFormCorrectionInput"
+                                   name="question_{{$question['questionId']}}" placeholder="{{__('iss::issNodePage.enterAnswer')}}"
+                                   value="{{old('question_'.$question['questionId'])}}" />
+
+                            <div class="errorMsg">
+                                @error('question_'.$question['questionId']) {{__($message)}}  @enderror
+                            </div>
+                        @else
+                            <fieldset>
+                                <legend class="form-label">{{$question['questionText']}}</legend>
+                            @foreach($question['answers'] as $answer)
+                                    <div class="answer">
+                                        <input type="radio" id="answer_{{$answer['id']}}" class="form-check-input"
+                                               name="question_{{$question['questionId']}}" value="{{$answer['id']}}" />
+                                        <label for="answer_{{$answer['id']}}" class="form-check-label">
+                                            {{$answer['answer']}}
+                                        </label>
+                                        <hr>
+                                    </div>
+                            @endforeach
+                            </fieldset>
+                        @endempty
+                    @else <div class="questionDamaged">{{__('iss::issNodePage.questionIsDamaged')}}</div>
+                    @endisset
+
                 </div>
                 @endforeach
                 <div class="formButtonWrap">
@@ -71,7 +92,7 @@
     </div>
 
     <div id="refBack">
-        <p><a href="{{route('issUser', ['id' => $nodeData['userId']])}}">{{__('iss::issNodePage.refToUser')}}</a></p>
+        <p><a href="{{route('issUser', ['id' => $pointData['userId']])}}">{{__('iss::issNodePage.refToUser')}}</a></p>
         <p><a href="{{route('main')}}">{{__('iss::issMainPage.refToMain')}}</a></p>
     </div>
 @endsection
