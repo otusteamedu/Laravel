@@ -1,0 +1,41 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\Modules\ISS\src\Services\issUser\getUserData;
+
+
+/**
+ * @var int $id код пользователя ИОС
+ * @var string|null $avatarFilePath путь к файлу аватарки пользователя
+ * @var int|null $userId код пользователя в основном приложении
+ * @var int $roleId код роли пользователя ИОС
+ * @var string $roleName наименование роли пользователя
+ * @var string|null $organization организация пользователя в основном приложении
+ * @var string|null $name имя пользователя из основного приложения
+ * @var string|null $second_name отвество пользователя из основного приложения
+ * @var string|null $last_name фамилия пользователя из основного приложения
+ * @var string|null $createdAt
+ * @var string|null $updatedAt
+ * @var string|null $deletedAt
+ */
+
+class OutputDTO
+{
+    public function __construct(
+        public int $id,
+        public string|null $avatarFilePath,
+        public int|null $userId,
+        public int $roleId,
+        public string $roleName,
+        public string|null $organization,
+        public string|null $name,
+        public string|null $second_name,
+        public string|null $last_name,
+        public string|null $createdAt,
+        public string|null $updatedAt,
+        public string|null $deletedAt
+    )
+    {
+    }
+}
