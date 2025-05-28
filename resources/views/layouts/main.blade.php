@@ -24,4 +24,7 @@
 @if(session('error'))
     <x-toast :success=false message="{{ session('error') }}"></x-toast>
 @endif
+@if(session('success'))
+    <x-toast :success=true message="{{ session('success') }}"></x-toast>
+@endif
 @endsection

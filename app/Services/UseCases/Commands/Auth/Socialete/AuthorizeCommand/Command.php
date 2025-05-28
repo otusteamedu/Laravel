@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace App\Services\UseCases\Commands\Auth\Socialete\AuthorizeCommand;
 
 final readonly class Command

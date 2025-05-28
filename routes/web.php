@@ -2,6 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\Projects;
+use App\Http\Controllers\TodoStatuses;
 use App\Http\Controllers\TodoController;
 
 Route::view('/', 'pages.index')->name('home');
@@ -15,5 +17,38 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/todos', [TodoController::class, 'list'])->name('todo.list');
 });
+
+
+Route::middleware('auth')
+    ->prefix('projects')
+    ->name('projects.')
+    ->group(function () {
+        Route::get('/', Projects\Index::class)
+            ->name('index');
+        Route::get('/create', [Projects\Create::class, 'create'])
+            ->name('create');
+        Route::post('/', [Projects\Create::class, 'store'])
+            ->name('store');
+        Route::get('/{projectId}', Projects\Show::class)
+            ->name('show');
+        Route::get('/{projectId}/edit', [Projects\Update::class, 'edit'])
+            ->name('edit');
+        Route::put('/{projectId}', [Projects\Update::class, 'update'])
+            ->name('update');
+        Route::delete('/{projectId}', Projects\Delete::class)
+            ->name('destroy');
+    });
+
+Route::middleware('auth')
+    ->prefix('todostatuses')
+    ->name('todostatuses.')
+    ->group(function () {
+        Route::post('/store', TodoStatuses\Create::class)
+            ->name('store');
+        Route::post('/update', TodoStatuses\Update::class)
+            ->name('update');
+        Route::delete('/{projectId}/{statusId}', TodoStatuses\Delete::class)
+            ->name('destroy');
+    });
 
 require __DIR__ . '/auth.php';
