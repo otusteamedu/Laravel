@@ -12,4 +12,6 @@ return [
     'examDate' => 'Exam date: ',
     'diagramHeader' => 'Diagrams',
     'noDataToLoad' => 'No data to load',
+    'routePointName' => 'Education stage: ',
+    'baseDiagramName' => 'Education progress for :firm',
 ];

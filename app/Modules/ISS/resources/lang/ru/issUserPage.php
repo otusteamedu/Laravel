@@ -12,4 +12,6 @@ return [
     'examDate' => 'Дата экзамена: ',
     'diagramHeader' => 'Диаграммы',
     'noDataToLoad' => 'Нет данных для отображения',
+    'routePointName' => 'Этап обучения: ',
+    'baseDiagramName' => 'Прогрес обучения для :firm',
 ];

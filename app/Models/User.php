@@ -6,6 +6,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use App\Modules\ISS\src\Models\EducationRoute;
+use App\Modules\ISS\src\Models\UserData;
 
 class User extends Authenticatable
 {

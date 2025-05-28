@@ -14,17 +14,19 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('education_route_education_route_point', function (Blueprint $table) {
+        Schema::create('real_education_route_points', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('route_point_id');
             $table->foreign('route_point_id')->references('id')->on('education_route_points');
             $table->unsignedBigInteger('route_id');
             $table->foreign('route_id')->references('id')->on('education_routes');
             $table->timestamp('exam_date');
+            $table->integer('position');
             $table->timestamps();
             $table->softDeletes();
 
             $table->unique(['route_point_id', 'route_id'], 'uq_route_to_point');
+            $table->unique(['position', 'route_id'], 'uq_route_to_position');
             $table->index('route_point_id');
             $table->index('route_id');
         });
@@ -35,6 +37,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('education_route_education_route_point');
+        Schema::dropIfExists('real_education_route_points');
     }
 };

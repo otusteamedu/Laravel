@@ -14,19 +14,22 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('education_route_education_route_point', function (Blueprint $table) {
+        Schema::create('real_education_routes_of_users', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('route_point_id');
-            $table->foreign('route_point_id')->references('id')->on('education_route_points');
+            $table->unsignedBigInteger('user_data_id');
+            $table->foreign('user_data_id')->references('id')->on('user_data');
             $table->unsignedBigInteger('route_id');
             $table->foreign('route_id')->references('id')->on('education_routes');
-            $table->timestamp('exam_date');
+            $table->unsignedBigInteger('last_pass_point_id')->nullable();
+            $table->foreign('last_pass_point_id')
+                ->references('id')->on('real_education_route_points');
             $table->timestamps();
             $table->softDeletes();
 
-            $table->unique(['route_point_id', 'route_id'], 'uq_route_to_point');
-            $table->index('route_point_id');
+            $table->unique(['user_data_id', 'route_id'], 'uq_route_to_user');
+            $table->index('user_data_id');
             $table->index('route_id');
+            $table->index('last_pass_point_id');
         });
     }
 
@@ -35,6 +38,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('education_route_education_route_point');
+        Schema::dropIfExists('real_education_routes_of_users');
     }
 };

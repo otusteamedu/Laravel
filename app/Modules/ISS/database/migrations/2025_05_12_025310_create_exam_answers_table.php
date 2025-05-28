@@ -20,6 +20,7 @@ return new class extends Migration
             $table->text('answer')->nullable();
             $table->unsignedBigInteger('question_id');
             $table->foreign('question_id')->references('id')->on('exam_questions');
+            $table->string('is_right', 1)->nullable()->default(null);
             $table->timestamps();
             $table->softDeletes();
 

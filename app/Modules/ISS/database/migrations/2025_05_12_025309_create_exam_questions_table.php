@@ -20,6 +20,8 @@ return new class extends Migration
             $table->text('question')->nullable();
             $table->unsignedBigInteger('point_id');
             $table->foreign('point_id')->references('id')->on('education_route_points');
+            $table->unsignedBigInteger('question_type_id');
+            $table->foreign('question_type_id')->references('id')->on('exam_question_types');
             $table->timestamps();
             $table->softDeletes();
 
@@ -27,6 +29,7 @@ return new class extends Migration
             $table->unique(['short_question_name', 'point_id']);
             $table->index('point_id');
             $table->index('short_question_name');
+            $table->index('question_type_id');
         });
     }
 
