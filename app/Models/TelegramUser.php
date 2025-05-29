@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Database\Factories\TelegramUserFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasOne;
@@ -12,7 +13,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
  * @property string|null $username;
  * @property string $first_name;
  * @property string|null $last_name;
- * @property int $created_at;
+ * @property Carbon $created_at;
  */
 class TelegramUser extends BaseModel
 {

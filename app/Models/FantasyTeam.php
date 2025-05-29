@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Database\Factories\FantasyTeamFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -13,7 +14,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property string $name;
  * @property int $budget;
  * @property int $points;
- * @property int $created_at;
+ * @property Carbon $created_at;
  */
 class FantasyTeam extends BaseModel
 {

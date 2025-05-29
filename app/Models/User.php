@@ -3,6 +3,7 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Carbon\Carbon;
 use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -17,8 +18,8 @@ use Illuminate\Notifications\Notifiable;
  * @property int|null $email_verified_at
  * @property string|null $password
  * @property string|null $remember_token
- * @property int|null $updated_at
- * @property int|null $created_at
+ * @property Carbon|null $updated_at
+ * @property Carbon|null $created_at
  */
 class User extends Authenticatable
 {

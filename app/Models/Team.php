@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Database\Factories\TeamFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -11,7 +12,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property string $nickname;
  * @property string $name;
  * @property string|null $logo_path;
- * @property int $created_at;
+ * @property Carbon $created_at;
  */
 class Team extends BaseModel
 {

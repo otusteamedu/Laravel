@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Database\Factories\PlayerFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -15,7 +16,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
  * @property int $team_id;
  * @property int $price;
  * @property string $avatar_path;
- * @property int $created_at;
+ * @property Carbon $created_at;
  */
 class Player extends BaseModel
 {
