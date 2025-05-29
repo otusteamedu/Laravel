@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('fantasy_teams', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('telegram_user_id')->constrained()->onDelete('cascade');
+            $table->foreignId('telegram_user_id')->constrained();
             $table->string('name');
             // бюджет (например, 10000)
             $table->unsignedInteger('budget')->default(10000);
