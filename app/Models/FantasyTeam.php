@@ -7,6 +7,14 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
+/**
+ * @property $id;
+ * @property $telegram_user_id;
+ * @property string $name;
+ * @property int $budget;
+ * @property int $points;
+ * @property int $created_at;
+ */
 class FantasyTeam extends BaseModel
 {
     /** @use HasFactory<FantasyTeamFactory> */

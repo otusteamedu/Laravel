@@ -9,6 +9,17 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
+/**
+ * @property int $id
+ * @property string $name
+ * @property string $email
+ * @property int $role_id
+ * @property int|null $email_verified_at
+ * @property string|null $password
+ * @property string|null $remember_token
+ * @property int|null $updated_at
+ * @property int|null $created_at
+ */
 class User extends Authenticatable
 {
     /** @use HasFactory<UserFactory> */

@@ -15,9 +15,6 @@ return new class extends Migration
             $table->id();
             $table->foreignId('player_id')->constrained();
             $table->foreignId('fantasy_team_id')->constrained();
-
-            // Дополнительно: дата добавления в команду, роль, стоимость и т.п.
-            $table->unsignedInteger('price')->nullable();
             $table->timestamp('created_at')->useCurrent();
         });
     }

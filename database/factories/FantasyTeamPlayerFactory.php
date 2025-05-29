@@ -21,7 +21,6 @@ class FantasyTeamPlayerFactory extends Factory
         return [
             'player_id' => null,
             'fantasy_team_id' => null,
-            'price' => fake()->numberBetween(10_000, 1_000_000),
         ];
     }
 }
