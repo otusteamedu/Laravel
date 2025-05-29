@@ -13,14 +13,20 @@ class Handler
         //
     }
 
-    public function handle(Command $command): void
+    /**
+     * Команда удаления статуса задач для проекта
+     * @param \App\Services\UseCases\Commands\TodoStatus\Delete\Command $command
+     * @throws \App\Services\UseCases\Commands\TodoStatus\Delete\ModelNotFoundException
+     * @return bool
+     */
+    public function handle(Command $command): bool
     {
-        $model = $this->repository->findWithProject($command->id, $command->project_id);
+        $modelDTO = $this->repository->find($command->id);
 
-        if ($model === null) {
+        if ($modelDTO === null) {
             throw new ModelNotFoundException('Статус для задачи не найден');
         }
 
-        $this->repository->destroy($model);
+        return $this->repository->destroy($modelDTO->id);
     }
 }

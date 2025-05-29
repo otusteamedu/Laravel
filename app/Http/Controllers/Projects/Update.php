@@ -47,7 +47,7 @@ class Update extends Controller
                 )
             );
 
-            return redirect(route('projects.show', ['projectId' => $result->id]))->with('success', 'Проект обновлен');
+            return redirect(route('projects.show', ['projectId' => $projectId]))->with('success', 'Проект обновлен');
         } catch (ModelNotFoundException $exception) {
             return redirect()->back()->with('error', $exception->getMessage());
         }

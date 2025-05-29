@@ -3,7 +3,7 @@
 namespace App\Services\UseCases\Commands\TodoStatus\Create;
 
 use Exception;
-use App\Models\TodoStatus;
+use App\Services\Repositories\TodoStatusDTO;
 use App\Services\Repositories\TodoStatusRepositoryInterface;
 
 class Handler
@@ -14,18 +14,24 @@ class Handler
         //
     }
 
+    /**
+     * Добавление нового статуса для задач проекта
+     * @param \App\Services\UseCases\Commands\TodoStatus\Create\Command $command
+     * @throws \App\Services\UseCases\Commands\TodoStatus\Create\CreateModelFailedException
+     * @return Result
+     */
     public function handle(Command $command): Result
     {
         try {
 
-            $model = new TodoStatus;
+            $modelDTO = new TodoStatusDTO(
+                project_id: $command->project_id,
+                name: $command->name,
+                sort: $command->sort,
+                color: $command->color,
+            );
 
-            $model->project_id = $command->project_id;
-            $model->name       = $command->name;
-            $model->sort       = $command->sort;
-            $model->color      = $command->color;
-
-            $id = $this->repository->add($model);
+            $id = $this->repository->add($modelDTO);
 
             return new Result($id);
         } catch (Exception) {

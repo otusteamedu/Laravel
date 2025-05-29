@@ -18,7 +18,6 @@ class Delete extends Controller
             $handler->handle(
                 new Command(
                     id: $statusId,
-                    project_id: $projectId,
                 )
             );
 

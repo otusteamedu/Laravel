@@ -31,9 +31,9 @@
 
             var nameWrapper = confirmModal.querySelector('.project-name')
             var inputValue = confirmModal.querySelector('.modal-body input')
-            
+
             nameWrapper.textContent = projectName
-            nameWrapper.inputValue = projectId
+            inputValue = projectId
 
             form = document.getElementById('project-delete-confirmation-form')
 

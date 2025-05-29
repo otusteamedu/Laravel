@@ -9,12 +9,12 @@
     <div class="col-12 my-3 text-end">
         <a href="{{ route('projects.create') }}" class="btn btn-outline-primary">Добавить проект</a>
     </div>
-    @foreach($result->ptojectDTOs as $project)
+    @foreach($result->ptojectDTOs as $projectDTO)
         @include('projects.partials.project-card', [
-            'projectId' => $project->id,
-            'name' => $project->name,
-            'description' => $project->description,
-            'created' => $project->created->translatedFormat("j F Y")
+            'projectId' => $projectDTO->id,
+            'name' => $projectDTO->name,
+            'description' => $projectDTO->description,
+            'created' => $projectDTO->created->translatedFormat("j F Y")
         ])
     @endforeach
     

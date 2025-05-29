@@ -2,10 +2,6 @@
 
 namespace App\Services\Repositories;
 
-use App\Models\Project;
-use App\Models\TodoStatus;
-use App\Services\UseCases\Commands\TodoStatus\Insert\Command;
-
 interface TodoStatusRepositoryInterface
 {
     /**
@@ -13,37 +9,28 @@ interface TodoStatusRepositoryInterface
      * @param int $id
      * @return \App\Models\TodoStatus|null
      */
-    public function find(int $id): ?TodoStatus;
-
-    /**
-     * Получить статус по id с учетом проекта
-     * @param int $id
-     * @param int $projectId
-     * @return \App\Models\TodoStatus|null
-     */
-    public function findWithProject(int $id, int $projectId): ?TodoStatus;
-
+    public function find(int $id): ?TodoStatusDTO;
 
     /**
      * Добавить данные статуса для задач проекта
-     * @param \App\Models\TodoStatus $status
+     * @param TodoStatusDTO $status
      * @return int
      */
-    public function add(TodoStatus $status): int;
+    public function add(TodoStatusDTO $status): int;
 
     /**
      * Обновить данные статуса для задач проекта
-     * @param \App\Models\TodoStatus $status
-     * @return void
+     * @param TodoStatusDTO $status
+     * @return bool
      */
-    public function save(TodoStatus $status): void;
+    public function save(TodoStatusDTO $status): bool;
 
     /**
      * Удалить статус задач для проекта
-     * @param \App\Models\TodoStatus $status
-     * @return void
+     * @param int $id
+     * @return bool
      */
-    public function destroy(TodoStatus $status): void;
+    public function destroy(int $id): bool;
 
     /**
      * Массовое добавление статусов в проект

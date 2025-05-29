@@ -2,55 +2,68 @@
 
 namespace App\Services\Repositories;
 
-use App\Models\Project;
-
 interface ProjectRepositoryInterface
 {
     /**
      * Получить список проектов пользователя
-     * @return \App\Models\Project[]
+     * @return ProjectDTO[]
      */
     public function fetchForUser(int $userId): array;
 
     /**
      * Получить проект по id
      * @param int $id
-     * @return \App\Models\Project|null
+     * @return ProjectDTO|null
      */
-    public function find(int $id): ?Project;
+    public function find(int $id): ?ProjectDTO;
 
     /**
      * Добавить данные проекта
-     * @param \App\Models\Project $project
+     * @param ProjectDTO $project
      * @return int
      */
-    public function add(Project $project): int;
+    public function add(ProjectDTO $project): int;
 
     /**
      * Обновить данные проекта
-     * @param \App\Models\Project $project
-     * @return void
+     * @param ProjectDTO $project
+     * @return bool
      */
-    public function save(Project $project): void;
+    public function save(ProjectDTO $project): bool;
 
     /**
      * Удалить проект
-     * @param \App\Models\Project $project
-     * @return void
+     * @param int $id
+     * @return bool
      */
-    public function destroy(Project $project): void;
+    public function destroy(int $id): bool;
 
     /**
      * Получить пользователей проекта
-     * @param int $projectId
+     * @param int $id
      * @return \App\Models\ProjectUser[]
      */
-    public function fetchUsers(int $projectId): array;
+    public function fetchUsers(int $id): array;
 
     /**
      * Получить статусы задач для проекта
-     * @param int $projectId
+     * @param int $id
      * @return \App\Models\TodoStatus[]
      */
-    public function fetchTodoStatuses(int $projectId): array;
+    public function fetchTodoStatuses(int $id): array;
+
+    /**
+     * Пользователь вступил в проект
+     */
+    public function userJoun(int $userId): bool;
+
+    /**
+     * Пользователь покинул проект
+     */
+    public function userLeft(int $userId): bool;
+
+    /**
+     * Все пользователи покинули проект
+     */
+    public function usersLeft(int $id): bool;
 }

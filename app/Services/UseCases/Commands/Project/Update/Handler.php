@@ -2,9 +2,9 @@
 
 namespace App\Services\UseCases\Commands\Project\Update;
 
+use App\Services\Repositories\ProjectDTO;
 use App\Services\Repositories\ProjectRepositoryInterface;
 use App\Services\UseCases\Commands\Project\Update\ModelNotFoundException;
-use App\Services\UseCases\Commands\Project\Update\Result;
 
 class Handler
 {
@@ -15,24 +15,25 @@ class Handler
     }
 
     /**
-     * Summary of handle
+     * Обновляем данные проекта
      * @param \App\Services\UseCases\Commands\Project\Update\Command $command
      * @throws \App\Services\UseCases\Commands\Project\Update\ModelNotFoundException
-     * @return Result
+     * @return bool
      */
-    public function handle(Command $command): Result
+    public function handle(Command $command): bool
     {
-        $project = $this->projectRepository->find($command->id);
+        $modelDTO = $this->projectRepository->find($command->id);
 
-        if ($project === null) {
+        if ($modelDTO === null) {
             throw new ModelNotFoundException('Проект не найден');
         }
 
-        $project->name        = $command->name;
-        $project->description = $command->description;
+        $updatedDTO = new ProjectDTO(
+            id: $modelDTO->id,
+            name: $command->name,
+            description: $command->description,
+        );
 
-        $this->projectRepository->save($project);
-
-        return new Result($project->id);
+        return $this->projectRepository->save($updatedDTO);
     }
 }

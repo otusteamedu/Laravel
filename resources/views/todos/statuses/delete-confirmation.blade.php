@@ -24,22 +24,23 @@
 @push('scripts-bottom')
 <script>
     var confirmModal = document.getElementById('todostatus-delete-confirmation')
-        confirmModal.addEventListener('show.bs.modal', function (event) {
-            var button = event.relatedTarget
-            var statusName = button.getAttribute('data-bs-status-name')
-            var projectId = button.getAttribute('data-bs-project-id')
-            var statusId = button.getAttribute('data-bs-status-id')
+        
+    confirmModal.addEventListener('show.bs.modal', function (event) {
+        var button = event.relatedTarget
+        var statusName = button.getAttribute('data-bs-status-name')
+        var projectId = button.getAttribute('data-bs-project-id')
+        var statusId = button.getAttribute('data-bs-status-id')
 
-            var nameWrapper = confirmModal.querySelector('.status-name')
-            var inputValue = confirmModal.querySelector('.modal-body input')
+        var nameWrapper = confirmModal.querySelector('.status-name')
+        var inputValue = confirmModal.querySelector('.modal-body input')
             
-            nameWrapper.textContent = statusName
-            nameWrapper.inputValue = statusId
+        nameWrapper.textContent = statusName
+        inputValue = statusId
 
-            form = document.getElementById('todostatus-delete-confirmation-form')
+        form = document.getElementById('todostatus-delete-confirmation-form')
 
-            form.action = '/todostatuses/' + projectId + '/' + statusId + '#statuses-tab'
-        });
+        form.action = '/todostatuses/' + projectId + '/' + statusId + '#statuses-tab'
+    });
 </script>
 @endpush
 

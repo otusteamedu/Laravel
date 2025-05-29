@@ -2,9 +2,7 @@
 
 namespace App\Services\UseCases\Queries\Project\FetchForUser;
 
-use Illuminate\Support\Carbon;
-
-
+use Carbon\Carbon;
 
 final readonly class ProjectDTO
 {

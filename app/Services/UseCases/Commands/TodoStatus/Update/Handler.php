@@ -2,6 +2,7 @@
 
 namespace App\Services\UseCases\Commands\TodoStatus\Update;
 
+use App\Services\Repositories\TodoStatusDTO;
 use App\Services\Repositories\TodoStatusRepositoryInterface;
 
 class Handler
@@ -12,20 +13,28 @@ class Handler
         //
     }
 
-    public function handle(Command $command): Result
+    /**
+     * Обновляем данные статуса задач для проекта
+     * @param \App\Services\UseCases\Commands\TodoStatus\Update\Command $command
+     * @throws \App\Services\UseCases\Commands\TodoStatus\Update\ModelNotFoundException
+     * @return bool
+     */
+    public function handle(Command $command): bool
     {
-        $model = $this->repository->findWithProject($command->id, $command->project_id);
+        $modelDTO = $this->repository->find($command->id);
 
-        if ($model === null) {
+        if ($modelDTO === null) {
             throw new ModelNotFoundException('Статус не найден');
         }
 
-        $model->name       = $command->name;
-        $model->sort       = $command->sort;
-        $model->color      = $command->color;
+        $updatedDTO = new TodoStatusDTO(
+            id: $modelDTO->id,
+            project_id: $modelDTO->project_id,
+            name: $command->name,
+            sort: $command->sort,
+            color: $command->color,
+        );
 
-        $this->repository->save($model);
-
-        return new Result($model->id);
+        return $this->repository->save($updatedDTO);
     }
 }

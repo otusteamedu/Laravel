@@ -2,16 +2,17 @@
 
 namespace App\Services\UseCases\Commands\Project\Create;
 
-use App\Models\Project;
-use App\Models\ProjectRoleEnum;
+use Exception;
 use App\Models\ProjectUser;
+use App\Models\ProjectRoleEnum;
 use Illuminate\Support\Facades\DB;
+use App\Services\Repositories\ProjectDTO;
 use App\Services\Repositories\TodoStatusDTO;
 use App\Services\Repositories\InsertTodoStatusesDTO;
 use App\Services\Repositories\ProjectRepositoryInterface;
-use App\Services\Repositories\ProjectUserRepositoryInterface;
+use App\Services\Repositories\ProjectUserDTO;
 use App\Services\Repositories\TodoStatusRepositoryInterface;
-use Exception;
+use App\Services\Repositories\ProjectUserRepositoryInterface;
 
 class Handler
 {
@@ -28,47 +29,44 @@ class Handler
         DB::beginTransaction();
 
         try {
-            $project = new Project;
+            $projectDTO = new ProjectDTO(
+                name: $command->name,
+                description: $command->description,
+                created: now(),
+            );
 
-            $project->name        = $command->name;
-            $project->description = $command->description;
+            $projectId = $this->projectRepository->add($projectDTO);
 
-            $projectId = $this->projectRepository->add($project);
+            $projectUserDTO = new ProjectUserDTO(
+                project_id: $projectId,
+                user_id: $command->userId,
+                roles: [ProjectRoleEnum::ADMIN],
+                invited: now(),
+                joined: now(),
+            );
 
-            $projectUser = new ProjectUser;
-
-            $projectUser->project_id = $projectId;
-            $projectUser->user_id    = $command->userId;
-            $projectUser->roles      = [ProjectRoleEnum::ADMIN];
-            $projectUser->invited_at = now();
-            $projectUser->joined_at  = now();
-
-            $this->projectUserRepository->add($projectUser);
+            $this->projectUserRepository->add($projectUserDTO);
 
             $statusDTOs = [
                 new TodoStatusDTO(
-                    id: null,
                     project_id: $projectId,
                     name: 'Новая',
                     sort: 10,
                     color: '#ffc107'
                 ),
                 new TodoStatusDTO(
-                    id: null,
                     project_id: $projectId,
                     name: 'В работе',
                     sort: 20,
                     color: '#0dcaf0'
                 ),
                 new TodoStatusDTO(
-                    id: null,
                     project_id: $projectId,
                     name: 'Завершена',
                     sort: 30,
                     color: '#198754'
                 ),
                 new TodoStatusDTO(
-                    id: null,
                     project_id: $projectId,
                     name: 'Архив',
                     sort: 40,
@@ -81,8 +79,9 @@ class Handler
             DB::commit();
 
             return new Result($projectId);
-        } catch (Exception) {
+        } catch (Exception $e) {
             DB::rollBack();
+            debugbar()->error($e->getMessage());
 
             throw new CreateModelFailedException('Не удалось создать проект');
         }

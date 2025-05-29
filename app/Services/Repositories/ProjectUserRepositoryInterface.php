@@ -2,7 +2,6 @@
 
 namespace App\Services\Repositories;
 
-use App\Models\ProjectUser;
 
 interface ProjectUserRepositoryInterface
 {
@@ -12,26 +11,12 @@ interface ProjectUserRepositoryInterface
      * @param int $userId
      * @return void
      */
-    public function find(int $projectId, int $userId): ?ProjectUser;
+    public function find(int $projectId, int $userId): ?ProjectUserDTO;
 
     /**
      * Добавить привязку проекта к пользователю
-     * @param \App\Models\ProjectUser $projectUser
+     * @param ProjectUserDTO $projectUser
      * @return int
      */
-    public function add(ProjectUser $projectUser): int;
-
-    /**
-     * Обновить привязку проекта к пользователю
-     * @param \App\Models\ProjectUser $projectUser
-     * @return void
-     */
-    public function save(ProjectUser $projectUser): void;
-
-    /**
-     * Удалить привязку проекта к пользователю
-     * @param \App\Models\ProjectUser $projectUser
-     * @return void
-     */
-    public function destroy(ProjectUser $projectUser): void;
+    public function add(ProjectUserDTO $projectUser): int;
 }

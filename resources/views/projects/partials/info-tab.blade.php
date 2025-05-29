@@ -1,6 +1,6 @@
 @php
 /**
- * @var int $projectId
+ * @var int    $projectId
  * @var string $name
  * @var string $description
  * @var string $created
@@ -23,17 +23,6 @@
                         <a href="{{ route('projects.edit', ['projectId' => $projectId]) }}"
                             class="btn p-0"
                             >Редактировать</a>
-                    </span>
-                    <span class="text-muted">
-                        <i class="fa-solid fa-trash-can"></i>
-                        <button
-                            type="button"
-                            class="btn p-0"
-                            data-bs-toggle="modal" 
-                            data-bs-target="#project-delete-confirmation" 
-                            data-bs-project-name="{{ $name }}"
-                            data-bs-project-id="{{ $projectId }}"                    
-                            >Удалить</button>
                     </span>
                 </p>
             </div>

@@ -31,7 +31,7 @@ class Fetcher
             id: $project->id,
             name: $project->name,
             description: $project->description,
-            created: $project->created_at,
+            created: $project->created,
         );
 
         $todoStatuses = $this->projectRepository->fetchTodoStatuses($query->projectId);

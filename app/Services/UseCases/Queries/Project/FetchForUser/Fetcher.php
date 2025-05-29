@@ -2,7 +2,6 @@
 
 namespace App\Services\UseCases\Queries\Project\FetchForUser;
 
-use App\Models\Project;
 use App\Services\Repositories\ProjectRepositoryInterface;
 
 class Fetcher
@@ -18,19 +17,7 @@ class Fetcher
      */
     public function fetch(Query $query): Result
     {
-        $projects = $this->projectRepository->fetchForUser($query->userId);
-
-        $projectDTOs = array_map(
-            function (Project $project) {
-                return new ProjectDTO(
-                    id: $project->id,
-                    name: $project->name,
-                    description: $project->description,
-                    created: $project->created_at,
-                );
-            },
-            $projects
-        );
+        $projectDTOs = $this->projectRepository->fetchForUser($query->userId);
 
         return new Result($projectDTOs);
     }
