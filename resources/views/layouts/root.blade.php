@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -15,7 +16,7 @@
             <div class="container">
                 <div class="row">
                     <div class="col-3 menu-item">
-                        <a href="/page">Главная</a>
+                        <a href="/page">Главная </a>
                     </div>
                     <div class="col-3 menu-item">
                         <a href="/reg">Страница регистрации</a>
@@ -24,8 +25,14 @@
                         <a href="/user">Страница пользователя</a>
                     </div>
                     <div class="col-3 menu-item">
-                        <a href="/abstr">Абстрактная страница</a>
+                        <a href="/about">Абстрактная страница (about)</a>
                     </div>
+
+                    <div class="col-3 menu-item">
+                        <a href="{{ route('page') }}">Главная</a>
+                    </div>
+
+
                 </div>
             </div>
         </header>
@@ -33,7 +40,9 @@
             <div class="container">
                 @yield('body')
             </div>
-            
+
         </body>
     </div>
 </html>
+
+

@@ -1,6 +1,11 @@
-@extends ('layouts.root') 
+@extends ('layouts.root')
 
 @section ('body')
+@php
+/**
+* @var array<array-key,array{name: string, age:integer, city: string}>> $users
+*/
+@endphp
     <div class="container">
         <h2>Нажав на имя нужного пользователя, Вы можете получить более подробную информацию о нем.</h2>
         <div class="user-list">
@@ -18,4 +23,4 @@
         @endforeach
 
     </div>
-@endsection 
+@endsection

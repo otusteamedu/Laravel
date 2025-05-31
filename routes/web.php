@@ -7,14 +7,15 @@ Route::get('/', function () {
 });
 
 // Route::view('/blade', 'third', [
-//     'show' => true, 
+//     'show' => true,
 //     'name' => request('name', 'Sergey'),
 //     'users' => ["John", 'Mike', 'Kate']
 // ]);
 
+
 Route::view('/page', 'layouts.main');
 Route::view('/reg', 'layouts.reg');
-Route::view('/abstr', 'layouts.abstr');
+Route::view('/about', 'layouts.about');
 Route::view('/user', 'layouts.user',[
     'name' => request ('name', 'Ivan'),
     'users' => [
@@ -26,3 +27,13 @@ Route::view('/user', 'layouts.user',[
     ],
 
 ]);
+
+Route::get('/page', 'HomeController@index')->name('page');
+// Route::get('/about', 'AboutController@index')->name('about');
+
+
+// Route::get('/page', 'PageController@index')->name('page');
+// Route::get('/reg', 'RegController@index')->name('reg');
+// Route::get('/abstr', 'AbstrController@index')->name('abstr');
+
+// Route::get('/user', 'UserController@index')->name('user');
