@@ -29,7 +29,7 @@
                     </div>
 
                     <div class="col-3 menu-item">
-                        <a href="{{ route('page') }}">Главная</a>
+                        <a href="{{ route('page') }}">Главная1</a>
                     </div>
 
 
