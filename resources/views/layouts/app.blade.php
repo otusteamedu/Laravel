@@ -31,9 +31,13 @@
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('about') }}">О магазине</a>
                         </li>
+
+                        @can('employee-access')
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('admin.index') }}">Панель управления</a>
                         </li>
+                        @endcan
+                        
                         @auth
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ route('profile') }}">Профиль</a>

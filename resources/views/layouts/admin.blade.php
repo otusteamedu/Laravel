@@ -43,10 +43,11 @@
     </svg>
 
     <main class="d-flex flex-nowrap">
-        <div class="d-flex flex-column flex-shrink-0 p-3 text-bg-dark" style="width: 280px;">
+        <div class="flex-shrink-0 p-3 text-bg-dark" style="width: 280px;">
             <a href="{{ route('admin.index') }}" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
                 <span class="fs-4">Панель управления</span>
             </a>
+
             <hr>
             <ul class="nav nav-pills flex-column mb-auto">
                 <li class="nav-item">
@@ -58,6 +59,7 @@
                         Главная
                     </a>
                 </li>
+                @can('admin-access')
                 <li>
                     <a href="{{ route('admin.categories.index') }}" 
                         class="nav-link text-white @if(request()->routeIs('admin.categories.index')) active @endif">
@@ -76,6 +78,7 @@
                         Телефоны
                     </a>
                 </li>
+                @endcan
                 <li>
                     <a href="{{ route('admin.orders.index') }}" 
                         class="nav-link text-white @if(request()->routeIs('admin.orders.index')) active @endif">
@@ -95,6 +98,13 @@
                     </a>
                 </li>
             </ul>
+
+            <hr>
+            <div>
+                <a href="{{ route('welcome') }}" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
+                    <span class="fs-5">Сайт</span>
+                </a>
+            </div>
         </div>
 
         <div class="b-example-divider b-example-vr"></div>
