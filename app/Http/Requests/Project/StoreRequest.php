@@ -4,6 +4,8 @@ namespace App\Http\Requests\Project;
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Contracts\Validation\Validator;
+use Illuminate\Http\Exceptions\HttpResponseException;
 
 class StoreRequest extends FormRequest
 {
@@ -49,5 +51,10 @@ class StoreRequest extends FormRequest
     protected function prepareForValidation(): void
     {
         $this->merge(['user_id' => $this->user()->id]);
+    }
+
+    protected function failedValidation(Validator $validator)
+    {
+        throw new HttpResponseException(redirect()->back()->with('error', 'Ошибка валидации формы'));
     }
 }

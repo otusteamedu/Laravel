@@ -12,7 +12,7 @@ use App\Services\UseCases\Commands\Auth\Socialete\AuthorizeCommand\Handler;
 
 class YandexController extends Controller
 {
-    public function redirect(Request $request)
+    public function redirect()
     {
         return Socialite::driver('yandex')->redirect();
     }

@@ -40,14 +40,16 @@ Route::middleware('auth')
     });
 
 Route::middleware('auth')
-    ->prefix('todostatuses')
-    ->name('todostatuses.')
+    ->prefix('project/{projectId}/todostatuses')
+    ->name('project.todostatuses.')
     ->group(function () {
+        Route::get('/', TodoStatuses\Index::class)
+            ->name('index');
         Route::post('/store', TodoStatuses\Create::class)
             ->name('store');
         Route::post('/update', TodoStatuses\Update::class)
             ->name('update');
-        Route::delete('/{projectId}/{statusId}', TodoStatuses\Delete::class)
+        Route::post('/destroy', TodoStatuses\Delete::class)
             ->name('destroy');
     });
 

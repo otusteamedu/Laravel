@@ -4,9 +4,10 @@ namespace App\Infrastructure\Eloquent\Repositories;
 
 use Carbon\Carbon;
 use App\Models\Project;
-use App\Models\TodoStatus;
 use App\Models\ProjectUser;
+use Illuminate\Support\Arr;
 use App\Services\Repositories\ProjectDTO;
+use App\Services\Repositories\ProjectUserDTO;
 use App\Services\Repositories\ProjectRepositoryInterface;
 
 class ProjectRepository implements ProjectRepositoryInterface
@@ -79,22 +80,27 @@ class ProjectRepository implements ProjectRepositoryInterface
 
     public function fetchUsers(int $projectId): array
     {
-        return ProjectUser::query()
+        $dbUsers = ProjectUser::query()
             ->with(['users' => function ($query) {
                 $query->orderBy('name');
             }])
             ->where('project_id', $projectId)
-            ->get()
-            ->all();
-    }
+            ->whereNull('left_at')
+            ->orderBy('joined_at', 'desc')
+            ->get();
 
-    public function fetchTodoStatuses(int $projectId): array
-    {
-        return TodoStatus::query()
-            ->where('project_id', $projectId)
-            ->orderBy('sort')
-            ->get()
-            ->all();
+        return array_map(
+            fn($user) =>
+            new ProjectUserDTO(
+                id: $user->id,
+                user_id: $user->user_id,
+                project_id: $user->project_id,
+                roles: json_decode($user->roles),
+                invited: $user->invited_at,
+                joined: $user->joined_at,
+            ),
+            Arr::from($dbUsers)
+        );
     }
 
     public function userJoun(int $userId): bool

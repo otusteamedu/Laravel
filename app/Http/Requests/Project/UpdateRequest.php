@@ -5,6 +5,8 @@ namespace App\Http\Requests\Project;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Contracts\Validation\Validator;
+use Illuminate\Http\Exceptions\HttpResponseException;
 
 class UpdateRequest extends FormRequest
 {
@@ -51,5 +53,10 @@ class UpdateRequest extends FormRequest
         $projectId = request()->route('projectId');
 
         $this->merge(['id' => $projectId]);
+    }
+
+    protected function failedValidation(Validator $validator)
+    {
+        throw new HttpResponseException(redirect()->back()->with('error', 'Ошибка валидации формы'));
     }
 }

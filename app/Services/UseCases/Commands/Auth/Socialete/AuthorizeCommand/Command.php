@@ -9,5 +9,6 @@ final readonly class Command
         public string $driver,
         public string $email,
         public string $name,
+        public ?bool  $remember = false,
     ) {}
 }

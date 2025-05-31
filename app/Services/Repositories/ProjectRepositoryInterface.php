@@ -41,16 +41,9 @@ interface ProjectRepositoryInterface
     /**
      * Получить пользователей проекта
      * @param int $id
-     * @return \App\Models\ProjectUser[]
+     * @return ProjectUserDTO[]
      */
     public function fetchUsers(int $id): array;
-
-    /**
-     * Получить статусы задач для проекта
-     * @param int $id
-     * @return \App\Models\TodoStatus[]
-     */
-    public function fetchTodoStatuses(int $id): array;
 
     /**
      * Пользователь вступил в проект

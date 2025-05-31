@@ -2,16 +2,13 @@
 
 namespace App\Services\UseCases\Queries\Project\FetchWithRelations;
 
-use App\Models\Project;
-use App\Models\TodoStatus;
+
 use App\Services\Repositories\ProjectRepositoryInterface;
-use App\Services\Repositories\TodoStatusRepositoryInterface;
 
 class Fetcher
 {
     public function __construct(
         private ProjectRepositoryInterface $projectRepository,
-        private TodoStatusRepositoryInterface $todoStatusRepository,
     ) {}
 
     /**
@@ -34,24 +31,8 @@ class Fetcher
             created: $project->created,
         );
 
-        $todoStatuses = $this->projectRepository->fetchTodoStatuses($query->projectId);
-
-        $todoStatusDTOs = array_map(
-            function (TodoStatus $status) {
-                return new TodoStatusDTO(
-                    id: $status->id,
-                    name: $status->name,
-                    color: $status->color,
-                    sort: $status->sort,
-                );
-            },
-            $todoStatuses
-        );
-
-
         return new Result(
             ptojectDTO: $projectDTO,
-            todoStatusDTOs: $todoStatusDTOs,
         );
     }
 }

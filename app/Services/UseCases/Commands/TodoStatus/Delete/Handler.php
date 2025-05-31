@@ -21,12 +21,12 @@ class Handler
      */
     public function handle(Command $command): bool
     {
-        $modelDTO = $this->repository->find($command->id);
+        $modelDTO = $this->repository->find($command->id, $command->projectId);
 
         if ($modelDTO === null) {
             throw new ModelNotFoundException('Статус для задачи не найден');
         }
 
-        return $this->repository->destroy($modelDTO->id);
+        return $this->repository->destroy($modelDTO->id, $modelDTO->project_id);
     }
 }

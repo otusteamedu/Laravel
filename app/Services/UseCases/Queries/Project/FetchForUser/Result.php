@@ -5,7 +5,7 @@ namespace App\Services\UseCases\Queries\Project\FetchForUser;
 class Result
 {
     /**
-     * @param array PrjoectDTO[]
+     * @param array ProjectDTO[]
      */
     public function __construct(
         public array $ptojectDTOs,

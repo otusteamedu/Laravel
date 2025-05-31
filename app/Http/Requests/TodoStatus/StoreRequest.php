@@ -4,6 +4,8 @@ namespace App\Http\Requests\TodoStatus;
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Contracts\Validation\Validator;
+use Illuminate\Http\Exceptions\HttpResponseException;
 
 class StoreRequest extends FormRequest
 {
@@ -47,5 +49,17 @@ class StoreRequest extends FormRequest
             'color.required' => 'Пожалуйста, укажите цвет для выделения статуса.',
             'color.hex_color' => 'Цвет должен быть строкой в hex формате.',
         ];
+    }
+
+    protected function prepareForValidation(): void
+    {
+        $projectId = request()->route('projectId');
+
+        $this->merge(['project_id' => $projectId]);
+    }
+
+    protected function failedValidation(Validator $validator)
+    {
+        throw new HttpResponseException(redirect()->back()->with('error', 'Ошибка валидации формы'));
     }
 }

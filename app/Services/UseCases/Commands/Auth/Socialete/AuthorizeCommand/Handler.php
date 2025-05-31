@@ -2,11 +2,10 @@
 
 namespace App\Services\UseCases\Commands\Auth\Socialete\AuthorizeCommand;
 
-use App\Models\User;
 use Illuminate\Support\Str;
-use App\Models\UserSocialite;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use App\Services\Repositories\UserCreateDTO;
+use App\Services\Repositories\UserSocialiteDTO;
 use App\Services\Repositories\UserRepositoryInterface;
 use App\Services\Repositories\UserSocialeteRepositoryInterface;
 
@@ -19,46 +18,43 @@ class Handler
         //
     }
 
-    public function handle(Command $command): User
+    public function handle(Command $command): void
     {
         if (
             $user = $this->userSocialeteRepository->find($command->id, $command->driver)
         ) {
-
-            Auth::login($user);
+            $userId = $user->id;
         } elseif (
             $user = $this->userRepository->findByEmail($command->email)
         ) {
-            $userSocialete = new UserSocialite([
-                'user_id'      => $user->id,
-                'driver'       => $command->driver,
-                'socialite_id' => $command->id
-            ]);
+            $userSocialete = new UserSocialiteDTO(
+                user_id: $user->id,
+                driver: $command->driver,
+                socialite_id: $command->id
+            );
 
             $this->userSocialeteRepository->add($userSocialete);
 
-            Auth::login($user);
+            $userId = $user->id;
         } else {
-            $user = new User([
-                'name'              => $command->name,
-                'email'             => $command->email,
-                'email_verified_at' => now(),
-                'password'          => Hash::make(Str::random(10)),
-            ]);
+            $user = new UserCreateDTO(
+                name: $command->name,
+                email: $command->email,
+                password: Hash::make(Str::random(10)),
+                email_verified_at: now(),
+            );
 
-            $this->userRepository->add($user);
+            $userId = $this->userRepository->add($user);
 
-            $userSocialete = new UserSocialite([
-                'user_id'      => $user->id,
-                'driver'       => $command->driver,
-                'socialite_id' => $command->id
-            ]);
+            $userSocialete = new UserSocialiteDTO(
+                user_id: $userId,
+                driver: $command->driver,
+                socialite_id: $command->id
+            );
 
             $this->userSocialeteRepository->add($userSocialete);
-
-            Auth::login($user);
         }
 
-        return $user;
+        $this->userRepository->login($userId, $command->remember);
     }
 }

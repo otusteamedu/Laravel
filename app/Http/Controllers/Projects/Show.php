@@ -20,7 +20,6 @@ class Show extends Controller
 
             return view('projects.show', [
                 'project'  => $result->ptojectDTO,
-                'statuses' => $result->todoStatusDTOs,
             ]);
         } catch (ModelNotFoundException) {
             abort(404);

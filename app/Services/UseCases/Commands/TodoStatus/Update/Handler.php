@@ -21,7 +21,7 @@ class Handler
      */
     public function handle(Command $command): bool
     {
-        $modelDTO = $this->repository->find($command->id);
+        $modelDTO = $this->repository->find($command->id, $command->project_id);
 
         if ($modelDTO === null) {
             throw new ModelNotFoundException('Статус не найден');
