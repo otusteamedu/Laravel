@@ -8,12 +8,14 @@ use App\Exceptions\UserNotFoundException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\User\StoreRequest;
 use App\Http\Requests\Admin\User\UpdateRequest;
+use App\Models\User;
 use App\Services\UsersService;
 use App\Services\RolesService;
 use Hash;
 use Illuminate\Contracts\View\View;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Gate;
 
 class UserController extends Controller
 {
@@ -64,6 +66,8 @@ class UserController extends Controller
      */
     public function show(int $userId): View
     {
+        Gate::authorize('viewAny', User::class);
+
         try {
             $user = $this->service->getById($userId);
         } catch (UserNotFoundException $e) {
@@ -88,6 +92,8 @@ class UserController extends Controller
      */
     public function edit(int $userId): View
     {
+        Gate::authorize('update', User::class);
+
         try {
             $user = $this->service->getById($userId);
         } catch (UserNotFoundException $e) {
@@ -112,6 +118,8 @@ class UserController extends Controller
      */
     public function update(UpdateRequest $request, int $userId): RedirectResponse
     {
+        Gate::authorize('update', User::class);
+
         $data = $request->validated();
         $dto = new UpdateDto(
             $userId, 
@@ -134,6 +142,8 @@ class UserController extends Controller
      */
     public function destroy(int $userId): RedirectResponse
     {
+        Gate::authorize('delete', User::class);
+
         try {
             $this->service->delete($userId);
         } catch (UserNotFoundException $e) {

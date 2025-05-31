@@ -18,8 +18,9 @@ return new class extends Migration
         });
 
         DB::table('roles')->insertOrIgnore([
-            ['title' => 'User'],
-            ['title' => 'Admin'],
+            ['title' => 'Администратор'],
+            ['title' => 'Менеджер'],
+            ['title' => 'Пользователь'],
         ]);
     }
 

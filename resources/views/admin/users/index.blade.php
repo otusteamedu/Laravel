@@ -26,7 +26,9 @@
                 <th scope="col">Имя</th>
                 <th scope="col">Email</th>
                 <th scope="col">Создан</th>
+                @canany(['viewAny', 'update', 'delete'], App\Models\User::class)
                 <th scope="col">Действия</th>
+                @endcan
             </tr>
         </thead>
         <tbody>
@@ -36,6 +38,7 @@
                     <td>{{ $user->name }}</td>
                     <td>{{ $user->email }}</td>
                     <td>{{ $user->created_at->format('d.m.Y H:i') }}</td>
+                    @canany(['viewAny', 'update', 'delete'], App\Models\User::class)
                     <td>
                         <div class="btn-group" role="group">
                             <a href="{{ route('admin.users.show', $user->id) }}" class="btn btn-success">Смотреть</a>
@@ -63,6 +66,7 @@
                             </div>
                         </div>
                     </td>
+                    @endcan
                 </tr>
             @endforeach
         </tbody>
