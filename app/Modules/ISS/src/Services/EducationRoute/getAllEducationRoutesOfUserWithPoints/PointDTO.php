@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Modules\ISS\src\Services\EducationRoute\getAllEducationRoutesOfUserWithPoints;
 
-
 /**
  * @var string $pass состояние точки учебного маршрута для данного пользователя
  * @var string $examDate дата экзамена для точки учебного маршрута

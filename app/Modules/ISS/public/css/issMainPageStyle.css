@@ -46,6 +46,9 @@
     justify-content: center;
 }
 
+.hide { display: none; }
+.show { display: block; }
+
 
 @media screen and (min-width: 800px)  /* НАСТРОЙКА САЙТА для ПК и планшетов */
 {

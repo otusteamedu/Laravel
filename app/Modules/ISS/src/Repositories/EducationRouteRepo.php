@@ -6,7 +6,6 @@ use Illuminate\Support\Facades\DB;
 use App\Modules\ISS\src\Services\EducationRoute\EducationRouteRepoInterface;
 use App\Modules\ISS\src\Models\RealEducationRoutesOfUser;
 
-
 class EducationRouteRepo implements EducationRouteRepoInterface
 {
 

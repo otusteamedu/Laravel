@@ -30,23 +30,44 @@
             <h2>{{__('iss::issNodePage.examResult',
                 ['result' => $pointData['examResult'], 'examDate' => $pointData['examDate']])}}</h2>
         </div>
+
         <div id="videoInstructions">
             <select id="videoSelector">
                 <option>{{__('iss::issNodePage.selectVideo')}}</option>
+                @isset($pointData['materials']['video'])
+                    @foreach($pointData['materials']['video'] as $title => $videoFile)
+                        <option value="{{$videoFile}}">{{$title}}</option>
+                    @endforeach
+                @endisset
             </select>
 
             <input type="button" id="loadVideo" value="{{__('iss::issNodePage.loadVideo')}}" />
             <input type="button" id="viewVideo" value="{{__('iss::issNodePage.viewVideo')}}" />
             <div id="videoFrame"></div>
         </div>
+
         <div id="textAndPdfInstructions">
+            <select id="instructionTypeSelector">
+                <option>{{__('iss::issNodePage.selectInstructionType')}}</option>
+                @foreach($pointData['textFileTypes'] as $type)
+                    <option>{{$type}}</option>
+                @endforeach
+            </select>
             <select id="instructionSelector">
-                <option>{{__('iss::issNodePage.selectInstruction')}}</option>
+                <option initial>{{__('iss::issNodePage.selectInstruction')}}</option>
+                @foreach($pointData['textFileTypes'] as $type)
+                    @isset($pointData['materials'][$type])
+                        @foreach($pointData['materials'][$type] as $title => $file)
+                            <option hidden materialType="{{$type}}" value="{{$file}}">{{$title}}</option>
+                        @endforeach
+                    @endisset
+                @endforeach
             </select>
             <input type="button" id="loadInstruction" value="{{__('iss::issNodePage.loadInstruction')}}" />
             <input type="button" id="viewInstruction" value="{{__('iss::issNodePage.viewInstruction')}}" />
             <div id="instructionFrame"></div>
         </div>
+
         <div id="exam">
             <h2>{{__('iss::issNodePage.examHeader')}}</h2>
             <form action="" method="POST"> <!-- КОГДА СДЕЛАЮ КОНТРОЛЛЕР ДОБАВИТЬ МАРШРУТ -->

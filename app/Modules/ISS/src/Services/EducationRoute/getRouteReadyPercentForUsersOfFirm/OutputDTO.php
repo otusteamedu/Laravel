@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Modules\ISS\src\Services\EducationRoute\getRouteReadyPercentForUsersOfFirm;
 
-
 /**
  * @var string $organization название организации для текущего пользователя (с ролью менеджер или админ)
  * @var array[][] $employees степернь прохождения каждым сотрудником всех обучающих маршрутов, к которым он подключен
