@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests\TodoStatus;
 
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Auth\AuthManager;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Http\Exceptions\HttpResponseException;
@@ -14,9 +14,9 @@ class DestroyRequest extends FormRequest
     /**
      * Determine if the user is authorized to make this request.
      */
-    public function authorize(): bool
+    public function authorize(AuthManager $auth): bool
     {
-        return Auth::check();
+        return $auth->check();
     }
 
     /**
@@ -52,7 +52,9 @@ class DestroyRequest extends FormRequest
 
     protected function failedValidation(Validator $validator)
     {
-        dd($validator->errors());
-        throw new HttpResponseException(redirect()->back()->with('error', 'Ошибка валидации формы'));
+        throw new HttpResponseException(redirect()
+            ->withInput()
+            ->withErrors($validator->errors())
+            ->back()->with('error', 'Ошибка валидации формы'));
     }
 }

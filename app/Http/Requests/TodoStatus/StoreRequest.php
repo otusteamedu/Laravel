@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests\TodoStatus;
 
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Auth\AuthManager;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Http\Exceptions\HttpResponseException;
@@ -12,9 +12,9 @@ class StoreRequest extends FormRequest
     /**
      * Determine if the user is authorized to make this request.
      */
-    public function authorize(): bool
+    public function authorize(AuthManager $auth): bool
     {
-        return Auth::check();
+        return $auth->check();
     }
 
     /**
@@ -60,6 +60,9 @@ class StoreRequest extends FormRequest
 
     protected function failedValidation(Validator $validator)
     {
-        throw new HttpResponseException(redirect()->back()->with('error', 'Ошибка валидации формы'));
+        throw new HttpResponseException(redirect()->back()
+            ->withInput()
+            ->withErrors($validator->errors())
+            ->with('error', 'Ошибка валидации формы'));
     }
 }
