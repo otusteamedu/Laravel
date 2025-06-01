@@ -1,7 +1,6 @@
 @php
 /**
  * @var \App\Services\Repositories\DTOs\ProjectDTO $project
- * @var \App\Services\Repositories\DTOs\UserDTO[] $users
 */
 @endphp
 @extends('layouts.main')
@@ -31,24 +30,15 @@
                                     <p class="card-text"><small class="text-muted">Создан: {{ $project->created->translatedFormat("j F Y") }}</small></p>
                                     {{-- ?TODO сводные данные по задачам --}}
                                     <p class="card-text d-flex flex-wrap justify-content-end gap-3">
-                                        <span class="text-muted">
-                                            <i class="fa-solid fa-pen-to-square"></i>
-                                            <a href="{{ route('projects.edit', ['projectId' => $project->id]) }}"
-                                                class="btn p-0"
-                                                >Редактировать</a>
-                                        </span>
+                                        @can('project.update', $project->id)
+                                            <span class="text-muted">
+                                                <i class="fa-solid fa-pen-to-square"></i>
+                                                <a href="{{ route('projects.edit', ['projectId' => $project->id]) }}"
+                                                    class="btn p-0"
+                                                    >Редактировать</a>
+                                            </span>
+                                        @endcan
                                     </p>
-                                </div>
-                            </div>
-
-                            <div class="card mb-3">
-                                <div class="card-header fw-bold">
-                                    Участники проекта
-                                </div>
-                                <div class="card-body">
-                                    @foreach($users as $user)
-                                        {{ $user->name }}  {{ $user->roles[0] }}
-                                    @endforeach
                                 </div>
                             </div>
                         </div>

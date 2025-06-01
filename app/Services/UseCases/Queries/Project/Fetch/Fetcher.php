@@ -1,9 +1,7 @@
 <?php
 
-namespace App\Services\UseCases\Queries\Project\FetchWithRelations;
+namespace App\Services\UseCases\Queries\Project\Fetch;
 
-
-use Illuminate\Support\Arr;
 use App\Services\Repositories\ProjectRepository;
 use App\Services\Repositories\Exceptions\ModelNotFoundException;
 
@@ -27,25 +25,8 @@ class Fetcher
             throw new ModelNotFoundException('Проект не найден');
         }
 
-        $users = $this->projectRepository->fetchUsers($query->projectId);
-
-        $userDTOs = array_map(
-            fn($user) =>
-            new UserWithRelationsDTO(
-                id: $user->id,
-                user_id: $user->user_id,
-                name: $user->name,
-                email: $user->email,
-                roles: $user->roles,
-                invited: $user->invited,
-                joined: $user->joined,
-            ),
-            Arr::from($users)
-        );
-
         return new Result(
             ptojectDTO: $projectDTO,
-            userDTOs: $userDTOs
         );
     }
 }

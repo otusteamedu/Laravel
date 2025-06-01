@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\UseCases\Queries\Project\FetchWithRelations;
+namespace App\Services\UseCases\Queries\Project\Fetch;
 
 final readonly class Query
 {
