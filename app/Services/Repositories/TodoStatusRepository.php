@@ -3,7 +3,6 @@
 namespace App\Services\Repositories;
 
 use App\Models\TodoStatus;
-use Illuminate\Support\Arr;
 use App\Services\Repositories\DTOs\TodoStatusDTO;
 use App\Services\Repositories\DTOs\InsertTodoStatusesDTO;
 
@@ -89,8 +88,7 @@ class TodoStatusRepository
      */
     public function insert(InsertTodoStatusesDTO $statuses): bool
     {
-        $data = Arr::from($statuses->todoStatusDTOs);
-
+        $data = json_decode(json_encode($statuses->todoStatusDTOs), true);
         return TodoStatus::insert($data);
     }
 
