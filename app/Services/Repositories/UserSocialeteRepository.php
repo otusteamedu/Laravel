@@ -1,15 +1,20 @@
 <?php
 
-namespace App\Infrastructure\Eloquent\Repositories;
+namespace App\Services\Repositories;
 
 use App\Models\User;
 use App\Models\UserSocialite;
-use App\Services\Repositories\UserDTO;
-use App\Services\Repositories\UserSocialiteDTO;
-use App\Services\Repositories\UserSocialeteRepositoryInterface;
+use App\Services\Repositories\DTOs\UserDTO;
+use App\Services\Repositories\DTOs\UserSocialiteDTO;
 
-class UserSocialeteRepository implements UserSocialeteRepositoryInterface
+class UserSocialeteRepository
 {
+    /**
+     * Получить пользователя по его id в социальной сети
+     * @param string $socialeteId
+     * @param string $driver
+     * @return UserDTO|null
+     */
     public function find(string $id, string $driver): ?UserDTO
     {
         $dbUser = User::query()
@@ -31,6 +36,11 @@ class UserSocialeteRepository implements UserSocialeteRepositoryInterface
         );
     }
 
+    /**
+     * Добавить привязку социальной сети к пользователю
+     * @param UserSocialiteDTO $userSocialite
+     * @return int
+     */
     public function add(UserSocialiteDTO $userSocialite): int
     {
         $dbData = UserSocialite::create([
@@ -42,6 +52,11 @@ class UserSocialeteRepository implements UserSocialeteRepositoryInterface
         return $dbData->refresh()->id;
     }
 
+    /**
+     * Обновить привязку социальной сети к пользователю
+     * @param UserSocialiteDTO $userSocialite
+     * @return bool
+     */
     public function save(UserSocialiteDTO $userSocialite): bool
     {
         return UserSocialite::query()
@@ -53,6 +68,11 @@ class UserSocialeteRepository implements UserSocialeteRepositoryInterface
             ]);
     }
 
+    /**
+     * Удалить привязку социальной сети у пользователя
+     * @param int $is
+     * @return bool
+     */
     public function destroy(int $id): bool
     {
         return UserSocialite::where('id', $id,)

@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Projects;
 use App\Http\Controllers\Controller;
 use App\Services\UseCases\Commands\Project\Delete\Command;
 use App\Services\UseCases\Commands\Project\Delete\Handler;
-use App\Services\UseCases\Commands\Project\Delete\ModelNotFoundException;
+use App\Services\Repositories\Exceptions\ModelNotFoundException;
 
 class Delete extends Controller
 {

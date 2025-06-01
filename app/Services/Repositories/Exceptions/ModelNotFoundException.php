@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\UseCases\Commands\Project\Update;
+namespace App\Services\Repositories\Exceptions;
 
 use Exception;
 

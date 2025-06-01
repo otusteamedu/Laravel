@@ -1,18 +1,18 @@
 <?php
 
-namespace App\Infrastructure\Eloquent\Repositories;
+namespace App\Services\Repositories;
 
 use App\Models\ProjectUser;
-use App\Services\Repositories\ProjectUserDTO;
-use App\Services\Repositories\ProjectUserRepositoryInterface;
+use App\Models\ProjectRoleEnum;
+use App\Services\Repositories\DTOs\ProjectUserDTO;
 
-class ProjectUserRepository implements ProjectUserRepositoryInterface
+class ProjectUserRepository
 {
     /**
-     * Нйти запись о пользователе в проекте
+     * Нaйти запись о пользователе в проекте
      * @param int $projectId
      * @param int $userId
-     * @return void
+     * @return ProjectUserDTO|null
      */
     public function find(int $projectId, int $userId): ?ProjectUserDTO
     {
@@ -25,7 +25,7 @@ class ProjectUserRepository implements ProjectUserRepositoryInterface
             id: $dbData->id,
             user_id: $dbData->user_id,
             project_id: $dbData->project_id,
-            roles: json_decode($dbData->roles),
+            roles: $dbData->roles,
             invited: $dbData->invited_at,
             joined: $dbData->joined_at,
             left: $dbData->left_at,
@@ -35,7 +35,7 @@ class ProjectUserRepository implements ProjectUserRepositoryInterface
     /**
      * Добавить привязку проекта к пользователю
      * @param ProjectUserDTO $projectUser
-     * @return void
+     * @return int
      */
     public function add(ProjectUserDTO $projectUser): int
     {
@@ -48,5 +48,31 @@ class ProjectUserRepository implements ProjectUserRepositoryInterface
         ]);
 
         return $dbData->refresh()->id;
+    }
+
+    /**
+     * Проверяет есть ли у пользователя нужная роль на проекте
+     * @param int $projectId
+     * @param int $userId
+     * @param ProjectRoleEnum[] $roles
+     * @return bool
+     */
+    public function hasRole(int $projectId, int $userId, array $roles): bool
+    {
+        $dbData = ProjectUser::query()
+            ->where('project_id', $projectId)
+            ->where('user_id',  $userId)
+            ->where(function ($query) use ($roles) {
+                $query->whereJsonContains('roles', array_shift($roles)->value);
+
+                foreach ($roles as $role) {
+                    $query->orWhereJsonContains('roles', $role->value);
+                }
+            })
+            ->whereNotNull('joined_at')
+            ->whereNull('left_at')
+            ->first();
+
+        return $dbData ? true : false;
     }
 }

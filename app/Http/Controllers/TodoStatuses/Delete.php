@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\TodoStatus\DestroyRequest;
 use App\Services\UseCases\Commands\TodoStatus\Delete\Command;
 use App\Services\UseCases\Commands\TodoStatus\Delete\Handler;
-use App\Services\UseCases\Commands\TodoStatus\Delete\ModelNotFoundException;
+use App\Services\Repositories\Exceptions\ModelNotFoundException;
 
 class Delete extends Controller
 {

@@ -1,7 +1,7 @@
 @php
 /**
- * @var \App\Services\UseCases\Queries\TodoStatus\FetchForProject\ProjectDTO $project
- * @var \App\Services\UseCases\Queries\TodoStatus\FetchForProject\TodoStatusDTO[] $statuses
+ * @var \App\Services\Repositories\DTOs\ProjectDTO $project
+ * @var \App\Services\Repositories\DTOs\TodoStatusDTO[] $statuses
 */
 @endphp
 @extends('layouts.main')
@@ -33,7 +33,7 @@
                             <div class="d-flex flex-wrap"
                                 x-data="$store.todoStatuses.data"
                                 :key="status">
-                                @include('todos.statuses.templates.status-card')
+                                @include('todos.statuses.templates.status-card', ['projectId' => $project->id])
                         
                             </div>
                         </div>

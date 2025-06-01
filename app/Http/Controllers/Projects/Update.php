@@ -6,17 +6,17 @@ use Illuminate\Contracts\View\View;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
 use App\Http\Requests\Project\UpdateRequest;
-use App\Services\Repositories\ProjectRepositoryInterface;
+use App\Services\Repositories\ProjectRepository;
 use App\Services\UseCases\Commands\Project\Update\Command;
 use App\Services\UseCases\Commands\Project\Update\Handler;
-use App\Services\UseCases\Commands\Project\Update\ModelNotFoundException;
+use App\Services\Repositories\Exceptions\ModelNotFoundException;
 
 class Update extends Controller
 {
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(ProjectRepositoryInterface $projectRepository, int $projectId): View
+    public function edit(int $projectId, ProjectRepository $projectRepository): View
     {
         $project = $projectRepository->find($projectId);
 
@@ -34,7 +34,7 @@ class Update extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateRequest $request, Handler $handler, int $projectId): RedirectResponse
+    public function update(int $projectId, UpdateRequest $request, Handler $handler): RedirectResponse
     {
         $data = $request->validated();
 

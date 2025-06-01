@@ -1,3 +1,8 @@
+@php
+/**
+ * @var int $projectId
+ */
+@endphp
 <template x-for="status in Object.values(statuses)">
     <div class="card mb-3 col-12 col-md-5 mx-2" :style="{'border-color': status.color}">
         <div class="card-header fw-bold" :style="{'background-color': status.color}" 

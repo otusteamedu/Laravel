@@ -2,21 +2,23 @@
 
 namespace App\Services\UseCases\Commands\TodoStatus\Update;
 
-use App\Services\Repositories\TodoStatusDTO;
-use App\Services\Repositories\TodoStatusRepositoryInterface;
+use App\Services\Repositories\DTOs\TodoStatusDTO;
+use App\Services\Repositories\TodoStatusRepository;
+use App\Services\Repositories\Exceptions\ModelNotFoundException;
+
 
 class Handler
 {
     public function __construct(
-        private TodoStatusRepositoryInterface $repository,
+        private TodoStatusRepository $repository,
     ) {
         //
     }
 
     /**
      * Обновляем данные статуса задач для проекта
-     * @param \App\Services\UseCases\Commands\TodoStatus\Update\Command $command
-     * @throws \App\Services\UseCases\Commands\TodoStatus\Update\ModelNotFoundException
+     * @param Command $command
+     * @throws ModelNotFoundException
      * @return bool
      */
     public function handle(Command $command): bool

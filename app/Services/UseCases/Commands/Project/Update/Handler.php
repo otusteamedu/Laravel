@@ -2,22 +2,23 @@
 
 namespace App\Services\UseCases\Commands\Project\Update;
 
-use App\Services\Repositories\ProjectDTO;
-use App\Services\Repositories\ProjectRepositoryInterface;
-use App\Services\UseCases\Commands\Project\Update\ModelNotFoundException;
+use App\Services\Repositories\DTOs\ProjectDTO;
+use App\Services\Repositories\ProjectRepository;
+use App\Services\Repositories\Exceptions\ModelNotFoundException;
+
 
 class Handler
 {
     public function __construct(
-        private ProjectRepositoryInterface $projectRepository,
+        private ProjectRepository $projectRepository,
     ) {
         //
     }
 
     /**
      * Обновляем данные проекта
-     * @param \App\Services\UseCases\Commands\Project\Update\Command $command
-     * @throws \App\Services\UseCases\Commands\Project\Update\ModelNotFoundException
+     * @param Command $command
+     * @throws ModelNotFoundException
      * @return bool
      */
     public function handle(Command $command): bool

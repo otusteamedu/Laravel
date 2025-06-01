@@ -3,36 +3,49 @@
 namespace App\Services\UseCases\Queries\Project\FetchWithRelations;
 
 
-use App\Services\Repositories\ProjectRepositoryInterface;
+use Illuminate\Support\Arr;
+use App\Services\Repositories\ProjectRepository;
+use App\Services\Repositories\Exceptions\ModelNotFoundException;
+
 
 class Fetcher
 {
     public function __construct(
-        private ProjectRepositoryInterface $projectRepository,
+        private ProjectRepository $projectRepository,
     ) {}
 
     /**
      * Возвращает данные для страницы проекта
-     * @param \App\Services\UseCases\Queries\Project\FetchWithRelations\Query $query
+     * @param Query $query
      * @return Result
      */
     public function fetch(Query $query): Result
     {
-        $project = $this->projectRepository->find($query->projectId);
+        $projectDTO = $this->projectRepository->find($query->projectId);
 
-        if ($project === null) {
+        if ($projectDTO === null) {
             throw new ModelNotFoundException('Проект не найден');
         }
 
-        $projectDTO = new ProjectDTO(
-            id: $project->id,
-            name: $project->name,
-            description: $project->description,
-            created: $project->created,
+        $users = $this->projectRepository->fetchUsers($query->projectId);
+
+        $userDTOs = array_map(
+            fn($user) =>
+            new UserWithRelationsDTO(
+                id: $user->id,
+                user_id: $user->user_id,
+                name: $user->name,
+                email: $user->email,
+                roles: $user->roles,
+                invited: $user->invited,
+                joined: $user->joined,
+            ),
+            Arr::from($users)
         );
 
         return new Result(
             ptojectDTO: $projectDTO,
+            userDTOs: $userDTOs
         );
     }
 }

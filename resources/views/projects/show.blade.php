@@ -1,7 +1,7 @@
 @php
 /**
- * @var \App\Services\UseCases\Queries\Project\FetchWithRelations\ProjectDTO $project
- * @var \App\Services\UseCases\Queries\Project\FetchWithRelations\TodoStatusDTO[] $statuses
+ * @var \App\Services\Repositories\DTOs\ProjectDTO $project
+ * @var \App\Services\Repositories\DTOs\UserDTO[] $users
 */
 @endphp
 @extends('layouts.main')
@@ -46,7 +46,9 @@
                                     Участники проекта
                                 </div>
                                 <div class="card-body">
-                                    В разработке
+                                    @foreach($users as $user)
+                                        {{ $user->name }}  {{ $user->roles[0] }}
+                                    @endforeach
                                 </div>
                             </div>
                         </div>

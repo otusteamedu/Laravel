@@ -7,7 +7,7 @@ use Illuminate\Http\RedirectResponse;
 use App\Http\Requests\TodoStatus\UpdateRequest;
 use App\Services\UseCases\Commands\TodoStatus\Update\Command;
 use App\Services\UseCases\Commands\TodoStatus\Update\Handler;
-use App\Services\UseCases\Commands\TodoStatus\Update\ModelNotFoundException;
+use App\Services\Repositories\Exceptions\ModelNotFoundException;
 
 class Update extends Controller
 {

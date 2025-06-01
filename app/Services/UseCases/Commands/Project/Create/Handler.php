@@ -3,23 +3,23 @@
 namespace App\Services\UseCases\Commands\Project\Create;
 
 use Exception;
-use App\Models\ProjectUser;
 use App\Models\ProjectRoleEnum;
 use Illuminate\Support\Facades\DB;
-use App\Services\Repositories\ProjectDTO;
-use App\Services\Repositories\TodoStatusDTO;
-use App\Services\Repositories\InsertTodoStatusesDTO;
-use App\Services\Repositories\ProjectRepositoryInterface;
-use App\Services\Repositories\ProjectUserDTO;
-use App\Services\Repositories\TodoStatusRepositoryInterface;
-use App\Services\Repositories\ProjectUserRepositoryInterface;
+use App\Services\Repositories\DTOs\ProjectDTO;
+use App\Services\Repositories\ProjectRepository;
+use App\Services\Repositories\DTOs\TodoStatusDTO;
+use App\Services\Repositories\DTOs\ProjectUserDTO;
+use App\Services\Repositories\TodoStatusRepository;
+use App\Services\Repositories\ProjectUserRepository;
+use App\Services\Repositories\DTOs\InsertTodoStatusesDTO;
+use App\Services\Repositories\Exceptions\CreateModelFailedException;
 
 class Handler
 {
     public function __construct(
-        private ProjectRepositoryInterface $projectRepository,
-        private TodoStatusRepositoryInterface $todoStatusRepository,
-        private ProjectUserRepositoryInterface $projectUserRepository,
+        private ProjectRepository $projectRepository,
+        private TodoStatusRepository $todoStatusRepository,
+        private ProjectUserRepository $projectUserRepository,
     ) {
         //
     }

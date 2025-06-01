@@ -7,7 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Project\StoreRequest;
 use App\Services\UseCases\Commands\Project\Create\Command;
 use App\Services\UseCases\Commands\Project\Create\Handler;
-use App\Services\UseCases\Commands\Project\Create\CreateModelFailedException;
+use App\Services\Repositories\Exceptions\CreateModelFailedException;
 
 class Create extends Controller
 {

@@ -1,15 +1,21 @@
 <?php
 
-namespace App\Infrastructure\Eloquent\Repositories;
+namespace App\Services\Repositories;
 
 use App\Models\TodoStatus;
 use Illuminate\Support\Arr;
-use App\Services\Repositories\TodoStatusDTO;
-use App\Services\Repositories\InsertTodoStatusesDTO;
-use App\Services\Repositories\TodoStatusRepositoryInterface;
+use App\Services\Repositories\DTOs\TodoStatusDTO;
+use App\Services\Repositories\DTOs\InsertTodoStatusesDTO;
 
-class TodoStatusRepository implements TodoStatusRepositoryInterface
+
+class TodoStatusRepository
 {
+    /**
+     * Получить статус по id
+     * @param int $id
+     * @param int $projectId
+     * @return \App\Models\TodoStatus|null
+     */
     public function find(int $id, int $projectId): ?TodoStatusDTO
     {
         $status = TodoStatus::query()
@@ -30,6 +36,11 @@ class TodoStatusRepository implements TodoStatusRepositoryInterface
         );
     }
 
+    /**
+     * Добавить данные статуса для задач проекта
+     * @param TodoStatusDTO $status
+     * @return int
+     */
     public function add(TodoStatusDTO $status): int
     {
         $dbStatus = TodoStatus::create([
@@ -42,6 +53,11 @@ class TodoStatusRepository implements TodoStatusRepositoryInterface
         return $dbStatus->refresh()->id;
     }
 
+    /**
+     * Обновить данные статуса для задач проекта
+     * @param TodoStatusDTO $status
+     * @return bool
+     */
     public function save(TodoStatusDTO $status): bool
     {
         return TodoStatus::query()
@@ -54,6 +70,12 @@ class TodoStatusRepository implements TodoStatusRepositoryInterface
             ]);
     }
 
+    /**
+     * Удалить статус задач для проекта
+     * @param int $id
+     * @param int $projectId
+     * @return bool
+     */
     public function destroy(int $id, int $projectId): bool
     {
         return TodoStatus::query()
@@ -62,6 +84,9 @@ class TodoStatusRepository implements TodoStatusRepositoryInterface
             ->delete() ?? false;
     }
 
+    /**
+     * Массовое добавление статусов в проект
+     */
     public function insert(InsertTodoStatusesDTO $statuses): bool
     {
         $data = Arr::from($statuses->todoStatusDTOs);
@@ -69,6 +94,11 @@ class TodoStatusRepository implements TodoStatusRepositoryInterface
         return TodoStatus::insert($data);
     }
 
+    /**
+     * Список доступных для задач проекта статусов
+     * @param int $projectId
+     * @return TodoStatusDTO[]
+     */
     public function fetchForProject(int $projectId): array
     {
         $dbStatuses = TodoStatus::query()

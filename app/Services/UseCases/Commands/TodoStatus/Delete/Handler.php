@@ -2,21 +2,21 @@
 
 namespace App\Services\UseCases\Commands\TodoStatus\Delete;
 
-use App\Services\Repositories\TodoStatusRepositoryInterface;
-
+use App\Services\Repositories\TodoStatusRepository;
+use App\Services\Repositories\Exceptions\ModelNotFoundException;
 
 class Handler
 {
     public function __construct(
-        private TodoStatusRepositoryInterface $repository,
+        private TodoStatusRepository $repository,
     ) {
         //
     }
 
     /**
      * Команда удаления статуса задач для проекта
-     * @param \App\Services\UseCases\Commands\TodoStatus\Delete\Command $command
-     * @throws \App\Services\UseCases\Commands\TodoStatus\Delete\ModelNotFoundException
+     * @param Command $command
+     * @throws ModelNotFoundException
      * @return bool
      */
     public function handle(Command $command): bool

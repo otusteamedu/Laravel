@@ -3,21 +3,22 @@
 namespace App\Services\UseCases\Commands\TodoStatus\Create;
 
 use Exception;
-use App\Services\Repositories\TodoStatusDTO;
-use App\Services\Repositories\TodoStatusRepositoryInterface;
+use App\Services\Repositories\DTOs\TodoStatusDTO;
+use App\Services\Repositories\TodoStatusRepository;
+use App\Services\Repositories\Exceptions\CreateModelFailedException;
 
 class Handler
 {
     public function __construct(
-        private TodoStatusRepositoryInterface $repository,
+        private TodoStatusRepository $repository,
     ) {
         //
     }
 
     /**
      * Добавление нового статуса для задач проекта
-     * @param \App\Services\UseCases\Commands\TodoStatus\Create\Command $command
-     * @throws \App\Services\UseCases\Commands\TodoStatus\Create\CreateModelFailedException
+     * @param Command $command
+     * @throws CreateModelFailedException
      * @return Result
      */
     public function handle(Command $command): Result

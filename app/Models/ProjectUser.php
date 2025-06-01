@@ -12,12 +12,12 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  * @property integer $id
  * @property integer $project_id
  * @property integer $user_id
- * @property string $roles
+ * @property array $roles
  * @property ?Carbon $invited_at
  * @property ?Carbon $joined_at
  * @property ?Carbon $left_at
- * @property User[] $users
- * @property Project[] $projects
+ * @property User $users
+ * @property Project $projects
  */
 class ProjectUser extends BaseModel
 {
@@ -47,12 +47,12 @@ class ProjectUser extends BaseModel
         );
     }
 
-    public function users(): BelongsTo
+    public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
 
-    public function projects(): BelongsTo
+    public function project(): BelongsTo
     {
         return $this->belongsTo(Project::class);
     }

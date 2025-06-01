@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Services\Repositories;
+namespace App\Services\Repositories\DTOs;
 
 final readonly class InsertTodoStatusesDTO
 {
     /**
-     * @param array TodoStatusDTO[]
+     * @param TodoStatusDTO[] $todoStatusDTOs
      */
     public function __construct(
         public array $todoStatusDTOs,

@@ -18,7 +18,7 @@
                         <a href="{{ route('projects.index') }}" 
                             @class([
                                 'nav-link', 
-                                'active' => request()->path() === trim(route(name: 'projects.index', absolute: false), '/')
+                                'active' => str_starts_with(request()->route()->getPrefix(), '/project')
                             ])>Проекты</a>
                     </li>
                     <li class="nav-item">

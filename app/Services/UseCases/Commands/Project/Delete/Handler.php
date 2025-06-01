@@ -2,14 +2,13 @@
 
 namespace App\Services\UseCases\Commands\Project\Delete;
 
-use App\Services\Repositories\ProjectRepositoryInterface;
-use App\Services\Repositories\ProjectUserRepositoryInterface;
-use App\Services\UseCases\Commands\Project\Delete\ModelNotFoundException;
+use App\Services\Repositories\ProjectRepository;
+use App\Services\Repositories\Exceptions\ModelNotFoundException;
 
 class Handler
 {
     public function __construct(
-        private ProjectRepositoryInterface $projectRepository,
+        private ProjectRepository $projectRepository,
     ) {
         //
     }

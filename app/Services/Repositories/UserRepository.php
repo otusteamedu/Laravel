@@ -1,20 +1,18 @@
 <?php
 
-namespace App\Infrastructure\Eloquent\Repositories;
+namespace App\Services\Repositories;
 
 use App\Models\User;
-use Illuminate\Support\Facades\Auth;
-use App\Services\Repositories\UserDTO;
-use App\Services\Repositories\UserCreateDTO;
-use App\Services\Repositories\UserRepositoryInterface;
+use App\Services\Repositories\DTOs\UserDTO;
+use App\Services\Repositories\DTOs\UserCreateDTO;
 
-class UserRepository implements UserRepositoryInterface
+class UserRepository
 {
-    public function fetchAll(): array
-    {
-        return User::all()->all();
-    }
-
+    /**
+     * Получить пользователя по id
+     * @param int $id
+     * @return UserDTO|null
+     */
     public function find(int $id): ?UserDTO
     {
         $dbUser = User::query()
@@ -32,6 +30,11 @@ class UserRepository implements UserRepositoryInterface
         );
     }
 
+    /**
+     * Добавить пользователя
+     * @param UserCreateDTO $user
+     * @return int
+     */
     public function add(UserCreateDTO $user): int
     {
         $dbUser = User::create([
@@ -44,6 +47,11 @@ class UserRepository implements UserRepositoryInterface
         return $dbUser->refresh()->id;
     }
 
+    /**
+     * Получить пользователя по email
+     * @param string $email
+     * @return UserDTO|null
+     */
     public function findByEmail(string $email): ?UserDTO
     {
         $dbUser = User::query()
@@ -59,17 +67,5 @@ class UserRepository implements UserRepositoryInterface
             name: $dbUser->name,
             email: $dbUser->email,
         );
-    }
-
-    public function login(int $id, $remeber = false): void
-    {
-        $dbUser = User::findOrFail($id);
-
-        Auth::login($dbUser, $remeber);
-    }
-
-    public function logout(): void
-    {
-        Auth::logout();
     }
 }
