@@ -1,5 +1,6 @@
 <!doctype html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="h-100">
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -16,12 +17,13 @@
     <!-- Scripts -->
     @vite(['resources/sass/app.scss', 'resources/css/carousel.css', 'resources/css/about.css', 'resources/js/app.js'])
 </head>
+
 <body class="d-flex flex-column h-100">
     <header data-bs-theme="dark">
         <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
             <div class="container-fluid">
                 <a class="navbar-brand" href="{{ route('welcome') }}">Смартлайн</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" 
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse"
                     aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
@@ -36,24 +38,38 @@
                         </li>
 
                         @can('employee-access')
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ route('admin.index') }}">Панель управления</a>
-                        </li>
-                        @endcan
-                        
-                        @auth
                             <li class="nav-item">
-                                <a class="nav-link" href="{{ route('profile') }}">Профиль</a>
+                                <a class="nav-link" href="{{ route('admin.index') }}">Панель управления</a>
                             </li>
-                            <li>
-                                <a class="nav-link" href="{{ route('logout') }}" 
-                                    onclick="event.preventDefault();document.getElementById('logout-form').submit();">
-                                    Выйти
+                        @endcan
+
+                        @auth
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                                    aria-expanded="false">
+                                    Кабинет пользователя
                                 </a>
-                                <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                                    @csrf
-                                </form>
-                            </li>
+                                <ul class="dropdown-menu">
+                                    <li class="nav-item">
+                                        <a class="dropdown-item" href="{{ route('profile.edit', auth()->id()) }}">Профиль</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="dropdown-item" href="{{ route('history') }}">История заказов</a>
+                                    </li>
+                                    <li>
+                                        <hr class="dropdown-divider">
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" href="{{ route('logout') }}"
+                                            onclick="event.preventDefault();document.getElementById('logout-form').submit();">
+                                            Выйти
+                                        </a>
+                                        <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                                            @csrf
+                                        </form>
+                                    </li>
+                                </ul>
+                            </li>    
                         @else
                             <li class="nav-item">
                                 <a href="{{ route('login') }}" class="nav-link">Войти</a>
@@ -77,4 +93,5 @@
         <p>&copy; 2025</p>
     </footer>
 </body>
+
 </html>

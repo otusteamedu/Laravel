@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Dto\User;
+namespace App\Dto\Admin\User;
 
-class UpdateDto
+class StoreDto
 {
     public function __construct(
-        public int $id,
         public string $name,
         public string $email,
+        public string $password_hash,
         public int $role_id
     ) 
     {}

@@ -2,8 +2,10 @@
 
 namespace App\Repositories;
 
-use App\Dto\User\StoreDto;
-use App\Dto\User\UpdateDto;
+use App\Dto\Admin\User\StoreDto;
+use App\Dto\Admin\User\UpdateDto;
+use App\Dto\User\PasswordDto;
+use App\Dto\User\ProfileDto;
 use App\Exceptions\UserNotFoundException;
 use App\Models\User;
 
@@ -53,6 +55,31 @@ class UsersRepository
         $user->name = $updateDto->name;
         $user->email = $updateDto->email;
         $user->role_id = $updateDto->role_id;
+        $user->save();
+    }
+
+    public function saveProfile(ProfileDto $profileDto): void
+    {
+        $user = User::find($profileDto->id);
+
+        if (!$user) {
+            throw new UserNotFoundException();
+        }
+
+        $user->name = $profileDto->name;
+        $user->email = $profileDto->email;
+        $user->save();
+    }
+
+    public function savePassword(PasswordDto $passwordDto): void
+    {
+        $user = User::find($passwordDto->id);
+
+        if (!$user) {
+            throw new UserNotFoundException();
+        }
+
+        $user->password = $passwordDto->password_hash;
         $user->save();
     }
 

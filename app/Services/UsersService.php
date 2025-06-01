@@ -1,8 +1,10 @@
 <?php
 namespace App\Services;
 
-use App\Dto\User\StoreDto;
-use App\Dto\User\UpdateDto;
+use App\Dto\Admin\User\StoreDto;
+use App\Dto\Admin\User\UpdateDto;
+use App\Dto\User\PasswordDto;
+use App\Dto\User\ProfileDto;
 use App\Repositories\UsersRepository;
 
 class UsersService
@@ -39,5 +41,15 @@ class UsersService
     public function update(UpdateDto $updateDto): void
     {
         $this->repository->save($updateDto);
+    }
+
+    public function updateProfile(ProfileDto $profileDto): void
+    {
+        $this->repository->saveProfile($profileDto);
+    }
+
+    public function updatePassword(PasswordDto $passwordDto): void
+    {
+        $this->repository->savePassword($passwordDto);
     }
 }

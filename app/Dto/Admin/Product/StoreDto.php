@@ -1,11 +1,10 @@
 <?php
 
-namespace App\Dto\Product;
+namespace App\Dto\Admin\Product;
 
-class UpdateDto
+class StoreDto
 {
     public function __construct(
-        public int $id,
         public string $title,
         public ?string $description,
         public int $category_id,

@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Dto\User\StoreDto;
-use App\Dto\User\UpdateDto;
+use App\Dto\Admin\User\StoreDto;
+use App\Dto\Admin\User\UpdateDto;
 use App\Exceptions\UserNotFoundException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\User\StoreRequest;

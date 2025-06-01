@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Dto\Product\StoreDto;
-use App\Dto\Product\UpdateDto;
+use App\Dto\Admin\Product\StoreDto;
+use App\Dto\Admin\Product\UpdateDto;
 use App\Exceptions\ProductNotFoundException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\Product\StoreRequest;

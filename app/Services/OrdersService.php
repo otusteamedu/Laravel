@@ -1,8 +1,8 @@
 <?php
 namespace App\Services;
 
-use App\Dto\Order\StoreDto;
-use App\Dto\Order\UpdateDto;
+use App\Dto\Admin\Order\StoreDto;
+use App\Dto\Admin\Order\UpdateDto;
 use App\Models\Order;
 use App\Repositories\OrdersRepository;
 use App\Repositories\ProductsRepository;

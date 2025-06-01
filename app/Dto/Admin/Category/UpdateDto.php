@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Dto\Category;
+namespace App\Dto\Admin\Category;
 
 class UpdateDto
 {

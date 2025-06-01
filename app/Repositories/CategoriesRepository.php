@@ -2,8 +2,8 @@
 
 namespace App\Repositories;
 
-use App\Dto\Category\StoreDto;
-use App\Dto\Category\UpdateDto;
+use App\Dto\Admin\Category\StoreDto;
+use App\Dto\Admin\Category\UpdateDto;
 use App\Exceptions\CategoryNotFoundException;
 use App\Models\Category;
 

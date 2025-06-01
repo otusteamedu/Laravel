@@ -2,8 +2,8 @@
 
 namespace App\Repositories;
 
-use App\Dto\Order\StoreDto;
-use App\Dto\Order\UpdateDto;
+use App\Dto\Admin\Order\StoreDto;
+use App\Dto\Admin\Order\UpdateDto;
 use App\Exceptions\OrderNotFoundException;
 use App\Models\Order;
 use App\Models\User;

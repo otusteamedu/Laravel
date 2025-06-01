@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Dto\Order;
+namespace App\Dto\User;
 
-class UpdateDto
+class PasswordDto
 {
     public function __construct(
         public int $id,
-        public int $user_id
+        public string $password_hash
     ) 
     {}
 }

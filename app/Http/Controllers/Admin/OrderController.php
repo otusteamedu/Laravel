@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Dto\Order\StoreDto;
-use App\Dto\Order\UpdateDto;
+use App\Dto\Admin\Order\StoreDto;
+use App\Dto\Admin\Order\UpdateDto;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\Order\StoreRequest;
 use App\Http\Requests\Admin\Order\UpdateRequest;

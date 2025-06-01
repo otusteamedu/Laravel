@@ -1,8 +1,8 @@
 <?php
 namespace App\Services;
 
-use App\Dto\Product\StoreDto;
-use App\Dto\Product\UpdateDto;
+use App\Dto\Admin\Product\StoreDto;
+use App\Dto\Admin\Product\UpdateDto;
 use App\Repositories\ProductsRepository;
 use Storage;
 use Illuminate\Database\Eloquent\Collection;
