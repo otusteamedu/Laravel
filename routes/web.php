@@ -52,5 +52,3 @@ Route::middleware('auth')
         Route::post('/destroy', TodoStatuses\Delete::class)
             ->name('destroy');
     });
-
-require __DIR__ . '/auth.php';

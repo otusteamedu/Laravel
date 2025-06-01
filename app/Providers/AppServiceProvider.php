@@ -27,11 +27,6 @@ class AppServiceProvider extends ServiceProvider
             URL::forceScheme('https');
         }
 
-        Event::listen(function (\SocialiteProviders\Manager\SocialiteWasCalled $event) {
-            $event->extendSocialite('yandex', \SocialiteProviders\Yandex\Provider::class);
-            $event->extendSocialite('vkid', \App\SocialiteProviders\VKID\Provider::class);
-        });
-
         Carbon::setLocale(config('app.locale'));
 
         View::share('appLocale', str_replace('_', '-', config('app.locale')));
