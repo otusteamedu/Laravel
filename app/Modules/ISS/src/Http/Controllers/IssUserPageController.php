@@ -2,6 +2,7 @@
 
 namespace App\Modules\ISS\src\Http\Controllers;
 
+use Illuminate\View\View;
 use App\Modules\ISS\src\Services\issUser\IssUserRepoInterface;
 use App\Modules\ISS\src\Services\issUser\getUserData\GetUserData;
 use App\Modules\ISS\src\Services\issUser\getUserData\InputDTO as userDataDTO;
@@ -12,16 +13,25 @@ use App\Modules\ISS\src\Services\EducationRoute\getRouteReadyPercentForUsersOfFi
 
 class IssUserPageController extends Controller
 {
+
+    /**
+     * Контроллер страницы пользователя
+     * @param GetUserData $getUserData
+     * @param GetAllEducationRoutesOfUserWithPoints $getAllEducationRoutesOfUserWithPoints
+     * @param GetRouteReadyPercentForUsersOfFirm $getRouteReadyPercentForUsersOfFirm
+     * @param int $issUserId
+     * @return View
+     */
     public function userAccount(
         GetUserData $getUserData,
         GetAllEducationRoutesOfUserWithPoints $getAllEducationRoutesOfUserWithPoints,
         GetRouteReadyPercentForUsersOfFirm $getRouteReadyPercentForUsersOfFirm,
         int $issUserId
-    ) {
+    ): View
+    {
         /** @TODO пока нет авторизации здесь вручную ставлю код пользователя в сессию, потом переделаю как надо */
         request()->session()->remove('userId');
         session(['userId' => $issUserId]);
-
 
         //получаем данные из сервисов
         $issUserParameters = $getUserData->getUserData(new userDataDTO(issUserId: $issUserId));
@@ -39,7 +49,7 @@ class IssUserPageController extends Controller
             new diagramDTO(id: $issUserId, isIssAdmin: $issUserParameters->roleName == 'admin' ? true : false)
         );
 
-//        echo '<pre>';var_dump($issUserRoutes);exit;
+
         //переводим в требуемый вид (там где необходимо)
         //учебные маршруты с точками маршрутов
         $routes = [];
