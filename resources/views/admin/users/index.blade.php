@@ -22,10 +22,46 @@
     <table class="table">
         <thead>
             <tr>
-                <th scope="col">#</th>
-                <th scope="col">Имя</th>
-                <th scope="col">Email</th>
-                <th scope="col">Создан</th>
+                <th scope="col">
+                    #
+                    <a href="{{ route(
+                        'admin.users.index', 
+                        array_merge(request()->query(), ['sort' => 'id', 'direction' => $direction === 'asc' ? 'desc' : 'asc'])
+                        ) }}" 
+                        class="link-underline-light">
+                        &#8645;
+                    </a>
+                </th>
+                <th scope="col">
+                    Имя
+                    <a href="{{ route(
+                        'admin.users.index', 
+                        array_merge(request()->query(), ['sort' => 'name', 'direction' => $direction === 'asc' ? 'desc' : 'asc'])
+                        ) }}" 
+                        class="link-underline-light">
+                        &#8645;
+                    </a>
+                </th>
+                <th scope="col">
+                    Email
+                    <a href="{{ route(
+                        'admin.users.index', 
+                        array_merge(request()->query(), ['sort' => 'email', 'direction' => $direction === 'asc' ? 'desc' : 'asc'])
+                        ) }}" 
+                        class="link-underline-light">
+                        &#8645;
+                    </a>
+                </th>
+                <th scope="col">
+                    Создан
+                    <a href="{{ route(
+                        'admin.users.index', 
+                        array_merge(request()->query(), ['sort' => 'created_at', 'direction' => $direction === 'asc' ? 'desc' : 'asc'])
+                        ) }}" 
+                        class="link-underline-light">
+                        &#8645;
+                    </a>
+                </th>
                 @canany(['viewAny', 'update', 'delete'], App\Models\User::class)
                 <th scope="col">Действия</th>
                 @endcan

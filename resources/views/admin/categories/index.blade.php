@@ -22,12 +22,40 @@
     <table class="table">
         <thead>
             <tr>
-                <th scope="col">#</th>
-                <th scope="col">Название</th>
-                <th scope="col">Создана</th>
+                <th scope="col">
+                    #
+                    <a href="{{ route(
+                        'admin.categories.index', 
+                        array_merge(request()->query(), ['sort' => 'id', 'direction' => $direction === 'asc' ? 'desc' : 'asc'])
+                        ) }}" 
+                        class="link-underline-light">
+                        &#8645;
+                    </a>
+                </th>
+                <th scope="col">
+                    Название
+                    <a href="{{ route(
+                        'admin.categories.index', 
+                        array_merge(request()->query(), ['sort' => 'title', 'direction' => $direction === 'asc' ? 'desc' : 'asc'])
+                        ) }}" 
+                        class="link-underline-light">
+                        &#8645;
+                    </a>
+                </th>
+                <th scope="col">
+                    Создана
+                    <a href="{{ route(
+                        'admin.categories.index', 
+                        array_merge(request()->query(), ['sort' => 'created_at', 'direction' => $direction === 'asc' ? 'desc' : 'asc'])
+                        ) }}" 
+                        class="link-underline-light">
+                        &#8645;
+                    </a>
+                </th>
                 <th scope="col">Действия</th>
             </tr>
         </thead>
+        
         <tbody>
             @foreach($categories as $category)
                 <tr>

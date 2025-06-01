@@ -10,6 +10,7 @@ use App\Http\Requests\Admin\Category\StoreRequest;
 use App\Http\Requests\Admin\Category\UpdateRequest;
 use App\Services\CategoriesService;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Illuminate\View\View;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
@@ -23,10 +24,18 @@ class CategoryController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(): View
+    public function index(Request $request): View
     {
-        $categories = $this->service->getAll();
-        return view('admin.categories.index', compact('categories'));
+        $sort = $request->get('sort', 'id');
+        $allowedSorts = ['id', 'title', 'created_at'];
+        $sort = in_array($sort, $allowedSorts) ? $sort : 'id';
+
+        $direction = $request->get('direction', 'asc');
+        $allowedDirections= ['asc', 'desc'];
+        $direction = in_array($direction, $allowedDirections) ? $direction: 'asc';
+
+        $categories = $this->service->getAll($sort, $direction);
+        return view('admin.categories.index', compact('categories', 'direction'));
     }
 
     /**

@@ -11,6 +11,7 @@ use App\Http\Requests\Admin\Product\UpdateRequest;
 use App\Services\CategoriesService;
 use App\Services\ProductsService;
 use Illuminate\Contracts\View\View;
+use Illuminate\Http\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Illuminate\Support\Number;
 use Illuminate\Http\RedirectResponse;
@@ -26,10 +27,18 @@ class ProductController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(): View
+    public function index(Request $request): View
     {
-        $products = $this->service->getList();
-        return view('admin.products.index', compact('products'));
+        $sort = $request->get('sort', 'id');
+        $allowedSorts = ['id', 'title', 'category', 'created_at'];
+        $sort = in_array($sort, $allowedSorts) ? $sort : 'id';
+
+        $direction = $request->get('direction', 'asc');
+        $allowedDirections= ['asc', 'desc'];
+        $direction = in_array($direction, $allowedDirections) ? $direction: 'asc';
+
+        $products = $this->service->getList($sort, $direction);
+        return view('admin.products.index', compact('products', 'direction'));
     }
 
     /**

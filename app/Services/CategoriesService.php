@@ -11,9 +11,9 @@ class CategoriesService
         private CategoriesRepository $repository,
     ) {}
 
-    public function getAll(): \Illuminate\Database\Eloquent\Collection
+    public function getAll(string $sort, string $direction): \Illuminate\Database\Eloquent\Collection
     {
-        return $this->repository->fetchAll();
+        return $this->repository->fetchAll($sort, $direction);
     }
 
     public function getById($categoryId): \App\Models\Category

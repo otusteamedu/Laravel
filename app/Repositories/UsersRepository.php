@@ -16,9 +16,9 @@ class UsersRepository
         return User::all();
     }
 
-    public function fetchList(): \Illuminate\Pagination\LengthAwarePaginator
+    public function fetchList(string $sort, string $direction): \Illuminate\Pagination\LengthAwarePaginator
     {
-        return User::paginate(self::USERS_PER_PAGE);
+        return User::orderBy($sort, $direction)->paginate(self::USERS_PER_PAGE)->withQueryString();
     }
 
     public function find(int $userId): User

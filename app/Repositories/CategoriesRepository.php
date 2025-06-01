@@ -9,9 +9,9 @@ use App\Models\Category;
 
 class CategoriesRepository
 {
-    public function fetchAll(): \Illuminate\Database\Eloquent\Collection
+    public function fetchAll(string $sort, string $direction): \Illuminate\Database\Eloquent\Collection
     {
-        return Category::all();
+        return Category::orderBy($sort, $direction)->get();
     }
 
     public function find(int $categoryId): Category

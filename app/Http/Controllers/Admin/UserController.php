@@ -13,6 +13,7 @@ use App\Services\UsersService;
 use App\Services\RolesService;
 use Hash;
 use Illuminate\Contracts\View\View;
+use Illuminate\Http\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Gate;
@@ -28,10 +29,18 @@ class UserController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(): View
+    public function index(Request $request): View
     {
-        $users = $this->service->getList();
-        return view('admin.users.index', compact('users'));
+        $sort = $request->get('sort', 'id');
+        $allowedSorts = ['id', 'name', 'email', 'created_at'];
+        $sort = in_array($sort, $allowedSorts) ? $sort : 'id';
+
+        $direction = $request->get('direction', 'asc');
+        $allowedDirections= ['asc', 'desc'];
+        $direction = in_array($direction, $allowedDirections) ? $direction: 'asc';
+
+        $users = $this->service->getList($sort, $direction);
+        return view('admin.users.index', compact('users', 'direction'));
     }
 
     /**

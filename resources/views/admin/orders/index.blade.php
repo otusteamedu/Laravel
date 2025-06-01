@@ -22,9 +22,36 @@
     <table class="table">
         <thead>
             <tr>
-                <th scope="col">#</th>
-                <th scope="col">Клиент</th>
-                <th scope="col">Создан</th>
+                <th scope="col">
+                    #
+                    <a href="{{ route(
+                        'admin.orders.index', 
+                        array_merge(request()->query(), ['sort' => 'id', 'direction' => $direction === 'asc' ? 'desc' : 'asc'])
+                        ) }}" 
+                        class="link-underline-light">
+                        &#8645;
+                    </a>
+                </th>
+                <th scope="col">
+                    Клиент
+                    <a href="{{ route(
+                        'admin.orders.index', 
+                        array_merge(request()->query(), ['sort' => 'user', 'direction' => $direction === 'asc' ? 'desc' : 'asc'])
+                        ) }}" 
+                        class="link-underline-light">
+                        &#8645;
+                    </a>
+                </th>
+                <th scope="col">
+                    Создан
+                    <a href="{{ route(
+                        'admin.orders.index', 
+                        array_merge(request()->query(), ['sort' => 'created_at', 'direction' => $direction === 'asc' ? 'desc' : 'asc'])
+                        ) }}" 
+                        class="link-underline-light">
+                        &#8645;
+                    </a>
+                </th>
                 <th scope="col">Действия</th>
             </tr>
         </thead>

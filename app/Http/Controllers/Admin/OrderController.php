@@ -9,6 +9,7 @@ use App\Http\Requests\Admin\Order\StoreRequest;
 use App\Http\Requests\Admin\Order\UpdateRequest;
 use App\Services\ProductsService;
 use App\Services\UsersService;
+use Illuminate\Http\Request;
 use Illuminate\View\View;
 use App\Services\OrdersService;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -27,10 +28,17 @@ class OrderController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(): View
+    public function index(Request $request): View
     {
-        $orders = $this->service->getList();
-        return view('admin.orders.index', compact('orders'));
+        $sort = $request->get('sort', 'id');
+        $allowedSorts = ['id', 'user', 'created_at'];
+        $sort = in_array($sort, $allowedSorts) ? $sort : 'id';
+
+        $direction = $request->get('direction', 'asc');
+        $allowedDirections= ['asc', 'desc'];
+        $direction = in_array($direction, $allowedDirections) ? $direction: 'asc';
+        $orders = $this->service->getList($sort, $direction);
+        return view('admin.orders.index', compact('orders', 'direction'));
     }
 
     /**

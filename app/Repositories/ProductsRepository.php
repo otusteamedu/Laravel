@@ -6,6 +6,7 @@ use App\Dto\Product\StoreDto;
 use App\Dto\Product\UpdateDto;
 use App\Exceptions\ProductNotFoundException;
 use App\Models\Product;
+use App\Models\Category;
 use App\Models\ProductAsset;
 
 class ProductsRepository
@@ -17,9 +18,19 @@ class ProductsRepository
         return Product::with('category')->get();
     }
 
-    public function fetchList(): \Illuminate\Pagination\LengthAwarePaginator
+    public function fetchList(string $sort, string $direction): \Illuminate\Pagination\LengthAwarePaginator
     {
-        return Product::with('category')->paginate(self::PRODUCTS_FOR_PAGE);
+        $paginator = Product::with('category');
+
+        if ($sort == 'category') {
+            $paginator = $paginator->orderBy(Category::select('title')->whereColumn('categories.id', 'products.category_id'), $direction);
+        } else {
+            $paginator = $paginator->orderBy($sort, $direction);
+        }
+
+        $paginator = $paginator->paginate(self::PRODUCTS_FOR_PAGE)->withQueryString();
+        
+        return $paginator;
     }
 
     public function find(int $productId): Product

@@ -6,6 +6,7 @@ use App\Dto\Order\StoreDto;
 use App\Dto\Order\UpdateDto;
 use App\Exceptions\OrderNotFoundException;
 use App\Models\Order;
+use App\Models\User;
 use App\Models\OrderProduct;
 
 class OrdersRepository
@@ -17,9 +18,18 @@ class OrdersRepository
         return Order::with('user')->get();
     }
 
-    public function fetchList(): \Illuminate\Pagination\LengthAwarePaginator
+    public function fetchList(string $sort, string $direction): \Illuminate\Pagination\LengthAwarePaginator
     {
-        return Order::with('user')->paginate(self::ORDERS_PER_PAGE);
+        $paginator = Order::with('user');
+
+        if ($sort == 'user') {
+            $paginator = $paginator->orderBy(User::select('name')->whereColumn('users.id', 'orders.user_id'), $direction);
+        } else {
+            $paginator = $paginator->orderBy($sort, $direction);
+        }
+        
+        $paginator = $paginator->paginate(self::ORDERS_PER_PAGE)->withQueryString();
+        return $paginator;
     }
 
     public function find(int $orderId): Order

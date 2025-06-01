@@ -16,9 +16,9 @@ class UsersService
         return $this->repository->fetchAll();
     }
 
-    public function getList(): \Illuminate\Pagination\LengthAwarePaginator
+    public function getList(string $sort, string $direction): \Illuminate\Pagination\LengthAwarePaginator
     {
-        return $this->repository->fetchList();
+        return $this->repository->fetchList($sort, $direction);
     }
 
     public function getById($userId): \App\Models\User
