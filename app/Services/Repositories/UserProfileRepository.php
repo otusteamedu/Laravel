@@ -31,31 +31,21 @@ class UserProfileRepository
     }
 
     /**
-     * Добавить запись пользователю
+     * Обновить или создать профиль пользователя
      * @param UserProfileDTO $userProfile
      * @return int
      */
-    public function add(UserProfileDTO $userProfile): int
+    public function save(UserProfileDTO $userProfile): int
     {
-        $dbData = UserSocialite::create([
-            'user_id'   => $userProfile->user_id,
-            'biography' => $userProfile->biography,
-        ]);
-
-        return $dbData->refresh()->id;
-    }
-
-    /**
-     * Обновить ппрофиль пользователя
-     * @param UserProfileDTO $userProfile
-     * @return bool
-     */
-    public function save(UserProfileDTO $userProfile): bool
-    {
-        return UserSocialite::query()
-            ->where('user_id', $userProfile->user_id)
-            ->update([
+        $profile = UserProfile::updateOrCreate(
+            [
+                'user_id' => $userProfile->user_id,
+            ],
+            [
                 'biography' => $userProfile->biography,
-            ]);
+            ]
+        );
+
+        return $profile->refresh()->id;
     }
 }

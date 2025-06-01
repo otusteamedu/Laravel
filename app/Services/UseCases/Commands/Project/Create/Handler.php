@@ -81,8 +81,6 @@ class Handler
             return new Result($projectId);
         } catch (Exception $e) {
             DB::rollBack();
-            debugbar()->error($e->getMessage());
-
             throw new CreateModelFailedException('Не удалось создать проект');
         }
     }

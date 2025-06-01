@@ -4,9 +4,10 @@ namespace App\Http\Controllers\Projects;
 
 use Illuminate\Contracts\View\View;
 use App\Http\Controllers\Controller;
+use App\Services\UseCases\Queries\Project\Fetch\Query;
+use App\Services\UseCases\Queries\Project\Fetch\Fetcher;
 use App\Services\Repositories\Exceptions\ModelNotFoundException;
-use App\Services\UseCases\Queries\Project\FetchWithRelations\Query;
-use App\Services\UseCases\Queries\Project\FetchWithRelations\Fetcher;
+
 
 class Show extends Controller
 {
@@ -20,7 +21,6 @@ class Show extends Controller
 
             return view('projects.show', [
                 'project' => $result->ptojectDTO,
-                'users' => $result->userDTOs,
             ]);
         } catch (ModelNotFoundException) {
             abort(404);

@@ -27,8 +27,10 @@
                                     <tr>
                                         <th scope="col">Имя</th>
                                         <th scope="col">Роль</th>
-                                        <th scope="col" class="d-none d-md-table-cell">Пригашен</th>
-                                        <th scope="col" class="d-none d-md-table-cell">С нами с</th>
+                                        @can('project.user.manage', $project->id)
+                                            <th scope="col" class="d-none d-md-table-cell">Пригашен</th>
+                                            <th scope="col" class="d-none d-md-table-cell">С нами с</th>
+                                        @endcan
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -40,8 +42,10 @@
                                                 <div>{{ $role }}</div>
                                             @endforeach
                                         </td>
-                                        <td class="d-none d-md-table-cell">{{ $user->invited->translatedFormat("j F Y") }}</td>
-                                        <td class="d-none d-md-table-cell">{{ $user->joined->translatedFormat("j F Y") }}</td>
+                                        @can('project.user.manage', $project->id)
+                                            <td class="d-none d-md-table-cell">{{ $user->invited->translatedFormat("j F Y") }}</td>
+                                            <td class="d-none d-md-table-cell">{{ $user->joined->translatedFormat("j F Y") }}</td>
+                                        @endcan
                                     </tr>
                                     @endforeach
                                 </tbody>

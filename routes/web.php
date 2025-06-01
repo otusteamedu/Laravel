@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Projects;
 use App\Http\Controllers\ProjectUsers;
 use App\Http\Controllers\TodoStatuses;
@@ -8,6 +9,13 @@ use App\Http\Controllers\TodoStatuses;
 Route::view('/', 'pages.index')->name('home');
 
 Route::view('/about', 'pages.about')->name('about');
+
+Route::middleware('auth')->group(function () {
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+});
+
 
 Route::middleware('auth')
     ->prefix('projects')
@@ -50,3 +58,5 @@ Route::middleware('auth')
         Route::post('/destroy', TodoStatuses\Delete::class)
             ->name('destroy');
     });
+
+require __DIR__ . '/auth.php';

@@ -21,23 +21,27 @@
                     class="btn p-0"
                     >Подробнее</a>
             </span>
-            <span class="text-muted">
-                <i class="fa-solid fa-pen-to-square"></i>
-                <a href="{{ route('projects.edit', ['projectId' => $projectId]) }}"
-                    class="btn p-0"
-                    >Редактировать</a>
-            </span>
-            <span class="text-muted">
-                <i class="fa-solid fa-trash-can"></i>
-                <button
-                    type="button"
-                    class="btn p-0" 
-                    data-bs-toggle="modal" 
-                    data-bs-target="#project-delete-confirmation" 
-                    data-bs-project-name="{{ $name }}"
-                    data-bs-project-id="{{ $projectId }}"                    
-                    >Удалить</button>
-            </span>
+            @can('project.update', $projectId)
+                <span class="text-muted">
+                    <i class="fa-solid fa-pen-to-square"></i>
+                    <a href="{{ route('projects.edit', ['projectId' => $projectId]) }}"
+                        class="btn p-0"
+                        >Редактировать</a>
+                </span>
+            @endcan
+            @can('project.delete', $projectId)
+                <span class="text-muted">
+                    <i class="fa-solid fa-trash-can"></i>
+                    <button
+                        type="button"
+                        class="btn p-0" 
+                        data-bs-toggle="modal" 
+                        data-bs-target="#project-delete-confirmation" 
+                        data-bs-project-name="{{ $name }}"
+                        data-bs-project-id="{{ $projectId }}"                    
+                        >Удалить</button>
+                </span>
+            @endcan
         </p>
     </div>
 </div>

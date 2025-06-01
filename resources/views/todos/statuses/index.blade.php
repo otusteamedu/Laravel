@@ -21,15 +21,17 @@
                     <div class="p-4" id="statuses">
                         <div class="mb-4">
                             <h4 class="mb-4">Статусы для задач проектa {{ $project->name }}</h4>
-                            <div class="col-12 my-3 text-end">
-                                <button
-                                    type="button" 
-                                    class="btn btn-outline-primary"
-                                    x-data @click="$store.todoStatuses.formShow()"
-                                    >
-                                    Добавить статус
-                                </button>
-                            </div>
+                            @can('todostatuses.manage', $project->id)
+                                <div class="col-12 my-3 text-end">
+                                    <button
+                                        type="button" 
+                                        class="btn btn-outline-primary"
+                                        x-data @click="$store.todoStatuses.formShow()"
+                                        >
+                                        Добавить статус
+                                    </button>
+                                </div>
+                            @endcan
                             <div class="d-flex flex-wrap"
                                 x-data="$store.todoStatuses.data"
                                 :key="status">

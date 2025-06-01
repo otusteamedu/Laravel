@@ -48,6 +48,21 @@ class UserRepository
     }
 
     /**
+     * Обновить профиль пользователя
+     * @param UserDTO $user
+     * @return bool
+     */
+    public function save(UserDTO $user): bool
+    {
+        return User::query()
+            ->where('id', $user->id)
+            ->update([
+                'name'  => $user->name,
+                'email' => $user->email,
+            ]);
+    }
+
+    /**
      * Получить пользователя по email
      * @param string $email
      * @return UserDTO|null
