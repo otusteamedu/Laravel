@@ -1,23 +1,13 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Projects;
+use App\Http\Controllers\ProjectUsers;
 use App\Http\Controllers\TodoStatuses;
-use App\Http\Controllers\TodoController;
 
 Route::view('/', 'pages.index')->name('home');
 
 Route::view('/about', 'pages.about')->name('about');
-
-Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-
-    Route::get('/todos', [TodoController::class, 'list'])->name('todo.list');
-});
-
 
 Route::middleware('auth')
     ->prefix('projects')
@@ -37,6 +27,14 @@ Route::middleware('auth')
             ->name('update');
         Route::delete('/{projectId}', Projects\Delete::class)
             ->name('destroy');
+    });
+
+Route::middleware('auth')
+    ->prefix('project/{projectId}/users')
+    ->name('project.users.')
+    ->group(function () {
+        Route::get('/', ProjectUsers\Index::class)
+            ->name('index');
     });
 
 Route::middleware('auth')
