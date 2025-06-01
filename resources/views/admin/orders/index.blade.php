@@ -65,4 +65,8 @@
             @endforeach
         </tbody>
     </table>
+
+    <div>
+        {{ $orders->links() }}
+    </div>
 @endsection

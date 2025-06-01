@@ -10,9 +10,16 @@ use App\Models\OrderProduct;
 
 class OrdersRepository
 {
+    const ORDERS_PER_PAGE = 10;
+
     public function fetchAll(): \Illuminate\Database\Eloquent\Collection
     {
         return Order::with('user')->get();
+    }
+
+    public function fetchList(): \Illuminate\Pagination\LengthAwarePaginator
+    {
+        return Order::with('user')->paginate(self::ORDERS_PER_PAGE);
     }
 
     public function find(int $orderId): Order

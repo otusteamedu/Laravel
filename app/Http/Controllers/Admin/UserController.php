@@ -30,7 +30,7 @@ class UserController extends Controller
      */
     public function index(): View
     {
-        $users = $this->service->getAll();
+        $users = $this->service->getList();
         return view('admin.users.index', compact('users'));
     }
 

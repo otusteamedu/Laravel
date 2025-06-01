@@ -19,6 +19,11 @@ class OrdersService
         return $this->repository->fetchAll();
     }
 
+    public function getList(): \Illuminate\Pagination\LengthAwarePaginator
+    {
+        return $this->repository->fetchList();
+    }
+
     public function getById($orderId): Order
     {
         return $this->repository->find($orderId);

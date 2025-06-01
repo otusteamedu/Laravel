@@ -9,9 +9,16 @@ use App\Models\User;
 
 class UsersRepository
 {
+    const USERS_PER_PAGE = 10;
+    
     public function fetchAll(): \Illuminate\Database\Eloquent\Collection
     {
         return User::all();
+    }
+
+    public function fetchList(): \Illuminate\Pagination\LengthAwarePaginator
+    {
+        return User::paginate(self::USERS_PER_PAGE);
     }
 
     public function find(int $userId): User

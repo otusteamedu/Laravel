@@ -18,7 +18,7 @@ class OrderSeeder extends Seeder
         $users = User::all();
         $products = Product::all();
 
-        for ($i = 0; $i < 10; $i++) {
+        for ($i = 0; $i < 100; $i++) {
             $randomUserId = $users->random()->id;
             $order = Order::factory()->create(['user_id' => $randomUserId]);
 

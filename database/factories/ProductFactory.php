@@ -22,7 +22,7 @@ class ProductFactory extends Factory
             'category_id' => 1,
             'price' => $this->faker->numberBetween(10000, 100000),
             'stock' => $this->faker->numberBetween(1, 100),
-            'created_at' => now(),
+            'created_at' => $this->faker->dateTimeBetween('-1 year', 'now'),
         ];
     }
 }

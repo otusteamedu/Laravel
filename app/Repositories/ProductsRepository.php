@@ -10,9 +10,16 @@ use App\Models\ProductAsset;
 
 class ProductsRepository
 {
+    const PRODUCTS_FOR_PAGE = 10;
+
     public function fetchAll(): \Illuminate\Database\Eloquent\Collection
     {
         return Product::with('category')->get();
+    }
+
+    public function fetchList(): \Illuminate\Pagination\LengthAwarePaginator
+    {
+        return Product::with('category')->paginate(self::PRODUCTS_FOR_PAGE);
     }
 
     public function find(int $productId): Product

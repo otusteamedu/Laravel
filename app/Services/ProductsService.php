@@ -17,6 +17,11 @@ class ProductsService
         return $this->repository->fetchAll();
     }
 
+    public function getList(): \Illuminate\Pagination\LengthAwarePaginator
+    {
+        return $this->repository->fetchList();
+    }
+
     public function getById($productId): \App\Models\Product
     {
         return $this->repository->find($productId);

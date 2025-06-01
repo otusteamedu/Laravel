@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Pagination\Paginator;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -32,5 +33,7 @@ class AppServiceProvider extends ServiceProvider
             $roleId = $user->role_id ?? 0;
             return $roleId == self::ADMIN_ROLE_ID || $roleId == self::MANAGER_ROLE_ID;
         });
+
+        Paginator::useBootstrapFive();
     }
 }
