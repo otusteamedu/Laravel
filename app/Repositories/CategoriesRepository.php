@@ -9,7 +9,12 @@ use App\Models\Category;
 
 class CategoriesRepository
 {
-    public function fetchAll(string $sort, string $direction): \Illuminate\Database\Eloquent\Collection
+    public function fetchAll(): \Illuminate\Database\Eloquent\Collection
+    {
+        return Category::all();
+    }
+
+    public function fetchAllWithSort(string $sort, string $direction): \Illuminate\Database\Eloquent\Collection
     {
         return Category::orderBy($sort, $direction)->get();
     }

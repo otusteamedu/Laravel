@@ -1,10 +1,14 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\CatalogController;
 
 Route::view('/', 'welcome')->name('welcome');
 Route::view('/about', 'about')->name('about');
 Route::view('/profile', 'profile')->name('profile');
+
+Route::get('/catalog', [CatalogController::class, 'index'])->name('catalog');
+Route::get('/category/{categoryId}', [CatalogController::class, 'category'])->name('category');
 
 Route::view('/admin', 'admin.index')->name('admin.index')->middleware('can:employee-access');
 

@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 /**
  * Product model.
@@ -86,6 +87,11 @@ class Product extends Model
         return $this->assets;
     }
 
+    public function getFirstImage(): \App\Models\ProductAsset   
+    {
+        return $this->first_image;
+    }
+
     public function category(): BelongsTo
     {
         return $this->belongsTo(Category::class);
@@ -99,5 +105,10 @@ class Product extends Model
     public function assets(): HasMany
     {
         return $this->hasMany(ProductAsset::class);
+    }
+
+    public function first_image(): HasOne
+    {
+        return $this->hasOne(ProductAsset::class)->where('type', 'image')->orderBy('id');
     }
 }

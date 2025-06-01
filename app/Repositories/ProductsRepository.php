@@ -8,17 +8,30 @@ use App\Exceptions\ProductNotFoundException;
 use App\Models\Product;
 use App\Models\Category;
 use App\Models\ProductAsset;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class ProductsRepository
 {
     const PRODUCTS_FOR_PAGE = 10;
+    const CATALOG_FOR_PAGE = 12;
 
-    public function fetchAll(): \Illuminate\Database\Eloquent\Collection
+    public function fetchAll(): Collection
     {
         return Product::with('category')->get();
     }
 
-    public function fetchList(string $sort, string $direction): \Illuminate\Pagination\LengthAwarePaginator
+    public function fetchAllWithImage(): LengthAwarePaginator
+    {
+        return Product::with('first_image')->paginate(self::CATALOG_FOR_PAGE)->withQueryString();
+    }
+
+    public function fetchByCategoryId(int $categoryId): Collection
+    {
+        return Product::with('first_image')->where('category_id', $categoryId)->get();
+    }
+
+    public function fetchList(string $sort, string $direction): LengthAwarePaginator
     {
         $paginator = Product::with('category');
 
@@ -44,13 +57,13 @@ class ProductsRepository
         return $product;
     }
 
-    public function findByIds(array $product_ids): \Illuminate\Database\Eloquent\Collection
+    public function findByIds(array $product_ids): Collection
     {
         $products = Product::whereIn('id', $product_ids)->get();
         return $products;
     }
 
-    public function fetchAssets(int $productId): \Illuminate\Database\Eloquent\Collection
+    public function fetchAssets(int $productId): Collection
     {
         $assets = Product::find($productId)->getAssets();
         return $assets;

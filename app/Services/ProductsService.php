@@ -5,6 +5,9 @@ use App\Dto\Product\StoreDto;
 use App\Dto\Product\UpdateDto;
 use App\Repositories\ProductsRepository;
 use Storage;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Pagination\LengthAwarePaginator;
+use App\Models\Product;
 
 class ProductsService
 {
@@ -12,17 +15,27 @@ class ProductsService
         private ProductsRepository $repository,
     ) {}
 
-    public function getAll(): \Illuminate\Database\Eloquent\Collection
+    public function getAll(): Collection
     {
         return $this->repository->fetchAll();
     }
 
-    public function getList(string $sort, string $direction): \Illuminate\Pagination\LengthAwarePaginator
+    public function getList(string $sort, string $direction): LengthAwarePaginator
     {
         return $this->repository->fetchList($sort, $direction);
     }
 
-    public function getById($productId): \App\Models\Product
+    public function getAllWithImage(): LengthAwarePaginator
+    {
+        return $this->repository->fetchAllWithImage();
+    }
+
+    public function getByCategoryId(int $categoryId): Collection
+    {
+        return $this->repository->fetchByCategoryId($categoryId);
+    }
+
+    public function getById($productId): Product
     {
         return $this->repository->find($productId);
     }
