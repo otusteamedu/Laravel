@@ -31,8 +31,14 @@
                         <tr>
                             <td>{{ $task->id }}</td>
                             <td>{{ $task->title }}</td>
-                            <td>{{ $task->executor->name ?? 'Не назначен' }}</td>
-                            <td>{{ $task->category->name ?? 'Без категории' }}</td>
+                            <td>{{ $task->executor_name ?: 'Не назначен' }}</td>
+                            <td>
+                                @if($task->category_name)
+                                        {{ $task->category_name }}
+                                @else
+                                    Без категории
+                                @endif
+                            </td>
                             <td>
                                 @if($task->status === 'новая')
                                     <span class="badge bg-primary">{{ $task->status }}</span>
@@ -46,7 +52,7 @@
                             </td>
                             <td>
                                 @if($task->due_date)
-                                    {{ \Carbon\Carbon::parse($task->due_date)->format('d.m.Y') }}
+                                    {{ $task->due_date->format('d.m.Y') }}
                                     @if($task->due_date < now() && $task->status !== 'выполнена')
                                         <span class="badge bg-danger">Просрочена</span>
                                     @endif
