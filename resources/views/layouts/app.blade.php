@@ -79,6 +79,12 @@
                             </li>
                         @endauth
                     </ul>
+
+                    <div>
+                        <a href="{{ route('cart.index') }}" class="me-4">
+                            <img src="{{ asset('images/cart.png') }}" alt="" width="30">
+                        </a>
+                    </div>
                 </div>
             </div>
         </nav>

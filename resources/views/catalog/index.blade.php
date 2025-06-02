@@ -28,9 +28,13 @@
                     <div class="card-body">
                         <p class="card-text fs-5">{{ $product->getTitle() }}</p>
                         <div class="d-flex justify-content-between align-items-center">
-                            <div class="text-body-secondary fs-5">
+                            <div class="d-flex justify-content-between align-items-center text-body-secondary fs-5">
                                 {{ Illuminate\Support\Number::format($product->getPrice(), locale: 'ru') }} руб.
                             </div>
+                            <form action="{{ route('cart.add', $product->getId()) }}" method="POST">
+                                @csrf
+                                <button type="submit" class="btn btn-warning btn-sm">Добавить в корзину</button>
+                            </form>
                         </div>
                     </div>
                 </div>

@@ -57,6 +57,17 @@ class ProductsRepository
         return $product;
     }
 
+    public function findShort(int $productId): Product
+    {
+        $product = Product::find($productId);
+
+        if (!$product) {
+            throw new ProductNotFoundException();
+        }
+
+        return $product;
+    }
+
     public function findByIds(array $product_ids): Collection
     {
         $products = Product::whereIn('id', $product_ids)->get();
