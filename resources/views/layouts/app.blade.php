@@ -54,7 +54,7 @@
                                         <a class="dropdown-item" href="{{ route('profile.edit', auth()->id()) }}">Профиль</a>
                                     </li>
                                     <li class="nav-item">
-                                        <a class="dropdown-item" href="{{ route('history') }}">История заказов</a>
+                                        <a class="dropdown-item" href="{{ route('profile.history', auth()->id()) }}">История заказов</a>
                                     </li>
                                     <li>
                                         <hr class="dropdown-divider">

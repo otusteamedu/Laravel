@@ -11,7 +11,7 @@ Route::get('/profile/{userId}', [ProfileController::class, 'edit'])->name('profi
 Route::put('/profile/{userId}', [ProfileController::class, 'update'])->name('profile.update');
 Route::put('/profile/password/{userId}', [ProfileController::class, 'updatePassword'])->name('profile.password');
 
-Route::view('/history', 'cabinet.history')->name('history');
+Route::get('/history/{userId}', [ProfileController::class, 'history'])->name('profile.history');
 
 Route::get('/catalog', [CatalogController::class, 'index'])->name('catalog');
 Route::get('/category/{categoryId}', [CatalogController::class, 'category'])->name('category');

@@ -56,6 +56,16 @@ class Order extends Model
         return $this->user;
     }
 
+    public function getTotal(): int
+    {
+        $products = $this->products;
+        $total = 0;
+        foreach ($products as $product) {
+            $total += $product->pivot->paid_price * $product->pivot->count;
+        }
+        return $total;
+    }
+
     public function products(): BelongsToMany
     {
         return $this->belongsToMany(Product::class, 'order_products', 'order_id', 'product_id')->withPivot(['count', 'paid_price']);

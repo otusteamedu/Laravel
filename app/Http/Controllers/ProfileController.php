@@ -71,4 +71,19 @@ class ProfileController extends Controller
 
         return redirect()->route('profile.edit', ['userId' => $userId])->with('success', 'Пароль успешно обновлен');
     }
+
+    public function history(int $userId): View
+    {
+        try {
+            $user = $this->service->getById($userId);
+        } catch (UserNotFoundException $e) {
+            throw new NotFoundHttpException($e->getMessage());
+        }
+
+        $data = [
+            'orders' => $user->orders,
+        ];
+
+        return view('cabinet.history', $data);
+    }
 }
