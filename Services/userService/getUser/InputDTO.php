@@ -9,7 +9,7 @@ namespace App\Services\userService\getUser;
 class InputDTO
 {
     public function __construct(
-        public int $userId,
+        public int $userId
     )
     {
     }

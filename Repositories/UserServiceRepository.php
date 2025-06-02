@@ -37,11 +37,11 @@ class UserServiceRepository implements UserServiceRepositoryInterface
      *                  $inputData['name']
      *              отчество пользователя
      *                   $inputData['secondName']
-     * @return int
+     * @return bool
      */
-    public function editUserOfMainApp(array $inputData): int
-    {   //использую whereIn для одного пользователя, только чтобы получить явно 1, если запись исправлена
-        return User::whereIn('id', [$inputData['userId']])
+    public function editUserOfMainApp(array $inputData): bool
+    {
+        return User::firstWhere('id', [$inputData['userId']])
             ->update(
                 [
                     'name' => $inputData['name'],

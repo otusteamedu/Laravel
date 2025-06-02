@@ -28,7 +28,7 @@ interface UserServiceRepositoryInterface
      *                  $inputData['name']
      *              отчество пользователя
      *                   $inputData['secondName']
-     * @return int
+     * @return bool
      */
-    public function editUserOfMainApp(array $inputData): int;
+    public function editUserOfMainApp(array $inputData): bool;
 }
