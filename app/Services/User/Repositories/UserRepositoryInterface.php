@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace App\Services\Category\Repositories;
+namespace App\Services\User\Repositories;
 
-use App\Models\Category;
+use App\Models\User;
 use Illuminate\Pagination\LengthAwarePaginator;
 
-interface CategoryRepositoryInterface
+interface UserRepositoryInterface
 {
     /**
-     * @return Category[]
+     * @return User[]
      */
     public function fetchAll(): array;
 
@@ -25,36 +25,28 @@ interface CategoryRepositoryInterface
     /**
      * @param int $id
      *
-     * @return Category|null
+     * @return User|null
      */
-    public function find(int $id): ?Category;
+    public function find(int $id): ?User;
 
 	/**
-	 * @return Category
+	 * @return User
 	 */
-	public function create(): Category;
+	public function create(): User;
 
     /**
-     * @param Category $category
+     * @param User $user
      *
      * @return bool
      */
-    public function save(Category $category): bool;
+    public function save(User $user): bool;
 
     /**
-     * @param Category $category
+     * @param User $user
      *
      * @return bool|null
      */
-    public function delete(Category $category): ?bool;
-
-    /**
-     * @param string $slug
-     *
-     * @return Category|null
-     */
-    public function findBySlug(string $slug): ?Category;
-
+    public function delete(User $user): ?bool;
 
     /**
      * @param array $ids

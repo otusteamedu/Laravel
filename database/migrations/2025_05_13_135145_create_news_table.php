@@ -27,7 +27,7 @@ return new class extends Migration
                 ->nullOnDelete();
 
             $table->string('title');
-            $table->longText('text');
+            $table->longText('content');
             $table->string('thumbnail')->nullable();
             $table->boolean('is_draft');
             $table->dateTime('published_at')->nullable();

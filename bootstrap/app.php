@@ -3,7 +3,7 @@
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
-use App\Http\Middleware\AdminMiddleware;
+use App\Http\Middleware\RoleMiddleware;
 use Illuminate\Support\Facades\Route;
 
 return Application::configure(basePath: dirname(__DIR__))
@@ -12,7 +12,7 @@ return Application::configure(basePath: dirname(__DIR__))
         commands: __DIR__.'/../routes/console.php',
         health: '/up',
         then: function () {
-            Route::middleware(['web', 'admin'])
+            Route::middleware(['web', 'auth', 'role:admin,editor'])
                  ->prefix('admin_panel')
                  ->name('admin.')
                  ->group(base_path('routes/admin.php'));
@@ -20,11 +20,7 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->alias([
-           'check_admin' => AdminMiddleware::class
-        ]);
-        $middleware->appendToGroup('admin', [
-            'auth',
-            'check_admin',
+           'role' => RoleMiddleware::class
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {

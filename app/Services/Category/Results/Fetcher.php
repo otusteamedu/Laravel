@@ -12,15 +12,28 @@ class Fetcher
      *
      * @return Result
      */
-    public function fetch(array $categories): Result
+    public function fetch(array|Category $categories): Result|CategoryDTO
     {
-        $categoryDTOs = array_map(fn (Category $category) => new CategoryDTO(
+        if (is_array($categories)) {
+            $categoryDTOs = array_map(fn (Category $category) => $this->wrapItem($category), $categories);
+
+            return new Result($categoryDTOs);
+        } else {
+            return $this->wrapItem($categories);
+        }
+    }
+
+    /**
+     * @param Category $category
+     *
+     * @return CategoryDTO
+     */
+    private function wrapItem(Category $category): CategoryDTO {
+        return new CategoryDTO(
             id: $category->id,
             name: $category->name,
             slug: $category->slug,
             sort: $category->sort,
-        ), $categories);
-
-        return new Result($categoryDTOs);
+        );
     }
 }

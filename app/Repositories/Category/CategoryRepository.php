@@ -79,7 +79,16 @@ class CategoryRepository implements CategoryRepositoryInterface
     {
         return $this->category::query()
             ->where('slug', $slug)
-            ->where('active', true)
             ->first();
+    }
+
+    /**
+     * @param array $ids
+     *
+     * @return array
+     */
+    public function findByIds(array $ids): array
+    {
+        return $this->category::query()->whereIn('id', $ids)->get()->keyBy('id')->all();
     }
 }

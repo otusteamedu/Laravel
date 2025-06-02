@@ -13,13 +13,13 @@ class DestroyHandler
     }
 
     /**
-     * @param int $id
+     * @param int $categoryId
      *
      * @return bool|null
      * @throws CategoryNotFoundException
      */
-    public function __invoke(int $id): ?bool {
-        $category = $this->categoryRepository->find($id);
+    public function __invoke(int $categoryId): ?bool {
+        $category = $this->categoryRepository->find($categoryId);
 
         if (!$category) {
             throw new CategoryNotFoundException('Category not found');

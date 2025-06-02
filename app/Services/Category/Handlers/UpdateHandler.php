@@ -7,10 +7,11 @@ use App\Services\Category\Commands\CommandDTO;
 use App\Services\Category\Exceptions\CategoryNotFoundException;
 use App\Services\Category\Results\CategoryDTO;
 use App\Services\Category\Repositories\CategoryRepositoryInterface;
+use App\Services\Category\Results\Fetcher;
 
 class UpdateHandler
 {
-    public function __construct(private CategoryRepositoryInterface $categoryRepository)
+    public function __construct(private CategoryRepositoryInterface $categoryRepository, private Fetcher $fetcher)
     {
     }
 
@@ -32,6 +33,6 @@ class UpdateHandler
 
         $this->categoryRepository->save($category);
 
-        return new CategoryDTO($category->id, $category->name, $category->slug, $category->sort);
+        return $this->fetcher->fetch($category);
     }
 }
