@@ -33,6 +33,7 @@ class UserFactory extends Factory
             'organization' => fake()->company(),
             'second_name' => fake()->lastName(),
             'last_name' => fake()->lastName(),
+            'user_role' => fake()->randomElement(['admin', 'emp']),
         ];
     }
 
