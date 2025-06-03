@@ -15,14 +15,14 @@
 }
 .decorPicture img { max-width: 100%; height: auto; }
 
-
-#refToISS /* блок содержания: ссылка на страницу входа ИОС */
+/* блок содержания: ссылки на главной странице (на страницу входа ИОС, логин, регистрация, профиль) */
+.refOnMainPage
 {
     text-align: center;
     width: 70%;
     margin: auto auto;
 }
-#refToISS h3 { font-size: 2vw; }
+.refOnMainPage h3 { font-size: 2vw; }
 
 
 @media screen and (min-width: 800px)  /* НАСТРОЙКА САЙТА для ПК и планшетов */
@@ -33,33 +33,33 @@
 {
     #welcome { width: 90%; min-width: 330px; }
     .decorPicture { width: 90%; min-width: 330px; }
-    #refToISS { width: 90%; min-width: 330px; }
+    .refOnMainPage { width: 90%; min-width: 330px; }
 
     #welcome h2 { font-size: 4vw; }
     #welcome p { font-size: 2.5vw; }
-    #refToISS h3 { font-size: 3vw; }
+    .refOnMainPage h3 { font-size: 3vw; }
 }
 @media screen and (max-width: 600px)  /* НАСТРОЙКА САЙТА для телефонов */
 {
     #welcome h2 { font-size: 5vw; }
     #welcome p { font-size: 3vw; }
-    #refToISS h3 { font-size: 4vw; }
+    .refOnMainPage h3 { font-size: 4vw; }
 }
 @media screen and (max-width: 520px)  /* НАСТРОЙКА САЙТА для телефонов */
 {
     #welcome h2 { font-size: 5.5vw; }
     #welcome p { font-size: 3.5vw; }
-    #refToISS h3 { font-size: 4.3vw; }
+    .refOnMainPage h3 { font-size: 4.3vw; }
 }
 @media screen and (max-width: 400px)  /* НАСТРОЙКА САЙТА для телефонов */
 {
     #welcome h2 { font-size: 5.7vw; }
     #welcome p { font-size: 4vw; }
-    #refToISS h3 { font-size: 4.5vw; }
+    .refOnMainPage h3 { font-size: 4.5vw; }
 }
 @media screen and (max-width: 330px)  /* НАСТРОЙКА САЙТА для телефонов */
 {
     #welcome h2 { font-size: 19px; }
     #welcome p { font-size: 13px; }
-    #refToISS h3 { font-size: 15px; }
+    .refOnMainPage h3 { font-size: 15px; }
 }
