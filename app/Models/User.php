@@ -6,8 +6,21 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use App\Modules\ISS\src\Models\EducationRoute;
-use App\Modules\ISS\src\Models\UserData;
+
+/**
+ * Поля модели
+ * @property int $id
+ * @property string $name
+ * @property string $email
+ * @property string $password
+ * @property string $organization
+ * @property string $second_name
+ * @property string $last_name
+ * @property string $user_role
+ * @property \datetime $created_at
+ * @property \datetime $updated_at
+ * @property \datetime $deleted_at
+ */
 
 class User extends Authenticatable
 {
@@ -23,6 +36,11 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+
+        'organization',
+        'second_name',
+        'last_name',
+        'user_role',
     ];
 
     /**

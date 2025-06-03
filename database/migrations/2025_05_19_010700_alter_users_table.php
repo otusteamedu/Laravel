@@ -15,6 +15,7 @@ return new class extends Migration
             $table->string('organization');
             $table->string('second_name');
             $table->string('last_name');
+            $table->string('user_role');
         });
     }
 
@@ -28,6 +29,7 @@ return new class extends Migration
             $table->dropColumn('name');
             $table->dropColumn('second_name');
             $table->dropColumn('last_name');
+            $table->dropColumn('user_role');
         });
     }
 };
