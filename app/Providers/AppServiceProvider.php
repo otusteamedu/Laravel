@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Services\WithdrawService\LogWithdrawService;
+use App\Services\WithdrawService\WithdrawService;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -11,7 +13,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        $this->app->singleton(WithdrawService::class, LogWithdrawService::class);
     }
 
     /**

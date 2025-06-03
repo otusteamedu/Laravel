@@ -1,6 +1,8 @@
 <?php
 
+use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\WithdrawController;
 use App\Models\Post;
 use App\Models\PostPreview;
 use App\Queries\UserQueries;
@@ -12,6 +14,8 @@ Route::get('/', function () {
 });
 
 Route::view('/page', 'page');
+
+Route::resource('posts', PostController::class)->middleware('auth');
 
 Route::get('/dashboard', function (Request $request) {
     $locale = mb_substr($request->headers->get('accept-language'), 0, 2);
@@ -33,6 +37,8 @@ Route::get('/qb', function (Request $request) {
 
     return $res;
 });
+
+Route::get('/withdraw', [WithdrawController::class, 'withdraw'])->name('withdraw');
 
 Route::group(['prefix' => '/e'], function () {
     Route::get('/create', function (Request $request) {
