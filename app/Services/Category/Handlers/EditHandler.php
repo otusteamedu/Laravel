@@ -10,7 +10,7 @@ use App\Services\Category\Repositories\CategoryRepositoryInterface;
 
 class EditHandler
 {
-    public function __construct(private CategoryRepositoryInterface $categoryRepository)
+    public function __construct(private CategoryRepositoryInterface $categoryRepository, private Fetcher $fetcher)
     {
     }
 
@@ -29,12 +29,7 @@ class EditHandler
             throw new CategoryNotFoundException('Category not found');
         }
 
-        return new CategoryDTO(
-            $category->id,
-            $category->name,
-            $category->slug,
-            $category->sort,
-        );
+        return $this->fetcher->fetch($category);
 
     }
 }

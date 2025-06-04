@@ -54,4 +54,12 @@ interface CategoryRepositoryInterface
      * @return Category|null
      */
     public function findBySlug(string $slug): ?Category;
+
+
+    /**
+     * @param array $ids
+     *
+     * @return array
+     */
+    public function findByIds(array $ids): array;
 }

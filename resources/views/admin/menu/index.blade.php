@@ -2,11 +2,36 @@
     <div class="position-sticky pt-3 sidebar-sticky">
         <ul class="nav flex-column">
             <li class="nav-item">
+                <a class="nav-link {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}" href="{{ route('admin.dashboard') }}">
+                    <span class="nav-icon"><i class="fas fa-tachometer-alt"></i></span>
+                    Панель управления
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link {{ request()->routeIs('admin.news.*') ? 'active' : '' }}" href="{{ route('admin.news.index') }}">
+                    <span class="nav-icon"><i class="fas fa-newspaper"></i></span>
+                    Новости
+                </a>
+            </li>
+            <li class="nav-item">
                 <a class="nav-link {{ request()->routeIs('admin.categories.*') ? 'active' : '' }}" href="{{ route('admin.categories.index') }}">
                     <span class="nav-icon"><i class="fas fa-list"></i></span>
                     Категории
                 </a>
             </li>
+           {{-- <li class="nav-item">
+                <a class="nav-link {{ request()->routeIs('admin.comments.*') ? 'active' : '' }}" href="{{ route('admin.comments.index') }}">
+                    <span class="nav-icon"><i class="fas fa-comment"></i></span>
+                    Комментарии
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link {{ request()->routeIs('admin.users.*') ? 'active' : '' }}" href="{{ route('admin.users.index') }}">
+                    <span class="nav-icon"><i class="fas fa-users"></i></span>
+                    Пользователи
+                </a>
+            </li>--}}
+
         </ul>
 
         <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">

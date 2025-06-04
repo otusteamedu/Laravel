@@ -11,10 +11,11 @@ class News extends Model
 {
     use HasFactory;
 
+
     /** @var string[]  */
     protected $fillable = [
         'title',
-        'text',
+        'content',
         'thumbnail',
         'is_draft',
         'published_at',
@@ -54,5 +55,29 @@ class News extends Model
             'is_draft' => 'boolean',
             'published_at' => 'datetime',
         ];
+    }
+
+    /**
+     * @param User|int|string $user
+     *
+     * @return $this
+     */
+    public function attachUser(User|int|string $user): News
+    {
+        $this->user()->associate($user);
+
+        return $this;
+    }
+
+    /**
+     * @param Category|int|string $category
+     *
+     * @return $this
+     */
+    public function attachCategory(Category|int|string $category): News
+    {
+        $this->category()->associate($category);
+
+        return $this;
     }
 }

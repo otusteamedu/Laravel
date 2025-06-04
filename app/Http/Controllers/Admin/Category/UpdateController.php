@@ -8,9 +8,11 @@ use App\Services\Category\Commands\CommandDTO;
 use App\Services\Category\Exceptions\CategoryNotFoundException;
 use App\Services\Category\Handlers\EditHandler;
 use App\Services\Category\Handlers\UpdateHandler;
+use App\Services\Category\Results\CategoryDTO;
 use Illuminate\Http\RedirectResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Illuminate\View\View;
+use Illuminate\Support\Facades\Gate;
 
 class UpdateController extends Controller
 {
@@ -21,15 +23,16 @@ class UpdateController extends Controller
      */
     public function edit(EditHandler $editCategoryUseCase, string $categoryId): View
     {
-
         try {
+            Gate::authorize('category.update', $categoryId);
+
             $category = $editCategoryUseCase((int)$categoryId);
         } catch (CategoryNotFoundException) {
             throw new NotFoundHttpException('Category not found');
         }
 
 
-        return view('admin.categories.edit', compact('category'));// todo return dto
+        return view('admin.categories.edit', compact('category'));
     }
 
 
@@ -38,11 +41,13 @@ class UpdateController extends Controller
      */
     public function update(UpdateCategoryRequest $request, UpdateHandler $updateCategoryUseCase, string $categoryId): RedirectResponse
     {
+        Gate::authorize('category.update', $categoryId);
+
         $request->validated();
 
-        /** @var  $postDTO */
-        $postDTO = $updateCategoryUseCase(new CommandDTO($request->get('name'), $request->get('sort'), (int)$categoryId));
+        /** @var  CategoryDTO */
+        $categoryDTO = $updateCategoryUseCase(new CommandDTO($request->get('name'), $request->get('sort'), (int)$categoryId));
 
-        return redirect()->route('admin.categories.show', $postDTO->id);
+        return redirect()->route('admin.categories.show', $categoryDTO->id);
     }
 }

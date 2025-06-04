@@ -29,7 +29,7 @@ class NewsFactory extends Factory
             'user_id' => $userId,
             'category_id' => $categoryId,
             'title' => fake()->sentence,
-            'text' => fake()->text,
+            'content' => fake()->text,
             'published_at' => fake()->dateTimeBetween('+1 day', '+1 month'),
             'is_draft' => fake()->boolean(70),
         ];

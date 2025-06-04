@@ -1,12 +1,12 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Services\Category\Results;
+namespace App\Services\News\Results;
 
-final readonly class Result
+final readonly class NewsItemsDTO
 {
     /**
-     * @param CategoryDTO[] $results
+     * @param NewsDTO[] $results
      */
     public function __construct(
         public array $results

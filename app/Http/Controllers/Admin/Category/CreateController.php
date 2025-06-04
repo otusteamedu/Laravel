@@ -7,6 +7,7 @@ use App\Http\Requests\CreateCategoryRequest;
 use App\Services\Category\Handlers\CreateHandler;
 use App\Services\Category\Commands\CommandDTO;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\View\View;
 
 class CreateController extends Controller
@@ -18,6 +19,8 @@ class CreateController extends Controller
      */
     public function create(): View
     {
+        Gate::authorize('category.create');
+
         return view('admin.categories.create');
     }
 
@@ -26,6 +29,8 @@ class CreateController extends Controller
      */
     public function store(CreateCategoryRequest $request, CreateHandler $createCategoryUseCase): RedirectResponse
     {
+        Gate::authorize('category.create');
+
         $request->validated();
 
         $createCategoryUseCase(new CommandDTO($request->get('name'), $request->get('sort')));

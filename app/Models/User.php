@@ -23,7 +23,6 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        'is_admin',
     ];
 
     /**
@@ -50,6 +49,17 @@ class User extends Authenticatable
         ];
     }
 
+
+    protected static function booted()
+    {
+        static::created(function ($user) {
+            $role = Role::where('slug', 'user')->first();
+            if ($role) {
+                $user->roles()->attach($role->id);
+            }
+        });
+    }
+
     /**
      * @return HasMany
      */
@@ -64,5 +74,27 @@ class User extends Authenticatable
     public function comments(): HasMany
     {
         return $this->hasMany(Comment::class);
+    }
+
+    public function roles()
+    {
+        return $this->belongsToMany(Role::class);
+    }
+
+    /**
+     * Проверка наличия роли у пользователя
+     *
+     * @param ...$roles
+     *
+     * @return bool
+     */
+    public function hasRole(string ...$roles): bool
+    {
+        foreach ($roles as $role) {
+            if ($this->roles->contains('slug', $role)) {
+                return true;
+            }
+        }
+        return false;
     }
 }

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Services\Category\Exceptions\CategoryNotFoundException;
 use App\Services\Category\Handlers\DestroyHandler;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Gate;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class DestroyController extends Controller
@@ -15,6 +16,7 @@ class DestroyController extends Controller
      */
     public function __invoke(DestroyHandler $destroyCategoryUseCase, string $categoryId): RedirectResponse
     {
+        Gate::authorize('category.delete', $categoryId);
 
         try {
             $destroyCategoryUseCase((int)$categoryId);
