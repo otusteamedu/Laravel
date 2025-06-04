@@ -3,24 +3,25 @@
 namespace App\Http\Controllers\Admin\Categories;
 
 use App\Http\Controllers\Controller;
-use App\Services\Categories\Exceptions\CategoryNotFoundException;
-use App\Services\Categories\Handlers\DestroyHandler;
+use App\Services\Commands\DeleteCategory\Command;
+use App\Services\Commands\DeleteCategory\Handler;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class DestroyController extends Controller
 {
-
     /**
      * Удалить категорию
      */
-    public function __invoke(DestroyHandler $destroyHandler, string $categoryId)
+    public function destroy(Handler $handler, string $categoryId)
     {
         try {
-            $destroyHandler((int)$categoryId);
-        } catch (CategoryNotFoundException) {
-            throw new NotFoundHttpException('Category not found');
+            $command = new Command((int)$categoryId);
+            $handler->handle($command);
+        } catch (\Exception) {
+            throw new NotFoundHttpException('Категория не найдена');
         }
 
         return redirect()->route('admin.categories.index')
-            ->with('success', "Категория успешно удалена");
+            ->with('success', 'Категория успешно удалена');
     }
 }

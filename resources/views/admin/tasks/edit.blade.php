@@ -39,7 +39,7 @@
                             id="executor_id" name="executor_id" required>
                         <option value="">Выберите пользователя</option>
                         @foreach($users as $user)
-                            <option value="{{ $user->id }}" {{ (old('executor_id', $task->executor_id) == $user->id) ? 'selected' : '' }}>
+                            <option value="{{ $user->id }}" {{ (old('executor_id', $task->executorId) == $user->id) ? 'selected' : '' }}>
                                 {{ $user->name }} ({{ $user->email }})
                             </option>
                         @endforeach
@@ -55,7 +55,7 @@
                             id="category_id" name="category_id" required>
                         <option value="">Выберите категорию</option>
                         @foreach($categories as $category)
-                            <option value="{{ $category->id }}" {{ (old('category_id', $task->category_id) == $category->id) ? 'selected' : '' }}>
+                            <option value="{{ $category->id }}" {{ (old('category_id', $task->categoryId) == $category->id) ? 'selected' : '' }}>
                                 {{ $category->name }}
                             </option>
                         @endforeach
@@ -73,7 +73,7 @@
                             id="priority_id" name="priority_id" required>
                         <option value="">Выберите приоритет</option>
                         @foreach($priorities as $priority)
-                            <option value="{{ $priority->id }}" {{ (old('priority_id', $task->priority_id) == $priority->id) ? 'selected' : '' }}>
+                            <option value="{{ $priority->id }}" {{ (old('priority_id', $task->priorityId) == $priority->id) ? 'selected' : '' }}>
                                 {{ $priority->name }}
                             </option>
                         @endforeach
@@ -100,7 +100,7 @@
                 <div class="col-md-4 mb-3">
                     <label for="due_date" class="form-label">Срок выполнения</label>
                     <input type="date" class="form-control @error('due_date') is-invalid @enderror"
-                           id="due_date" name="due_date" value="{{ old('due_date', $task->due_date ? date('Y-m-d', strtotime($task->due_date)) : '') }}">
+                           id="due_date" name="due_date" value="{{ old('due_date', $task->dueDate ? date('Y-m-d', strtotime($task->dueDate)) : '') }}">
                     @error('due_date')
                         <div class="invalid-feedback">{{ $message }}</div>
                     @enderror

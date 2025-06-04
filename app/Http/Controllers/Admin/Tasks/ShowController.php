@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Admin\Tasks;
 
 use App\Http\Controllers\Controller;
-use App\Services\Tasks\Handlers\ShowHandler;
-use App\Services\Tasks\Exceptions\TaskNotFoundException;
+use App\Services\Queries\FetchTaskById\Query;
+use App\Services\Queries\FetchTaskById\Fetcher;
 use Illuminate\View\View;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
@@ -13,11 +13,12 @@ class ShowController extends Controller
     /**
      * Показать детали задачи
      */
-    public function __invoke(ShowHandler $handler, string $taskId): View
+    public function show(Fetcher $fetcher, string $taskId): View
     {
         try {
-            $task = $handler((int)$taskId);
-        } catch (TaskNotFoundException) {
+            $query = new Query((int)$taskId);
+            $task = $fetcher->fetch($query);
+        } catch (\Exception) {
             throw new NotFoundHttpException('Задача не найдена');
         }
 

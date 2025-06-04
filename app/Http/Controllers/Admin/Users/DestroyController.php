@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Admin\Users;
 
 use App\Http\Controllers\Controller;
-use App\Services\Users\Exceptions\UserNotFoundException;
-use App\Services\Users\Handlers\DestroyHandler;
+use App\Services\Commands\DeleteUser\Command;
+use App\Services\Commands\DeleteUser\Handler;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class DestroyController extends Controller
@@ -12,11 +12,12 @@ class DestroyController extends Controller
     /**
      * Удалить пользователя
      */
-    public function __invoke(DestroyHandler $destroyHandler, string $userId)
+    public function destroy(Handler $handler, string $userId)
     {
         try {
-            $destroyHandler((int)$userId);
-        } catch (UserNotFoundException) {
+            $command = new Command((int)$userId);
+            $handler->handle($command);
+        } catch (\Exception) {
             throw new NotFoundHttpException('Пользователь не найден');
         }
 

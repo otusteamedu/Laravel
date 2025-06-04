@@ -26,6 +26,7 @@ class UpdateTaskRequest extends FormRequest
             'executor_id' => ['required', 'exists:users,id'],
             'category_id' => ['required', 'exists:categories,id'],
             'priority_id' => ['required', 'exists:priorities,id'],
+            'status' => ['required', 'string', 'in:новая,в работе,выполнена,отменена'],
             'due_date' => ['nullable', 'date'],
         ];
     }

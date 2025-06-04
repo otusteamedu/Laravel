@@ -6,8 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Models\Category;
 use App\Models\Priority;
 use App\Models\User;
-use App\Services\Tasks\Commands\CommandDTO;
-use App\Services\Tasks\Handlers\CreateHandler;
+use App\Services\Commands\CreateTask\Command;
+use App\Services\Commands\CreateTask\Handler;
 use App\Http\Requests\CreateTaskRequest;
 
 class CreateController extends Controller
@@ -20,27 +20,30 @@ class CreateController extends Controller
         $users = User::all();
         $categories = Category::all();
         $priorities = Priority::all();
-        
+
         return view('admin.tasks.create', compact('users', 'categories', 'priorities'));
     }
-    
+
     /**
      * Сохранить новую задачу
      */
-    public function store(CreateTaskRequest $request, CreateHandler $handler)
+    public function store(CreateTaskRequest $request, Handler $handler)
     {
         $request->validated();
 
-        $result = $handler(new CommandDTO(
+        $command = new Command(
             title: $request->get('title'),
             description: $request->get('description', ''),
-            executor_id: (int)$request->get('executor_id'),
-            category_id: (int)$request->get('category_id'),
-            priority_id: (int)$request->get('priority_id'),
-            due_date: $request->get('due_date')
-        ));
+            executorId: (int)$request->get('executor_id'),
+            categoryId: (int)$request->get('category_id'),
+            priorityId: (int)$request->get('priority_id'),
+            status: $request->get('status', 'новая'),
+            dueDate: $request->get('due_date')
+        );
+
+        $handler->handle($command);
 
         return redirect()->route('admin.tasks.index')
             ->with('success', "Задача успешно создана");
     }
-} 
+}

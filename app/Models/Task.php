@@ -13,6 +13,7 @@ class Task extends Model
     protected $fillable = [
         'title',
         'description',
+        'status',
         'due_date',
         'priority_id',
         'category_id',
@@ -22,6 +23,8 @@ class Task extends Model
 
     protected $casts = [
         'due_date' => 'datetime',
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime',
     ];
 
     public function priority()

@@ -30,7 +30,7 @@
                             <td>{{ $user->id }}</td>
                             <td>{{ $user->name }}</td>
                             <td>{{ $user->email }}</td>
-                            <td>{{ $user->created_at->format('d.m.Y H:i') }}</td>
+                            <td>{{ $user->createdAt->format('d.m.Y H:i') }}</td>
                             <td>
                                 <div class="d-flex">
                                     <a href="{{ route('admin.users.edit', $user->id) }}" class="btn btn-sm btn-outline-primary rounded me-2">

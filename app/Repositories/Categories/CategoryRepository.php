@@ -8,17 +8,10 @@ use Illuminate\Pagination\LengthAwarePaginator;
 class CategoryRepository implements CategoryRepositoryInterface
 {
     /**
-     * @param Category $category
-     */
-    public function __construct(private Category $category)
-    {
-    }
-
-    /**
-     * @return array
+     * @return Category[]
      */
     public function fetchAll(): array {
-        return $this->category::all()->all();
+        return Category::all()->all();
     }
 
     /**
@@ -29,7 +22,7 @@ class CategoryRepository implements CategoryRepositoryInterface
      * @return LengthAwarePaginator
      */
     public function getAllPaginated(int $perPage = 10): LengthAwarePaginator {
-        return $this->category->orderBy('id', 'desc')->paginate($perPage);
+        return Category::orderBy('id', 'desc')->paginate($perPage);
     }
 
     /**
@@ -38,14 +31,7 @@ class CategoryRepository implements CategoryRepositoryInterface
      * @return Category|null
      */
     public function find(int $id): ?Category {
-        return $this->category->find($id);
-    }
-
-    /**
-     * @return Category
-     */
-    public function create(): Category {
-        return $this->category;
+        return Category::find($id);
     }
 
     /**

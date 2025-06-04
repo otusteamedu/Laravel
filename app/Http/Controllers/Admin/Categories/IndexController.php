@@ -3,19 +3,19 @@
 namespace App\Http\Controllers\Admin\Categories;
 
 use App\Http\Controllers\Controller;
-use App\Services\Categories\Handlers\IndexHandler;
-use Illuminate\Http\Request;
-use Illuminate\View\View;
+use App\Services\Queries\FetchAllCategories\Query;
+use App\Services\Queries\FetchAllCategories\Fetcher;
 
 class IndexController extends Controller
 {
     /**
-     * Обработка запроса
+     * Показать список категорий
      */
-    public function __invoke(Request $request, IndexHandler $handler): View
+    public function index(Fetcher $fetcher)
     {
-        $perPage = $request->input('per_page', 10);
-        $categories = $handler($perPage);
+        $query = new Query(perPage: 10);
+        $categories = $fetcher->fetch($query);
+
         return view('admin.categories.index', compact('categories'));
     }
 }

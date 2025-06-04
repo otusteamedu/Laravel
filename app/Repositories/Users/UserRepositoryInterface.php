@@ -26,11 +26,6 @@ interface UserRepositoryInterface
     public function find(int $id): ?User;
 
     /**
-     * @return User
-     */
-    public function create(): User;
-
-    /**
      * @param User $user
      * @return bool
      */
