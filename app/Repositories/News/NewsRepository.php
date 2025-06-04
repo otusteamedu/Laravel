@@ -11,17 +11,10 @@ use App\Services\News\Repositories\NewsRepositoryInterface;
 class NewsRepository implements NewsRepositoryInterface
 {
     /**
-     * @param News $news
-     */
-    public function __construct(private News $news)
-    {
-    }
-
-    /**
      * @return array
      */
     public function fetchAll(): array {
-        return $this->news::all()->all();
+        return News::all()->all();
     }
 
     /**
@@ -32,7 +25,7 @@ class NewsRepository implements NewsRepositoryInterface
      * @return LengthAwarePaginator
      */
     /*public function fetchAllPaginate(string $column = 'id', $direction = 'asc', int $perPage = 10): LengthAwarePaginator {
-        return $this->news->query()->orderBy($column, $direction)->paginate($perPage);
+        return News::query()->orderBy($column, $direction)->paginate($perPage);
     }*/
 
     /**
@@ -41,14 +34,14 @@ class NewsRepository implements NewsRepositoryInterface
      * @return News|null
      */
     public function find(int $id): ?News {
-        return $this->news::query()->find($id);
+        return News::query()->find($id);
     }
 
     /**
      * @return News
      */
     public function create(): News {
-        return $this->news;
+        return new News;
     }
 
     /**

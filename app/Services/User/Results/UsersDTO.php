@@ -5,7 +5,7 @@ namespace App\Services\User\Results;
 
 use App\Services\User\Results\UserDTO;
 
-final readonly class Result
+final readonly class UsersDTO
 {
     /**
      * @param UserDTO[] $results

@@ -10,14 +10,14 @@ class Fetcher
     /**
      * @param User[]|User $users
      *
-     * @return Result
+     * @return UsersDTO
      */
-    public function fetch(array|User $users): Result|UserDTO
+    public function fetch(array|User $users): UsersDTO|UserDTO
     {
         if (is_array($users)) {
             $userDTOs = array_map(fn (User $user) => $this->wrapItem($user), $users);
 
-            return new Result($userDTOs);
+            return new UsersDTO($userDTOs);
         } else {
             return $this->wrapItem($users);
         }

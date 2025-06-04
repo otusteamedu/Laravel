@@ -10,14 +10,14 @@ class Fetcher
     /**
      * @param Category[] $categories
      *
-     * @return Result
+     * @return CategoriesDTO
      */
-    public function fetch(array|Category $categories): Result|CategoryDTO
+    public function fetch(array|Category $categories): CategoriesDTO|CategoryDTO
     {
         if (is_array($categories)) {
             $categoryDTOs = array_map(fn (Category $category) => $this->wrapItem($category), $categories);
 
-            return new Result($categoryDTOs);
+            return new CategoriesDTO($categoryDTOs);
         } else {
             return $this->wrapItem($categories);
         }

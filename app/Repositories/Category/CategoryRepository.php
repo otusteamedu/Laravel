@@ -11,17 +11,10 @@ use App\Services\Category\Repositories\CategoryRepositoryInterface;
 class CategoryRepository implements CategoryRepositoryInterface
 {
     /**
-     * @param Category $category
-     */
-    public function __construct(private Category $category)
-    {
-    }
-
-    /**
      * @return array
      */
     public function fetchAll(): array {
-        return $this->category::all()->all();
+        return Category::all()->all();
     }
 
     /**
@@ -32,7 +25,7 @@ class CategoryRepository implements CategoryRepositoryInterface
      * @return LengthAwarePaginator
      */
     /*public function fetchAllPaginate(string $column = 'id', $direction = 'asc', int $perPage = 10): LengthAwarePaginator {
-        return $this->category->query()->orderBy($column, $direction)->paginate($perPage);
+        return Category::query()->orderBy($column, $direction)->paginate($perPage);
     }*/
 
     /**
@@ -41,14 +34,14 @@ class CategoryRepository implements CategoryRepositoryInterface
      * @return Category|null
      */
     public function find(int $id): ?Category {
-        return $this->category::query()->find($id);
+        return Category::query()->find($id);
     }
 
     /**
      * @return Category
      */
     public function create(): Category {
-        return $this->category;
+        return new Category;
     }
 
     /**
@@ -77,7 +70,7 @@ class CategoryRepository implements CategoryRepositoryInterface
      */
     public function findBySlug(string $slug): ?Category
     {
-        return $this->category::query()
+        return Category::query()
             ->where('slug', $slug)
             ->first();
     }
@@ -89,6 +82,6 @@ class CategoryRepository implements CategoryRepositoryInterface
      */
     public function findByIds(array $ids): array
     {
-        return $this->category::query()->whereIn('id', $ids)->get()->keyBy('id')->all();
+        return Category::query()->whereIn('id', $ids)->get()->keyBy('id')->all();
     }
 }

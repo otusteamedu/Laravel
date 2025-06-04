@@ -16,11 +16,11 @@ class Fetcher
     }
 
     /**
-     * @param News[]|News $news
+     * @param array|News $news
      *
-     * @return Result
+     * @return NewsItemsDTO|NewsDTO
      */
-    public function fetch(array|News $news): Result|NewsDTO
+    public function fetch(array|News $news): NewsItemsDTO|NewsDTO
     {
         if (is_array($news)) {
             $userIds = array_map(static fn (News $newsItem) => $newsItem->user_id, $news);
@@ -31,7 +31,7 @@ class Fetcher
 
             $newsDTOs = array_map(fn (News $newsItem) => $this->wrapItem($newsItem, $authors, $categories), $news);
 
-            return new Result($newsDTOs);
+            return new NewsItemsDTO($newsDTOs);
         } else {
 
             $authors = $news->user_id ? $this->userRepository->findByIds([$news->user_id]) : [];
