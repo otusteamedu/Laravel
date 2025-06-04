@@ -49,7 +49,7 @@ class ProfileController extends Controller
 
         $userProfileDTO = new UserProfileDTO(
             user_id: $user->id,
-            biography: $validated['biography']
+            biography: $validated['profile']['biography'] ?? '',
         );
 
         $this->userProfileRepository->save($userProfileDTO);
