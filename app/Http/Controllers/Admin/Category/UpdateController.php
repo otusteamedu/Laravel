@@ -21,7 +21,6 @@ class UpdateController extends Controller
      */
     public function edit(EditHandler $editCategoryUseCase, string $categoryId): View
     {
-
         try {
             $category = $editCategoryUseCase((int)$categoryId);
         } catch (CategoryNotFoundException) {
@@ -29,7 +28,7 @@ class UpdateController extends Controller
         }
 
 
-        return view('admin.categories.edit', compact('category'));// todo return dto
+        return view('admin.categories.edit', compact('category'));
     }
 
 
@@ -40,9 +39,13 @@ class UpdateController extends Controller
     {
         $request->validated();
 
-        /** @var  $postDTO */
-        $postDTO = $updateCategoryUseCase(new CommandDTO($request->get('name'), $request->get('sort'), (int)$categoryId));
+        try {
+            /** @var  $categoryDTO */
+            $categoryDTO = $updateCategoryUseCase(new CommandDTO($request->get('name'), $request->get('sort'), (int)$categoryId));
+        } catch (CategoryNotFoundException) {
+            throw new NotFoundHttpException('Category not found');
+        }
 
-        return redirect()->route('admin.categories.show', $postDTO->id);
+        return redirect()->route('admin.categories.show', $categoryDTO->id);
     }
 }

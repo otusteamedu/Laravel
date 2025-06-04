@@ -7,7 +7,7 @@ final readonly class CommandDTO
 {
     public function __construct(
         public string $name,
-        public int $sort = 1,
+        public ?int $sort = null,
         public int $id = 0,
     ) {
     }
