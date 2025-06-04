@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Services\Repositories;
+namespace App\Infrastructure\Eloquent\Repositories;
 
+use App\Services\Repositories\ProjectRepositoryInterface;
 use Carbon\Carbon;
 use App\Models\Project;
 use App\Models\ProjectUser;
@@ -11,7 +12,7 @@ use App\Services\Repositories\DTOs\ProjectInvitedUserDTO;
 use App\Services\Repositories\Exceptions\MethodNotImplimentedException;
 
 
-class ProjectRepository
+class ProjectRepository implements ProjectRepositoryInterface
 {
     /**
      * Получить список проектов пользователя

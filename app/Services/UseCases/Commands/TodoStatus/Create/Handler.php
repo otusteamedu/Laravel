@@ -4,13 +4,13 @@ namespace App\Services\UseCases\Commands\TodoStatus\Create;
 
 use Exception;
 use App\Services\Repositories\DTOs\TodoStatusDTO;
-use App\Services\Repositories\TodoStatusRepository;
 use App\Services\Repositories\Exceptions\CreateModelFailedException;
+use App\Services\Repositories\TodoStatusRepositoryInterface;
 
 class Handler
 {
     public function __construct(
-        private TodoStatusRepository $repository,
+        private TodoStatusRepositoryInterface $repository,
     ) {
         //
     }

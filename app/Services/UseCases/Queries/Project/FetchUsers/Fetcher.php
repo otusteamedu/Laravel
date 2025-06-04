@@ -3,14 +3,14 @@
 namespace App\Services\UseCases\Queries\Project\FetchUsers;
 
 use Illuminate\Support\Arr;
-use App\Services\Repositories\ProjectRepository;
 use App\Services\Repositories\DTOs\ProjectInvitedUserDTO;
 use App\Services\Repositories\Exceptions\ModelNotFoundException;
+use App\Services\Repositories\ProjectRepositoryInterface;
 
 class Fetcher
 {
     public function __construct(
-        private ProjectRepository $projectRepository,
+        private ProjectRepositoryInterface $projectRepository,
     ) {}
 
     /**

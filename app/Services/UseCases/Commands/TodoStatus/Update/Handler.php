@@ -3,14 +3,13 @@
 namespace App\Services\UseCases\Commands\TodoStatus\Update;
 
 use App\Services\Repositories\DTOs\TodoStatusDTO;
-use App\Services\Repositories\TodoStatusRepository;
 use App\Services\Repositories\Exceptions\ModelNotFoundException;
-
+use App\Services\Repositories\TodoStatusRepositoryInterface;
 
 class Handler
 {
     public function __construct(
-        private TodoStatusRepository $repository,
+        private TodoStatusRepositoryInterface $repository,
     ) {
         //
     }

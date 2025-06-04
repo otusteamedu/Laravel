@@ -3,14 +3,13 @@
 namespace App\Services\UseCases\Commands\Project\Update;
 
 use App\Services\Repositories\DTOs\ProjectDTO;
-use App\Services\Repositories\ProjectRepository;
 use App\Services\Repositories\Exceptions\ModelNotFoundException;
-
+use App\Services\Repositories\ProjectRepositoryInterface;
 
 class Handler
 {
     public function __construct(
-        private ProjectRepository $projectRepository,
+        private ProjectRepositoryInterface $projectRepository,
     ) {
         //
     }

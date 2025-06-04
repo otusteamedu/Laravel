@@ -1,12 +1,13 @@
 <?php
 
-namespace App\Services\Repositories;
+namespace App\Infrastructure\Eloquent\Repositories;
 
 use App\Models\ProjectUser;
 use App\Models\ProjectRoleEnum;
 use App\Services\Repositories\DTOs\ProjectUserDTO;
+use App\Services\Repositories\ProjectUserRepositoryInterface;
 
-class ProjectUserRepository
+class ProjectUserRepository implements ProjectUserRepositoryInterface
 {
     /**
      * Нaйти запись о пользователе в проекте

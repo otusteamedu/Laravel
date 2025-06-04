@@ -4,7 +4,7 @@ namespace App\Policies;
 
 use App\Models\User;
 use App\Models\ProjectRoleEnum;
-use App\Services\Repositories\ProjectUserRepository;
+use App\Services\Repositories\ProjectUserRepositoryInterface;
 
 class ProjectPolicy
 {
@@ -12,7 +12,7 @@ class ProjectPolicy
      * Create a new policy instance.
      */
     public function __construct(
-        private ProjectUserRepository $projectUserRepository,
+        private ProjectUserRepositoryInterface $projectUserRepository,
     ) {
         //
     }

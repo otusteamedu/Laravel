@@ -6,20 +6,20 @@ use Exception;
 use App\Models\ProjectRoleEnum;
 use Illuminate\Support\Facades\DB;
 use App\Services\Repositories\DTOs\ProjectDTO;
-use App\Services\Repositories\ProjectRepository;
 use App\Services\Repositories\DTOs\TodoStatusDTO;
 use App\Services\Repositories\DTOs\ProjectUserDTO;
-use App\Services\Repositories\TodoStatusRepository;
-use App\Services\Repositories\ProjectUserRepository;
 use App\Services\Repositories\DTOs\InsertTodoStatusesDTO;
 use App\Services\Repositories\Exceptions\CreateModelFailedException;
+use App\Services\Repositories\ProjectRepositoryInterface;
+use App\Services\Repositories\ProjectUserRepositoryInterface;
+use App\Services\Repositories\TodoStatusRepositoryInterface;
 
 class Handler
 {
     public function __construct(
-        private ProjectRepository $projectRepository,
-        private TodoStatusRepository $todoStatusRepository,
-        private ProjectUserRepository $projectUserRepository,
+        private ProjectRepositoryInterface $projectRepository,
+        private TodoStatusRepositoryInterface $todoStatusRepository,
+        private ProjectUserRepositoryInterface $projectUserRepository,
     ) {
         //
     }

@@ -1,12 +1,13 @@
 <?php
 
-namespace App\Services\Repositories;
+namespace App\Infrastructure\Eloquent\Repositories;
 
 use App\Models\User;
 use App\Services\Repositories\DTOs\UserDTO;
 use App\Services\Repositories\DTOs\UserCreateDTO;
+use App\Services\Repositories\UserRepositoryInterface;
 
-class UserRepository
+class UserRepository implements UserRepositoryInterface
 {
     /**
      * Получить пользователя по id

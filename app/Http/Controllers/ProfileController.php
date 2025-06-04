@@ -4,8 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\ProfileUpdateRequest;
 use App\Services\Repositories\DTOs\UserProfileDTO;
-use App\Services\Repositories\UserProfileRepository;
-use App\Services\Repositories\UserRepository;
+use App\Services\Repositories\UserProfileRepositoryInterface;
 use Illuminate\Auth\AuthManager;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -17,7 +16,7 @@ class ProfileController extends Controller
 {
     public function __construct(
         private AuthManager $auth,
-        private UserProfileRepository $userProfileRepository,
+        private UserProfileRepositoryInterface $userProfileRepository,
     ) {
         //
     }

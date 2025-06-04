@@ -1,13 +1,14 @@
 <?php
 
-namespace App\Services\Repositories;
+namespace App\Infrastructure\Eloquent\Repositories;
 
 use App\Models\TodoStatus;
 use App\Services\Repositories\DTOs\TodoStatusDTO;
 use App\Services\Repositories\DTOs\InsertTodoStatusesDTO;
+use App\Services\Repositories\TodoStatusRepositoryInterface;
 
 
-class TodoStatusRepository
+class TodoStatusRepository implements TodoStatusRepositoryInterface
 {
     /**
      * Получить статус по id

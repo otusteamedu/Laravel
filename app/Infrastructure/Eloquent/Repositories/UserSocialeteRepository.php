@@ -1,13 +1,14 @@
 <?php
 
-namespace App\Services\Repositories;
+namespace App\Infrastructure\Eloquent\Repositories;
 
 use App\Models\User;
 use App\Models\UserSocialite;
 use App\Services\Repositories\DTOs\UserDTO;
 use App\Services\Repositories\DTOs\UserSocialiteDTO;
+use App\Services\Repositories\UserSocialeteRepositoryInterface;
 
-class UserSocialeteRepository
+class UserSocialeteRepository implements UserSocialeteRepositoryInterface
 {
     /**
      * Получить пользователя по его id в социальной сети

@@ -2,16 +2,15 @@
 
 namespace App\Services\UseCases\Queries\TodoStatus\FetchForProject;
 
-use App\Services\Repositories\ProjectRepository;
-use App\Services\Repositories\TodoStatusRepository;
 use App\Services\Repositories\Exceptions\ModelNotFoundException;
-
+use App\Services\Repositories\ProjectRepositoryInterface;
+use App\Services\Repositories\TodoStatusRepositoryInterface;
 
 class Fetcher
 {
     public function __construct(
-        private TodoStatusRepository $repository,
-        private ProjectRepository $projectRepository,
+        private TodoStatusRepositoryInterface $repository,
+        private ProjectRepositoryInterface $projectRepository,
     ) {}
 
     /**

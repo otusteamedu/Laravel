@@ -6,16 +6,16 @@ use App\Models\User;
 use Illuminate\Support\Str;
 use Illuminate\Auth\AuthManager;
 use Illuminate\Support\Facades\Hash;
-use App\Services\Repositories\UserRepository;
 use App\Services\Repositories\DTOs\UserCreateDTO;
 use App\Services\Repositories\DTOs\UserSocialiteDTO;
-use App\Services\Repositories\UserSocialeteRepository;
+use App\Services\Repositories\UserRepositoryInterface;
+use App\Services\Repositories\UserSocialeteRepositoryInterface;
 
 class Handler
 {
     public function __construct(
-        private UserRepository $userRepository,
-        private UserSocialeteRepository $userSocialeteRepository,
+        private UserRepositoryInterface $userRepository,
+        private UserSocialeteRepositoryInterface $userSocialeteRepository,
         private AuthManager $auth,
     ) {
         //

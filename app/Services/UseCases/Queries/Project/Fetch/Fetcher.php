@@ -2,14 +2,13 @@
 
 namespace App\Services\UseCases\Queries\Project\Fetch;
 
-use App\Services\Repositories\ProjectRepository;
 use App\Services\Repositories\Exceptions\ModelNotFoundException;
-
+use App\Services\Repositories\ProjectRepositoryInterface;
 
 class Fetcher
 {
     public function __construct(
-        private ProjectRepository $projectRepository,
+        private ProjectRepositoryInterface $projectRepository,
     ) {}
 
     /**

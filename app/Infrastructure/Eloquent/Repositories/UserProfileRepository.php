@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Services\Repositories;
+namespace App\Infrastructure\Eloquent\Repositories;
 
 use App\Models\UserProfile;
-use App\Models\UserSocialite;
 use App\Services\Repositories\DTOs\UserProfileDTO;
+use App\Services\Repositories\UserProfileRepositoryInterface;
 
-class UserProfileRepository
+class UserProfileRepository implements UserProfileRepositoryInterface
 {
     /**
      * Получить профиль пользователя по его id
