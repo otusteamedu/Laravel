@@ -3,19 +3,19 @@
 namespace App\Http\Controllers\Admin\Users;
 
 use App\Http\Controllers\Controller;
-use App\Services\Users\Handlers\IndexHandler;
-use Illuminate\Http\Request;
-use Illuminate\View\View;
+use App\Services\Queries\FetchAllUsers\Query;
+use App\Services\Queries\FetchAllUsers\Fetcher;
 
 class IndexController extends Controller
 {
     /**
-     * Cписок пользователей
+     * Показать список пользователей
      */
-    public function __invoke(Request $request, IndexHandler $handler): View
+    public function index(Fetcher $fetcher)
     {
-        $perPage = $request->input('per_page', 10);
-        $users = $handler($perPage);
+        $query = new Query(perPage: 10);
+        $users = $fetcher->fetch($query);
+
         return view('admin.users.index', compact('users'));
     }
 }

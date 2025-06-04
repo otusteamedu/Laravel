@@ -31,10 +31,10 @@
                         <tr>
                             <td>{{ $task->id }}</td>
                             <td>{{ $task->title }}</td>
-                            <td>{{ $task->executor_name ?: 'Не назначен' }}</td>
+                            <td>{{ $task->executorName ?: 'Не назначен' }}</td>
                             <td>
-                                @if($task->category_name)
-                                        {{ $task->category_name }}
+                                @if($task->categoryName)
+                                        {{ $task->categoryName }}
                                 @else
                                     Без категории
                                 @endif
@@ -51,9 +51,9 @@
                                 @endif
                             </td>
                             <td>
-                                @if($task->due_date)
-                                    {{ $task->due_date->format('d.m.Y') }}
-                                    @if($task->due_date < now() && $task->status !== 'выполнена')
+                                @if($task->dueDate)
+                                    {{ $task->dueDate->format('d.m.Y') }}
+                                    @if($task->dueDate < now() && $task->status !== 'выполнена')
                                         <span class="badge bg-danger">Просрочена</span>
                                     @endif
                                 @else

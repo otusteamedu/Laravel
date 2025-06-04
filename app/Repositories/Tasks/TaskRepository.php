@@ -8,17 +8,10 @@ use Illuminate\Pagination\LengthAwarePaginator;
 class TaskRepository implements TaskRepositoryInterface
 {
     /**
-     * @param Task $task
-     */
-    public function __construct(private Task $task)
-    {
-    }
-
-    /**
-     * @return array
+     * @return Task[]
      */
     public function fetchAll(): array {
-        return $this->task::with(['executor', 'category', 'priority'])->get()->all();
+        return Task::with(['executor', 'category', 'priority', 'creator'])->get()->all();
     }
 
     /**
@@ -26,7 +19,7 @@ class TaskRepository implements TaskRepositoryInterface
      * @return LengthAwarePaginator
      */
     public function getAllPaginated(int $perPage = 10): LengthAwarePaginator {
-        return $this->task->with(['executor', 'category', 'priority'])->orderBy('id', 'desc')->paginate($perPage);
+        return Task::with(['executor', 'category', 'priority', 'creator'])->orderBy('id', 'desc')->paginate($perPage);
     }
 
     /**
@@ -34,14 +27,7 @@ class TaskRepository implements TaskRepositoryInterface
      * @return Task|null
      */
     public function find(int $id): ?Task {
-        return $this->task->with(['executor', 'category', 'priority'])->find($id);
-    }
-
-    /**
-     * @return Task
-     */
-    public function create(): Task {
-        return $this->task;
+        return Task::with(['executor', 'category', 'priority', 'creator'])->find($id);
     }
 
     /**

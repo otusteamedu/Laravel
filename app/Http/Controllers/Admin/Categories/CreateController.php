@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Admin\Categories;
 
 use App\Http\Controllers\Controller;
-use App\Services\Categories\Commands\CommandDTO;
-use App\Services\Categories\Handlers\CreateHandler;
+use App\Services\Commands\CreateCategory\Command;
+use App\Services\Commands\CreateCategory\Handler;
 use App\Http\Requests\CreateCategoryRequest;
 
 class CreateController extends Controller
@@ -21,11 +21,17 @@ class CreateController extends Controller
     /**
      * Сохранить новую категорию
      */
-    public function store(CreateCategoryRequest $request, CreateHandler $handler)
+    public function store(CreateCategoryRequest $request, Handler $handler)
     {
         $request->validated();
 
-        $category = $handler(new CommandDTO($request->get('name'), $request->get('color'), $request->get('description')));
+        $command = new Command(
+            name: $request->get('name'),
+            color: $request->get('color'),
+            description: $request->get('description')
+        );
+
+        $handler->handle($command);
 
         return redirect()->route('admin.categories.index')
             ->with('success', "Категория успешно создана");

@@ -4,6 +4,8 @@ namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Pagination\Paginator;
+use Illuminate\Auth\Middleware\RedirectIfAuthenticated;
+use Illuminate\Support\Facades\Gate;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -23,5 +25,15 @@ class AppServiceProvider extends ServiceProvider
     {
         // Используем Bootstrap для пагинации
         Paginator::useBootstrap();
+        
+        // Настраиваем редирект для авторизованных пользователей
+        RedirectIfAuthenticated::redirectUsing(function () {
+            return route('tasks.index');
+        });
+        
+        // Определяем Gate для админского доступа
+        Gate::define('admin-access', function ($user) {
+            return $user->isAdmin();
+        });
     }
 }

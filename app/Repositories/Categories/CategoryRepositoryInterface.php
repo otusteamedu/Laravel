@@ -28,11 +28,6 @@ interface CategoryRepositoryInterface
     public function find(int $id): ?Category;
 
     /**
-     * @return Category
-     */
-    public function create(): Category;
-
-    /**
      * @param Category $category
      *
      * @return bool

@@ -8,17 +8,10 @@ use Illuminate\Pagination\LengthAwarePaginator;
 class UserRepository implements UserRepositoryInterface
 {
     /**
-     * @param User $user
-     */
-    public function __construct(private User $user)
-    {
-    }
-
-    /**
-     * @return array
+     * @return User[]
      */
     public function fetchAll(): array {
-        return $this->user::all()->all();
+        return User::all()->all();
     }
 
     /**
@@ -26,7 +19,7 @@ class UserRepository implements UserRepositoryInterface
      * @return LengthAwarePaginator
      */
     public function getAllPaginated(int $perPage = 10): LengthAwarePaginator {
-        return $this->user->orderBy('id', 'desc')->paginate($perPage);
+        return User::orderBy('id', 'desc')->paginate($perPage);
     }
 
     /**
@@ -34,14 +27,7 @@ class UserRepository implements UserRepositoryInterface
      * @return User|null
      */
     public function find(int $id): ?User {
-        return $this->user->find($id);
-    }
-
-    /**
-     * @return User
-     */
-    public function create(): User {
-        return $this->user;
+        return User::find($id);
     }
 
     /**

@@ -3,27 +3,35 @@
 namespace App\Http\Controllers\Admin\Users;
 
 use App\Http\Controllers\Controller;
-use App\Services\Users\Commands\CommandDTO;
-use App\Services\Users\Handlers\CreateHandler;
+use App\Services\Commands\CreateUser\Command;
+use App\Services\Commands\CreateUser\Handler;
 use App\Http\Requests\CreateUserRequest;
 
 class CreateController extends Controller
 {
-
+    /**
+     * Показать форму создания пользователя
+     */
     public function create()
     {
         return view('admin.users.create');
     }
 
-    public function store(CreateUserRequest $request, CreateHandler $handler)
+    /**
+     * Сохранить нового пользователя
+     */
+    public function store(CreateUserRequest $request, Handler $handler)
     {
         $request->validated();
 
-        $result = $handler(new CommandDTO(
+        $command = new Command(
             name: $request->get('name'),
             email: $request->get('email'),
+            isAdmin: (bool) $request->get('is_admin', false),
             password: $request->get('password')
-        ));
+        );
+
+        $handler->handle($command);
 
         return redirect()->route('admin.users.index')
             ->with('success', "Пользователь успешно создан");

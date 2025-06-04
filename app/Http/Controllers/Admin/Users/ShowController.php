@@ -3,19 +3,22 @@
 namespace App\Http\Controllers\Admin\Users;
 
 use App\Http\Controllers\Controller;
-use App\Services\Users\Handlers\ShowHandler;
-use App\Services\Users\Exceptions\UserNotFoundException;
+use App\Services\Queries\FetchUserById\Query;
+use App\Services\Queries\FetchUserById\Fetcher;
 use Illuminate\View\View;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class ShowController extends Controller
 {
-
-    public function __invoke(ShowHandler $handler, string $userId): View
+    /**
+     * Показать детали пользователя
+     */
+    public function show(Fetcher $fetcher, string $userId): View
     {
         try {
-            $user = $handler((int)$userId);
-        } catch (UserNotFoundException) {
+            $query = new Query((int)$userId);
+            $user = $fetcher->fetch($query);
+        } catch (\Exception) {
             throw new NotFoundHttpException('Пользователь не найден');
         }
 

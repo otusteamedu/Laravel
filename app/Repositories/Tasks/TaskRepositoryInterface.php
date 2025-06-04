@@ -25,11 +25,6 @@ interface TaskRepositoryInterface
     public function find(int $id): ?Task;
 
     /**
-     * @return Task
-     */
-    public function create(): Task;
-
-    /**
      * @param Task $task
      * @return bool
      */

@@ -3,19 +3,19 @@
 namespace App\Http\Controllers\Admin\Tasks;
 
 use App\Http\Controllers\Controller;
-use App\Services\Tasks\Handlers\IndexHandler;
-use Illuminate\Http\Request;
-use Illuminate\View\View;
+use App\Services\Queries\FetchAllTasks\Query;
+use App\Services\Queries\FetchAllTasks\Fetcher;
 
 class IndexController extends Controller
 {
     /**
-     * Отобразить список задач
+     * Показать список задач
      */
-    public function __invoke(Request $request, IndexHandler $handler): View
+    public function index(Fetcher $fetcher)
     {
-        $perPage = $request->input('per_page', 10);
-        $tasks = $handler($perPage);
+        $query = new Query(perPage: 10);
+        $tasks = $fetcher->fetch($query);
+
         return view('admin.tasks.index', compact('tasks'));
     }
 } 
