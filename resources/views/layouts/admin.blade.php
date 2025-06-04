@@ -34,6 +34,13 @@
             padding: 15px;
             border-bottom: 1px solid #dee2e6;
         }
+        .user-actions {
+            display: flex;
+            align-items: center;
+        }
+        .logout-form {
+            margin-left: 15px;
+        }
     </style>
     @yield('styles')
 </head>
@@ -65,11 +72,14 @@
             <div class="col-md-10 p-0">
                 <header class="admin-header d-flex justify-content-between align-items-center">
                     <h4 class="m-0">@yield('header', 'Админ-панель')</h4>
-                    <div>
-                        <span class="me-3">Администратор</span>
-                        <a href="#" class="btn btn-sm btn-outline-secondary">
-                            <i class="fas fa-sign-out-alt"></i> Выход
-                        </a>
+                    <div class="user-actions">
+                        <span class="user-name">Администратор</span>
+                        <form method="POST" action="{{ route('logout') }}" class="logout-form d-inline-block">
+                            @csrf
+                            <button type="submit" class="btn btn-sm btn-outline-secondary">
+                                <i class="fas fa-sign-out-alt"></i> Выход
+                            </button>
+                        </form>
                     </div>
                 </header>
                 <main class="content">
