@@ -2,22 +2,16 @@
 
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('welcome');
-});
+// Route::get('/', function () {
+//     return view('welcome');
+// });
 
-// Route::view('/blade', 'third', [
-//     'show' => true,
-//     'name' => request('name', 'Sergey'),
-//     'users' => ["John", 'Mike', 'Kate']
-// ]);
+Route::view('/', 'home')->name('page');
+Route::view('/reg', 'reg')->name('reg');
+Route::view('/about', 'about')->name('about');
 
-
-Route::view('/page', 'layouts.main');
-Route::view('/reg', 'layouts.reg');
-Route::view('/about', 'layouts.about');
-Route::view('/user', 'layouts.user',[
-    'name' => request ('name', 'Ivan'),
+Route::view('/user', 'user', [
+    'name' => request('name', 'Ivan'),
     'users' => [
         ['name' => 'Ivan', 'age' => 33, 'city' => 'Moscow'],
         ['name' => 'Petr', 'age' => 25, 'city' => 'Volgograd'],
@@ -26,14 +20,4 @@ Route::view('/user', 'layouts.user',[
         ['name' => 'Irina', 'age' => 29, 'city' => 'Tula'],
     ],
 
-]);
-
-Route::get('/page', 'HomeController@index')->name('page');
-// Route::get('/about', 'AboutController@index')->name('about');
-
-
-// Route::get('/page', 'PageController@index')->name('page');
-// Route::get('/reg', 'RegController@index')->name('reg');
-// Route::get('/abstr', 'AbstrController@index')->name('abstr');
-
-// Route::get('/user', 'UserController@index')->name('user');
+])->name('user');

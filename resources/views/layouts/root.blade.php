@@ -7,34 +7,12 @@
 
         <title>@yield('title', config ('app.name'))</title>
 
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css">
-        <link href="{{ asset('css/style.css') }}"  rel="stylesheet">
+        @yield('head')
 
     </head>
     <div class="main">
         <header>
-            <div class="container">
-                <div class="row">
-                    <div class="col-3 menu-item">
-                        <a href="/page">Главная </a>
-                    </div>
-                    <div class="col-3 menu-item">
-                        <a href="/reg">Страница регистрации</a>
-                    </div>
-                    <div class="col-3 menu-item">
-                        <a href="/user">Страница пользователя</a>
-                    </div>
-                    <div class="col-3 menu-item">
-                        <a href="/about">Абстрактная страница (about)</a>
-                    </div>
-
-                    <div class="col-3 menu-item">
-                        <a href="{{ route('page') }}">Главная1</a>
-                    </div>
-
-
-                </div>
-            </div>
+            @yield('head-bottom')
         </header>
         <body>
             <div class="container">
@@ -44,5 +22,6 @@
         </body>
     </div>
 </html>
+
 
 

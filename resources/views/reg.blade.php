@@ -1,7 +1,7 @@
-@extends ('layouts.root') 
+
+@extends ('layouts.main')
 
 @section ('body')
-    <div class="container">
     <form>
         <div class="mb-3">
             <label for="exampleInputEmail1" class="form-label">Email</label>
@@ -19,5 +19,4 @@
         <button type="submit" class="btn btn-primary btn-blue">Зарегистрироваться</button>
     </form>
 
-    </div>
-@endsection 
+@endsection
