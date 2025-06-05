@@ -32,27 +32,39 @@ class CategoryTest extends TestCase
 
     public function test_fillable_attributes()
     {
-        $expectedFillable = ['name', 'sort', 'slug'];
         $category = new Category();
-
-        $this->assertEquals($expectedFillable, $category->getFillable());
+        $this->assertEquals(['name', 'sort', 'slug'], $category->getFillable());
     }
 
-    public function test_timestamps_are_disabled()
+    public function test_timestamps_disabled()
     {
         $category = new Category();
-        
         $this->assertFalse($category->timestamps);
+    }
+
+    public function test_default_sort_value()
+    {
+        $category = new Category();
+        $this->assertEquals(1, $category->getAttributes()['sort']);
+    }
+
+    public function test_slug_from_returns_name()
+    {
+        $this->assertEquals('name', Category::slugFrom());
+    }
+
+    public function test_news_relation()
+    {
+        $category = new Category();
+        $relation = $category->news();
+        
+        $this->assertInstanceOf(HasMany::class, $relation);
+        $this->assertInstanceOf(News::class, $relation->getRelated());
     }
 
     public function test_it_uses_has_slug_trait()
     {
         $this->assertContains(HasSlug::class, class_uses_recursive(Category::class));
-    }
-
-    public function test_it_uses_name_field_for_slug()
-    {
-        $this->assertEquals('name', Category::slugFrom());
     }
 
     public function test_it_has_news_relationship()
@@ -84,13 +96,5 @@ class CategoryTest extends TestCase
         $this->assertEquals('Test Category', $category->name);
         $this->assertEquals(1, $category->sort);
         $this->assertEquals('test-category', $category->slug);
-    }
-
-    public function test_it_has_default_sort_value()
-    {
-        $category = new Category();
-        $category->name = 'Test Category';
-
-        $this->assertEquals(1, $category->sort);
     }
 }
