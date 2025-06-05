@@ -33,7 +33,7 @@ class VKController extends Controller
 
             $request->session()->regenerate();
 
-            return redirect()->intended(route('projects.index', absolute: false));
+            return redirect()->intended(default: route('projects.index', absolute: false));
         } catch (AuthorizationException) {
             abort(403);
         } catch (Exception) {

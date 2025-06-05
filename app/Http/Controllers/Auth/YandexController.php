@@ -33,7 +33,7 @@ class YandexController extends Controller
 
             $request->session()->regenerate();
 
-            return redirect()->intended(route('projects.index', absolute: false));
+            return redirect()->intended(route(name: 'projects.index', absolute: false));
         } catch (AuthorizationException) {
             abort(403);
         } catch (Exception) {
