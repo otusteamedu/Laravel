@@ -15,7 +15,6 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  * @property integer $sort
  * @property ?Carbon $deleted_at
  * @property string $color
- * @property Project $project
  */
 class TodoStatus extends BaseModel
 {
@@ -28,13 +27,4 @@ class TodoStatus extends BaseModel
     public $timestamps = false;
 
     public $fillable = ['project_id', 'name', 'sort', 'color'];
-
-    /**
-     * Проект для которого создан статус задачи
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<Project, TodoStatus>
-     */
-    public function project()
-    {
-        return $this->belongsTo(Project::class, 'status_id');
-    }
 }

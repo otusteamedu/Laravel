@@ -3,16 +3,9 @@
 namespace App\Services\Repositories;
 
 use App\Services\Repositories\DTOs\ProjectDTO;
-use App\Services\Repositories\DTOs\ProjectInvitedUserDTO;
 
 interface ProjectRepositoryInterface
 {
-    /**
-     * Получить список проектов пользователя
-     * @return ProjectDTO[]
-     */
-    public function fetchForUser(int $userId): array;
-
     /**
      * Получить проект по id
      * @param int $id
@@ -40,21 +33,4 @@ interface ProjectRepositoryInterface
      * @return bool
      */
     public function destroy(int $id): bool;
-
-    /**
-     * Получить пользователей проекта
-     * @param int $id
-     * @return ProjectInvitedUserDTO[]
-     */
-    public function fetchUsers(int $projectId): array;
-
-    /**
-     * Пользователь вступил в проект
-     */
-    public function userJoun(int $userId): bool;
-
-    /**
-     * Все пользователи покинули проект
-     */
-    public function usersLeft(int $id): bool;
 }

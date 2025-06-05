@@ -6,7 +6,6 @@ use App\Models\BaseModel;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Support\Carbon;
 
 /**
@@ -16,10 +15,7 @@ use Illuminate\Support\Carbon;
  * @property ?Carbon $created_at
  * @property ?Carbon $updated_at
  * @property ?Carbon $deleted_at
- * @property User[] $users
  * @property ProjectUser[] $projectUsers
- * @property TodoStatus[] $todoStatuses
- * @property Todo[] $todos
  */
 
 class Project extends BaseModel
@@ -35,23 +31,5 @@ class Project extends BaseModel
     public function projectUsers(): HasMany
     {
         return $this->hasMany(ProjectUser::class);
-    }
-
-    /**
-     * Список статусов задач проекта
-     * @return HasMany<TodoStatus, Project>
-     */
-    public function todoStatuses(): HasMany
-    {
-        return $this->hasMany(TodoStatus::class, 'status_id')->orderBy('sort');
-    }
-
-    /**
-     * Список задач проекта
-     * @return HasMany<Todo, Project>
-     */
-    public function todos(): HasMany
-    {
-        return $this->hasMany(Todo::class)->orderByDesc('updated_at');
     }
 }

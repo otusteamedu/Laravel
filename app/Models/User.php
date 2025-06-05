@@ -3,14 +3,12 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
-use App\Models\ProjectUser;
 use Illuminate\Support\Carbon;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 /**
  * @property integer $id
@@ -22,9 +20,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @property ?Carbon $created_at
  * @property ?Carbon $updated_at
  * @property UserProfile $profile
- * @property ProjectUser[] $userProjects
  * @property UserSocialite[] $socialites
- * @property TodoUser[] $userTodos
  */
 class User extends Authenticatable
 {
@@ -75,29 +71,11 @@ class User extends Authenticatable
     }
 
     /**
-     * Проекты пользователя
-     * @return HasMany<ProjectUser, User>
-     */
-    public function userProjects(): HasMany
-    {
-        return $this->hasMany(ProjectUser::class);
-    }
-
-    /**
      * Соцсети, через которые пользователь авторизовывался
      * @return \Illuminate\Database\Eloquent\Relations\HasMany<UserSocialite, User>
      */
     public function socialites(): HasMany
     {
         return $this->hasMany(UserSocialite::class);
-    }
-
-    /**
-     * Задачи в которых учавствует пользователь
-     * @return HasMany<TodoUser, User>
-     */
-    public function userTodos(): HasMany
-    {
-        return $this->hasMany(TodoUser::class);
     }
 }

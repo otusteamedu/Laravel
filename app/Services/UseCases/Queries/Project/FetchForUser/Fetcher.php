@@ -2,12 +2,12 @@
 
 namespace App\Services\UseCases\Queries\Project\FetchForUser;
 
-use App\Services\Repositories\ProjectRepositoryInterface;
+use App\Services\Repositories\ProjectUserRepositoryInterface;
 
 class Fetcher
 {
     public function __construct(
-        private ProjectRepositoryInterface $projectRepository
+        private ProjectUserRepositoryInterface $repository
     ) {}
 
     /**
@@ -17,7 +17,7 @@ class Fetcher
      */
     public function fetch(Query $query): Result
     {
-        $projectDTOs = $this->projectRepository->fetchForUser($query->userId);
+        $projectDTOs = $this->repository->fetchForUser($query->userId);
 
         return new Result(
             ptojectDTOs: $projectDTOs

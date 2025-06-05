@@ -26,10 +26,7 @@ use Illuminate\Support\Carbon;
  * @property ?Carbon $deleted_at
  * @property ?Carbon $options
  * @property User $author
- * @property Project $project
  * @property TodoStatus $status
- * @property TodoUser[] $todoUsers
- * @property TodoComment[] $comments
  * 
  * @method static member(User $user)
  * @method static notMember(User $user)
@@ -62,39 +59,12 @@ class Todo extends BaseModel
     }
 
     /**
-     * Проект задачи
-     * @return BelongsTo<Project, Todo>
-     */
-    public function project(): BelongsTo
-    {
-        return $this->belongsTo(Project::class);
-    }
-
-    /**
      * Текущий статус задачи
      * @return BelongsTo<TodoStatus, Todo>
      */
     public function status(): BelongsTo
     {
         return $this->belongsTo(TodoStatus::class, 'status_id');
-    }
-
-    /**
-     * Список пользователей имеющих доступ к задаче
-     * @return HasMany<TodoUser, Todo>
-     */
-    public function todoUsers(): HasMany
-    {
-        return $this->hasMany(TodoUser::class);
-    }
-
-    /**
-     * Комментарии к задаче
-     * @return HasMany<TodoComment, Todo>
-     */
-    public function comments(): HasMany
-    {
-        return $this->hasMany(TodoComment::class)->orderBy('created_at');
     }
 
     /**

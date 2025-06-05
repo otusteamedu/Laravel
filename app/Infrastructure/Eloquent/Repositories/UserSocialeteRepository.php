@@ -60,13 +60,15 @@ class UserSocialeteRepository implements UserSocialeteRepositoryInterface
      */
     public function save(UserSocialiteDTO $userSocialite): bool
     {
-        return UserSocialite::query()
+        $processed = UserSocialite::query()
             ->where('id', $userSocialite->id)
             ->update([
                 'user_id'      => $userSocialite->user_id,
                 'driver'       => $userSocialite->driver,
                 'socialite_id' => $userSocialite->socialite_id,
             ]);
+
+        return $processed ? true : false;
     }
 
     /**

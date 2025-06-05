@@ -4,13 +4,15 @@ namespace App\Services\UseCases\Queries\Project\FetchUsers;
 
 use Illuminate\Support\Arr;
 use App\Services\Repositories\DTOs\ProjectInvitedUserDTO;
-use App\Services\Repositories\Exceptions\ModelNotFoundException;
 use App\Services\Repositories\ProjectRepositoryInterface;
+use App\Services\Repositories\ProjectUserRepositoryInterface;
+use App\Services\Repositories\Exceptions\ModelNotFoundException;
 
 class Fetcher
 {
     public function __construct(
         private ProjectRepositoryInterface $projectRepository,
+        private ProjectUserRepositoryInterface $projectUserRepository,
     ) {}
 
     /**
@@ -26,7 +28,7 @@ class Fetcher
             throw new ModelNotFoundException('Проект не найден');
         }
 
-        $users = $this->projectRepository->fetchUsers($query->projectId);
+        $users = $this->projectUserRepository->fetchUsers($query->projectId);
 
         $userDTOs = array_map(
             fn($user) =>

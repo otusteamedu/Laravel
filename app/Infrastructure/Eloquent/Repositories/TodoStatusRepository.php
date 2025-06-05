@@ -60,7 +60,7 @@ class TodoStatusRepository implements TodoStatusRepositoryInterface
      */
     public function save(TodoStatusDTO $status): bool
     {
-        return TodoStatus::query()
+        $updated = TodoStatus::query()
             ->where('id', $status->id)
             ->where('project_id', $status->project_id)
             ->update([
@@ -68,6 +68,8 @@ class TodoStatusRepository implements TodoStatusRepositoryInterface
                 'sort'       => $status->sort,
                 'color'      => $status->color,
             ]);
+
+        return $updated ? true : false;
     }
 
     /**

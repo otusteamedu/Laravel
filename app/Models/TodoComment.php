@@ -18,8 +18,6 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  * @property ?Carbon $created_at
  * @property ?Carbon $updated_at
  * @property ?Carbon $deleted_at
- * @property Todo $todo
- * @property User $user
  */
 class TodoComment extends Model
 {
@@ -30,22 +28,4 @@ class TodoComment extends Model
     protected $table = 'todo_comments';
 
     public $fillable = ['todo_id', 'user_id', 'comment'];
-
-    /**
-     * Задача к которой добавлен комментарий
-     * @return BelongsTo<Todo, TodoComment>
-     */
-    public function todo(): BelongsTo
-    {
-        return $this->belongsTo(Todo::class);
-    }
-
-    /**
-     * Автор комментария
-     * @return BelongsTo<User, TodoComment>
-     */
-    public function user(): BelongsTo
-    {
-        return $this->belongsTo(User::class);
-    }
 }

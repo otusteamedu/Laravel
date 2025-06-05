@@ -16,8 +16,6 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  * @property ?Carbon $invited_at
  * @property ?Carbon $joined_at
  * @property ?Carbon $left_at
- * @property User $users
- * @property Project $projects
  */
 class ProjectUser extends BaseModel
 {
@@ -45,15 +43,5 @@ class ProjectUser extends BaseModel
             get: fn($value) => json_decode($value, true),
             set: fn($value) => json_encode($value, JSON_UNESCAPED_UNICODE),
         );
-    }
-
-    public function user(): BelongsTo
-    {
-        return $this->belongsTo(User::class);
-    }
-
-    public function project(): BelongsTo
-    {
-        return $this->belongsTo(Project::class);
     }
 }

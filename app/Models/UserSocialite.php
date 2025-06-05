@@ -15,16 +15,10 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property ?Carbon $created_at
  * @property ?Carbon $updated_at
  * @property ?Carbon $deleted_at
- * @property User[] $users
  */
 class UserSocialite extends BaseModel
 {
     protected $table = 'user_socialites';
 
     public $fillable = ['user_id', 'driver', 'socialite_id'];
-
-    public function users(): BelongsTo
-    {
-        return $this->belongsTo(User::class);
-    }
 }
