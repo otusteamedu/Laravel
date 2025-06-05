@@ -15,10 +15,10 @@ Route::middleware('guest')->group(function () {
     Route::post('login', [AuthenticatedSessionController::class, 'store']);
 
     Route::get('/login/yandex', [YandexController::class, 'redirect'])->name('login.yandex');
-    Route::get('/login/yandex/callback', [YandexController::class, 'callback']);
+    Route::get('/login/yandex/callback', [YandexController::class, 'callback'])->name('login.yandex.callback');
 
     Route::get('/login/vk', [VKController::class, 'redirect'])->name('login.vk');
-    Route::get('/login/vk/callback', [VKController::class, 'callback']);
+    Route::get('/login/vk/callback', [VKController::class, 'callback'])->name('login.vk.callback');
 });
 
 Route::middleware('auth')->group(function () {
