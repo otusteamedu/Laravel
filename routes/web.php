@@ -24,17 +24,23 @@ Route::middleware('auth')
         Route::get('/', Projects\Index::class)
             ->name('index');
         Route::get('/create', [Projects\Create::class, 'create'])
-            ->name('create');
+            ->name('create')
+            ->can('project.create');
         Route::post('/', [Projects\Create::class, 'store'])
-            ->name('store');
+            ->name('store')
+            ->can('project.create');
         Route::get('/{projectId}', Projects\Show::class)
-            ->name('show');
+            ->name('show')
+            ->can('project.view', 'projectId');
         Route::get('/{projectId}/edit', [Projects\Update::class, 'edit'])
-            ->name('edit');
+            ->name('edit')
+            ->can('project.update', 'projectId');
         Route::put('/{projectId}', [Projects\Update::class, 'update'])
-            ->name('update');
+            ->name('update')
+            ->can('project.update', 'projectId');
         Route::delete('/{projectId}', Projects\Delete::class)
-            ->name('destroy');
+            ->name('destroy')
+            ->can('project.delete', 'projectId');
     });
 
 Route::middleware('auth')

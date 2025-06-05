@@ -32,11 +32,6 @@ class Project extends BaseModel
 
     public $fillable = ['name', 'description'];
 
-    public function users(): BelongsToMany
-    {
-        return $this->belongsToMany(User::class, ProjectUser::class);
-    }
-
     public function projectUsers(): HasMany
     {
         return $this->hasMany(ProjectUser::class);
