@@ -4,7 +4,6 @@ namespace App\Services\UseCases\Commands\Project\Delete;
 
 use App\Services\Repositories\ProjectRepositoryInterface;
 use App\Services\Repositories\ProjectUserRepositoryInterface;
-use App\Services\Repositories\Exceptions\ModelNotFoundException;
 
 class Handler
 {
@@ -17,14 +16,16 @@ class Handler
 
     public function handle(Command $command): bool
     {
+        $result = false;
+
         $projectDTO = $this->projectRepository->find($command->id);
 
-        if ($projectDTO === null) {
-            throw new ModelNotFoundException('Проект не найден');
+        if ($projectDTO) {
+            $this->projectUserRepository->usersLeft($projectDTO->id);
+
+            $result = $this->projectRepository->destroy($projectDTO->id);
         }
 
-        $this->projectUserRepository->usersLeft($projectDTO->id);
-
-        return $this->projectRepository->destroy($projectDTO->id);
+        return $result;
     }
 }

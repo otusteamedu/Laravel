@@ -24,7 +24,6 @@ class Delete extends Controller
                     projectId: $data['project_id'],
                 )
             );
-
             return redirect()->back()->with('success', 'Статус для задачи удален');
         } catch (ModelNotFoundException $exception) {
             return redirect()->back()->with('error', $exception->getMessage());

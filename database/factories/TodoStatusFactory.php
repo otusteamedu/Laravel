@@ -22,7 +22,7 @@ class TodoStatusFactory extends Factory
 
         return [
             'project_id' => $projects->random()->id,
-            'name'       => Str::ucfirst(fake()->word()),
+            'name'       => Str::ucfirst(fake()->words(2, true)),
             'sort'       => rand(10, 100),
             'color'      => fake()->randomElement(['#f8f9fa', '#198754', '#0dcaf0', '#ffc107', '#dc3545']),
         ];

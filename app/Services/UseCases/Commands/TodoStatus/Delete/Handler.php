@@ -2,7 +2,6 @@
 
 namespace App\Services\UseCases\Commands\TodoStatus\Delete;
 
-use App\Services\Repositories\Exceptions\ModelNotFoundException;
 use App\Services\Repositories\TodoStatusRepositoryInterface;
 
 class Handler
@@ -16,17 +15,18 @@ class Handler
     /**
      * Команда удаления статуса задач для проекта
      * @param Command $command
-     * @throws ModelNotFoundException
      * @return bool
      */
     public function handle(Command $command): bool
     {
+        $result = false;
+
         $modelDTO = $this->repository->find($command->id, $command->projectId);
 
-        if ($modelDTO === null) {
-            throw new ModelNotFoundException('Статус для задачи не найден');
+        if ($modelDTO) {
+            $result = $this->repository->destroy($modelDTO->id, $modelDTO->project_id);
         }
 
-        return $this->repository->destroy($modelDTO->id, $modelDTO->project_id);
+        return $result;
     }
 }

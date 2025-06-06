@@ -2,16 +2,14 @@
 
 namespace App\Models;
 
-use App\Models\Project;
 use App\Models\TodoUser;
 use App\Models\BaseModel;
+use App\Models\TodoComment;
+use Illuminate\Support\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Support\Carbon;
 
 /**
  * @property integer $id
@@ -24,9 +22,9 @@ use Illuminate\Support\Carbon;
  * @property ?Carbon $created_at
  * @property ?Carbon $updated_at
  * @property ?Carbon $deleted_at
- * @property ?Carbon $options
- * @property User $author
- * @property TodoStatus $status
+ * @property ?array  $options
+ * @property TodoUser[] $todoUsers
+ * @property TodoComment[] $comments
  * 
  * @method static member(User $user)
  * @method static notMember(User $user)
@@ -50,21 +48,21 @@ class Todo extends BaseModel
     }
 
     /**
-     * Автор задачи
-     * @return BelongsTo<User, Todo>
+     * Список пользователей имеющих доступ к задаче
+     * @return HasMany<TodoUser, Todo>
      */
-    public function author(): BelongsTo
+    public function todoUsers(): HasMany
     {
-        return $this->belongsTo(User::class, 'author_id');
+        return $this->hasMany(TodoUser::class);
     }
 
     /**
-     * Текущий статус задачи
-     * @return BelongsTo<TodoStatus, Todo>
+     * Комментарии к задаче
+     * @return HasMany<TodoComment, Todo>
      */
-    public function status(): BelongsTo
+    public function comments(): HasMany
     {
-        return $this->belongsTo(TodoStatus::class, 'status_id');
+        return $this->hasMany(TodoComment::class)->orderBy('created_at');
     }
 
     /**

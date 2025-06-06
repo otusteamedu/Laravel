@@ -64,10 +64,8 @@ class AppServiceProvider extends ServiceProvider
         Gate::define('project.delete', [ProjectPolicy::class, 'delete']);
 
         Gate::define('project.user.list', [ProjectUserPolicy::class, 'list']);
-        Gate::define('project.user.view', [ProjectUserPolicy::class, 'view']);
         Gate::define('project.user.manage', [ProjectUserPolicy::class, 'manage']);
 
-        Gate::define('todostatuses.list', [TodoStatusesPolicy::class, 'list']);
         Gate::define('todostatuses.manage', [TodoStatusesPolicy::class, 'manage']);
     }
 }

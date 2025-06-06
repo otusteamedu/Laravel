@@ -22,11 +22,6 @@ class ProjectUserPolicy
         return $this->projectUserRepository->hasRole($projectId, $user->id, [ProjectRoleEnum::ADMIN, ProjectRoleEnum::MEMBER]);
     }
 
-    public function view(User $user, int $projectId): bool
-    {
-        return $this->projectUserRepository->hasRole($projectId, $user->id, [ProjectRoleEnum::ADMIN, ProjectRoleEnum::MEMBER]);
-    }
-
     public function manage(User $user, int $projectId): bool
     {
         return $this->projectUserRepository->hasRole($projectId, $user->id, [ProjectRoleEnum::ADMIN]);

@@ -21,6 +21,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
  * @property ?Carbon $updated_at
  * @property UserProfile $profile
  * @property UserSocialite[] $socialites
+ * @property ProjectUser[] $userProjects
  */
 class User extends Authenticatable
 {
@@ -77,5 +78,14 @@ class User extends Authenticatable
     public function socialites(): HasMany
     {
         return $this->hasMany(UserSocialite::class);
+    }
+
+    /**
+     * Проекты пользователя
+     * @return HasMany<ProjectUser, User>
+     */
+    public function userProjects(): HasMany
+    {
+        return $this->hasMany(ProjectUser::class);
     }
 }

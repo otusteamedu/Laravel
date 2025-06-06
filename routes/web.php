@@ -56,13 +56,17 @@ Route::middleware('auth')
     ->name('project.todostatuses.')
     ->group(function () {
         Route::get('/', TodoStatuses\Index::class)
-            ->name('index');
+            ->name('index')
+            ->can('todostatuses.manage', 'projectId');
         Route::post('/store', TodoStatuses\Create::class)
-            ->name('store');
+            ->name('store')
+            ->can('todostatuses.manage', 'projectId');
         Route::post('/update', TodoStatuses\Update::class)
-            ->name('update');
+            ->name('update')
+            ->can('todostatuses.manage', 'projectId');
         Route::post('/destroy', TodoStatuses\Delete::class)
-            ->name('destroy');
+            ->name('destroy')
+            ->can('todostatuses.manage', 'projectId');
     });
 
 require __DIR__ . '/auth.php';
