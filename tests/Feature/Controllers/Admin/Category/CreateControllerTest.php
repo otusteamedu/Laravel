@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\Admin\Category;
+namespace Feature\Controllers\Admin\Category;
 
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -12,15 +12,20 @@ class CreateControllerTest extends TestCase
 {
     use RefreshDatabase;
 
+    private const ROUTE_ADMIN_CATEGORY_INDEX = 'admin.categories.index';
+    private const ROUTE_ADMIN_CATEGORY_STORE = 'admin.categories.store';
+    private const ROUTE_ADMIN_CATEGORY_CREATE = 'admin.categories.create';
+    private const ROUTE_LOGIN = 'login';
+
     public function test_it_displays_create_form()
     {
         $user = User::factory()->create(['is_admin' => true]);
 
         $response = $this->actingAs($user)
-            ->get(route('admin.categories.create'));
+            ->get(route(self::ROUTE_ADMIN_CATEGORY_CREATE));
 
         $response->assertOk()
-            ->assertViewIs('admin.categories.create');
+            ->assertViewIs(self::ROUTE_ADMIN_CATEGORY_CREATE);
     }
 
     public function test_it_creates_new_category()
@@ -32,9 +37,9 @@ class CreateControllerTest extends TestCase
         ];
 
         $response = $this->actingAs($user)
-            ->post(route('admin.categories.store'), $categoryData);
+            ->post(route(self::ROUTE_ADMIN_CATEGORY_STORE), $categoryData);
 
-        $response->assertRedirect(route('admin.categories.index'));
+        $response->assertRedirect(route(self::ROUTE_ADMIN_CATEGORY_INDEX));
         $this->assertDatabaseHas('categories', $categoryData);
     }
 
@@ -43,8 +48,8 @@ class CreateControllerTest extends TestCase
         $user = User::factory()->create(['is_admin' => true]);
 
         $response = $this->actingAs($user)
-            ->from(route('admin.categories.create'))
-            ->post(route('admin.categories.store'), []);
+            ->from(route(self::ROUTE_ADMIN_CATEGORY_CREATE))
+            ->post(route(self::ROUTE_ADMIN_CATEGORY_STORE), []);
 
         $response->assertRedirect()
             ->assertInvalid(['name']);
@@ -55,8 +60,8 @@ class CreateControllerTest extends TestCase
         $user = User::factory()->create(['is_admin' => true]);
 
         $response = $this->actingAs($user)
-            ->from(route('admin.categories.create'))
-            ->post(route('admin.categories.store'), [
+            ->from(route(self::ROUTE_ADMIN_CATEGORY_CREATE))
+            ->post(route(self::ROUTE_ADMIN_CATEGORY_STORE), [
                 'name' => 'Test Category',
                 'sort' => 'not-a-number'
             ]);
@@ -67,9 +72,9 @@ class CreateControllerTest extends TestCase
 
     public function test_it_requires_authentication()
     {
-        $response = $this->post(route('admin.categories.store'), []);
+        $response = $this->post(route(self::ROUTE_ADMIN_CATEGORY_STORE), []);
 
-        $response->assertRedirect(route('login'));
+        $response->assertRedirect(route(self::ROUTE_LOGIN));
     }
 
     public function test_it_requires_admin_role()
@@ -77,8 +82,8 @@ class CreateControllerTest extends TestCase
         $user = User::factory()->create(['is_admin' => false]);
 
         $response = $this->actingAs($user)
-            ->post(route('admin.categories.store'), []);
+            ->post(route(self::ROUTE_ADMIN_CATEGORY_STORE), []);
 
         $response->assertForbidden();
     }
-} 
+}

@@ -18,6 +18,7 @@ class CategoryTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
+
         $this->category = $this->getMockBuilder(Category::class)
             ->disableOriginalConstructor()
             ->onlyMethods(['newCollection', 'getRelationValue'])
@@ -57,7 +58,7 @@ class CategoryTest extends TestCase
     {
         $category = new Category();
         $relation = $category->news();
-        
+
         $this->assertInstanceOf(HasMany::class, $relation);
         $this->assertInstanceOf(News::class, $relation->getRelated());
     }

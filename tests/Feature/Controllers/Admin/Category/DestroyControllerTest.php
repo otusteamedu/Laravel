@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\Admin\Category;
+namespace Feature\Controllers\Admin\Category;
 
 use App\Models\Category;
 use App\Models\News;
@@ -13,6 +13,8 @@ use Tests\TestCase;
 class DestroyControllerTest extends TestCase
 {
     use RefreshDatabase;
+    private const ROUTE_ADMIN_CATEGORY_INDEX = 'admin.categories.index';
+    private const ROUTE_ADMIN_CATEGORY_DESTROY = 'admin.categories.destroy';
 
     public function test_it_deletes_category()
     {
@@ -20,9 +22,9 @@ class DestroyControllerTest extends TestCase
         $category = Category::factory()->create();
 
         $response = $this->actingAs($user)
-            ->delete(route('admin.categories.destroy', ['categoryId' => $category->id]));
+            ->delete(route(self::ROUTE_ADMIN_CATEGORY_DESTROY, ['categoryId' => $category->id]));
 
-        $response->assertRedirect(route('admin.categories.index'))
+        $response->assertRedirect(route(self::ROUTE_ADMIN_CATEGORY_INDEX))
             ->assertSessionHas('success', 'Category has been deleted');
         $this->assertDatabaseMissing('categories', ['id' => $category->id]);
     }
@@ -32,7 +34,7 @@ class DestroyControllerTest extends TestCase
         $user = User::factory()->create(['is_admin' => true]);
 
         $response = $this->actingAs($user)
-            ->delete(route('admin.categories.destroy', ['categoryId' => 999]));
+            ->delete(route(self::ROUTE_ADMIN_CATEGORY_DESTROY, ['categoryId' => 999]));
 
         $response->assertNotFound();
     }
@@ -41,7 +43,7 @@ class DestroyControllerTest extends TestCase
     {
         $category = Category::factory()->create();
 
-        $response = $this->delete(route('admin.categories.destroy', ['categoryId' => $category->id]));
+        $response = $this->delete(route(self::ROUTE_ADMIN_CATEGORY_DESTROY, ['categoryId' => $category->id]));
 
         $response->assertRedirect(route('login'));
     }
@@ -52,7 +54,7 @@ class DestroyControllerTest extends TestCase
         $category = Category::factory()->create();
 
         $response = $this->actingAs($user)
-            ->delete(route('admin.categories.destroy', ['categoryId' => $category->id]));
+            ->delete(route(self::ROUTE_ADMIN_CATEGORY_DESTROY, ['categoryId' => $category->id]));
 
         $response->assertForbidden();
     }
@@ -64,11 +66,11 @@ class DestroyControllerTest extends TestCase
         $news = News::factory()->count(3)->create(['category_id' => $category->id]);
 
         $response = $this->actingAs($user)
-            ->delete(route('admin.categories.destroy', ['categoryId' => $category->id]));
+            ->delete(route(self::ROUTE_ADMIN_CATEGORY_DESTROY, ['categoryId' => $category->id]));
 
-        $response->assertRedirect(route('admin.categories.index'))
+        $response->assertRedirect(route(self::ROUTE_ADMIN_CATEGORY_INDEX))
             ->assertSessionHas('success', 'Category has been deleted');
-        
+
         $this->assertDatabaseMissing('categories', ['id' => $category->id]);
         foreach ($news as $newsItem) {
             $this->assertDatabaseHas('news', ['id' => $newsItem->id]);
@@ -84,8 +86,8 @@ class DestroyControllerTest extends TestCase
         $category->delete();
 
         $response = $this->actingAs($user)
-            ->delete(route('admin.categories.destroy', ['categoryId' => $category->id]));
+            ->delete(route(self::ROUTE_ADMIN_CATEGORY_DESTROY, ['categoryId' => $category->id]));
 
         $response->assertNotFound();
     }
-} 
+}

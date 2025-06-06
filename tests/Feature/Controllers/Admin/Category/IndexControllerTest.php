@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\Admin\Category;
+namespace Feature\Controllers\Admin\Category;
 
 use App\Models\Category;
 use App\Models\User;
@@ -13,16 +13,18 @@ class IndexControllerTest extends TestCase
 {
     use RefreshDatabase;
 
+    private const ROUTE_ADMIN_CATEGORY_INDEX = 'admin.categories.index';
+
     public function test_it_displays_categories_list()
     {
         $user = User::factory()->create(['is_admin' => true]);
         $categories = Category::factory()->count(3)->create();
 
         $response = $this->actingAs($user)
-            ->get(route('admin.categories.index'));
+            ->get(route(self::ROUTE_ADMIN_CATEGORY_INDEX));
 
         $response->assertOk()
-            ->assertViewIs('admin.categories.index')
+            ->assertViewIs(self::ROUTE_ADMIN_CATEGORY_INDEX)
             ->assertViewHas('categories');
 
         foreach ($categories as $category) {
@@ -35,16 +37,16 @@ class IndexControllerTest extends TestCase
         $user = User::factory()->create(['is_admin' => true]);
 
         $response = $this->actingAs($user)
-            ->get(route('admin.categories.index'));
+            ->get(route(self::ROUTE_ADMIN_CATEGORY_INDEX));
 
         $response->assertOk()
-            ->assertViewIs('admin.categories.index')
+            ->assertViewIs(self::ROUTE_ADMIN_CATEGORY_INDEX)
             ->assertViewHas('categories');
     }
 
     public function test_it_requires_authentication()
     {
-        $response = $this->get(route('admin.categories.index'));
+        $response = $this->get(route(self::ROUTE_ADMIN_CATEGORY_INDEX));
 
         $response->assertRedirect(route('login'));
     }
@@ -54,8 +56,8 @@ class IndexControllerTest extends TestCase
         $user = User::factory()->create(['is_admin' => false]);
 
         $response = $this->actingAs($user)
-            ->get(route('admin.categories.index'));
+            ->get(route(self::ROUTE_ADMIN_CATEGORY_INDEX));
 
         $response->assertForbidden();
     }
-} 
+}

@@ -6,9 +6,6 @@ use App\Models\Traits\HasSlug;
 use Illuminate\Database\Eloquent\Model;
 use Tests\TestCase;
 use PHPUnit\Framework\Attributes\Group;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\ConnectionInterface;
-use Illuminate\Database\Query\Builder as QueryBuilder;
 
 #[Group('traits')]
 class HasSlugTest extends TestCase
@@ -21,7 +18,7 @@ class HasSlugTest extends TestCase
         $this->model = $this->getMockBuilder(TestModel::class)
             ->onlyMethods(['isSlugExists'])
             ->getMock();
-        
+
         $this->model->method('isSlugExists')
             ->willReturn(false);
     }
@@ -48,14 +45,14 @@ class HasSlugTest extends TestCase
         $model1 = $this->getMockBuilder(TestModel::class)
             ->onlyMethods(['isSlugExists'])
             ->getMock();
-        
+
         $model1->method('isSlugExists')
             ->willReturn(false);
 
         $model2 = $this->getMockBuilder(TestModel::class)
             ->onlyMethods(['isSlugExists'])
             ->getMock();
-        
+
         $model2->method('isSlugExists')
             ->willReturnOnConsecutiveCalls(true, false);
 
@@ -100,12 +97,12 @@ class HasSlugTest extends TestCase
         $model = $this->getMockBuilder(TestModel::class)
             ->onlyMethods(['isSlugExists'])
             ->getMock();
-        
+
         $model->method('isSlugExists')
             ->willReturn(false);
 
         $model->title = 'Test Title';
-        
+
         // Имитируем событие creating
         $model->generateSlug();
 
@@ -129,7 +126,7 @@ class HasSlugTest extends TestCase
         $model = $this->getMockBuilder(TestModel::class)
             ->onlyMethods(['isSlugExists'])
             ->getMock();
-        
+
         $model->method('isSlugExists')
             ->willReturnOnConsecutiveCalls(true, false);
 

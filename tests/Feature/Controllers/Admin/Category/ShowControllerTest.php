@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\Admin\Category;
+namespace Feature\Controllers\Admin\Category;
 
 use App\Models\Category;
 use App\Models\News;
@@ -14,6 +14,8 @@ class ShowControllerTest extends TestCase
 {
     use RefreshDatabase;
 
+    private const ROUTE_ADMIN_CATEGORY_SHOW = 'admin.categories.show';
+
     public function test_it_displays_category_details()
     {
         $user = User::factory()->create(['is_admin' => true]);
@@ -24,10 +26,10 @@ class ShowControllerTest extends TestCase
         ]);
 
         $response = $this->actingAs($user)
-            ->get(route('admin.categories.show', ['categoryId' => $category->id]));
+            ->get(route(self::ROUTE_ADMIN_CATEGORY_SHOW, ['categoryId' => $category->id]));
 
         $response->assertOk()
-            ->assertViewIs('admin.categories.show')
+            ->assertViewIs(self::ROUTE_ADMIN_CATEGORY_SHOW)
             ->assertViewHas('category')
             ->assertSee('Test Category')
             ->assertSee('test-category')
@@ -39,7 +41,7 @@ class ShowControllerTest extends TestCase
         $user = User::factory()->create(['is_admin' => true]);
 
         $response = $this->actingAs($user)
-            ->get(route('admin.categories.show', ['categoryId' => 999]));
+            ->get(route(self::ROUTE_ADMIN_CATEGORY_SHOW, ['categoryId' => 999]));
 
         $response->assertNotFound();
     }
@@ -48,7 +50,7 @@ class ShowControllerTest extends TestCase
     {
         $category = Category::factory()->create();
 
-        $response = $this->get(route('admin.categories.show', ['categoryId' => $category->id]));
+        $response = $this->get(route(self::ROUTE_ADMIN_CATEGORY_SHOW, ['categoryId' => $category->id]));
 
         $response->assertRedirect(route('login'));
     }
@@ -59,7 +61,7 @@ class ShowControllerTest extends TestCase
         $category = Category::factory()->create();
 
         $response = $this->actingAs($user)
-            ->get(route('admin.categories.show', ['categoryId' => $category->id]));
+            ->get(route(self::ROUTE_ADMIN_CATEGORY_SHOW, ['categoryId' => $category->id]));
 
         $response->assertForbidden();
     }
@@ -71,10 +73,10 @@ class ShowControllerTest extends TestCase
         News::factory()->count(3)->create(['category_id' => $category->id]);
 
         $response = $this->actingAs($user)
-            ->get(route('admin.categories.show', ['categoryId' => $category->id]));
+            ->get(route(self::ROUTE_ADMIN_CATEGORY_SHOW, ['categoryId' => $category->id]));
 
         $response->assertOk()
-            ->assertViewIs('admin.categories.show')
+            ->assertViewIs(self::ROUTE_ADMIN_CATEGORY_SHOW)
             ->assertViewHas('category');
     }
 
@@ -84,10 +86,10 @@ class ShowControllerTest extends TestCase
         $category = Category::factory()->create();
 
         $response = $this->actingAs($user)
-            ->get(route('admin.categories.show', ['categoryId' => $category->id]));
+            ->get(route(self::ROUTE_ADMIN_CATEGORY_SHOW, ['categoryId' => $category->id]));
 
         $response->assertOk()
-            ->assertViewIs('admin.categories.show')
+            ->assertViewIs(self::ROUTE_ADMIN_CATEGORY_SHOW)
             ->assertViewHas('category');
     }
-} 
+}

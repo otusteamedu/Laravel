@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\Admin\Category;
+namespace Feature\Controllers\Admin\Category;
 
 use App\Models\Category;
 use App\Models\User;
@@ -13,16 +13,20 @@ class UpdateControllerTest extends TestCase
 {
     use RefreshDatabase;
 
+    private const ROUTE_ADMIN_CATEGORY_EDIT = 'admin.categories.edit';
+    private const ROUTE_ADMIN_CATEGORY_UPDATE = 'admin.categories.update';
+    private const ROUTE_ADMIN_CATEGORY_SHOW = 'admin.categories.show';
+
     public function test_it_displays_edit_form()
     {
         $user = User::factory()->create(['is_admin' => true]);
         $category = Category::factory()->create();
 
         $response = $this->actingAs($user)
-            ->get(route('admin.categories.edit', ['categoryId' => $category->id]));
+            ->get(route(self::ROUTE_ADMIN_CATEGORY_EDIT, ['categoryId' => $category->id]));
 
         $response->assertOk()
-            ->assertViewIs('admin.categories.edit')
+            ->assertViewIs(self::ROUTE_ADMIN_CATEGORY_EDIT)
             ->assertViewHas('category');
     }
 
@@ -36,9 +40,9 @@ class UpdateControllerTest extends TestCase
         ];
 
         $response = $this->actingAs($user)
-            ->put(route('admin.categories.update', ['categoryId' => $category->id]), $updateData);
+            ->put(route(self::ROUTE_ADMIN_CATEGORY_UPDATE, ['categoryId' => $category->id]), $updateData);
 
-        $response->assertRedirect(route('admin.categories.show', ['categoryId' => $category->id]));
+        $response->assertRedirect(route(self::ROUTE_ADMIN_CATEGORY_SHOW, ['categoryId' => $category->id]));
         $this->assertDatabaseHas('categories', array_merge(
             ['id' => $category->id],
             $updateData
@@ -51,8 +55,8 @@ class UpdateControllerTest extends TestCase
         $category = Category::factory()->create();
 
         $response = $this->actingAs($user)
-            ->from(route('admin.categories.edit', ['categoryId' => $category->id]))
-            ->put(route('admin.categories.update', ['categoryId' => $category->id]), []);
+            ->from(route(self::ROUTE_ADMIN_CATEGORY_EDIT, ['categoryId' => $category->id]))
+            ->put(route(self::ROUTE_ADMIN_CATEGORY_UPDATE, ['categoryId' => $category->id]), []);
 
         $response->assertRedirect()
             ->assertInvalid(['name']);
@@ -64,8 +68,8 @@ class UpdateControllerTest extends TestCase
         $category = Category::factory()->create();
 
         $response = $this->actingAs($user)
-            ->from(route('admin.categories.edit', ['categoryId' => $category->id]))
-            ->put(route('admin.categories.update', ['categoryId' => $category->id]), [
+            ->from(route(self::ROUTE_ADMIN_CATEGORY_EDIT, ['categoryId' => $category->id]))
+            ->put(route(self::ROUTE_ADMIN_CATEGORY_UPDATE, ['categoryId' => $category->id]), [
                 'name' => 'Updated Category',
                 'sort' => 'not-a-number'
             ]);
@@ -79,7 +83,7 @@ class UpdateControllerTest extends TestCase
         $user = User::factory()->create(['is_admin' => true]);
 
         $response = $this->actingAs($user)
-            ->put(route('admin.categories.update', ['categoryId' => 999]), [
+            ->put(route(self::ROUTE_ADMIN_CATEGORY_UPDATE, ['categoryId' => 999]), [
                 'name' => 'Updated Category',
                 'sort' => 1
             ]);
@@ -91,7 +95,7 @@ class UpdateControllerTest extends TestCase
     {
         $category = Category::factory()->create();
 
-        $response = $this->put(route('admin.categories.update', ['categoryId' => $category->id]), [
+        $response = $this->put(route(self::ROUTE_ADMIN_CATEGORY_UPDATE, ['categoryId' => $category->id]), [
             'name' => 'Updated Category',
             'sort' => 1
         ]);
@@ -105,7 +109,7 @@ class UpdateControllerTest extends TestCase
         $category = Category::factory()->create();
 
         $response = $this->actingAs($user)
-            ->put(route('admin.categories.update', ['categoryId' => $category->id]), [
+            ->put(route(self::ROUTE_ADMIN_CATEGORY_UPDATE, ['categoryId' => $category->id]), [
                 'name' => 'Updated Category',
                 'sort' => 1
             ]);
@@ -122,12 +126,12 @@ class UpdateControllerTest extends TestCase
         ]);
 
         $response = $this->actingAs($user)
-            ->put(route('admin.categories.update', ['categoryId' => $category->id]), [
+            ->put(route(self::ROUTE_ADMIN_CATEGORY_UPDATE, ['categoryId' => $category->id]), [
                 'name' => 'Updated Name',
                 'sort' => 1
             ]);
 
-        $response->assertRedirect(route('admin.categories.show', ['categoryId' => $category->id]));
+        $response->assertRedirect(route(self::ROUTE_ADMIN_CATEGORY_SHOW, ['categoryId' => $category->id]));
         $this->assertDatabaseHas('categories', [
             'id' => $category->id,
             'name' => 'Updated Name',
@@ -144,15 +148,15 @@ class UpdateControllerTest extends TestCase
         ]);
 
         $response = $this->actingAs($user)
-            ->put(route('admin.categories.update', ['categoryId' => $category->id]), [
+            ->put(route(self::ROUTE_ADMIN_CATEGORY_UPDATE, ['categoryId' => $category->id]), [
                 'name' => 'Updated Name'
             ]);
 
-        $response->assertRedirect(route('admin.categories.show', ['categoryId' => $category->id]));
+        $response->assertRedirect(route(self::ROUTE_ADMIN_CATEGORY_SHOW, ['categoryId' => $category->id]));
         $this->assertDatabaseHas('categories', [
             'id' => $category->id,
             'name' => 'Updated Name',
             'sort' => 5
         ]);
     }
-} 
+}
