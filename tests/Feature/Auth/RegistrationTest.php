@@ -2,9 +2,11 @@
 
 namespace Tests\Feature\Auth;
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
+use PHPUnit\Framework\Attributes\Group;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
+#[Group('auth')]
 class RegistrationTest extends TestCase
 {
     use RefreshDatabase;
@@ -26,6 +28,6 @@ class RegistrationTest extends TestCase
         ]);
 
         $this->assertAuthenticated();
-        $response->assertRedirect(route('dashboard', absolute: false));
+        $response->assertRedirect(route(name: 'projects.index', absolute: false));
     }
 }
