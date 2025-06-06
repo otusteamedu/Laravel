@@ -159,4 +159,41 @@ class UpdateControllerTest extends TestCase
             'sort' => 5
         ]);
     }
+
+    public function test_it_validates_name_max_length()
+    {
+        $user = User::factory()->create(['is_admin' => true]);
+        $category = Category::factory()->create();
+        
+        $tooLongName = str_repeat('a', 256); // Создаем строку длиной 256 символов (превышает максимальную длину поля string в БД)
+        
+        $response = $this->actingAs($user)
+            ->from(route(self::ROUTE_ADMIN_CATEGORY_EDIT, ['categoryId' => $category->id]))
+            ->put(route(self::ROUTE_ADMIN_CATEGORY_UPDATE, ['categoryId' => $category->id]), [
+                'name' => $tooLongName,
+                'sort' => 1
+            ]);
+
+        $response->assertRedirect()
+            ->assertInvalid(['name']);
+            
+        // Проверяем, что данные в БД не изменились
+        $this->assertDatabaseHas('categories', [
+            'id' => $category->id,
+            'name' => $category->name
+        ]);
+    }
+
+    public function test_it_returns_404_for_invalid_category_id_format_in_edit()
+    {
+        // Arrange
+        $user = User::factory()->create(['is_admin' => true]);
+
+        // Act
+        $response = $this->actingAs($user)
+            ->get(route(self::ROUTE_ADMIN_CATEGORY_EDIT, ['categoryId' => 'invalid-id']));
+
+        // Assert
+        $response->assertNotFound();
+    }
 }
