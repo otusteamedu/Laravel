@@ -16,11 +16,11 @@ class HasSlugTest extends TestCase
     {
         parent::setUp();
         $this->model = $this->getMockBuilder(TestModel::class)
-            ->onlyMethods(['isSlugExists'])
-            ->getMock();
+                            ->onlyMethods(['isSlugExists'])
+                            ->getMock();
 
         $this->model->method('isSlugExists')
-            ->willReturn(false);
+                    ->willReturn(false);
     }
 
     public function test_it_generates_slug_from_specified_field()
@@ -43,18 +43,18 @@ class HasSlugTest extends TestCase
     public function test_it_generates_unique_slug_for_duplicate()
     {
         $model1 = $this->getMockBuilder(TestModel::class)
-            ->onlyMethods(['isSlugExists'])
-            ->getMock();
+                       ->onlyMethods(['isSlugExists'])
+                       ->getMock();
 
         $model1->method('isSlugExists')
-            ->willReturn(false);
+               ->willReturn(false);
 
         $model2 = $this->getMockBuilder(TestModel::class)
-            ->onlyMethods(['isSlugExists'])
-            ->getMock();
+                       ->onlyMethods(['isSlugExists'])
+                       ->getMock();
 
         $model2->method('isSlugExists')
-            ->willReturnOnConsecutiveCalls(true, false);
+               ->willReturnOnConsecutiveCalls(true, false);
 
         $model1->title = 'Test Title';
         $model1->generateSlug();
@@ -95,11 +95,11 @@ class HasSlugTest extends TestCase
     public function test_it_creates_slug_on_model_creation()
     {
         $model = $this->getMockBuilder(TestModel::class)
-            ->onlyMethods(['isSlugExists'])
-            ->getMock();
+                      ->onlyMethods(['isSlugExists'])
+                      ->getMock();
 
         $model->method('isSlugExists')
-            ->willReturn(false);
+              ->willReturn(false);
 
         $model->title = 'Test Title';
 
@@ -112,11 +112,11 @@ class HasSlugTest extends TestCase
     public function test_it_checks_slug_existence()
     {
         $model = $this->getMockBuilder(TestModel::class)
-            ->onlyMethods(['isSlugExists'])
-            ->getMock();
+                      ->onlyMethods(['isSlugExists'])
+                      ->getMock();
 
         $model->method('isSlugExists')
-            ->willReturn(false);
+              ->willReturn(false);
 
         $this->assertFalse($model->checkSlugExists('test-slug'));
     }
@@ -124,11 +124,11 @@ class HasSlugTest extends TestCase
     public function test_it_generates_incremental_slugs()
     {
         $model = $this->getMockBuilder(TestModel::class)
-            ->onlyMethods(['isSlugExists'])
-            ->getMock();
+                      ->onlyMethods(['isSlugExists'])
+                      ->getMock();
 
         $model->method('isSlugExists')
-            ->willReturnOnConsecutiveCalls(true, false);
+              ->willReturnOnConsecutiveCalls(true, false);
 
         $result = $model->makeUniqueSlug('test-slug');
         $this->assertEquals('test-slug-1', $result);
