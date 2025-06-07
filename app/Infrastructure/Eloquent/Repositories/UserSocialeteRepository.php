@@ -5,7 +5,7 @@ namespace App\Infrastructure\Eloquent\Repositories;
 use App\Models\User;
 use App\Models\UserSocialite;
 use App\Services\Repositories\DTOs\UserDTO;
-use App\Services\Repositories\DTOs\UserSocialiteDTO;
+use App\Services\Repositories\DTOs\UserSocialeteDTO;
 use App\Services\Repositories\UserSocialeteRepositoryInterface;
 
 class UserSocialeteRepository implements UserSocialeteRepositoryInterface
@@ -31,7 +31,7 @@ class UserSocialeteRepository implements UserSocialeteRepositoryInterface
         }
 
         return new UserDTO(
-            id: $dbUser->id,
+            userId: $dbUser->id,
             name: $dbUser->name,
             email: $dbUser->email,
         );
@@ -39,15 +39,15 @@ class UserSocialeteRepository implements UserSocialeteRepositoryInterface
 
     /**
      * Добавить привязку социальной сети к пользователю
-     * @param UserSocialiteDTO $userSocialite
+     * @param UserSocialeteDTO $userSocialite
      * @return int
      */
-    public function add(UserSocialiteDTO $userSocialite): int
+    public function add(UserSocialeteDTO $userSocialite): int
     {
         $dbData = UserSocialite::create([
-            'user_id'      => $userSocialite->user_id,
+            'user_id'      => $userSocialite->userId,
             'driver'       => $userSocialite->driver,
-            'socialite_id' => $userSocialite->socialite_id,
+            'socialite_id' => $userSocialite->socialiteId,
         ]);
 
         return $dbData->refresh()->id;
@@ -55,17 +55,17 @@ class UserSocialeteRepository implements UserSocialeteRepositoryInterface
 
     /**
      * Обновить привязку социальной сети к пользователю
-     * @param UserSocialiteDTO $userSocialite
+     * @param UserSocialeteDTO $userSocialite
      * @return bool
      */
-    public function save(UserSocialiteDTO $userSocialite): bool
+    public function save(UserSocialeteDTO $userSocialite): bool
     {
         $processed = UserSocialite::query()
             ->where('id', $userSocialite->id)
             ->update([
-                'user_id'      => $userSocialite->user_id,
+                'user_id'      => $userSocialite->userId,
                 'driver'       => $userSocialite->driver,
-                'socialite_id' => $userSocialite->socialite_id,
+                'socialite_id' => $userSocialite->socialiteId,
             ]);
 
         return $processed ? true : false;

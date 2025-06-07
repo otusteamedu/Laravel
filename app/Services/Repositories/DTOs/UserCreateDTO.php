@@ -4,7 +4,6 @@ namespace App\Services\Repositories\DTOs;
 
 use Carbon\Carbon;
 
-
 final readonly class UserCreateDTO
 {
     /**

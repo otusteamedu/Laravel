@@ -18,7 +18,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  * @property integer $project_id
  * @property integer $status_id
  * @property string $description
- * @property string $deadline
+ * @property Carbon $deadline
  * @property ?Carbon $created_at
  * @property ?Carbon $updated_at
  * @property ?Carbon $deleted_at
@@ -42,7 +42,7 @@ class Todo extends BaseModel
     protected function casts(): array
     {
         return [
-            'options'  => 'json:unicode',
+            'options' => 'json:unicode',
             'deadline' => 'datetime',
         ];
     }

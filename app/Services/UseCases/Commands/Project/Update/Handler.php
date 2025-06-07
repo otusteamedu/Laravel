@@ -26,7 +26,7 @@ class Handler
 
         if ($modelDTO) {
             $updatedDTO = new ProjectDTO(
-                id: $modelDTO->id,
+                projectId: $modelDTO->projectId,
                 name: $command->name,
                 description: $command->description,
             );

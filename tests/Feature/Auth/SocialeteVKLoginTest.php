@@ -24,11 +24,23 @@ class SocialeteVKLoginTest extends TestCase
         $response = $this->get(route(name: 'login.vk', absolute: false));
         $response->assertStatus(302);
 
-        $queryString = parse_url($response->getTargetUrl(), PHP_URL_QUERY);
+        $targetUrl = $response->getTargetUrl();
+
+        $queryString = parse_url($targetUrl, PHP_URL_QUERY);
 
         parse_str($queryString, $queryArray);
 
         $this->assertEquals($config['client_id'], $queryArray['client_id']);
         $this->assertEquals($config['redirect'], $queryArray['redirect_uri']);
+
+        dump($targetUrl);
+
+        $response = $this->get($targetUrl);
+
+        $response->dump();
+        $response->dumpSession();
+        $response->dumpHeaders();
+
+        dump($response->status());
     }
 }

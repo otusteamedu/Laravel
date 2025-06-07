@@ -34,10 +34,6 @@ class ProjectTest extends TestCase
         $user = &$this->getUser();
 
         if (!$user) {
-            $user = User::query()->inRandomOrder()->first();
-        }
-
-        if (!$user) {
             $user = User::factory()->has(UserProfile::factory(), 'profile')->create();
         }
     }

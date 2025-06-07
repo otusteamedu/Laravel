@@ -13,7 +13,7 @@ use App\Infrastructure\Eloquent\Repositories\UserRepository;
 
 
 #[Group('repository')]
-class UserRepositoryTest extends TestCase
+class UserTest extends TestCase
 {
     protected UserRepository $repository;
 
@@ -48,7 +48,7 @@ class UserRepositoryTest extends TestCase
         $newUser = User::factory()->make();
 
         $update = new UserDTO(
-            id: $user->id,
+            userId: $user->id,
             name: $newUser->name,
             email: $newUser->email,
         );

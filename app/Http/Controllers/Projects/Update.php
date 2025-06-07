@@ -25,7 +25,7 @@ class Update extends Controller
         }
 
         return view('projects.update', [
-            'id' => $project->id,
+            'id' => $project->projectId,
             'name' => $project->name,
             'description' => $project->description
         ]);

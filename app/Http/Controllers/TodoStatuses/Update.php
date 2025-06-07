@@ -21,8 +21,8 @@ class Update extends Controller
         try {
             $handler->handle(
                 new Command(
-                    id: $data['status_id'],
-                    project_id: $data['project_id'],
+                    statusId: $data['status_id'],
+                    projectId: $data['project_id'],
                     name: $data['name'],
                     sort: $data['sort'],
                     color: $data['color'],

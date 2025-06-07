@@ -4,12 +4,10 @@ namespace App\Services\UseCases\Queries\TodoStatus\FetchForProject;
 
 use App\Services\Repositories\Exceptions\ModelNotFoundException;
 use App\Services\Repositories\ProjectRepositoryInterface;
-use App\Services\Repositories\TodoStatusRepositoryInterface;
 
 class Fetcher
 {
     public function __construct(
-        private TodoStatusRepositoryInterface $repository,
         private ProjectRepositoryInterface $projectRepository,
     ) {}
 
@@ -26,7 +24,7 @@ class Fetcher
             throw new ModelNotFoundException('Проект не найден');
         }
 
-        $todoStatusesDTOs = $this->repository->fetchForProject($query->projectId);
+        $todoStatusesDTOs = $this->projectRepository->fetchTodoStatuses($query->projectId);
 
         return new Result(
             projectDTO: $projectDTO,

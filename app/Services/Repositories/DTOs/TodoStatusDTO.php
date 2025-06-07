@@ -5,17 +5,17 @@ namespace App\Services\Repositories\DTOs;
 final readonly class TodoStatusDTO
 {
     /**
-     * @param int $project_id
+     * @param int $projectId
      * @param string $name
      * @param int $sort
      * @param string $color
-     * @param int|null $id
+     * @param int|null $statusId
      */
     public function __construct(
-        public int    $project_id,
+        public int    $projectId,
         public string $name,
         public int    $sort,
         public string $color,
-        public ?int   $id = null,
+        public ?int   $statusId = null,
     ) {}
 }

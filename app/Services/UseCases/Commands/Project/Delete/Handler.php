@@ -3,13 +3,11 @@
 namespace App\Services\UseCases\Commands\Project\Delete;
 
 use App\Services\Repositories\ProjectRepositoryInterface;
-use App\Services\Repositories\ProjectUserRepositoryInterface;
 
 class Handler
 {
     public function __construct(
         private ProjectRepositoryInterface $projectRepository,
-        private ProjectUserRepositoryInterface $projectUserRepository,
     ) {
         //
     }
@@ -21,9 +19,9 @@ class Handler
         $projectDTO = $this->projectRepository->find($command->id);
 
         if ($projectDTO) {
-            $this->projectUserRepository->usersLeft($projectDTO->id);
+            $this->projectRepository->leftAllUsers($projectDTO->projectId);
 
-            $result = $this->projectRepository->destroy($projectDTO->id);
+            $result = $this->projectRepository->destroy($projectDTO->projectId);
         }
 
         return $result;

@@ -20,7 +20,7 @@ class Delete extends Controller
         try {
             $handler->handle(
                 new Command(
-                    id: $data['status_id'],
+                    statusId: $data['status_id'],
                     projectId: $data['project_id'],
                 )
             );

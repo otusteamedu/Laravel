@@ -2,21 +2,21 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\View\View;
+use Illuminate\Http\Request;
+use Illuminate\Auth\AuthManager;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Redirect;
 use App\Http\Requests\ProfileUpdateRequest;
 use App\Services\Repositories\DTOs\UserProfileDTO;
-use App\Services\Repositories\UserProfileRepositoryInterface;
-use Illuminate\Auth\AuthManager;
-use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Redirect;
-use Illuminate\View\View;
+use App\Services\Repositories\UserRepositoryInterface;
 
 class ProfileController extends Controller
 {
     public function __construct(
         private AuthManager $auth,
-        private UserProfileRepositoryInterface $userProfileRepository,
+        private UserRepositoryInterface $userRepository,
     ) {
         //
     }
@@ -48,11 +48,11 @@ class ProfileController extends Controller
         $user->save();
 
         $userProfileDTO = new UserProfileDTO(
-            user_id: $user->id,
+            userId: $user->id,
             biography: $validated['profile']['biography'] ?? '',
         );
 
-        $this->userProfileRepository->save($userProfileDTO);
+        $this->userRepository->saveProfile($userProfileDTO);
 
         return Redirect::route('profile.edit')->with('success', 'Профиль обновлен');
     }

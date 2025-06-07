@@ -4,6 +4,7 @@ namespace App\Services\Repositories;
 
 use App\Services\Repositories\DTOs\UserDTO;
 use App\Services\Repositories\DTOs\UserCreateDTO;
+use App\Services\Repositories\DTOs\UserProfileDTO;
 
 interface UserRepositoryInterface
 {
@@ -34,4 +35,11 @@ interface UserRepositoryInterface
      * @return UserDTO|null
      */
     public function findByEmail(string $email): ?UserDTO;
+
+    /**
+     * Обновить или создать профиль пользователя
+     * @param UserProfileDTO $userProfile
+     * @return int
+     */
+    public function saveProfile(UserProfileDTO $userProfile): int;
 }

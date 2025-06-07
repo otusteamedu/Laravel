@@ -2,18 +2,18 @@
 
 namespace App\Services\Repositories\DTOs;
 
-final readonly class UserSocialiteDTO
+final readonly class UserSocialeteDTO
 {
     /**
-     * @param int $user_id
+     * @param int $userId
      * @param string $driver
-     * @param string $socialite_id
+     * @param string $socialiteId
      * @param int|null $id
      */
     public function __construct(
-        public int     $user_id,
+        public int     $userId,
         public string $driver,
-        public string $socialite_id,
+        public string $socialiteId,
         public ?int   $id = null,
     ) {}
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\Repositories;
+namespace Tests\Feature\Repositories\ProjectRepository;
 
 use Tests\TestCase;
 use App\Models\Project;
@@ -9,7 +9,7 @@ use App\Services\Repositories\DTOs\ProjectDTO;
 use App\Infrastructure\Eloquent\Repositories\ProjectRepository;
 
 #[Group('repository')]
-class ProjectRepositoryTest extends TestCase
+class ProjectTest extends TestCase
 {
     protected ProjectRepository $repository;
 
@@ -59,7 +59,7 @@ class ProjectRepositoryTest extends TestCase
         $payload = new ProjectDTO(
             name: $update->name,
             description: $update->description,
-            id: $project->id
+            projectId: $project->id
         );
 
         $success = $this->repository->save($payload);

@@ -3,8 +3,10 @@
 namespace App\Infrastructure\Eloquent\Repositories;
 
 use App\Models\User;
+use App\Models\UserProfile;
 use App\Services\Repositories\DTOs\UserDTO;
 use App\Services\Repositories\DTOs\UserCreateDTO;
+use App\Services\Repositories\DTOs\UserProfileDTO;
 use App\Services\Repositories\UserRepositoryInterface;
 
 class UserRepository implements UserRepositoryInterface
@@ -25,7 +27,7 @@ class UserRepository implements UserRepositoryInterface
         }
 
         return new UserDTO(
-            id: $dbUser->id,
+            userId: $dbUser->id,
             name: $dbUser->name,
             email: $dbUser->email,
         );
@@ -56,7 +58,7 @@ class UserRepository implements UserRepositoryInterface
     public function save(UserDTO $user): bool
     {
         return User::query()
-            ->where('id', $user->id)
+            ->where('id', $user->userId)
             ->update([
                 'name'  => $user->name,
                 'email' => $user->email,
@@ -79,9 +81,28 @@ class UserRepository implements UserRepositoryInterface
         }
 
         return new UserDTO(
-            id: $dbUser->id,
+            userId: $dbUser->id,
             name: $dbUser->name,
             email: $dbUser->email,
         );
+    }
+
+    /**
+     * Обновить или создать профиль пользователя
+     * @param UserProfileDTO $userProfile
+     * @return int
+     */
+    public function saveProfile(UserProfileDTO $userProfile): int
+    {
+        $profile = UserProfile::updateOrCreate(
+            [
+                'user_id' => $userProfile->userId,
+            ],
+            [
+                'biography' => $userProfile->biography,
+            ]
+        );
+
+        return $profile->refresh()->id;
     }
 }

@@ -20,7 +20,7 @@ class Create extends Controller
         try {
             $result = $handler->handle(
                 new Command(
-                    project_id: $data['project_id'],
+                    projectId: $data['project_id'],
                     name: $data['name'],
                     sort: $data['sort'],
                     color: $data['color'],

@@ -2,12 +2,12 @@
 
 namespace App\Services\UseCases\Commands\TodoStatus\Delete;
 
-use App\Services\Repositories\TodoStatusRepositoryInterface;
+use App\Services\Repositories\ProjectRepositoryInterface;
 
 class Handler
 {
     public function __construct(
-        private TodoStatusRepositoryInterface $repository,
+        private ProjectRepositoryInterface $projectRepository,
     ) {
         //
     }
@@ -21,10 +21,10 @@ class Handler
     {
         $result = false;
 
-        $modelDTO = $this->repository->find($command->id, $command->projectId);
+        $modelDTO = $this->projectRepository->findTodoStatus($command->projectId, $command->statusId);
 
         if ($modelDTO) {
-            $result = $this->repository->destroy($modelDTO->id, $modelDTO->project_id);
+            $result = $this->projectRepository->destroyTodoStatus($modelDTO->projectId, $modelDTO->statusId);
         }
 
         return $result;

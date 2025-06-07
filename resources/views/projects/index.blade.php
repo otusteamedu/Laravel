@@ -24,9 +24,9 @@
         </div>
     @endif
     @foreach($result->ptojectDTOs as $projectDTO)
-        @can('project.view', $projectDTO->id)
+        @can('project.view', $projectDTO->projectId)
             @include('projects.partials.project-card', [
-                'projectId' => $projectDTO->id,
+                'projectId' => $projectDTO->projectId,
                 'name' => $projectDTO->name,
                 'description' => $projectDTO->description,
                 'created' => $projectDTO->created->translatedFormat("j F Y")

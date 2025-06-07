@@ -16,7 +16,7 @@
                     <button
                         x-data @click="$store.todoStatuses.formShow({ 
                             name: status.name,
-                            statusId: status.id, 
+                            statusId: status.statusId, 
                             color: status.color,
                             sort: status.sort
                         })"
@@ -33,11 +33,11 @@
                             data-bs-target="#todostatus-delete-confirmation" 
                             x-data @click="$store.todoStatuses.confirmDelete({
                                 name: status.name,
-                                statusId: status.id, 
+                                statusId: status.statusId, 
                             })"
                             :data-bs-status-name="status.name"
                             :data-bs-project-id="$store.todoStatuses.projectId"                    
-                            :data-bs-status-id="status.id"                    
+                            :data-bs-status-id="status.statusId"                    
                         >Удалить</button>
                     </span>
                 </p>

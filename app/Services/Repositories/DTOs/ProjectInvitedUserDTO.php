@@ -10,7 +10,7 @@ final readonly class ProjectInvitedUserDTO
 {
     /**
      * @param int $id
-     * @param int $user_id
+     * @param int $userId
      * @param string $name
      * @param string $email
      * @param ProjectRoleEnum[] $roles
@@ -19,7 +19,7 @@ final readonly class ProjectInvitedUserDTO
      */
     public function __construct(
         public int     $id,
-        public int     $user_id,
+        public int     $userId,
         public string  $name,
         public string  $email,
         public array   $roles,

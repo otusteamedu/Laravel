@@ -14,7 +14,7 @@
                 <nav class="col-lg-3 border-end">
                     @include('projects.partials.nav', [
                         'active'    => 'project',
-                        'projectId' => $project->id,
+                        'projectId' => $project->projectId,
                     ])
                 </nav>
                 <div class="col-lg-9">
@@ -30,10 +30,10 @@
                                     <p class="card-text"><small class="text-muted">Создан: {{ $project->created->translatedFormat("j F Y") }}</small></p>
                                     {{-- ?TODO сводные данные по задачам --}}
                                     <p class="card-text d-flex flex-wrap justify-content-end gap-3">
-                                        @can('project.update', $project->id)
+                                        @can('project.update', $project->projectId)
                                             <span class="text-muted">
                                                 <i class="fa-solid fa-pen-to-square"></i>
-                                                <a href="{{ route('projects.edit', ['projectId' => $project->id]) }}"
+                                                <a href="{{ route('projects.edit', ['projectId' => $project->projectId]) }}"
                                                     class="btn p-0"
                                                     >Редактировать</a>
                                             </span>

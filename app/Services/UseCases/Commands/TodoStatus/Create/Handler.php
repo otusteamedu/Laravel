@@ -4,13 +4,13 @@ namespace App\Services\UseCases\Commands\TodoStatus\Create;
 
 use Exception;
 use App\Services\Repositories\DTOs\TodoStatusDTO;
+use App\Services\Repositories\ProjectRepositoryInterface;
 use App\Services\Repositories\Exceptions\CreateModelFailedException;
-use App\Services\Repositories\TodoStatusRepositoryInterface;
 
 class Handler
 {
     public function __construct(
-        private TodoStatusRepositoryInterface $repository,
+        private ProjectRepositoryInterface $projectRepository,
     ) {
         //
     }
@@ -26,13 +26,13 @@ class Handler
         try {
 
             $modelDTO = new TodoStatusDTO(
-                project_id: $command->project_id,
+                projectId: $command->projectId,
                 name: $command->name,
                 sort: $command->sort,
                 color: $command->color,
             );
 
-            $id = $this->repository->add($modelDTO);
+            $id = $this->projectRepository->addTodoStatus($modelDTO);
 
             return new Result($id);
         } catch (Exception) {

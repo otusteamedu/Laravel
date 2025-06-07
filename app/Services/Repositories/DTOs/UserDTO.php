@@ -2,18 +2,15 @@
 
 namespace App\Services\Repositories\DTOs;
 
-use Carbon\Carbon;
-
-
 final readonly class UserDTO
 {
     /**
-     * @param int $id
+     * @param int $userId
      * @param string $name
      * @param string $email
      */
     public function __construct(
-        public int    $id,
+        public int    $userId,
         public string $name,
         public string $email,
     ) {}

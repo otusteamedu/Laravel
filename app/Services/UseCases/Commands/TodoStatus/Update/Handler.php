@@ -3,12 +3,12 @@
 namespace App\Services\UseCases\Commands\TodoStatus\Update;
 
 use App\Services\Repositories\DTOs\TodoStatusDTO;
-use App\Services\Repositories\TodoStatusRepositoryInterface;
+use App\Services\Repositories\ProjectRepositoryInterface;
 
 class Handler
 {
     public function __construct(
-        private TodoStatusRepositoryInterface $repository,
+        private ProjectRepositoryInterface $projectRepository,
     ) {
         //
     }
@@ -22,18 +22,18 @@ class Handler
     {
         $result = false;
 
-        $modelDTO = $this->repository->find($command->id, $command->project_id);
+        $modelDTO = $this->projectRepository->findTodoStatus($command->projectId, $command->statusId);
 
         if ($modelDTO) {
             $updatedDTO = new TodoStatusDTO(
-                id: $modelDTO->id,
-                project_id: $modelDTO->project_id,
+                statusId: $modelDTO->statusId,
+                projectId: $modelDTO->projectId,
                 name: $command->name,
                 sort: $command->sort,
                 color: $command->color,
             );
 
-            $result = $this->repository->save($updatedDTO);
+            $result = $this->projectRepository->saveTodoStatus($updatedDTO);
         }
 
         return $result;

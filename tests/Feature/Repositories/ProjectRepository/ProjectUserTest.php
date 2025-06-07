@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\Repositories;
+namespace Tests\Feature\Repositories\ProjectRepository;
 
 use Tests\TestCase;
 use App\Models\User;
@@ -8,92 +8,21 @@ use App\Models\Project;
 use App\Models\ProjectUser;
 use App\Models\ProjectRoleEnum;
 use PHPUnit\Framework\Attributes\Group;
-use App\Infrastructure\Eloquent\Repositories\ProjectUserRepository;
-
+use App\Infrastructure\Eloquent\Repositories\ProjectRepository;
 
 #[Group('repository')]
-class ProjectUserRepositoryTest extends TestCase
+class ProjectUserTest extends TestCase
 {
-    protected ProjectUserRepository $repository;
+    protected ProjectRepository $repository;
 
     protected function setUp(): void
     {
         $this->setUpTheTestEnvironment();
 
-        $this->repository = new ProjectUserRepository;
+        $this->repository = new ProjectRepository;
     }
 
-    public function test_project_user_can_invited_and_finded(): void
-    {
-        $user = User::factory()->create();
-
-        $project = Project::factory()
-            ->has(ProjectUser::factory([
-                'user_id'    => $user->id,
-            ]), 'projectUsers')
-            ->create();
-
-        $finded = $this->repository->find($project->id, $user->id);
-
-        $this->assertNotNull($finded);
-    }
-
-    public function test_project_user_can_join(): void
-    {
-        $user = User::factory()->create();
-
-        $project = Project::factory()
-            ->has(ProjectUser::factory([
-                'user_id'    => $user->id,
-                'invited_at' => now(),
-                'joined_at'  => null,
-                'left_at'    => null,
-            ]), 'projectUsers')
-            ->create();
-
-        $success = $this->repository->userJoin($project->id, $user->id);
-
-        $this->assertTrue($success);
-    }
-
-    public function test_project_user_can_left(): void
-    {
-        $user = User::factory()->create();
-
-        $project = Project::factory()
-            ->has(ProjectUser::factory([
-                'user_id'    => $user->id,
-                'invited_at' => now(),
-                'joined_at'  => now(),
-                'left_at'    => null,
-            ]), 'projectUsers')
-            ->create();
-
-        $success = $this->repository->userLeft($project->id, $user->id);
-
-        $this->assertTrue($success);
-    }
-
-    public function test_project_user_has_role(): void
-    {
-        $user = User::factory()->create();
-
-        $project = Project::factory()
-            ->has(ProjectUser::factory([
-                'user_id'    => $user->id,
-                'roles'      => [ProjectRoleEnum::ADMIN],
-                'invited_at' => now(),
-                'joined_at'  => now(),
-                'left_at'    => null,
-            ]), 'projectUsers')
-            ->create();
-
-        $success = $this->repository->hasRole($project->id, $user->id, [ProjectRoleEnum::ADMIN]);
-
-        $this->assertTrue($success);
-    }
-
-    public function test_project_user_fetch(): void
+    public function test_project_fetch_users(): void
     {
         $countUsers = 5;
 
@@ -117,7 +46,77 @@ class ProjectUserRepositoryTest extends TestCase
         $this->assertEquals($countUsers, count($userDTOs));
     }
 
-    public function test_project_all_user_can_left(): void
+    public function test_project_can_user_invited_and_finded(): void
+    {
+        $user = User::factory()->create();
+
+        $project = Project::factory()
+            ->has(ProjectUser::factory([
+                'user_id'    => $user->id,
+            ]), 'projectUsers')
+            ->create();
+
+        $finded = $this->repository->findUser($project->id, $user->id);
+
+        $this->assertNotNull($finded);
+    }
+
+    public function test_project_can_join_user(): void
+    {
+        $user = User::factory()->create();
+
+        $project = Project::factory()
+            ->has(ProjectUser::factory([
+                'user_id'    => $user->id,
+                'invited_at' => now(),
+                'joined_at'  => null,
+                'left_at'    => null,
+            ]), 'projectUsers')
+            ->create();
+
+        $success = $this->repository->joinUser($project->id, $user->id);
+
+        $this->assertTrue($success);
+    }
+
+    public function test_project_can_left_user(): void
+    {
+        $user = User::factory()->create();
+
+        $project = Project::factory()
+            ->has(ProjectUser::factory([
+                'user_id'    => $user->id,
+                'invited_at' => now(),
+                'joined_at'  => now(),
+                'left_at'    => null,
+            ]), 'projectUsers')
+            ->create();
+
+        $success = $this->repository->leftUser($project->id, $user->id);
+
+        $this->assertTrue($success);
+    }
+
+    public function test_project_user_has_role(): void
+    {
+        $user = User::factory()->create();
+
+        $project = Project::factory()
+            ->has(ProjectUser::factory([
+                'user_id'    => $user->id,
+                'roles'      => [ProjectRoleEnum::ADMIN],
+                'invited_at' => now(),
+                'joined_at'  => now(),
+                'left_at'    => null,
+            ]), 'projectUsers')
+            ->create();
+
+        $success = $this->repository->userHasRole($project->id, $user->id, [ProjectRoleEnum::ADMIN]);
+
+        $this->assertTrue($success);
+    }
+
+    public function test_project_can_left_all_users(): void
     {
         $countUsers = 5;
 
@@ -136,7 +135,7 @@ class ProjectUserRepositoryTest extends TestCase
                 ->create();
         }
 
-        $this->repository->usersLeft($project->id);
+        $this->repository->leftAllUsers($project->id);
 
         $userDTOs = $this->repository->fetchUsers($project->id);
 

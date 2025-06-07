@@ -4,7 +4,7 @@ namespace App\Policies;
 
 use App\Models\User;
 use App\Models\ProjectRoleEnum;
-use App\Services\Repositories\ProjectUserRepositoryInterface;
+use App\Services\Repositories\ProjectRepositoryInterface;
 
 class TodoStatusesPolicy
 {
@@ -12,13 +12,13 @@ class TodoStatusesPolicy
      * Create a new policy instance.
      */
     public function __construct(
-        private ProjectUserRepositoryInterface $projectUserRepository,
+        private ProjectRepositoryInterface $projecRepository,
     ) {
         //
     }
 
     public function manage(User $user, int $projectId): bool
     {
-        return $this->projectUserRepository->hasRole($projectId, $user->id, [ProjectRoleEnum::ADMIN]);
+        return $this->projecRepository->userHasRole($projectId, $user->id, [ProjectRoleEnum::ADMIN]);
     }
 }

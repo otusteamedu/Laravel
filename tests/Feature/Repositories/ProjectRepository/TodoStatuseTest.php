@@ -1,26 +1,25 @@
 <?php
 
-namespace Tests\Feature\Repositories;
+namespace Tests\Feature\Repositories\ProjectRepository;
 
 use Tests\TestCase;
 use App\Models\Project;
 use App\Models\TodoStatus;
 use PHPUnit\Framework\Attributes\Group;
-use App\Services\Repositories\DTOs\ProjectDTO;
 use App\Services\Repositories\DTOs\TodoStatusDTO;
 use App\Services\Repositories\DTOs\InsertTodoStatusesDTO;
-use App\Infrastructure\Eloquent\Repositories\TodoStatusRepository;
+use App\Infrastructure\Eloquent\Repositories\ProjectRepository;
 
 #[Group('repository')]
-class TodoStatuseRepositoryTest extends TestCase
+class TodoStatuseTest extends TestCase
 {
-    protected TodoStatusRepository $repository;
+    protected ProjectRepository $repository;
 
     protected function setUp(): void
     {
         $this->setUpTheTestEnvironment();
 
-        $this->repository = new TodoStatusRepository;
+        $this->repository = new ProjectRepository;
     }
 
     public function test_todo_status_find(): void
@@ -32,14 +31,14 @@ class TodoStatuseRepositoryTest extends TestCase
         ])
             ->create();
 
-        $finded = $this->repository->find($status->id, $project->id);
+        $finded = $this->repository->findTodoStatus($project->id, $status->id);
 
         $this->assertNotNull($finded);
     }
 
     public function test_todo_status_not_found(): void
     {
-        $finded = $this->repository->find(0, 0);
+        $finded = $this->repository->findTodoStatus(0, 0);
 
         $this->assertNull($finded);
     }
@@ -54,13 +53,13 @@ class TodoStatuseRepositoryTest extends TestCase
             ->make();
 
         $payload = new TodoStatusDTO(
-            project_id: $project->id,
+            projectId: $project->id,
             name: $status->name,
             sort: $status->sort,
             color: $status->color,
         );
 
-        $id = $this->repository->add($payload);
+        $id = $this->repository->addTodoStatus($payload);
 
         $this->assertNotNull($id);
     }
@@ -80,14 +79,14 @@ class TodoStatuseRepositoryTest extends TestCase
             ->make();
 
         $payload = new TodoStatusDTO(
-            project_id: $project->id,
+            projectId: $project->id,
             name: $update->name,
             sort: $update->sort,
             color: $update->color,
-            id: $status->id,
+            statusId: $status->id,
         );
 
-        $success = $this->repository->save($payload);
+        $success = $this->repository->saveTodoStatus($payload);
 
         $this->assertTrue($success);
 
@@ -106,7 +105,7 @@ class TodoStatuseRepositoryTest extends TestCase
         ])
             ->create();
 
-        $success = $this->repository->destroy($status->id, $project->id);
+        $success = $this->repository->destroyTodoStatus($project->id, $status->id);
 
         $this->assertTrue($success);
     }
@@ -115,7 +114,7 @@ class TodoStatuseRepositoryTest extends TestCase
     {
         $project = Project::factory()->create();
 
-        $statusDTOs = $this->repository->fetchForProject($project->id);
+        $statusDTOs = $this->repository->fetchTodoStatuses($project->id);
 
         $this->assertEquals(4, count($statusDTOs));
     }
@@ -133,7 +132,7 @@ class TodoStatuseRepositoryTest extends TestCase
         $statusDTOs = array_map(
             fn($status) =>
             new TodoStatusDTO(
-                project_id: $project->id,
+                projectId: $project->id,
                 name: $status['name'],
                 sort: $status['sort'],
                 color: $status['color']
@@ -141,9 +140,9 @@ class TodoStatuseRepositoryTest extends TestCase
             $statuses->toArray()
         );
 
-        $this->repository->insert(new InsertTodoStatusesDTO($statusDTOs));
+        $this->repository->insertTodoStatuses(new InsertTodoStatusesDTO($statusDTOs));
 
-        $statusDTOs = $this->repository->fetchForProject($project->id);
+        $statusDTOs = $this->repository->fetchTodoStatuses($project->id);
 
         $this->assertEquals(8, count($statusDTOs));
     }

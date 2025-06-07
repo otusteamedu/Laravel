@@ -11,15 +11,11 @@ use App\Services\Repositories\DTOs\ProjectUserDTO;
 use App\Services\Repositories\DTOs\InsertTodoStatusesDTO;
 use App\Services\Repositories\Exceptions\CreateModelFailedException;
 use App\Services\Repositories\ProjectRepositoryInterface;
-use App\Services\Repositories\ProjectUserRepositoryInterface;
-use App\Services\Repositories\TodoStatusRepositoryInterface;
 
 class Handler
 {
     public function __construct(
         private ProjectRepositoryInterface $projectRepository,
-        private TodoStatusRepositoryInterface $todoStatusRepository,
-        private ProjectUserRepositoryInterface $projectUserRepository,
     ) {
         //
     }
@@ -38,43 +34,43 @@ class Handler
             $projectId = $this->projectRepository->add($projectDTO);
 
             $projectUserDTO = new ProjectUserDTO(
-                project_id: $projectId,
-                user_id: $command->userId,
+                projectId: $projectId,
+                userId: $command->userId,
                 roles: [ProjectRoleEnum::ADMIN],
                 invited: now(),
                 joined: now(),
             );
 
-            $this->projectUserRepository->add($projectUserDTO);
+            $this->projectRepository->inviteUser($projectUserDTO);
 
             $statusDTOs = [
                 new TodoStatusDTO(
-                    project_id: $projectId,
+                    projectId: $projectId,
                     name: 'Новая',
                     sort: 10,
                     color: '#ffc107'
                 ),
                 new TodoStatusDTO(
-                    project_id: $projectId,
+                    projectId: $projectId,
                     name: 'В работе',
                     sort: 20,
                     color: '#0dcaf0'
                 ),
                 new TodoStatusDTO(
-                    project_id: $projectId,
+                    projectId: $projectId,
                     name: 'Завершена',
                     sort: 30,
                     color: '#198754'
                 ),
                 new TodoStatusDTO(
-                    project_id: $projectId,
+                    projectId: $projectId,
                     name: 'Архив',
                     sort: 40,
                     color: '#f8f9fa'
                 ),
             ];
 
-            $this->todoStatusRepository->insert(new InsertTodoStatusesDTO($statusDTOs));
+            $this->projectRepository->insertTodoStatuses(new InsertTodoStatusesDTO($statusDTOs));
 
             DB::commit();
 

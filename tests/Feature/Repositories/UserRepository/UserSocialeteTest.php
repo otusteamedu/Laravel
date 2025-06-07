@@ -4,13 +4,13 @@ namespace Tests\Feature\Repositories;
 
 use Tests\TestCase;
 use App\Models\User;
-use PHPUnit\Framework\Attributes\Group;
-use App\Infrastructure\Eloquent\Repositories\UserSocialeteRepository;
 use App\Models\UserSocialite;
-use App\Services\Repositories\DTOs\UserSocialiteDTO;
+use PHPUnit\Framework\Attributes\Group;
+use App\Services\Repositories\DTOs\UserSocialeteDTO;
+use App\Infrastructure\Eloquent\Repositories\UserSocialeteRepository;
 
 #[Group('repository')]
-class UserSocialeteRepositoryTest extends TestCase
+class UserSocialeteTest extends TestCase
 {
     protected UserSocialeteRepository $repository;
 
@@ -47,10 +47,10 @@ class UserSocialeteRepositoryTest extends TestCase
     {
         $user = User::factory()->create();
 
-        $payload = new UserSocialiteDTO(
-            user_id: $user->id,
+        $payload = new UserSocialeteDTO(
+            userId: $user->id,
             driver: 'yandex',
-            socialite_id: '1234567890'
+            socialiteId: '1234567890'
         );
 
         $id = $this->repository->add($payload);
@@ -68,10 +68,10 @@ class UserSocialeteRepositoryTest extends TestCase
             'socialite_id' => '1234567890',
         ]);
 
-        $update = new UserSocialiteDTO(
-            user_id: $user->id,
+        $update = new UserSocialeteDTO(
+            userId: $user->id,
             driver: 'vk',
-            socialite_id: '0987654321',
+            socialiteId: '0987654321',
             id: $socialete->id
         );
 
@@ -81,7 +81,7 @@ class UserSocialeteRepositoryTest extends TestCase
         $updated = $socialete->refresh();
 
         $this->assertSame($update->driver, $updated->driver);
-        $this->assertSame($update->socialite_id, $updated->socialite_id);
+        $this->assertSame($update->socialiteId, $updated->socialite_id);
     }
 
     public function test_user_socialete_can_deleted(): void

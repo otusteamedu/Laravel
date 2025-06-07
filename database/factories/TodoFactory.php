@@ -7,6 +7,7 @@ use App\Models\TodoUser;
 use App\Models\TodoStatus;
 use App\Models\ProjectUser;
 use App\Models\TodoRoleEnum;
+use Illuminate\Support\Carbon;
 use App\Models\ProjectRoleEnum;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -43,7 +44,7 @@ class TodoFactory extends Factory
             'project_id'  => $projectOwner->project_id,
             'status_id'   => $status_id,
             'description' => fake()->paragraph(),
-            'deadline'    => fake()->dateTimeBetween('1 week', '1 month'),
+            'deadline'    => Carbon::instance(fake()->dateTimeBetween('1 week', '1 month')),
             'options'     => fake()->randomElement([['isHot' => true], []]),
         ];
     }

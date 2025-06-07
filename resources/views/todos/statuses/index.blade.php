@@ -14,14 +14,14 @@
                 <nav class="col-lg-3 border-end">
                     @include('projects.partials.nav', [
                         'active'    => 'statuses',
-                        'projectId' => $project->id,
+                        'projectId' => $project->projectId,
                     ])
                 </nav>
                 <div class="col-lg-9">
                     <div class="p-4" id="statuses">
                         <div class="mb-4">
                             <h4 class="mb-4">Статусы для задач проектa {{ $project->name }}</h4>
-                            @can('todostatuses.manage', $project->id)
+                            @can('todostatuses.manage', $project->projectId)
                                 <div class="col-12 my-3 text-end">
                                     <button
                                         type="button" 
@@ -35,13 +35,13 @@
                             <div class="d-flex flex-wrap"
                                 x-data="$store.todoStatuses.data"
                                 :key="status">
-                                @include('todos.statuses.templates.status-card', ['projectId' => $project->id])
+                                @include('todos.statuses.templates.status-card', ['projectId' => $project->projectId])
                         
                             </div>
                         </div>
                         <div class="mb-4">
                             @include('todos.statuses.form', [
-                                'projectId' => $project->id,
+                                'projectId' => $project->projectId,
                             ])
                         </div>
                     </div>
@@ -52,7 +52,7 @@
 </div>
 @endsection
 
-@include('todos.statuses.delete-confirmation', ['projectId' => $project->id])
+@include('todos.statuses.delete-confirmation', ['projectId' => $project->projectId])
 
 <script>
     document.addEventListener('alpine:init', () => {
@@ -60,7 +60,7 @@
         Alpine.store('todoStatuses', {
             showForm: {{  empty(json_decode($errors)) ? 'false' : 'true' }},
             title: 'Добавить статус',
-            projectId: {{ $project->id }},
+            projectId: {{ $project->projectId }},
             statusId:  "{{ old('id', null) }}",
             name: "{{ old('name', '') }}",
             sort: {{ old('sort', 100) }},
@@ -82,9 +82,9 @@
                     this.color    = data.color
                     this.sort     = data.sort
                     this.statusId = data.statusId
-                    this.action   = "{{ route('project.todostatuses.update', ['projectId' => $project->id]) }}"
+                    this.action   = "{{ route('project.todostatuses.update', ['projectId' => $project->projectId]) }}"
                 } else {
-                    this.action   = "{{ route('project.todostatuses.store', ['projectId' => $project->id]) }}"
+                    this.action   = "{{ route('project.todostatuses.store', ['projectId' => $project->projectId]) }}"
                 }
             },
 
