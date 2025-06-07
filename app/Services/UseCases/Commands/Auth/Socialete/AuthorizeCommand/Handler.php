@@ -7,7 +7,7 @@ use Illuminate\Support\Str;
 use Illuminate\Auth\AuthManager;
 use Illuminate\Support\Facades\Hash;
 use App\Services\Repositories\DTOs\UserCreateDTO;
-use App\Services\Repositories\DTOs\UserSocialiteDTO;
+use App\Services\Repositories\DTOs\UserSocialeteDTO;
 use App\Services\Repositories\UserRepositoryInterface;
 use App\Services\Repositories\UserSocialeteRepositoryInterface;
 
@@ -32,19 +32,19 @@ class Handler
         if (
             $user = $this->userSocialeteRepository->find($command->id, $command->driver)
         ) {
-            $userId = $user->id;
+            $userId = $user->userId;
         } elseif (
             $user = $this->userRepository->findByEmail($command->email)
         ) {
-            $userSocialete = new UserSocialiteDTO(
-                user_id: $user->id,
+            $userSocialete = new UserSocialeteDTO(
+                userId: $user->userId,
                 driver: $command->driver,
-                socialite_id: $command->id
+                socialiteId: $command->id
             );
 
             $this->userSocialeteRepository->add($userSocialete);
 
-            $userId = $user->id;
+            $userId = $user->userId;
         } else {
             $user = new UserCreateDTO(
                 name: $command->name,
@@ -55,10 +55,10 @@ class Handler
 
             $userId = $this->userRepository->add($user);
 
-            $userSocialete = new UserSocialiteDTO(
-                user_id: $userId,
+            $userSocialete = new UserSocialeteDTO(
+                userId: $userId,
                 driver: $command->driver,
-                socialite_id: $command->id
+                socialiteId: $command->id
             );
 
             $this->userSocialeteRepository->add($userSocialete);
