@@ -69,7 +69,11 @@ class CartService
                 unset($cart[$productId]);
             }
         }
-        
-        session()->put('cart', $cart);
+
+        if (empty($cart)) {
+            session()->forget('cart');
+        } else {
+            session()->put('cart', $cart);
+        }
     }
 }

@@ -76,7 +76,13 @@ class ProductsRepository
 
     public function fetchAssets(int $productId): Collection
     {
-        $assets = Product::find($productId)->getAssets();
+        $product = Product::find($productId);
+
+        if (!$product) {
+            throw new ProductNotFoundException();
+        }
+
+        $assets = $product->getAssets();
         return $assets;
     }
 

@@ -87,7 +87,7 @@ class Product extends Model
         return $this->assets;
     }
 
-    public function getFirstImage(): \App\Models\ProductAsset   
+    public function getFirstImage(): ?\App\Models\ProductAsset   
     {
         return $this->first_image;
     }

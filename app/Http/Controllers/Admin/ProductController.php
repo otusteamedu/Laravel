@@ -64,7 +64,7 @@ class ProductController extends Controller
             $data['stock']
         );
         
-        $assets = $data['assets'];
+        $assets = $data['assets'] ?? [];
 
         $this->service->add($dto, $assets);
 
@@ -138,7 +138,7 @@ class ProductController extends Controller
             $data['stock']
         );
 
-        $assets = $data['assets'];
+        $assets = $data['assets'] ?? [];
 
         try {
             $this->service->update($dto, $assets);
