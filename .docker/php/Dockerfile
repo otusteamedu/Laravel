@@ -22,6 +22,7 @@ RUN apt-get update && apt-get upgrade -y \
     php8.4-cli \
     php8.4-dev \
     php8.4-fpm \
+    php8.4-curl \
     php8.4-memcached \
     php8.4-memcache \
     php8.4-mbstring \
