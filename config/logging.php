@@ -6,8 +6,6 @@ use Monolog\Handler\SyslogUdpHandler;
 use Monolog\Handler\TelegramBotHandler;
 use Monolog\Processor\PsrLogMessageProcessor;
 
-// use Monolog\Processor\TelegramBotHandler;
-
 return [
 
     /*
