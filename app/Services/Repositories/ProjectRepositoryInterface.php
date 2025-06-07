@@ -4,6 +4,7 @@ namespace App\Services\Repositories;
 
 use App\Models\ProjectRoleEnum;
 use App\Services\Repositories\DTOs\ProjectDTO;
+use App\Services\Repositories\Todo\TodoFetchDTO;
 use App\Services\Repositories\DTOs\TodoStatusDTO;
 use App\Services\Repositories\DTOs\ProjectUserDTO;
 use App\Services\Repositories\DTOs\InsertTodoStatusesDTO;

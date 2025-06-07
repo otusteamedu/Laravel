@@ -19,7 +19,7 @@ class TodoWithCommentSeeder extends Seeder
                 ->state(function (array $attributes, Todo $todo) {
                     return [
                         'todo_id' => $todo->id,
-                        'user_id' => $todo->author_id,
+                        'author_id' => $todo->author_id,
                     ];
                 }), 'comments')
             ->count($count)

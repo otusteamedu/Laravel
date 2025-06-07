@@ -51,7 +51,7 @@ class TodoUserFactory extends Factory
         return [
             'todo_id' => $todo->id,
             'user_id' => $user->id,
-            'roles'   => [fake()->randomElement(TodoRoleEnum::cases())],
+            'role'    => fake()->randomElement(TodoRoleEnum::cases()),
         ];
     }
 }

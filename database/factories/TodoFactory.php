@@ -55,7 +55,7 @@ class TodoFactory extends Factory
             TodoUser::factory()->create([
                 'todo_id' => $todo->id,
                 'user_id' => $todo->author_id,
-                'roles'   => [TodoRoleEnum::CREATOR],
+                'role'    => TodoRoleEnum::RESPONSIBLE,
             ]);
         });
     }

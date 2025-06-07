@@ -4,11 +4,11 @@ namespace App\Models;
 
 use App\Models\TodoUser;
 use App\Models\BaseModel;
-use App\Models\TodoComment;
 use Illuminate\Support\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 /**
@@ -23,8 +23,9 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  * @property ?Carbon $updated_at
  * @property ?Carbon $deleted_at
  * @property ?array  $options
+ * @property User $author
+ * @property TodoStatus $status
  * @property TodoUser[] $todoUsers
- * @property TodoComment[] $comments
  * 
  * @method static member(User $user)
  * @method static notMember(User $user)
@@ -48,21 +49,30 @@ class Todo extends BaseModel
     }
 
     /**
+     * Автор (Поставновщик) задачи
+     * @return BelongsTo<User, Todo>
+     */
+    public function author(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'author_id');
+    }
+
+    /**
+     * Текущий статус задачи
+     * @return BelongsTo<TodoStatus, Todo>
+     */
+    public function status(): BelongsTo
+    {
+        return $this->belongsTo(TodoStatus::class, 'status_id');
+    }
+
+    /**
      * Список пользователей имеющих доступ к задаче
      * @return HasMany<TodoUser, Todo>
      */
     public function todoUsers(): HasMany
     {
         return $this->hasMany(TodoUser::class);
-    }
-
-    /**
-     * Комментарии к задаче
-     * @return HasMany<TodoComment, Todo>
-     */
-    public function comments(): HasMany
-    {
-        return $this->hasMany(TodoComment::class)->orderBy('created_at');
     }
 
     /**

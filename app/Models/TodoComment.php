@@ -2,8 +2,6 @@
 
 namespace App\Models;
 
-use App\Models\Todo;
-use App\Models\User;
 use Illuminate\Support\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -13,11 +11,12 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 /**
  * @property integer $id
  * @property integer $todo_id
- * @property integer $user_id
+ * @property integer $author_id
  * @property string $comment
  * @property ?Carbon $created_at
  * @property ?Carbon $updated_at
  * @property ?Carbon $deleted_at
+ * @property User $author
  */
 class TodoComment extends Model
 {
@@ -27,5 +26,14 @@ class TodoComment extends Model
 
     protected $table = 'todo_comments';
 
-    public $fillable = ['todo_id', 'user_id', 'comment'];
+    public $fillable = ['todo_id', 'author_id', 'comment'];
+
+    /**
+     * Автор комментария
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<User, TodoComment>
+     */
+    public function author(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'autor_id');
+    }
 }

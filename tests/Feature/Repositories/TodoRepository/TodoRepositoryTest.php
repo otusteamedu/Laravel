@@ -10,8 +10,8 @@ use App\Models\TodoStatus;
 use App\Models\ProjectUser;
 use App\Models\ProjectRoleEnum;
 use PHPUnit\Framework\Attributes\Group;
+use App\Services\Repositories\Todo\TodoDTO;
 use App\Infrastructure\Eloquent\Repositories\TodoRepository;
-use App\Services\Repositories\DTOs\TodoDTO;
 
 #[Group('repository')]
 class TodoRepositoryTest extends TestCase
@@ -159,5 +159,32 @@ class TodoRepositoryTest extends TestCase
         $success = $this->repository->destroy($todo->id, $this->project->id);
 
         $this->assertTrue($success);
+    }
+
+    public function test_todo_can_fetched(): void
+    {
+        $count = 3;
+
+        Todo::factory([
+            'author_id'   => $this->user->id,
+            'project_id'  => $this->project->id,
+            'status_id'   => $this->status->id,
+        ])
+            ->count($count)
+            ->create();
+
+        $newUser = User::factory()->create();
+
+        Todo::factory([
+            'author_id'   => $newUser->id,
+            'project_id'  => $this->project->id,
+            'status_id'   => $this->status->id,
+        ])
+            ->count($count)
+            ->create();
+
+        $result = $this->repository->fetch($this->project->id, $this->user->id);
+
+        $this->assertEquals($count, count($result));
     }
 }

@@ -23,7 +23,7 @@ class TodoCommentFactory extends Factory
 
         return [
             'todo_id' => $todoUsers?->todo_id,
-            'user_id' => $todoUsers?->user_id,
+            'author_id' => $todoUsers?->user_id,
             'comment' => fake()->paragraph(),
         ];
     }

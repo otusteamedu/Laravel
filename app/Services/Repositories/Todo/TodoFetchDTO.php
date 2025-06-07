@@ -1,17 +1,18 @@
 <?php
 
-namespace App\Services\Repositories\DTOs;
+namespace App\Services\Repositories\Todo;
 
 use Carbon\Carbon;
+use App\Services\Repositories\DTOs\UserDTO;
+use App\Services\Repositories\DTOs\TodoStatusDTO;
 
-final readonly class TodoDTO
+final readonly class TodoFetchDTO
 {
     /**
      * Summary of __construct
      * @param string $title
-     * @param int $authorId
-     * @param int $projectId
-     * @param int $statusId
+     * @param UserDTO $author
+     * @param TodoStatusDTO $status
      * @param string $description
      * @param Carbon $deadline
      * @param Carbon|null $created
@@ -21,9 +22,8 @@ final readonly class TodoDTO
      */
     public function __construct(
         public string  $title,
-        public int     $authorId,
-        public int     $projectId,
-        public int     $statusId,
+        public UserDTO $author,
+        public TodoStatusDTO $status,
         public string  $description,
         public Carbon  $deadline,
         public ?Carbon $created = null,

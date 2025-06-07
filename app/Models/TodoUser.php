@@ -2,17 +2,13 @@
 
 namespace App\Models;
 
-use App\Models\Todo;
-use App\Models\User;
-use Illuminate\Database\Eloquent\Casts\Attribute;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 /**
  * @property integer $id
  * @property integer $todo_id
  * @property integer $user_id
- * @property string $roles
+ * @property TodoRoleEnum $role
  */
 class TodoUser extends BaseModel
 {
@@ -23,13 +19,7 @@ class TodoUser extends BaseModel
 
     public $timestamps = false;
 
-    public $fillable = ['todo_id', 'user_id', 'roles'];
+    public $casts = ['role' => TodoRoleEnum::class];
 
-    protected function roles(): Attribute
-    {
-        return Attribute::make(
-            get: fn($value) => json_decode($value, true),
-            set: fn($value) => json_encode($value, JSON_UNESCAPED_UNICODE),
-        );
-    }
+    public $fillable = ['todo_id', 'user_id', 'role'];
 }
