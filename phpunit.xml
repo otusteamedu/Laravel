@@ -16,6 +16,10 @@
         <include>
             <directory>app</directory>
         </include>
+        <exclude>
+            <directory>app/SocialiteProviders</directory>
+            <directory>app/Services/UseCases/Commands/Auth</directory>
+        </exclude>
     </source>
     <php>
         <env name="APP_ENV" value="testing"/>
