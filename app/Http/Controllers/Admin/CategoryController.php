@@ -34,7 +34,7 @@ class CategoryController extends Controller
         $allowedDirections= ['asc', 'desc'];
         $direction = in_array($direction, $allowedDirections) ? $direction: 'asc';
 
-        $categories = $this->service->getAll($sort, $direction);
+        $categories = $this->service->getAllWithSort($sort, $direction);
         return view('admin.categories.index', compact('categories', 'direction'));
     }
 

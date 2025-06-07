@@ -24,7 +24,11 @@
             @foreach ($products as $product)
             <div class="col">
                 <div class="card shadow-sm">
+                    @if ($product->getFirstImage())
                     <img src="{{ asset('storage/' . $product->getFirstImage()->getAssetUrl()) }}" alt="">
+                    @else
+                    <img src="{{ asset('storage/uploads/placeholder.jpg') }}" alt="">
+                    @endif
                     <div class="card-body">
                         <p class="card-text fs-5">{{ $product->getTitle() }}</p>
                         <div class="d-flex justify-content-between align-items-center">
