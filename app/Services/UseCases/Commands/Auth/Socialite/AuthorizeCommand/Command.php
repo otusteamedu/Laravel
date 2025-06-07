@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\UseCases\Commands\Auth\Socialete\AuthorizeCommand;
+namespace App\Services\UseCases\Commands\Auth\Socialite\AuthorizeCommand;
 
 final readonly class Command
 {

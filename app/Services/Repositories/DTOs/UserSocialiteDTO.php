@@ -2,7 +2,7 @@
 
 namespace App\Services\Repositories\DTOs;
 
-final readonly class UserSocialeteDTO
+final readonly class UserSocialiteDTO
 {
     /**
      * @param int $userId

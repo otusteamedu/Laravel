@@ -16,8 +16,8 @@ use App\Services\Repositories\ProjectRepositoryInterface;
 use App\Infrastructure\Eloquent\Repositories\TodoRepository;
 use App\Infrastructure\Eloquent\Repositories\UserRepository;
 use App\Infrastructure\Eloquent\Repositories\ProjectRepository;
-use App\Services\Repositories\UserSocialeteRepositoryInterface;
-use App\Infrastructure\Eloquent\Repositories\UserSocialeteRepository;
+use App\Services\Repositories\UserSocialiteRepositoryInterface;
+use App\Infrastructure\Eloquent\Repositories\UserSocialiteRepository;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -28,7 +28,7 @@ class AppServiceProvider extends ServiceProvider
     {
         $this->app->bind(ProjectRepositoryInterface::class, ProjectRepository::class);
         $this->app->bind(UserRepositoryInterface::class, UserRepository::class);
-        $this->app->bind(UserSocialeteRepositoryInterface::class, UserSocialeteRepository::class);
+        $this->app->bind(UserSocialiteRepositoryInterface::class, UserSocialiteRepository::class);
         $this->app->bind(TodoRepositoryInterface::class, TodoRepository::class);
     }
 

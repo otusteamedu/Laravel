@@ -3,13 +3,13 @@
 namespace App\Services\Repositories;
 
 use App\Services\Repositories\DTOs\UserDTO;
-use App\Services\Repositories\DTOs\UserSocialeteDTO;
+use App\Services\Repositories\DTOs\UserSocialiteDTO;
 
-interface UserSocialeteRepositoryInterface
+interface UserSocialiteRepositoryInterface
 {
     /**
      * Получить пользователя по его id в социальной сети
-     * @param string $socialeteId
+     * @param string $socialiteId
      * @param string $driver
      * @return UserDTO|null
      */
@@ -17,17 +17,17 @@ interface UserSocialeteRepositoryInterface
 
     /**
      * Добавить привязку социальной сети к пользователю
-     * @param UserSocialeteDTO $userSocialite
+     * @param UserSocialiteDTO $userSocialite
      * @return int
      */
-    public function add(UserSocialeteDTO $userSocialite): int;
+    public function add(UserSocialiteDTO $userSocialite): int;
 
     /**
      * Обновить привязку социальной сети к пользователю
-     * @param UserSocialeteDTO $userSocialite
+     * @param UserSocialiteDTO $userSocialite
      * @return bool
      */
-    public function save(UserSocialeteDTO $userSocialite): bool;
+    public function save(UserSocialiteDTO $userSocialite): bool;
 
     /**
      * Удалить привязку социальной сети у пользователя

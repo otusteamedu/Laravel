@@ -6,22 +6,22 @@ use Tests\TestCase;
 use App\Models\User;
 use App\Models\UserSocialite;
 use PHPUnit\Framework\Attributes\Group;
-use App\Services\Repositories\DTOs\UserSocialeteDTO;
-use App\Infrastructure\Eloquent\Repositories\UserSocialeteRepository;
+use App\Services\Repositories\DTOs\UserSocialiteDTO;
+use App\Infrastructure\Eloquent\Repositories\UserSocialiteRepository;
 
 #[Group('repository')]
-class UserSocialeteTest extends TestCase
+class UserSocialiteTest extends TestCase
 {
-    protected UserSocialeteRepository $repository;
+    protected userSocialiteRepository $repository;
 
     protected function setUp(): void
     {
         $this->setUpTheTestEnvironment();
 
-        $this->repository = new UserSocialeteRepository;
+        $this->repository = new UserSocialiteRepository;
     }
 
-    public function test_user_get_by_socialete(): void
+    public function test_user_get_by_socialite(): void
     {
         $user = User::factory()->create();
 
@@ -36,18 +36,18 @@ class UserSocialeteTest extends TestCase
         $this->assertNotNull($finded);
     }
 
-    public function test_user_socialete_not_find(): void
+    public function test_user_socialite_not_find(): void
     {
         $finded = $this->repository->find('', '');
 
         $this->assertNull($finded);
     }
 
-    public function test_user_socialete_can_added(): void
+    public function test_user_socialite_can_added(): void
     {
         $user = User::factory()->create();
 
-        $payload = new UserSocialeteDTO(
+        $payload = new UserSocialiteDTO(
             userId: $user->id,
             driver: 'yandex',
             socialiteId: '1234567890'
@@ -58,43 +58,43 @@ class UserSocialeteTest extends TestCase
         $this->assertNotNull($id);
     }
 
-    public function test_user_socialete_can_updated(): void
+    public function test_user_socialite_can_updated(): void
     {
         $user = User::factory()->create();
 
-        $socialete = UserSocialite::create([
+        $socialite = UserSocialite::create([
             'user_id'      => $user->id,
             'driver'       => 'yandex',
             'socialite_id' => '1234567890',
         ]);
 
-        $update = new UserSocialeteDTO(
+        $update = new UserSocialiteDTO(
             userId: $user->id,
             driver: 'vk',
             socialiteId: '0987654321',
-            id: $socialete->id
+            id: $socialite->id
         );
 
         $success = $this->repository->save($update);
         $this->assertTrue($success);
 
-        $updated = $socialete->refresh();
+        $updated = $socialite->refresh();
 
         $this->assertSame($update->driver, $updated->driver);
         $this->assertSame($update->socialiteId, $updated->socialite_id);
     }
 
-    public function test_user_socialete_can_deleted(): void
+    public function test_user_socialite_can_deleted(): void
     {
         $user = User::factory()->create();
 
-        $socialete = UserSocialite::create([
+        $socialite = UserSocialite::create([
             'user_id'      => $user->id,
             'driver'       => 'yandex',
             'socialite_id' => '1234567890',
         ]);
 
-        $success = $this->repository->destroy($socialete->id);
+        $success = $this->repository->destroy($socialite->id);
 
         $this->assertTrue($success);
     }

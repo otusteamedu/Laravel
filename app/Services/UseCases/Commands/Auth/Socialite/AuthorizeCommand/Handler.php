@@ -1,21 +1,21 @@
 <?php
 
-namespace App\Services\UseCases\Commands\Auth\Socialete\AuthorizeCommand;
+namespace App\Services\UseCases\Commands\Auth\Socialite\AuthorizeCommand;
 
 use App\Models\User;
 use Illuminate\Support\Str;
 use Illuminate\Auth\AuthManager;
 use Illuminate\Support\Facades\Hash;
 use App\Services\Repositories\DTOs\UserCreateDTO;
-use App\Services\Repositories\DTOs\UserSocialeteDTO;
+use App\Services\Repositories\DTOs\UserSocialiteDTO;
 use App\Services\Repositories\UserRepositoryInterface;
-use App\Services\Repositories\UserSocialeteRepositoryInterface;
+use App\Services\Repositories\UserSocialiteRepositoryInterface;
 
 class Handler
 {
     public function __construct(
         private UserRepositoryInterface $userRepository,
-        private UserSocialeteRepositoryInterface $userSocialeteRepository,
+        private UserSocialiteRepositoryInterface $userSocialiteRepository,
         private AuthManager $auth,
     ) {
         //
@@ -30,19 +30,19 @@ class Handler
     public function handle(Command $command): void
     {
         if (
-            $user = $this->userSocialeteRepository->find($command->id, $command->driver)
+            $user = $this->userSocialiteRepository->find($command->id, $command->driver)
         ) {
             $userId = $user->userId;
         } elseif (
             $user = $this->userRepository->findByEmail($command->email)
         ) {
-            $userSocialete = new UserSocialeteDTO(
+            $userSocialite = new UserSocialiteDTO(
                 userId: $user->userId,
                 driver: $command->driver,
                 socialiteId: $command->id
             );
 
-            $this->userSocialeteRepository->add($userSocialete);
+            $this->userSocialiteRepository->add($userSocialite);
 
             $userId = $user->userId;
         } else {
@@ -55,13 +55,13 @@ class Handler
 
             $userId = $this->userRepository->add($user);
 
-            $userSocialete = new UserSocialeteDTO(
+            $userSocialite = new UserSocialiteDTO(
                 userId: $userId,
                 driver: $command->driver,
                 socialiteId: $command->id
             );
 
-            $this->userSocialeteRepository->add($userSocialete);
+            $this->userSocialiteRepository->add($userSocialite);
         }
 
         $user = User::query()->where('id', $userId)->firstOrFail();

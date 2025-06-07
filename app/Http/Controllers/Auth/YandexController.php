@@ -7,8 +7,8 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Laravel\Socialite\Facades\Socialite;
 use Illuminate\Auth\Access\AuthorizationException;
-use App\Services\UseCases\Commands\Auth\Socialete\AuthorizeCommand\Command;
-use App\Services\UseCases\Commands\Auth\Socialete\AuthorizeCommand\Handler;
+use App\Services\UseCases\Commands\Auth\Socialite\AuthorizeCommand\Command;
+use App\Services\UseCases\Commands\Auth\Socialite\AuthorizeCommand\Handler;
 
 class YandexController extends Controller
 {
