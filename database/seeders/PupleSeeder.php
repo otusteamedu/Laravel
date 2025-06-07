@@ -2,7 +2,6 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
@@ -13,18 +12,53 @@ class PupleSeeder extends Seeder
      */
     public function run(): void
     {
-        DB::table("puples")->insert(
+        DB::table('puples')->insert(
             [
                 [
-                    "name" => fake()->name,
-                    "surname" => fake()->name,
-                    "date_of_birth" => fake()->date(),
-                    "mark_math" => random_int(1,5),
-                    "mark_literature" => random_int(1,5),
-                    "created_at" => now(),
-                    "updated_at" => now(),
+                    'name' => fake('ru_RU')->firstName,
+                    'surname' => fake('ru_RU')->lastName,
+                    'date_of_birth' => fake()->dateTimeBetween('2016-01-01', '2017-06-30')->format('d-m-Y'),
+                    'gender' => fake()->randomElement(['male', 'female']),
+                    'email' => fake()->email,
+                    'created_at' => now(),
+                    'updated_at' => now(),
                 ],
-
+                [
+                    'name' => fake('ru_RU')->firstName,
+                    'surname' => fake('ru_RU')->lastName,
+                    'date_of_birth' => fake()->dateTimeBetween('2016-01-01', '2017-06-30')->format('d-m-Y'),
+                    'gender' => fake()->randomElement(['male', 'female']),
+                    'email' => fake()->email,
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ],
+                [
+                    'name' => fake('ru_RU')->firstName,
+                    'surname' => fake('ru_RU')->lastName,
+                    'date_of_birth' => fake()->dateTimeBetween('2016-01-01', '2017-06-30')->format('d-m-Y'),
+                    'gender' => fake()->randomElement(['male', 'female']),
+                    'email' => fake()->email,
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ],
+                [
+                    'name' => fake('ru_RU')->firstName,
+                    'surname' => fake('ru_RU')->lastName,
+                    'date_of_birth' => fake()->dateTimeBetween('2016-01-01', '2017-06-30')->format('d-m-Y'),
+                    'gender' => fake()->randomElement(['male', 'female']),
+                    'email' => fake()->email,
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ],
+                [
+                    'name' => fake('ru_RU')->firstName,
+                    'surname' => fake('ru_RU')->lastName,
+                    'date_of_birth' => fake()->dateTimeBetween('2016-01-01', '2017-06-30')->format('d-m-Y'),
+                    'gender' => fake()->randomElement(['male', 'female']),
+                    'email' => fake()->email,
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ],
             ]
         );
 

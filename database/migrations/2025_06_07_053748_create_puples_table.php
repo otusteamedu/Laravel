@@ -16,14 +16,14 @@ return new class extends Migration
             $table->string('name');
             $table->string('surname');
             $table->date('date_of_birth');
-            $table->unsignedTinyInteger('mark_math');
-            $table->unsignedTinyInteger('mark_literature');
+            $table->string('gender');
+            $table->string('email')->unique();
             $table->timestamps();
         });
     }
 
     /**
-     * Reverse the migrations.
+     * Reverse the migrations
      */
     public function down(): void
     {
