@@ -60,6 +60,86 @@ img {
 
 }
 
+.newscont {
+    display: flex;
+    /* background-color: #cecece; */
+    padding-top: 20px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #00193F;
+}
+
+.newscont__id {
+    width: 5%;
+    text-align: left;
+}
+
+.newscont__title {
+    width: 50%;
+    text-align: left;
+    padding-left: 20px;
+}
+
+.newscont__date {
+    width: 15%;
+}
+
+.newscont__action {
+    width: 30%;
+}
+
+.mb-40 {
+    margin-bottom: 40px;
+}
+
+.showblog__date{
+    display: flex;
+    margin-bottom: 20px;
+}
+
+.showblog__date div {
+    margin-right: 40px;
+}
+
+.showblog {
+    text-align: left;
+}
+
+.showblog__preview {
+    margin-bottom: 20px;
+    font-style: italic;
+}
+
+.showblog__text {
+    margin-bottom: 60px;
+}
+
+.errors {
+    text-align: left;
+}
+
+.errors li {
+    color: red;
+    text-align: left;
+}
+
+.editfield {
+    width: 100%;
+}
+
+.editfield label {
+    width: 200px;
+}
+
+.editfield label {
+    width: 200px;
+}
+
+.editfield input, .editfield textarea {
+    padding: 10px;
+}
+
+/* ====================       450px       ====================================== */
+
 @media (max-width: 450px) {
     header {
         padding-bottom: 0;

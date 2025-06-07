@@ -9,13 +9,8 @@
     <div class="container">
         <div class="row">
             <div class="col-3 menu-item">
-                <a href="{{ route('home') }}">Главная </a>
+                <a href="/blogs">К списку блогов </a>
             </div>
-            <div class="col-3 menu-item">
-                <a href="{{ route('create') }}">Страница создания новости</a>
-            </div>
-
-
         </div>
     </div>
 @endsection

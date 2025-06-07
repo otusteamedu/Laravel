@@ -6,5 +6,4 @@ use Illuminate\Support\Facades\Route;
 //     return view('welcome');
 // });
 
-Route::view('/admin', 'home')->name('home');
-Route::view('/create', 'create')->name('create');
+Route::resource('blogs', \App\Http\Controllers\BlogsController::class);
