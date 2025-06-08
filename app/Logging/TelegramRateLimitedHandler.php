@@ -6,21 +6,39 @@ namespace App\Logging;
 
 use Illuminate\Support\Facades\RateLimiter;
 use Monolog\Handler\AbstractProcessingHandler;
+use Monolog\Level;
 use Monolog\LogRecord;
 use Monolog\Handler\TelegramBotHandler;
 use Illuminate\Support\Facades\Log;
 
 class TelegramRateLimitedHandler extends AbstractProcessingHandler
 {
+    /**
+     * @param int|string|Level $level
+     * @param bool             $bubble
+     * @param string           $apiKey
+     * @param string           $channel
+     */
+    public function __construct(int|string|Level $level = Level::Debug, bool $bubble = true, protected string $apiKey, protected string $channel, protected string $fallbackChannel)
+    {
+        parent::__construct($level, $bubble);
+    }
+
+
+    /**
+     * @param LogRecord $record
+     *
+     * @return void
+     */
     protected function write(LogRecord $record): void
     {
         $executed = RateLimiter::attempt(
-            'telegram-log-send:' . env('LOG_TELEGRAM_CHAT_ID'),
+            'telegram-log-send:' . $this->channel,
             1,
             function () use ($record) {
                 $handler = new TelegramBotHandler(
-                    env('LOG_TELEGRAM_BOT_TOKEN'),
-                    env('LOG_TELEGRAM_CHAT_ID'),
+                    $this->apiKey,
+                    $this->channel,
                     $record->level->value,
                 );
                 $handler->setFormatter(new TelegramFormatter());
@@ -30,8 +48,7 @@ class TelegramRateLimitedHandler extends AbstractProcessingHandler
         );
 
         if (!$executed) {
-            Log::channel('single')->error($record->message);
-           // Log::channel('telegram_fallback')->error($record->message);
+            Log::channel($this->fallbackChannel)->error($record->message);
         }
     }
 }

@@ -9,6 +9,12 @@ use Monolog\LogRecord;
 
 class TelegramFormatter implements FormatterInterface
 {
+
+    /**
+     * @param LogRecord $record
+     *
+     * @return string
+     */
     public function format(LogRecord $record): string
     {
         return sprintf(
@@ -20,6 +26,11 @@ class TelegramFormatter implements FormatterInterface
         );
     }
 
+    /**
+     * @param array $records
+     *
+     * @return string
+     */
     public function formatBatch(array $records): string
     {
         return implode("\n\n", array_map([$this, 'format'], $records));

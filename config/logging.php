@@ -131,12 +131,14 @@ return [
         'telegram' => [
             'driver' => 'monolog',
             'level' => env('LOG_TELEGRAM_LEVEL', 'error'),
-            'handler' => App\Logging\TelegramRateLimitedHandler::class,
-            /*'handler' => TelegramBotHandler::class,
+            // 'handler' => TelegramBotHandler::class,
+             'handler' => App\Logging\TelegramRateLimitedHandler::class,
              'with' => [
+                 'bubble' => true,
                  'apiKey' => env('LOG_TELEGRAM_BOT_TOKEN'),
                  'channel' => env('LOG_TELEGRAM_CHAT_ID'),
-             ],*/
+                 'fallbackChannel' => 'single',
+             ],
         ],
     ],
 
