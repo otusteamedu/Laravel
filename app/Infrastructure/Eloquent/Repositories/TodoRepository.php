@@ -123,19 +123,17 @@ class TodoRepository implements TodoRepositoryInterface
      */
     public function fetch(int $projectId, int $userId = null): array
     {
-        $query = Todo::query();
+        $query = Todo::query()
+            ->with('author')
+            ->with('status')
+            ->where('project_id', $projectId);
 
         if ($userId) {
             $user = User::where('id', $userId)->firstOrNew();
             $query->member($user);
         }
 
-        $query->where('project_id', $projectId)
-            ->with('author')
-            ->with('status')
-            ->orderBy('deadline');
-
-        $dbTodos = $query->get();
+        $dbTodos = $query->orderBy('deadline')->get();
 
         return array_map(
             fn($todo) => new TodoFetchDTO(
@@ -164,62 +162,37 @@ class TodoRepository implements TodoRepositoryInterface
     }
 
     /**
-     * Получить список комменатриев задачи
+     * Найти пользователя среди участников задачи
      * @param int $todoId
-     * @param int $projectId
-     * @return TodoCommentDTO[]
+     * @param int $userId
+     * @return TodoUserDTO|null
      */
-    public function fetchComments(int $todoId, int $projectId): array
+    public function findUser(int $todoId, int $userId): ?TodoUserDTO
     {
-        $dbComments = TodoComment::query()
+        $user = TodoUser::query()
             ->where('todo_id', $todoId)
-            ->where('project_id', $projectId)
-            ->orderBy('created_at')
-            ->get();
-
-        return array_map(
-            fn($comment) =>
-            new TodoCommentDTO(
-                commentId: $comment['id'],
-                todoId: $comment['todo_id'],
-                authorId: $comment['aiuthor_id'],
-                comment: $comment['comment'],
-                created: $comment['created_at'],
-                updated: $comment['updated_at'],
-
-            ),
-            $dbComments->toArray()
-        );
-    }
-
-    /**
-     * Получить список участников задачи
-     * @param int $todoId
-     * @param int $projectId
-     * @return TodoUserDTO[]
-     */
-    public function fetchUsers(int $todoId): array
-    {
-        $dbData = TodoUser::query()
-            ->where('todo_id', $todoId)
+            ->where('user_id', $userId)
             ->join('users', 'users.id', 'todo_user.user_id')
             ->select(
                 'users.id as user_id',
                 'users.name',
                 'users.email',
                 'todo_user.id',
-                'todo_user.roles',
+                'todo_user.role',
             )
-            ->orderBy('users.name')
-            ->get();
+            ->first();
 
-        return array_map(fn($user) => new TodoUserDTO(
+        if ($user === null) {
+            return null;
+        }
+
+        return new TodoUserDTO(
             id: $user->id,
             userId: $user->user_id,
             name: $user->name,
-            email: $user->emsil,
+            email: $user->email,
             role: $user->role
-        ), $dbData->toArray());
+        );
     }
 
     /**
@@ -229,7 +202,7 @@ class TodoRepository implements TodoRepositoryInterface
      * @param TodoRoleEnum $role
      * @return bool
      */
-    public function userRole(int $todoId, int $userId, TodoRoleEnum $role): bool
+    public function saveUser(int $todoId, int $userId, TodoRoleEnum $role): bool
     {
         $dbUser = TodoUser::updateOrCreate(
             [
@@ -237,7 +210,7 @@ class TodoRepository implements TodoRepositoryInterface
                 'user_id' =>  $userId,
             ],
             [
-                'roles' => [$role]
+                'role' => $role
             ]
         );
 
@@ -259,6 +232,36 @@ class TodoRepository implements TodoRepositoryInterface
     }
 
     /**
+     * Получить список участников задачи
+     * @param int $todoId
+     * @param int $projectId
+     * @return TodoUserDTO[]
+     */
+    public function fetchUsers(int $todoId): array
+    {
+        $dbData = TodoUser::query()
+            ->where('todo_id', $todoId)
+            ->join('users', 'users.id', 'todo_user.user_id')
+            ->select(
+                'users.id as user_id',
+                'users.name',
+                'users.email',
+                'todo_user.id',
+                'todo_user.role',
+            )
+            ->orderBy('users.name')
+            ->get();
+
+        return array_map(fn($user) => new TodoUserDTO(
+            id: $user['id'],
+            userId: $user['user_id'],
+            name: $user['name'],
+            email: $user['email'],
+            role: TodoRoleEnum::from($user['role'])
+        ), $dbData->toArray());
+    }
+
+    /**
      * Проверить наличие роли у уастника
      * @param int $todoId
      * @param int $userId
@@ -270,9 +273,7 @@ class TodoRepository implements TodoRepositoryInterface
         $dbData = TodoUser::query()
             ->where('todo_id', $todoId)
             ->where('user_id',  $userId)
-            ->where(function ($query) use ($role) {
-                $query->whereJsonContains('roles', $role);
-            })
+            ->where('role',  $role)
             ->first();
 
         return $dbData ? true : false;
@@ -348,5 +349,34 @@ class TodoRepository implements TodoRepositoryInterface
             ->where('id', $commentId)
             ->where('todo_id', $todoId)
             ->delete() ?? false;
+    }
+
+    /**
+     * Получить список комменатриев задачи
+     * @param int $todoId
+     * @param int $projectId
+     * @return TodoCommentDTO[]
+     */
+    public function fetchComments(int $todoId): array
+    {
+        $dbComments = TodoComment::query()
+            ->with('author')
+            ->where('todo_id', $todoId)
+            ->orderBy('created_at')
+            ->get();
+
+        return array_map(
+            fn($comment) =>
+            new TodoCommentDTO(
+                commentId: $comment['id'],
+                todoId: $comment['todo_id'],
+                authorId: $comment['author_id'],
+                comment: $comment['comment'],
+                created: Carbon::parse($comment['created_at']),
+                updated: Carbon::parse($comment['updated_at']),
+
+            ),
+            $dbComments->toArray()
+        );
     }
 }

@@ -40,7 +40,6 @@ interface TodoRepositoryInterface
      */
     public function destroy(int $todoId, int $projectId): bool;
 
-
     /**
      * Получить список задач проекта
      * Если передан userId, то будут возвращенны только задачи в которых пользователь учавствует
@@ -51,11 +50,12 @@ interface TodoRepositoryInterface
     public function fetch(int $projectId, int $userId = null): array;
 
     /**
-     * Получить список участников задачи
+     * Найти пользователя среди участников задачи
      * @param int $todoId
-     * @return TodoUserDTO[]
+     * @param int $userId
+     * @return TodoUserDTO|null
      */
-    public function fetchUsers(int $todoId): array;
+    public function findUser(int $todoId, int $userId): ?TodoUserDTO;
 
     /**
      * Добавить к задаче участника или измениь его роль
@@ -64,7 +64,7 @@ interface TodoRepositoryInterface
      * @param TodoRoleEnum $role
      * @return bool
      */
-    public function userRole(int $todoId, int $userId, TodoRoleEnum $role): bool;
+    public function saveUser(int $todoId, int $userId, TodoRoleEnum $role): bool;
 
     /**
      * Удалить участника из задачи
@@ -75,6 +75,13 @@ interface TodoRepositoryInterface
     public function renoveUser(int $todoId, int $userId): bool;
 
     /**
+     * Получить список участников задачи
+     * @param int $todoId
+     * @return TodoUserDTO[]
+     */
+    public function fetchUsers(int $todoId): array;
+
+    /**
      * Проверить наличие роли у уастника
      * @param int $todoId
      * @param int $userId
@@ -82,14 +89,6 @@ interface TodoRepositoryInterface
      * @return bool
      */
     public function userHasRole(int $todoId, int $userId, TodoRoleEnum $role): bool;
-
-    /**
-     * Получить список комменатриев задачи
-     * @param int $todoId
-     * @param int $projectId
-     * @return TodoCommentDTO[]
-     */
-    public function fetchComments(int $todoId, int $projectId): array;
 
     /**
      * Найти комментарий
@@ -120,4 +119,11 @@ interface TodoRepositoryInterface
      * @return bool
      */
     public function destroyComment(int $commentId, int $todoId): bool;
+
+    /**
+     * Получить список комменатриев задачи
+     * @param int $todoId
+     * @return TodoCommentDTO[]
+     */
+    public function fetchComments(int $todoId): array;
 }
