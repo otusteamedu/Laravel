@@ -22,6 +22,49 @@ class ProjectPolicy
         return !empty($user);
     }
 
+    public function invited(User $user, int $projectId): bool
+    {
+        return $this->repository->userInvited($projectId, $user->id);
+    }
+
+    public function join(User $user, int $projectId, int $userId): bool
+    {
+        if ($this->repository->userHasRole($projectId, $userId, [ProjectRoleEnum::ADMIN, ProjectRoleEnum::MEMBER])) {
+            return false;
+        }
+
+        if ($userId === $user->id) {
+            return $this->repository->userInvited($projectId, $user->id);
+        }
+
+        if ($this->repository->userHasRole($projectId, $user->id, [ProjectRoleEnum::ADMIN])) {
+            return $this->repository->userInvited($projectId, $userId);
+        }
+
+        return false;
+    }
+
+    public function left(User $user, int $projectId, int $userId): bool
+    {
+        if (!$this->repository->findUser($projectId, $userId)) {
+            return false;
+        }
+
+        if ($this->repository->userHasRole($projectId, $userId, [ProjectRoleEnum::ADMIN]) && $user->id === $userId) {
+            return false;
+        }
+
+        if ($this->repository->userHasRole($projectId, $user->id, [ProjectRoleEnum::ADMIN])  && $user->id !== $userId) {
+            return true;
+        }
+
+        if ($userId === $user->id) {
+            return true;
+        }
+
+        return false;
+    }
+
     public function view(User $user, int $projectId): bool
     {
         return $this->repository->userHasRole($projectId, $user->id, [ProjectRoleEnum::ADMIN, ProjectRoleEnum::MEMBER]);

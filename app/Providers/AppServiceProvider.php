@@ -51,6 +51,7 @@ class AppServiceProvider extends ServiceProvider
         });
 
 
+        Gate::define('project.invited', [ProjectPolicy::class, 'invited']);
         Gate::define('project.view', [ProjectPolicy::class, 'view']);
         Gate::define('project.create', [ProjectPolicy::class, 'create']);
         Gate::define('project.update', [ProjectPolicy::class, 'update']);
@@ -58,6 +59,8 @@ class AppServiceProvider extends ServiceProvider
 
         Gate::define('project.user.list', [ProjectPolicy::class, 'user_list']);
         Gate::define('project.user.manage', [ProjectPolicy::class, 'user_manage']);
+        Gate::define('project.user.join', [ProjectPolicy::class, 'join']);
+        Gate::define('project.user.left', [ProjectPolicy::class, 'left']);
 
         Gate::define('todostatuses.manage', [TodoStatusesPolicy::class, 'manage']);
     }

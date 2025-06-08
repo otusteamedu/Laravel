@@ -29,10 +29,7 @@ class Create extends Controller
 
             return redirect()->back()->with('success', 'Статус задачи для проекта добавлен');
         } catch (CreateModelFailedException $exception) {
-            return redirect()
-                ->back()
-                ->withInput()
-                ->with('error', $exception->getMessage());
+            return redirect()->back()->withInput()->with('error', $exception->getMessage());
         }
     }
 }

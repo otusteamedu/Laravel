@@ -24,7 +24,7 @@
         </div>
     @endif
     @foreach($result->ptojectDTOs as $projectDTO)
-        @can('project.view', $projectDTO->projectId)
+        @can('project.invited', $projectDTO->projectId)
             @include('projects.partials.project-card', [
                 'projectId' => $projectDTO->projectId,
                 'name' => $projectDTO->name,
@@ -35,4 +35,5 @@
     @endforeach
     
     @include('projects.partials.delete-confirmation')
+    @include('projects.partials.left-confirmation')
 @endsection

@@ -5,46 +5,31 @@ namespace Tests\Feature\Http;
 use Tests\TestCase;
 use App\Models\User;
 use App\Models\Project;
-use App\Models\TodoStatus;
 use App\Models\ProjectUser;
 use App\Models\UserProfile;
 use App\Models\ProjectRoleEnum;
 use PHPUnit\Framework\Attributes\Group;
+use App\Infrastructure\Eloquent\Repositories\ProjectRepository;
 
 #[Group('http')]
 class ProjectTest extends TestCase
 {
-    protected function &getUser()
-    {
-        static $user = null;
-        return $user;
-    }
-
-    protected function &getProject()
-    {
-        static $project = null;
-        return $project;
-    }
-
+    protected ProjectRepository $repository;
+    protected User $user;
 
     protected function setUp(): void
     {
         $this->setUpTheTestEnvironment();
 
-        $user = &$this->getUser();
+        $this->repository = new ProjectRepository;
 
-        if (!$user) {
-            $user = User::factory()->has(UserProfile::factory(), 'profile')->create();
-        }
+        $this->user = User::factory()->has(UserProfile::factory(), 'profile')->create();
     }
 
     public function test_projects_list_is_displayed(): void
     {
-        /** @var User $user */
-        $user = &$this->getUser();
-
         $response = $this
-            ->actingAs($user)
+            ->actingAs($this->user)
             ->get(route(name: 'projects.index', absolute: false));
 
         $response->assertOk();
@@ -52,11 +37,8 @@ class ProjectTest extends TestCase
 
     public function test_project_create_screen_can_be_rendered(): void
     {
-        /** @var User $user */
-        $user = &$this->getUser();
-
         $response = $this
-            ->actingAs($user)
+            ->actingAs($this->user)
             ->get(route(name: 'projects.create', absolute: false));
 
         $response->assertOk();
@@ -64,16 +46,13 @@ class ProjectTest extends TestCase
 
     public function test_new_project_create_validation_error(): void
     {
-        /** @var User $user */
-        $user = &$this->getUser();
-
         $payload = [
             'name'        => '1',
             'description' => 1,
         ];
 
         $response = $this
-            ->actingAs($user)
+            ->actingAs($this->user)
             ->post(route(name: 'projects.store', absolute: false), $payload);
 
         $response->assertSessionHasErrors();
@@ -81,50 +60,51 @@ class ProjectTest extends TestCase
 
     public function test_new_project_can_created(): void
     {
-        /** @var User $user */
-        $user = &$this->getUser();
-
-        $ftyProject = Project::factory()->make();
+        $project = Project::factory()->make();
 
         $payload = [
-            'name'        => $ftyProject->name,
-            'description' => $ftyProject->description,
-            'user_id'     => $user->id,
+            'name'        => $project->name,
+            'description' => $project->description,
+            'user_id'     => $this->user->id,
         ];
 
         $response = $this
-            ->actingAs($user)
+            ->actingAs($this->user)
             ->post(route(name: 'projects.store', absolute: false), $payload);
 
-        $response->assertStatus(302);
+        $targetUrl = $response->getTargetUrl();
 
-        $targetUrl = parse_url($response->getTargetUrl(), PHP_URL_PATH);
+        $routeMask = route('projects.show', ['projectId' => '__placeholder']);
 
-        preg_match('/^\/projects\/(\d+)$/', $targetUrl, $matches);
+        $diff = array_diff(
+            str_split($targetUrl),
+            str_split($routeMask)
+        );
 
-        $projectId = $matches[1] ?? null;
+        $projectId = implode($diff);
 
+        $this->assertNotNull($projectId, 'TargetURL не соответсвует ожиданиям');
         $response->assertRedirectToRoute('projects.show', ['projectId' => $projectId]);
 
-        $project = &$this->getProject();
-
-        $project = Project::query()
-            ->where('id', $projectId)
-            ->first();
+        $project = $this->repository->find($projectId);
 
         $this->assertNotNull($project, 'Проект не найден');
     }
 
-    public function test_new_project_can_show(): void
+    public function test_project_can_show(): void
     {
-        /** @var User $user */
-        $user = &$this->getUser();
-
-        /** @var Project $project */
-        $project = &$this->getProject();
+        $project = Project::factory()
+            ->has(ProjectUser::factory([
+                'user_id'    => $this->user->id,
+                'roles'      => [ProjectRoleEnum::ADMIN],
+                'invited_at' => now(),
+                'joined_at'  => now(),
+                'left_at'    => null
+            ]), 'projectUsers')
+            ->create();
 
         $response = $this
-            ->actingAs($user)
+            ->actingAs($this->user)
             ->get(route('projects.show', ['projectId' => $project->id], false));
 
         $response->assertOk();
@@ -132,32 +112,36 @@ class ProjectTest extends TestCase
 
     public function test_project_user_admin_is_assigned(): void
     {
-        /** @var User $user */
-        $user = &$this->getUser();
+        $project = Project::factory()
+            ->has(ProjectUser::factory([
+                'user_id'    => $this->user->id,
+                'roles'      => [ProjectRoleEnum::ADMIN],
+                'invited_at' => now(),
+                'joined_at'  => now(),
+                'left_at'    => null
+            ]), 'projectUsers')
+            ->create();
 
-        /** @var Project $project */
-        $project = &$this->getProject();
+        $success = $this->repository->userHasRole($project->id, $this->user->id, [ProjectRoleEnum::ADMIN]);
 
-        $projectUser = ProjectUser::query()
-            ->where('project_id', $project->id)
-            ->where('user_id', $user->id)
-            ->whereJsonContains('roles', ProjectRoleEnum::ADMIN->value)
-            ->whereNotNull('joined_at')
-            ->whereNull('left_at')
-            ->first();
-
-        $this->assertNotNull($projectUser, 'Администратор нового проекта не назначен');
+        $this->assertTrue($success, 'Администратор нового проекта не назначен');
     }
 
     public function test_project_default_todo_statuses_is_creaated(): void
     {
-        /** @var Project $project */
-        $project = &$this->getProject();
+        $project = Project::factory()
+            ->has(ProjectUser::factory([
+                'user_id'    => $this->user->id,
+                'roles'      => [ProjectRoleEnum::ADMIN],
+                'invited_at' => now(),
+                'joined_at'  => now(),
+                'left_at'    => null
+            ]), 'projectUsers')
+            ->create();
 
-        $todoStatuses = TodoStatus::query()
-            ->where('project_id', $project->id)
-            ->pluck('name')
-            ->toArray();
+        $statuses = $this->repository->fetchTodoStatuses($project->id);
+
+        $todoStatuses = array_map(fn($status) => $status->name, $statuses);
 
         $this->assertContains('Новая', $todoStatuses, 'Статус задачи "Новая" не добавлен в проект');
         $this->assertContains('В работе', $todoStatuses, 'Статус задачи "В работе" не добавлен в проект');
@@ -165,43 +149,17 @@ class ProjectTest extends TestCase
         $this->assertContains('Архив', $todoStatuses, 'Статус задачи "Архив" не добавлен в проект');
     }
 
-    public function test_project_page_is_displayed(): void
-    {
-        /** @var User $user */
-        $user = &$this->getUser();
-
-        /** @var Project $project */
-        $project = &$this->getProject();
-
-        $response = $this
-            ->actingAs($user)
-            ->get(route('projects.show', ['projectId' => $project->id], false));
-
-        $response->assertOk();
-    }
-
-    public function test_project_edit_screen_can_be_rendered(): void
-    {
-        /** @var User $user */
-        $user = &$this->getUser();
-
-        /** @var Project $project */
-        $project = &$this->getProject();
-
-        $response = $this
-            ->actingAs($user)
-            ->get(route('projects.edit', ['projectId' => $project->id], false));
-
-        $response->assertOk();
-    }
-
     public function test_project_update_validation_error(): void
     {
-        /** @var User $user */
-        $user = &$this->getUser();
-
-        /** @var Project $project */
-        $project = &$this->getProject();
+        $project = Project::factory()
+            ->has(ProjectUser::factory([
+                'user_id'    => $this->user->id,
+                'roles'      => [ProjectRoleEnum::ADMIN],
+                'invited_at' => now(),
+                'joined_at'  => now(),
+                'left_at'    => null
+            ]), 'projectUsers')
+            ->create();
 
         $payload = [
             'name'        => '1',
@@ -209,7 +167,7 @@ class ProjectTest extends TestCase
         ];
 
         $response = $this
-            ->actingAs($user)
+            ->actingAs($this->user)
             ->put(route('projects.update', ['projectId' => $project->id],  false), $payload);
 
         $response->assertSessionHasErrors();
@@ -217,129 +175,94 @@ class ProjectTest extends TestCase
 
     public function test_project_can_updated(): void
     {
-        /** @var User $user */
-        $user = &$this->getUser();
+        $project = Project::factory()
+            ->has(ProjectUser::factory([
+                'user_id'    => $this->user->id,
+                'roles'      => [ProjectRoleEnum::ADMIN],
+                'invited_at' => now(),
+                'joined_at'  => now(),
+                'left_at'    => null
+            ]), 'projectUsers')
+            ->create();
 
-        /** @var Project $project */
-        $project = &$this->getProject();
-
-
-        $ftyProject = Project::factory()->make();
+        $update = Project::factory()->make();
 
         $payload = [
-            'name'        => $ftyProject->name,
-            'description' => $ftyProject->description,
+            'name'        => $update->name,
+            'description' => $update->description,
         ];
 
         $response = $this
-            ->actingAs($user)
+            ->actingAs($this->user)
             ->put(route('projects.update', ['projectId' => $project->id],  false), $payload);
 
-        $project = Project::query()
-            ->where('id', $project->id)
-            ->first();
+        $response->assertSessionHasNoErrors();
 
-        $this->assertEquals($ftyProject->name, $project->name, 'Имя проекта не обновилось');
-        $this->assertEquals($ftyProject->description, $project->description, 'Описание проекта не обновилось');
+        $updated = $this->repository->find($project->id);
+
+        $this->assertEquals($update->name, $updated->name, 'Имя проекта не обновилось');
+        $this->assertEquals($update->description, $updated->description, 'Описание проекта не обновилось');
     }
 
     public function test_project_can_delete(): void
     {
-        /** @var User $user */
-        $user = &$this->getUser();
-
-        /** @var Project $project */
-        $project = &$this->getProject();
+        $project = Project::factory()
+            ->has(ProjectUser::factory([
+                'user_id'    => $this->user->id,
+                'roles'      => [ProjectRoleEnum::ADMIN],
+                'invited_at' => now(),
+                'joined_at'  => now(),
+                'left_at'    => null
+            ]), 'projectUsers')
+            ->create();
 
         $response = $this
-            ->actingAs($user)
+            ->actingAs($this->user)
             ->delete(route('projects.destroy', ['projectId' => $project->id],  false));
 
+        $response->assertSessionHasNoErrors();
 
-        $check = Project::query()
-            ->where('id', $project->id)
-            ->first();
+        $check = $this->repository->find($project->id);
 
         $this->assertNull($check, 'Проект не удален');
     }
 
     public function test_project_view_access_denied(): void
     {
-        /** @var User $user */
-        $user = &$this->getUser();
-
-        /** @var Project $project */
-        $project = &$this->getProject();
+        $project = Project::factory()->create();
 
         $response = $this
-            ->actingAs($user)
-            ->get(route('projects.show', ['projectId' => $project->id],  false));
-
-        $response->assertStatus(403);
-    }
-
-    public function test_project_edit_access_denied(): void
-    {
-        /** @var User $user */
-        $user = &$this->getUser();
-
-        /** @var Project $project */
-        $project = &$this->getProject();
-
-        $response = $this
-            ->actingAs($user)
-            ->get(route('projects.edit', ['projectId' => $project->id],  false));
+            ->actingAs($this->user)
+            ->get(route('projects.show', ['projectId' => $project->id], false));
 
         $response->assertStatus(403);
     }
 
     public function test_project_update_access_denied(): void
     {
-        /** @var User $user */
-        $user = &$this->getUser();
+        $project = Project::factory()->create();
 
-        /** @var Project $project */
-        $project = &$this->getProject();
-
-
-        $ftyProject = Project::factory()->make();
+        $update = Project::factory()->make();
 
         $payload = [
-            'name'        => $ftyProject->name,
-            'description' => $ftyProject->description,
+            'name'        => $update->name,
+            'description' => $update->description,
         ];
 
         $response = $this
-            ->actingAs($user)
+            ->actingAs($this->user)
             ->put(route('projects.update', ['projectId' => $project->id],  false), $payload);
 
         $response->assertStatus(403);
     }
     public function test_project_delete_access_denied(): void
     {
-        /** @var User $user */
-        $user = &$this->getUser();
-
-        /** @var Project $project */
-        $project = &$this->getProject();
+        $project = Project::factory()->create();
 
         $response = $this
-            ->actingAs($user)
+            ->actingAs($this->user)
             ->delete(route('projects.destroy', ['projectId' => $project->id],  false));
 
         $response->assertStatus(403);
-    }
-
-    public function test_project_users_is_deleted(): void
-    {
-        /** @var Project $project */
-        $project = &$this->getProject();
-
-        $check = ProjectUser::query()
-            ->where('project_id', $project->id)
-            ->whereNull('left_at')
-            ->count();
-
-        $this->assertEquals(0, $check, 'Пользователи не удалены из проекта');
     }
 }

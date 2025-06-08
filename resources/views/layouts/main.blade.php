@@ -27,4 +27,43 @@
 @if(session('success'))
     <x-toast :success=true message="{{ session('success') }}"></x-toast>
 @endif
+<form name="join-form" id="join-form" method="post" action="">
+    @csrf
+    @method('patch')
+</form>
 @endsection
+@push('scripts-bottom')
+<script>
+    document.addEventListener('alpine:init', () => {
+        Alpine.store('projects', {
+            leftForm: {
+                action: null,
+                projectName: null,
+            },
+
+            join(path)
+            {
+
+                form = document.getElementById('join-form')
+                form.action = path
+
+                form.submit()
+            },
+
+            left(path, projectName)
+            {
+                this.leftForm.action = path
+                this.leftForm.projectName = projectName
+            },
+
+            clearForm()
+            {
+                this.leftForm = {
+                    action: null,
+                    projectName: null,
+                }
+            },
+        });
+    });
+</script>
+@endpush

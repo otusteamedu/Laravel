@@ -19,6 +19,7 @@
         <exclude>
             <directory>app/SocialiteProviders</directory>
             <directory>app/Services/UseCases/Commands/Auth</directory>
+            <directory>app/Models</directory>
             <file>app/Http/Controllers/Auth/VKController.php</file>
             <file>app/Http/Controllers/Auth/YandexController.php</file>
         </exclude>

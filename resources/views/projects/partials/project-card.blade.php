@@ -7,26 +7,32 @@
  */
 @endphp
 <div class="card mb-3">
-    <div class="card-header fw-bold">
-        {{ $name }}
+    <div class="card-header d-flex justify-content-between">
+        <div><span class="fw-bold">{{ $name }}</span></div>
+        @can('project.user.left', [$projectId, Auth::user()->id])
+            <span class="text-muted">
+                <i class="ps-2 fa-solid fa-ban text-danger"></i>
+                <button
+                    type="button"
+                    class="btn p-0" 
+                    data-bs-toggle="modal" 
+                    data-bs-target="#project-jeft-confirmation" 
+                    x-data @click="$store.projects.left('{{ route('project.users.left', [$projectId, Auth::user()->id])}}', '{{ $name }}')"
+                    >Покинуть</button>
+            </span>
+        @endcan
     </div>
     <div class="card-body">
         <p class="card-text">{{ $description }}</p>
         <p class="card-text"><span class="text-muted">Создан: {{ $created }}</span></p>
 
         <p class="card-text d-flex flex-wrap justify-content-end gap-3">
-            <span class="text-muted">
-                <i class="fa-solid fa-eye"></i>
-                <a href="{{ route('projects.show', ['projectId' => $projectId]) }}"
-                    class="btn p-0"
-                    >Подробнее</a>
-            </span>
-            @can('project.update', $projectId)
+            @can('project.view', $projectId)
                 <span class="text-muted">
-                    <i class="fa-solid fa-pen-to-square"></i>
-                    <a href="{{ route('projects.edit', ['projectId' => $projectId]) }}"
+                    <i class="fa-solid fa-eye"></i>
+                    <a href="{{ route('projects.show', ['projectId' => $projectId]) }}"
                         class="btn p-0"
-                        >Редактировать</a>
+                        >Подробнее</a>
                 </span>
             @endcan
             @can('project.delete', $projectId)
@@ -44,4 +50,25 @@
             @endcan
         </p>
     </div>
+
+    @can('project.user.join', [$projectId, Auth::user()->id])
+        <div class="card-footer bg-info-subtle">
+            <span>Вас приглавили к участию в проекте</span>
+                <span class="text-muted">
+                    <i class="ps-2 fa-solid fa-circle-check text-success"></i>
+                    <span role="button"
+                        class="fw-bold"
+                        x-data @click="$store.projects.join('{{ route('project.users.join', [$projectId, Auth::user()->id])}}')"
+                        >Принять</span>
+                </span>
+                <span class="text-muted">
+                    <i class="ps-2 fa-solid fa-ban text-danger"></i>
+                    <span role="button"
+                        class="fw-bold"
+                        x-data @click="$store.projects.left('{{ route('project.users.left', [$projectId, Auth::user()->id])}}', '{{ $name }}')"
+                        >Отказаться</span>
+                </span>
+            </span>
+        </div>
+    @endcan
 </div>

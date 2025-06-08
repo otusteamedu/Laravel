@@ -20,6 +20,28 @@
                 </nav>
                 <div class="col-lg-9">
                     <div class="p-4" id="users">
+                        @can('project.user.manage', $project->projectId)
+                            <div x-show="showEdit" class="pt-4 col-lg-6">
+                                <h4 class="mb-4">Пригласить пользователя</h4>
+                                <form method="POST" action="{{ route('project.users.invite', ['projectId' => $project->projectId]) }}" autocomplete="off">
+                                    @csrf
+                                    <div class="input-group mb-4">
+                                        <span class="input-group-text"><i class="fa fa-envelope"></i></span>
+                                        <input name="email"
+                                            type="email"
+                                            autocomplete="off"
+                                            value="{{ old('email', '') }}"
+                                            @class([
+                                            'form-control',
+                                            'is-invalid' => !empty($errors->get('email'))
+                                        ]) 
+                                        placeholder="Email адрес" required autocomplete="username">
+                                        <button class="btn btn-primary rounded-end">Пригласить</button>
+                                        <x-invalid-feedback :errors="$errors->get('email')"/>
+                                    </div>
+                                </form>
+                            </div>
+                        @endcan
                         <div class="mb-4">
                             <h4 class="mb-4">Участники проекта</h4>
                             <table class="table table-hover">
@@ -44,7 +66,7 @@
                                         </td>
                                         @can('project.user.manage', $project->projectId)
                                             <td class="d-none d-md-table-cell">{{ $user->invited->translatedFormat("j F Y") }}</td>
-                                            <td class="d-none d-md-table-cell">{{ $user->joined->translatedFormat("j F Y") }}</td>
+                                            <td class="d-none d-md-table-cell">{{ $user->joined?->translatedFormat("j F Y") }}</td>
                                         @endcan
                                     </tr>
                                     @endforeach

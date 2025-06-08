@@ -32,10 +32,7 @@ Route::middleware('auth')
         Route::get('/{projectId}', Projects\Show::class)
             ->name('show')
             ->can('project.view', 'projectId');
-        Route::get('/{projectId}/edit', [Projects\Update::class, 'edit'])
-            ->name('edit')
-            ->can('project.update', 'projectId');
-        Route::put('/{projectId}', [Projects\Update::class, 'update'])
+        Route::put('/{projectId}', Projects\Update::class)
             ->name('update')
             ->can('project.update', 'projectId');
         Route::delete('/{projectId}', Projects\Delete::class)
@@ -48,7 +45,17 @@ Route::middleware('auth')
     ->name('project.users.')
     ->group(function () {
         Route::get('/', ProjectUsers\Index::class)
-            ->name('index');
+            ->name('index')
+            ->can('project.user.list', 'projectId');
+        Route::post('/invite', ProjectUsers\Invite::class)
+            ->name('invite')
+            ->can('project.user.manage', 'projectId');
+        Route::patch('/{userId}/join', ProjectUsers\Join::class)
+            ->name('join')
+            ->can('project.user.join', ['projectId', 'userId']);
+        Route::delete('/{userId}/left', ProjectUsers\Left::class)
+            ->name('left')
+            ->can('project.user.left', ['projectId', 'userId']);
     });
 
 Route::middleware('auth')

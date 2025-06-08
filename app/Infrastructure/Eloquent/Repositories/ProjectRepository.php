@@ -75,9 +75,9 @@ class ProjectRepository implements ProjectRepositoryInterface
      * @param int $projectId
      * @return ProjectInvitedUserDTO[]
      */
-    public function destroy(int $id): bool
+    public function destroy(int $projectId): bool
     {
-        return Project::where('id', $id,)
+        return Project::where('id', $projectId)
             ->delete() ?? false;
     }
 
@@ -131,7 +131,12 @@ class ProjectRepository implements ProjectRepositoryInterface
         $dbData = ProjectUser::query()
             ->where('project_id', $projectId)
             ->where('user_id',  $userId)
+            ->whereNull('left_at')
             ->first();
+
+        if ($dbData === null) {
+            return null;
+        }
 
         return new ProjectUserDTO(
             id: $dbData->id,
@@ -156,7 +161,7 @@ class ProjectRepository implements ProjectRepositoryInterface
             'project_id' => $projectUser->projectId,
             'roles'      => $projectUser->roles,
             'invited_at' => $projectUser->invited ?? now(),
-            'joined_at'  => $projectUser->joined,
+            'joined_at'  => $projectUser->joined ?? null,
         ]);
 
         return $dbData->refresh()->id;
@@ -213,6 +218,23 @@ class ProjectRepository implements ProjectRepositoryInterface
     }
 
     /**
+     * Проверяет приглашен ли пользователь к участию в проекте
+     * @param int $projectId
+     * @param int $userId
+     * @return bool
+     */
+    public function userInvited(int $projectId, int $userId): bool
+    {
+        $dbData = ProjectUser::query()
+            ->where('project_id', $projectId)
+            ->where('user_id',  $userId)
+            ->whereNull('left_at')
+            ->first();
+
+        return $dbData ? true : false;
+    }
+
+    /**
      * Проверяет есть ли у пользователя нужная роль на проекте
      * @param int $projectId
      * @param int $userId
@@ -248,9 +270,11 @@ class ProjectRepository implements ProjectRepositoryInterface
         $dbProjects = Project::query()
             ->whereHas('projectUsers', function ($query) use ($userId) {
                 $query->where('user_id', $userId)
-                    ->whereNotNull('joined_at')
                     ->whereNull('left_at');
             })
+            ->with(['projectUsers' => function ($query) use ($userId) {
+                $query->where('user_id', $userId)->whereNull('left_at');
+            }])
             ->get();
 
         return array_map(

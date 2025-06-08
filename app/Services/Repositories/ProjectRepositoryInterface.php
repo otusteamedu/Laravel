@@ -86,6 +86,14 @@ interface ProjectRepositoryInterface
     public function leftAllUsers(int $projectId): bool;
 
     /**
+     * Проверяет приглашен ли пользователь к участию в проекте
+     * @param int $projectId
+     * @param int $userId
+     * @return bool
+     */
+    public function userInvited(int $projectId, int $userId): bool;
+
+    /**
      * Проверяет есть ли у пользователя нужная роль на проекте
      * @param int $projectId
      * @param int $userId

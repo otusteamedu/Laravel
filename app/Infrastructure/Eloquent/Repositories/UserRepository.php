@@ -68,13 +68,19 @@ class UserRepository implements UserRepositoryInterface
     /**
      * Получить пользователя по email
      * @param string $email
+     * @param bool $verified
      * @return UserDTO|null
      */
-    public function findByEmail(string $email): ?UserDTO
+    public function findByEmail(string $email, bool $verified = false): ?UserDTO
     {
-        $dbUser = User::query()
-            ->where('email', $email)
-            ->first();
+        $query = User::query()
+            ->where('email', $email);
+
+        if ($verified) {
+            $query->whereNotNull('email_verified_at');
+        }
+
+        $dbUser = $query->first();
 
         if ($dbUser === null) {
             return null;

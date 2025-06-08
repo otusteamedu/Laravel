@@ -32,9 +32,10 @@ interface UserRepositoryInterface
     /**
      * Получить пользователя по email
      * @param string $email
+     * @param bool $verified
      * @return UserDTO|null
      */
-    public function findByEmail(string $email): ?UserDTO;
+    public function findByEmail(string $email, bool $verified = false): ?UserDTO;
 
     /**
      * Обновить или создать профиль пользователя
