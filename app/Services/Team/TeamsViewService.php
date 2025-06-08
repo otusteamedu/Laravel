@@ -4,23 +4,24 @@ namespace App\Services\Team;
 
 use App\Repositories\TeamRepository;
 
-class TeamsViewService
+readonly class TeamsViewService
 {
     public function __construct(
-        private readonly TeamRepository $teamRepository,
+        private TeamRepository $teamRepository,
     )
     {
     }
 
-    /**
-     * @return array<int,TeamData>|TeamData
-     */
-    public function handle(?int $id): array|TeamData
+    public function fetchOne(int $id): TeamData
     {
-        if (is_null($id)) {
-            return $this->teamRepository->all();
-        }
-
         return $this->teamRepository->one($id);
+    }
+
+    /**
+     * @return array<int,TeamData>
+     */
+    public function fetchAll(): array
+    {
+        return $this->teamRepository->all();
     }
 }

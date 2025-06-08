@@ -4,12 +4,15 @@ namespace App\Repositories;
 
 use App\Models\Team;
 use App\Services\Team\TeamData;
+use App\Services\Team\TeamHasPlayersException;
+use App\Services\Team\TeamRepositoryInterface;
+use App\Services\TeamPlayer\PlayerRepositoryInterface;
 
 class TeamRepository implements TeamRepositoryInterface
 {
-    public function create(TeamData $data): int
+    public function add(TeamData $teamData): int
     {
-        $team = Team::query()->create($data->toArray());
+        $team = Team::query()->create($teamData->toArray());
         return $team->id;
     }
 
@@ -39,9 +42,21 @@ class TeamRepository implements TeamRepositoryInterface
         return new TeamData($team->toArray());
     }
 
-    public function destroy(int $id): void
+    /**
+     * @throws TeamHasPlayersException
+     */
+    public function destroy(int $id, PlayerRepositoryInterface $playerRepository): void
     {
-        Team::query()->findOrFail($id)->delete();
+        $team = Team::query()->findOrFail($id);
+        $teamPlayers = $playerRepository->allByTeam($team->id);
+
+        if(!empty($teamPlayers))
+        {
+            throw new TeamHasPlayersException('Команду нельзя удалить, сначала отвяжите игроков');
+        }
+
+        $team->delete();
+
     }
 
     public function update(TeamData $data): void

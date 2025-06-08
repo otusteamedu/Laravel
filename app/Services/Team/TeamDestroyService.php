@@ -2,18 +2,19 @@
 
 namespace App\Services\Team;
 
-use App\Repositories\TeamRepositoryInterface;
+use App\Services\TeamPlayer\PlayerRepositoryInterface;
 
-class TeamDestroyService
+readonly class TeamDestroyService
 {
     public function __construct(
-        private readonly TeamRepositoryInterface $teamRepository
+        private TeamRepositoryInterface $teamRepository,
+        private PlayerRepositoryInterface $playerRepository,
     )
     {
     }
 
     public function handle(int $id): void
     {
-        $this->teamRepository->destroy($id);
+        $this->teamRepository->destroy($id, $this->playerRepository);
     }
 }

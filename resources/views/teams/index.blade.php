@@ -25,6 +25,12 @@
                     </x-alert>
                 @endif
 
+                @if (session('status') === 'team-not-deleted')
+                    <x-alert @class(['text-white', 'bg-red-500'])>
+                        {{ implode(';', $errors->get('error')) }}
+                    </x-alert>
+                @endif
+
                 @if (session('status') === 'team-updated')
                     <x-alert @class(['text-gray-600', 'bg-indigo-50'])>
                         Команда успешно обновлена

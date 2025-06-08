@@ -2,12 +2,10 @@
 
 namespace App\Services\Team;
 
-use App\Repositories\TeamRepositoryInterface;
-
-class TeamUpdateService
+readonly class TeamUpdateService
 {
     public function __construct(
-        private readonly TeamRepositoryInterface $teamRepository,
+        private TeamRepositoryInterface $teamRepository,
     )
     {
     }

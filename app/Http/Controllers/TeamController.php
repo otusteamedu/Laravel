@@ -22,7 +22,7 @@ class TeamController extends Controller
         TeamsViewService $teamsViewService,
     ): View
     {
-        $data['teams'] = $teamsViewService->handle(null);
+        $data['teams'] = $teamsViewService->fetchAll();
         return view('teams.index', $data);
     }
 
@@ -65,7 +65,7 @@ class TeamController extends Controller
         TeamsViewService $teamsViewService,
     ): View
     {
-        $data['team'] = $teamsViewService->handle($id);
+        $data['team'] = $teamsViewService->fetchOne($id);
         return view('teams.show', $data);
     }
 
@@ -77,7 +77,7 @@ class TeamController extends Controller
         TeamsViewService $teamsViewService,
     ): View
     {
-        $data['team'] = $teamsViewService->handle($id);
+        $data['team'] = $teamsViewService->fetchOne($id);
         return view('teams.edit', $data);
     }
 
@@ -98,7 +98,7 @@ class TeamController extends Controller
                 $path = $request->file('file')->store('teams', 'public');
                 $data['logo_path'] = $path;
 
-                $oldLogoPath = $teamsViewService->handle($id)->getLogoPath();
+                $oldLogoPath = $teamsViewService->fetchOne($id)->getLogoPath();
                 if($oldLogoPath && Storage::disk('public'))
                 {
                     Storage::disk('public')->delete($oldLogoPath);
@@ -122,7 +122,12 @@ class TeamController extends Controller
         TeamDestroyService $teamDestroyService,
     ): RedirectResponse
     {
-        $teamDestroyService->handle($id);
+        try {
+            $teamDestroyService->handle($id);
+        } catch (Throwable $e) {
+            return  redirect()->route('teams.index')->with('status', 'team-not-deleted')->withErrors(['error' => $e->getMessage()]);
+        }
+
         return redirect()->route('teams.index')->with('status', 'team-deleted');
     }
 }
