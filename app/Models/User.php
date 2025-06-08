@@ -65,4 +65,9 @@ class User extends Authenticatable
     {
         return $this->belongsTo(UserRole::class);
     }
+
+    public function isAdmin(): bool
+    {
+        return $this->role_id === 2;
+    }
 }
