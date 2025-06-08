@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
+
 class Area extends BaseModel
 {
     /**
@@ -24,23 +26,21 @@ class Area extends BaseModel
         return $this->id;
     }
 
-    public function getNameEn() 
+    public function getName() 
     {
-        return $this->name_en;
-    }
-
-    public function getNameRu() 
-    {
-        return $this->name_ru;
+        $nameField = 'name_' . config('app.locale');
+        return $this->$nameField;
     }
 
     public function getCreatedAt() 
     {
-        return $this->created_at;
+        $data = Carbon::createFromDate($this->created_at)->format('d.m.Y');
+        return $data;
     }
 
     public function getUpdatedAt() 
     {
-        return $this->updated_at;
+        $data = Carbon::createFromDate($this->updated_at)->format('d.m.Y');
+        return $data;
     }
 }

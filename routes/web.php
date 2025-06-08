@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\AreaController;
+use App\Http\Controllers\MeasureController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
@@ -7,14 +9,19 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-
 Route::middleware(['auth', 'verified'])->group(function () {
+
     Route::get('/dashboard', function () {
         return view('dashboard');
     })->name('dashboard');
+
     Route::get('/fibonachi', function () {
         return view('fibonachi');
     })->name('fibonachi');
+    
+    Route::resource('mesaure', MeasureController::class);
+    Route::resource('area', AreaController::class);
+
 });
 
 Route::middleware('auth')->group(function () {
