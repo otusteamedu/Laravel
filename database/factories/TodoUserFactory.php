@@ -48,6 +48,7 @@ class TodoUserFactory extends Factory
             ])
                 ->create();
         }
+
         return [
             'todo_id' => $todo->id,
             'user_id' => $user->id,

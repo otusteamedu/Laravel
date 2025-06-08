@@ -48,15 +48,4 @@ class TodoFactory extends Factory
             'options'     => fake()->randomElement([['isHot' => true], []]),
         ];
     }
-
-    public function configure(): static
-    {
-        return $this->afterCreating(function (Todo $todo) {
-            TodoUser::factory()->create([
-                'todo_id' => $todo->id,
-                'user_id' => $todo->author_id,
-                'role'    => TodoRoleEnum::RESPONSIBLE,
-            ]);
-        });
-    }
 }

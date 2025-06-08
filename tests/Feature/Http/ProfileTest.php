@@ -1,12 +1,14 @@
 <?php
 
-namespace Tests\Feature;
+namespace Tests\Feature\Http;
 
 use Tests\TestCase;
 use App\Models\User;
 use App\Models\UserProfile;
+use PHPUnit\Framework\Attributes\Group;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
+#[Group('http')]
 class ProfileTest extends TestCase
 {
     use RefreshDatabase;

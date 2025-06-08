@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature;
+namespace Tests\Feature\Http;
 
 use Tests\TestCase;
 use App\Models\User;
@@ -10,7 +10,7 @@ use App\Models\ProjectUser;
 use App\Models\ProjectRoleEnum;
 use PHPUnit\Framework\Attributes\Group;
 
-#[Group('todo')]
+#[Group('http')]
 class TodoStatusTest extends TestCase
 {
     protected function &getUser()

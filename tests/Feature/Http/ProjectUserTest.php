@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature;
+namespace Tests\Feature\Http;
 
 use Tests\TestCase;
 use App\Models\User;
@@ -11,7 +11,7 @@ use App\Models\ProjectRoleEnum;
 use PHPUnit\Framework\Attributes\Group;
 
 
-#[Group('projectUser')]
+#[Group('http')]
 class ProjectUserTest extends TestCase
 {
     protected function &getUser()

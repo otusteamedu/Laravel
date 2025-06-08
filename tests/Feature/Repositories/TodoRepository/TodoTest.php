@@ -12,13 +12,13 @@ use App\Models\ProjectRoleEnum;
 use PHPUnit\Framework\Attributes\Group;
 use App\Services\Repositories\Todo\TodoDTO;
 use App\Infrastructure\Eloquent\Repositories\TodoRepository;
+use App\Models\TodoUser;
 
 #[Group('repository')]
-class TodoRepositoryTest extends TestCase
+class TodoTest extends TestCase
 {
     protected TodoRepository $repository;
     private User $user;
-    private User $member;
     private Project $project;
     private TodoStatus $status;
 
@@ -43,27 +43,15 @@ class TodoRepositoryTest extends TestCase
         $this->status = TodoStatus::factory([
             'project_id' => $this->project->id
         ])->create();
-
-        $this->member = User::factory()->create();
-
-        ProjectUser::factory([
-            'project_id' => $this->project->id,
-            'user_id'    => $this->member->id,
-            'roles'      => [ProjectRoleEnum::MEMBER],
-            'invited_at' => now(),
-            'joined_at'  => now(),
-            'left_at'    => null
-        ])
-            ->create();
     }
 
 
     public function test_todo_find(): void
     {
         $todo = Todo::factory([
-            'author_id'   => $this->user->id,
-            'project_id'  => $this->project->id,
-            'status_id'   => $this->status->id,
+            'author_id'  => $this->user->id,
+            'project_id' => $this->project->id,
+            'status_id'  => $this->status->id,
         ])
             ->create();
 
@@ -82,9 +70,9 @@ class TodoRepositoryTest extends TestCase
     public function test_todo_can_added(): void
     {
         $todo = Todo::factory([
-            'author_id'   => $this->user->id,
-            'project_id'  => $this->project->id,
-            'status_id'   => $this->status->id,
+            'author_id'  => $this->user->id,
+            'project_id' => $this->project->id,
+            'status_id'  => $this->status->id,
         ])
             ->make();
 
@@ -106,9 +94,9 @@ class TodoRepositoryTest extends TestCase
     public function test_todo_can_updated(): void
     {
         $todo = Todo::factory([
-            'author_id'   => $this->user->id,
-            'project_id'  => $this->project->id,
-            'status_id'   => $this->status->id,
+            'author_id'  => $this->user->id,
+            'project_id' => $this->project->id,
+            'status_id'  => $this->status->id,
         ])
             ->create();
 
@@ -117,9 +105,9 @@ class TodoRepositoryTest extends TestCase
         ])->create();
 
         $update = Todo::factory([
-            'author_id'   => $this->user->id,
-            'project_id'  => $this->project->id,
-            'status_id'   => $this->status->id,
+            'author_id'  => $this->user->id,
+            'project_id' => $this->project->id,
+            'status_id'  => $this->status->id,
         ])
             ->make();
 
@@ -150,9 +138,9 @@ class TodoRepositoryTest extends TestCase
     public function test_todo_can_deleted(): void
     {
         $todo = Todo::factory([
-            'author_id'   => $this->user->id,
-            'project_id'  => $this->project->id,
-            'status_id'   => $this->status->id,
+            'author_id'  => $this->user->id,
+            'project_id' => $this->project->id,
+            'status_id'  => $this->status->id,
         ])
             ->create();
 
@@ -166,25 +154,42 @@ class TodoRepositoryTest extends TestCase
         $count = 3;
 
         Todo::factory([
-            'author_id'   => $this->user->id,
-            'project_id'  => $this->project->id,
-            'status_id'   => $this->status->id,
+            'author_id'  => $this->user->id,
+            'project_id' => $this->project->id,
+            'status_id'  => $this->status->id,
         ])
+            ->has(TodoUser::factory()
+                ->state(function (array $attributes, Todo $todo) {
+                    return [
+                        'todo_id' => $todo->id,
+                        'user_id' => $todo->author_id,
+                    ];
+                }), 'todoUsers')
             ->count($count)
             ->create();
 
-        $newUser = User::factory()->create();
+        $member = User::factory()->create();
 
         Todo::factory([
-            'author_id'   => $newUser->id,
-            'project_id'  => $this->project->id,
-            'status_id'   => $this->status->id,
+            'author_id'  => $member->id,
+            'project_id' => $this->project->id,
+            'status_id'  => $this->status->id,
         ])
+            ->has(TodoUser::factory()
+                ->state(function (array $attributes, Todo $todo) {
+                    return [
+                        'todo_id' => $todo->id,
+                        'user_id' => $todo->author_id,
+                    ];
+                }), 'todoUsers')
             ->count($count)
             ->create();
+
+        $result = $this->repository->fetch($this->project->id);
+        $this->assertEquals($count * 2, count($result), 'Количество добавленных задач не соответсвует количеству выбранных');
 
         $result = $this->repository->fetch($this->project->id, $this->user->id);
 
-        $this->assertEquals($count, count($result));
+        $this->assertEquals($count, count($result), 'Количество добавленных задач для пользователя не соответсвует количеству выбранных');
     }
 }
