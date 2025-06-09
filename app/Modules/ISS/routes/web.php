@@ -8,7 +8,7 @@ use App\Modules\ISS\src\Http\Controllers\IssAdminController;
 use App\Modules\ISS\src\Http\Controllers\IssRoutePointController;
 
 Route::prefix('/iss')
-    //->middleware(['web', 'auth'])
+    ->middleware(['web', 'auth'])
     ->group(function () {
 
     //главная страница модуля
