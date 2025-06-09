@@ -19,6 +19,12 @@ class Team extends BaseModel
     /** @use HasFactory<TeamFactory> */
     use HasFactory;
 
+    protected $fillable = [
+        'name',
+        'nickname',
+        'logo_path'
+    ];
+
     public function players(): HasMany
     {
         return $this->hasMany(Player::class);

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\TeamController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -22,3 +23,6 @@ require __DIR__.'/auth.php';
 Route::get('abstract-static-page', function () {
     return view('abstract-static-page');
 });
+
+
+Route::resource('teams', TeamController::class)->middleware(['auth']);
