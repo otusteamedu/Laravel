@@ -13,8 +13,25 @@ readonly class TeamDestroyService
     {
     }
 
+    /**
+     * @throws TeamNotFoundException
+     * @throws TeamHasPlayersException
+     */
     public function handle(int $id): void
     {
-        $this->teamRepository->destroy($id, $this->playerRepository);
+        $team = $this->teamRepository->one($id);
+        if(empty($team))
+        {
+            throw new TeamNotFoundException();
+        }
+
+        $teamPlayers = $this->playerRepository->allByTeam($team->id);
+
+        if(!$teamPlayers->isEmpty())
+        {
+            throw new TeamHasPlayersException('Команду нельзя удалить, сначала отвяжите игроков');
+        }
+
+        $this->teamRepository->destroy($team);
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Services\Team;
 
+use App\Models\Team;
 use App\Repositories\TeamRepository;
 
 readonly class TeamsViewService
@@ -12,9 +13,15 @@ readonly class TeamsViewService
     {
     }
 
-    public function fetchOne(int $id): TeamData
+    public function fetchOne(int $id): ?TeamData
     {
-        return $this->teamRepository->one($id);
+        $team = $this->teamRepository->one($id);
+        if(is_null($team))
+        {
+            return null;
+        }
+
+        return new TeamData($team->toArray());
     }
 
     /**
@@ -22,6 +29,17 @@ readonly class TeamsViewService
      */
     public function fetchAll(): array
     {
-        return $this->teamRepository->all();
+        $teams = $this->teamRepository->all();
+        $result = [];
+        if($teams->isEmpty())
+        {
+            return $result;
+        }
+
+        foreach ($teams as $team) {
+            $result[$team->id] = new TeamData($team->toArray());
+        }
+
+        return $result;
     }
 }

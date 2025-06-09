@@ -40,10 +40,10 @@
                 @foreach($teams as $team)
                     <div class="mx-auto bg-white rounded-lg shadow-md overflow-hidden mb-2">
                         <div class="p-4">
-                            <h2 class="text-xl font-semibold mb-2">{{$team->getNickname()}} ({{ $team->getName() }})</h2>
+                            <h2 class="text-xl font-semibold mb-2">{{$team->nickname}} ({{ $team->name }})</h2>
                             <div class="flex space-x-4">
                                 <!-- Просмотр -->
-                                <a href="{{ route('teams.show', $team->getId()) }}"
+                                <a href="{{ route('teams.show', $team->id) }}"
                                    class="text-blue-500 hover:text-blue-700"
                                    title="Просмотр">
                                     <!-- Иконка глаз (View) -->
@@ -57,7 +57,7 @@
                                 </a>
 
                                 <!-- Редактирование -->
-                                <a href="{{ route('teams.edit', $team->getId()) }}"
+                                <a href="{{ route('teams.edit', $team->id) }}"
                                    class="text-green-500 hover:text-green-700"
                                    title="Редактировать">
                                     <!-- Иконка карандаша (Edit) -->
@@ -71,7 +71,7 @@
                                 </a>
 
                                 <!-- Удаление -->
-                                <form action="{{ route('teams.destroy', $team->getId()) }}" method="POST"
+                                <form action="{{ route('teams.destroy', $team->id) }}" method="POST"
                                       onsubmit="return confirm('Вы уверены, что хотите удалить?');">
                                     @csrf
                                     @method('DELETE')
