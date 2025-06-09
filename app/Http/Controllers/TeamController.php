@@ -66,6 +66,11 @@ class TeamController extends Controller
     ): View
     {
         $data['team'] = $teamsViewService->fetchOne($id);
+
+        if (is_null($data['team'])) {
+            abort(404);
+        }
+
         return view('teams.show', $data);
     }
 
@@ -78,6 +83,11 @@ class TeamController extends Controller
     ): View
     {
         $data['team'] = $teamsViewService->fetchOne($id);
+
+        if (is_null($data['team'])) {
+            abort(404);
+        }
+
         return view('teams.edit', $data);
     }
 
@@ -88,24 +98,22 @@ class TeamController extends Controller
         int $id,
         TeamRequest $request,
         TeamUpdateService $teamUpdateService,
-        TeamsViewService $teamsViewService,
     ): RedirectResponse
     {
         try {
             $data = $request->validated();
             $data['id'] = $id;
+
             if ($request->hasFile('file')) {
                 $path = $request->file('file')->store('teams', 'public');
                 $data['logo_path'] = $path;
-
-                $oldLogoPath = $teamsViewService->fetchOne($id)->getLogoPath();
-                if($oldLogoPath && Storage::disk('public'))
-                {
-                    Storage::disk('public')->delete($oldLogoPath);
-                }
             }
 
-            $teamUpdateService->handle(new TeamData($data));
+            $oldLogoPath = $teamUpdateService->handle(new TeamData($data));
+            if($oldLogoPath && Storage::disk('public'))
+            {
+                Storage::disk('public')->delete($oldLogoPath);
+            }
 
         } catch (Throwable $e) {
             return  redirect()->back()->withErrors(['error' => $e->getMessage()])->withInput();

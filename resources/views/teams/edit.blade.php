@@ -16,7 +16,7 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="flex items-center justify-center">
-                    <form method="post" action="{{ route('teams.update', ['team' => $team->getId()]) }}"
+                    <form method="post" action="{{ route('teams.update', ['team' => $team->id]) }}"
                           class="p-8 rounded w-1/2" enctype="multipart/form-data">
                         @csrf
                         @method('PUT')

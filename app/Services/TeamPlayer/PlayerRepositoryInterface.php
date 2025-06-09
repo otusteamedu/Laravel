@@ -2,11 +2,10 @@
 
 namespace App\Services\TeamPlayer;
 
+use Illuminate\Database\Eloquent\Collection;
+
 interface PlayerRepositoryInterface
 {
-    /**
-     * @return array<int, PlayerData>
-     */
-    public function allByTeam(int $teamId): array;
+    public function allByTeam(int $teamId): Collection;
 
 }

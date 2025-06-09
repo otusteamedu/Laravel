@@ -2,6 +2,8 @@
 
 namespace App\Services\Team;
 
+use App\Models\Team;
+
 readonly class TeamCreateService
 {
 
@@ -13,6 +15,6 @@ readonly class TeamCreateService
 
     public function handle(TeamData $teamData): void
     {
-        $this->teamRepository->add($teamData);
+        $this->teamRepository->add(new Team($teamData->toArray()));
     }
 }

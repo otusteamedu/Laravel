@@ -3,65 +3,34 @@
 namespace App\Repositories;
 
 use App\Models\Team;
-use App\Services\Team\TeamData;
-use App\Services\Team\TeamHasPlayersException;
 use App\Services\Team\TeamRepositoryInterface;
-use App\Services\TeamPlayer\PlayerRepositoryInterface;
+use Illuminate\Database\Eloquent\Collection;
 
 class TeamRepository implements TeamRepositoryInterface
 {
-    public function add(TeamData $teamData): int
+    public function add(Team $team):void
     {
-        $team = Team::query()->create($teamData->toArray());
-        return $team->id;
+        $team->save();
     }
 
-    /**
-     * @return array<int, TeamData>
-     */
-    public function all(): array
+    public function all(): Collection
     {
-        $teams = Team::all();
-        $result = [];
+        return Team::all();
 
-        if($teams->isEmpty())
-        {
-            return $result;
-        }
-
-        foreach ($teams as $team) {
-            $result[$team->id] = new TeamData($team->toArray());
-        }
-
-        return $result;
     }
 
-    public function one(int $id): TeamData
+    public function one(int $id): ?Team
     {
-        $team = Team::query()->findOrFail($id);
-        return new TeamData($team->toArray());
+        return Team::query()->find($id);
     }
 
-    /**
-     * @throws TeamHasPlayersException
-     */
-    public function destroy(int $id, PlayerRepositoryInterface $playerRepository): void
+    public function destroy(Team $team): void
     {
-        $team = Team::query()->findOrFail($id);
-        $teamPlayers = $playerRepository->allByTeam($team->id);
-
-        if(!empty($teamPlayers))
-        {
-            throw new TeamHasPlayersException('Команду нельзя удалить, сначала отвяжите игроков');
-        }
-
         $team->delete();
-
     }
 
-    public function update(TeamData $data): void
+    public function update($team): void
     {
-        $team = Team::query()->findOrFail($data->getId());
-        $team->update($data->toArray());
+        $team->save();
     }
 }

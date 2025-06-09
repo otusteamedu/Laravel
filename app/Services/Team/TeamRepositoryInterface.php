@@ -2,20 +2,19 @@
 
 namespace App\Services\Team;
 
-use App\Services\TeamPlayer\PlayerRepositoryInterface;
+use App\Models\Team;
+use Illuminate\Database\Eloquent\Collection;
 
 interface TeamRepositoryInterface
 {
-    /**
-     * @return array<int, TeamData>
-     */
-    public function all(): array;
 
-    public function one(int $id): TeamData;
+    public function all(): Collection;
 
-    public function add(TeamData $teamData): int;
+    public function one(int $id): ?Team;
 
-    public function destroy(int $id, PlayerRepositoryInterface $playerRepository): void;
+    public function add(Team $team): void;
 
-    public function update(TeamData $data);
+    public function destroy(Team $team): void;
+
+    public function update(Team $team);
 }
