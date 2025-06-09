@@ -2,9 +2,7 @@
 
 namespace App\Modules\ISS\src\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Modules\ISS\src\Models\BaseModel;
 use App\Modules\ISS\src\Models\ExamQuestion;
 use App\Modules\ISS\database\factories\ExamQuestionTypeFactory;
 
@@ -17,11 +15,8 @@ use App\Modules\ISS\database\factories\ExamQuestionTypeFactory;
  * @property \datetime $deleted_at
  */
 
-class ExamQuestionType extends Model
+class ExamQuestionType extends BaseModel
 {
-    use SoftDeletes;
-    use HasFactory;
-
     protected $fillable = ['name'];
 
     /**

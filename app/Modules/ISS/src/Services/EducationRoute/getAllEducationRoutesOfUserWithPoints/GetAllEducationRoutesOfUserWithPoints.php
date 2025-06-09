@@ -59,7 +59,7 @@ class GetAllEducationRoutesOfUserWithPoints
             if (is_numeric($resultElementId)) {
                 $pointsCount = count($result[$resultElementId]['points']);
 
-                $result[$resultElementId]['points'][strval($pointsCount)] = [ //strval($pointsCount) $point['real_route_point_id']
+                $result[$resultElementId]['points'][strval($pointsCount)] = [
                     'pass' => $point['pass'],
                     'examDate' => $point['exam_date'],
                     'realRoutePointId' => $point['real_route_point_id'],

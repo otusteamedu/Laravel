@@ -9,6 +9,37 @@
             <x-input-error :messages="$errors->get('name')" class="mt-2" />
         </div>
 
+        <!-- Second Name -->
+        <div>
+            <x-input-label for="secondName" :value="__('Second Name')" />
+            <x-text-input id="secondName" class="block mt-1 w-full" type="text" name="secondName" :value="old('secondName')" required autofocus autocomplete="secondName" />
+            <x-input-error :messages="$errors->get('secondName')" class="mt-2" />
+        </div>
+
+        <!-- Last Name -->
+        <div>
+            <x-input-label for="lastName" :value="__('Last Name')" />
+            <x-text-input id="lastName" class="block mt-1 w-full" type="text" name="lastName" :value="old('lastName')" required autofocus autocomplete="lastName" />
+            <x-input-error :messages="$errors->get('lastName')" class="mt-2" />
+        </div>
+
+        <!-- Organization -->
+        <div>
+            <x-input-label for="organization" :value="__('Organization')" />
+            <x-text-input id="organization" class="block mt-1 w-full" type="text" name="organization" :value="old('organization')" required autofocus autocomplete="organization" />
+            <x-input-error :messages="$errors->get('organization')" class="mt-2" />
+        </div>
+
+        <!-- User role -->
+        <div>
+            <x-input-label for="userRole" :value="__('User role')" />
+            <x-text-input id="userRole" class="block mt-1 w-full" type="text" name="userRole" :value="old('userRole')"
+                          required autofocus autocomplete="userRole"
+                          placeholder="Role only among: admin, emp"
+            />
+            <x-input-error :messages="$errors->get('userRole')" class="mt-2" />
+        </div>
+
         <!-- Email Address -->
         <div class="mt-4">
             <x-input-label for="email" :value="__('Email')" />

@@ -30,6 +30,7 @@ class GetExamQuestions
             }
         } catch (\Error | \Exception $e) {
             $questions = [];
+            //запись в лог
         }
 
         return array_map(

@@ -24,13 +24,15 @@ class UserDataFactory extends Factory
         return [
             //'user_id' => User::factory(),
             'role_id' => UserRole::factory(),
-            'user_iss_login' => fake()->unique()->word(), //должно быть уникальное сочетание полей (пока временное решение)
-            'user_iss_password' => fake()->password(5, 20), //должно быть уникальное сочетание полей (пока временное решение)
+            //'user_iss_login' => fake()->unique()->word(), //должно быть уникальное сочетание полей (пока временное решение)
+            //'user_iss_password' => fake()->password(5, 20), //должно быть уникальное сочетание полей (пока временное решение)
 
+            'user_iss_avatar_path' => fake()->imageUrl(),
             'organization' => fake()->company(),
             'name' => fake()->name(),
             'second_name' => fake()->name(),
             'last_name' => fake()->lastName(),
+            'web_token' => fake()->word()
         ];
     }
 }

@@ -17,12 +17,12 @@ use App\Modules\ISS\src\Services\EducationRoutePoint\getFilesOfRealPointData\Inp
 class IssRoutePointController extends Controller
 {
     /**@var int $userId код пользователя из сессии */
-    public int $userId;
+    //public int $userId;
 
-    public function __construct()
-    {
-        $this->userId = session('userId');
-    }
+    //public function __construct()
+    //{
+    //    $this->userId = session()->get('issUser')->issUserId;
+    //}
 
     /**
      * Контроллер страницы для точки обучающего маршрута
@@ -30,22 +30,24 @@ class IssRoutePointController extends Controller
      * @param IsExamComplicated $isExamComplicated
      * @param GetExamQuestions $getExamQuestions
      * @param GetFilesOfRealPointData $getFilesOfRealPointData
+     * @param int $issUserId
      * @param int $routeId
      * @param int $pointId
      * @return View
      */
     public function educationRoutePoint(
-        GetRealPointMainData $getRealPointMainData,
-        IsExamComplicated $isExamComplicated,
-        GetExamQuestions $getExamQuestions,
+        GetRealPointMainData    $getRealPointMainData,
+        IsExamComplicated       $isExamComplicated,
+        GetExamQuestions        $getExamQuestions,
         GetFilesOfRealPointData $getFilesOfRealPointData,
-        $routeId,
-        $pointId
+        int                     $issUserId,
+        int                     $routeId,
+        int                     $pointId
     ): View
     {
         //получаем данные из сервисов
         $pointMainData = $getRealPointMainData->getRealPointMainData(
-            new pointMainDataDTO(id: $pointId, userDataId: $this->userId)
+            new pointMainDataDTO(id: $pointId, userDataId: $issUserId)
         );
 
         if (is_null($pointMainData) || $pointMainData->routePointId != $pointId) {
@@ -83,7 +85,7 @@ class IssRoutePointController extends Controller
 
         //формируем данные для страницы
         $pointData = [
-            'userId' => $this->userId,
+            'userId' => $issUserId,
 
             'routeId' => $routeId,
             'pointId' => $pointId,
@@ -92,7 +94,7 @@ class IssRoutePointController extends Controller
             'examResult' => $pointMainData->examResult,
             'examDate' => Carbon::parse($pointMainData->examDate)->format('d-m-Y'),
 
-            'isExamComplicated' => $isComplicated,
+            'isExamComplicated' => $isComplicated->isComplicated,
             'questions' => $questions,
 
             'textFileTypes' => config('iss.ALLOWED_EDUCATION_TEXT_MATERIAL_TYPES'),

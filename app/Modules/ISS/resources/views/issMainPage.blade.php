@@ -2,7 +2,13 @@
 
 @push('mainStyles')
     <!-- <link type="text/css" rel="stylesheet" href="{{--asset('/css/iss/issMainPageStyle.css')--}}"> -->
+    <!-- <link type="text/css" rel="stylesheet" href="{{--asset('/css/iss/issSharedStyle.css')--}}"> -->
+    @vite(['app/Modules/ISS/public/css/issSharedStyle.css'])
     @vite(['app/Modules/ISS/public/css/issMainPageStyle.css'])
+@endpush
+
+@push('mainScripts')
+    <script src="{{asset('js/iss/issMainPage.js')}}"></script>
 @endpush
 
 @section('mainMenu')
@@ -16,36 +22,22 @@
         <h2>{{__('iss::issMainPage.issWelcome')}}</h2>
         <p>{{__('iss::issMainPage.description')}}</p>
     </div>
-    <div id="loginForm">
-        <form action="" method="POST"> <!-- КОГДА СДЕЛАЮ КОНТРОЛЛЕР ДОБАВИТЬ МАРШРУТ -->
-            @csrf
-            <div class="mb-3">
-                <label class="form-label myFormCorrectionLabel" for="idLogin">{{__('iss::issMainPage.loginLabel')}}</label>
-                <input type="text" id="idLogin" class="form-control myFormCorrectionInput"
-                       name="login" placeholder="{{__('iss::issMainPage.loginPlaceholder')}}"
-                       value="{{old('login')}}" />
-                <div class="errorMsg">
-                    @error('login') {{__($message)}}  @enderror
-                </div>
-            </div>
-            <div class="mb-3">
-                <label class="form-label myFormCorrectionLabel" for="idLogin">{{__('iss::issMainPage.passwordLabel')}}</label>
-                <input type="text" id="idPassword" class="form-control myFormCorrectionInput"
-                       name="password" placeholder="{{__('iss::issMainPage.passwordPlaceholder')}}"
-                       value="{{old('password')}}" />
-                <div class="errorMsg">
-                    @error('password') {{__($message)}}  @enderror
-                </div>
-            </div>
-            <div class="formButtonWrap">
-                <input type="reset" class="btn btn-primary myFormCorrectionButtons" value="{{__('iss::issMainPage.reset')}}"/>
-                <input type="submit" class="btn btn-primary myFormCorrectionButtons" value="{{__('iss::issMainPage.submit')}}"/>
-            </div>
-        </form>
+
+    <div id="issMainBlock">
+        @issGuest <!-- Если не зарегистрирован в ИОС -->
+        <div id="authAlert">
+            <h2>{{__('iss::issMainPage.alertNeedAuthorization')}}</h2>
+        </div>
+        @endissGuest
+
+        @issAuth <!-- для авторизованных пользователей ИОС -->
+            <h4><a href="{{route('issUser', ['issUserId' => $issUser->issUserId])}}">{{__('iss::issMainPage.refTuISSUserPage')}}</a></h4>
+            <h4><a href="{{route('issAdmin')}}">{{__('iss::issMainPage.refTuISSAdminPage')}}</a></h4>
+        @endissAuth
+
+        <div id="refToMainISSPage">
+            @include('iss::blocks.refToMainApp')
+        </div>
     </div>
-    <div id="message"></div>
-
-    </br><p><a href="{{route('main')}}">{{__('iss::issMainPage.refToMain')}}</a></p>
-    </br><p><a href="{{route('issUser', ['id' => 12345])}}">ВРЕМЕННАЯ ССЫЛКА НА СТР ПОЛЬЗОВАТЕЛЯ (пока нет контроллера авторизации)</a></p>
-
+    <div id="message">@isset($msg){{$msg}}@endisset</div>
 @endsection('content')

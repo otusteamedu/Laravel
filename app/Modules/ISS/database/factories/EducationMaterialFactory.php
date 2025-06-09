@@ -22,6 +22,7 @@ class EducationMaterialFactory extends Factory
     public function definition(): array
     {
         return [
+            'title' => fake()->unique()->word(),
             'material_type_id' => EducationMaterialType::factory(),
             'point_id' => EducationRoutePoint::factory(),
             'file_path' => fake()->unique()->url(),

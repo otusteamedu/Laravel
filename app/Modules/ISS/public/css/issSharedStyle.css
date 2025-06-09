@@ -1,0 +1,14 @@
+#refBack { min-width: 330px; }
+#refBack a { font-size: 2vw; }
+#refBack p { margin-bottom: 1vw; margin-top: 1vw; }
+
+@media screen and (max-width: 800px)  /* НАСТРОЙКА САЙТА для телефонов */
+{
+    #refBack a { font-size: 2.5vw; }
+    #refBack p { margin-bottom: 0.5vw; }
+}
+
+@media screen and (max-width: 350px)  /* НАСТРОЙКА САЙТА для телефонов */
+{
+    #refBack a { font-size: 10px; }
+}

@@ -7,10 +7,10 @@ use App\Modules\ISS\src\Services\issUser\loadUserDataFromMainApp\OrganizationDTO
 use App\Modules\ISS\src\Services\issUser\loadUserDataFromMainApp\FioDTO;
 
 /**
- * @var OrganizationDTO $organization данные по таблице организации пользователя из основного приложения
- * @var FioDTO $fio данные по таблице ФИО пользователя из основного приложения
- * @var int $issUserId код пользователя ИОС
- * @var int $user_id код пользователя в основном приложении
+ * @var OrganizationDTO $organization назв-я таблицы и полей для получ-я данных по организации пользов-я из основного приложения
+ * @var FioDTO $fio                   назв-я таблицы и полей для получ-я данных по ФИО пользователя из основного приложения
+ * @var int $issUserId                код пользователя ИОС
+ * @var array $returnedFields         массив полей, которые хотим получить из основного проложения
  */
 
 class InputDTO
@@ -19,7 +19,7 @@ class InputDTO
         public OrganizationDTO $organization,
         public FioDTO          $fio,
         public int             $issUserId,
-        public int             $user_id
+        public array           $returnedFields = ['*']
     )
     {
     }

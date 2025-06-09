@@ -25,9 +25,9 @@ class IsExamComplicated
         $result = $this->repository->complicatedQuestionsCount(['id' => $inputData->id]);
 
         if ($result['countOfComplicatedQuestions'] > 0) {
-            return new OutputDTO(isExamComplicated: true);
+            return new OutputDTO(isComplicated: true);
         } else {
-            return new OutputDTO(isExamComplicated: false);
+            return new OutputDTO(isComplicated: false);
         }
     }
 }

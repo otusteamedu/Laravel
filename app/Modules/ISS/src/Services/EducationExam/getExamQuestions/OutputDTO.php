@@ -6,11 +6,11 @@ namespace App\Modules\ISS\src\Services\EducationExam\getExamQuestions;
 use App\Modules\ISS\src\Services\EducationExam\getExamQuestions\AnswerDTO;
 
 /**
- * @var int $rerpId код реальной точки обучающего маршрута
- * @var int $erpId код точки обучающего маршрута из справочника
- * @var int $questionId код вопроса для контрольного теста (для этой точки обучающего маршрута)
- * @var string $questionName название вопроса для контрольного теста (для этой точки обучающего маршрута)
- * @var string $questionText текст вопроса для контрольного теста (для этой точки обучающего маршрута)
+ * @var int $rerpId               код реальной точки обучающего маршрута
+ * @var int $erpId                код точки обучающего маршрута из справочника
+ * @var int $questionId           код вопроса для контрольного теста (для этой точки обучающего маршрута)
+ * @var string $questionName      название вопроса для контрольного теста (для этой точки обучающего маршрута)
+ * @var string $questionText      текст вопроса для контрольного теста (для этой точки обучающего маршрута)
  * @var array<AnswerDTO> $answers ответы на вопрос контрольного теста
  */
 

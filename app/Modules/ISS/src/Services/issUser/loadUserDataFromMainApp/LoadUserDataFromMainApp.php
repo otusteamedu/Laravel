@@ -24,31 +24,48 @@ class LoadUserDataFromMainApp
     {
         $result = null;
 
-        $issUser = $this->repository->getUserData($inputData->issUserId);
+        try {
+            $issUser = $this->repository->getUserData(
+                [
+                    'field_name'=> 'id',
+                    'field_value' => $inputData->issUserId,
+                    'returned_fields' => $inputData->returnedFields
+                ]
+            );
+            $mainAppUserId = $issUser['user_id'];
+        } catch (\Error | \Exception $e) {
+            $issUser = [];
+            //запись в лог
+        }
 
-        if (!empty($issUser) && $inputData->user_id == $issUser['user_id']) {
+
+        if (!empty($issUser) && !is_null($issUser['user_id'])) {
             //загружаем данные из основного приложения
             try {
-                $userFio = $this->repository->getUserFioFromMainApp(
+                $userOrganization = $this->repository->getUserDataFromMainApp(
                     [
-                        'fio' => [
-                            'table_name' => $inputData->fio->tableName,
-                            'field_name' => $inputData->fio->fieldName,
-                            'field_second_name' => $inputData->fio->fieldSecondName,
-                            'field_last_name' => $inputData->fio->fieldLastName
+                        'table_name' => $inputData->organization->tableName,
+                        'fields' => [
+                            $inputData->organization->fieldOrganizationName
                         ],
-                        'user_id' => $inputData->user_id,
+                        'field_code_name' => $inputData->organization->fieldCodeName,
+                        'user_id' => $mainAppUserId,
                     ]
                 );
-                $userOrganization = $this->repository->getUserOrganizationFromMainApp(
+
+                $userFio = $this->repository->getUserDataFromMainApp(
                     [
-                        'organization' => [
-                            'table_name' => $inputData->organization->tableName,
-                            'field_organization_name' => $inputData->organization->fieldOrganizationName,
-                            'organization_code' => $inputData->organization->organizationCode
-                        ]
+                        'table_name' => $inputData->fio->tableName,
+                        'fields' => [
+                            $inputData->fio->fieldName,
+                            $inputData->fio->fieldSecondName,
+                            $inputData->fio->fieldLastName
+                            ],
+                        'field_code_name' => $inputData->fio->fieldCodeName,
+                        'user_id' => $mainAppUserId,
                     ]
                 );
+
             } catch (\Error | \Exception $e) {
                 $userFio = [];
                 $userOrganization = [];
@@ -58,24 +75,32 @@ class LoadUserDataFromMainApp
 
             //записываем данные из основного приложения в ИОС
             if (!empty($userFio) && !empty($userOrganization)) {
-                $updateResult = $this->repository->updateIssUserByMainAppData(
-                    [
-                        'iss_user_id' => $inputData->issUserId,
-                        'name' => $userFio[$inputData->fio->fieldName],
-                        'last_name' => $userFio[$inputData->fio->fieldLastName],
-                        'second_name' => $userFio[$inputData->fio->fieldSecondName],
-                        'organization' => $userOrganization[$inputData->organization->fieldOrganizationName]
-                    ]
-                );
+                try {
+                    $updateResult = $this->repository->updateIssUserByMainAppData(
+                        [
+                            'iss_user_id' => $inputData->issUserId,
+                            'name' => $userFio[$inputData->fio->fieldName],
+                            'last_name' => $userFio[$inputData->fio->fieldLastName],
+                            'second_name' => $userFio[$inputData->fio->fieldSecondName],
+                            'organization' => $userOrganization[$inputData->organization->fieldOrganizationName]
+                        ]
+                    );
+                } catch (\Error | \Exception $e) {
+                    $updateResult = false;
+                    //запись в лог
+                }
 
-                if (!$updateResult) {
+                if ($updateResult !== true) {
                     $result = 'error updating iss user by main app data';
+                    //запись в лог
                 }
             } else {
                 $result = 'error loading user data from main application';
+                //запись в лог
             }
         } else {
             $result = 'iss user not found';
+            //запись в лог
         }
 
         if (is_null($result)) {

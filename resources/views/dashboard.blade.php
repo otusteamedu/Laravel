@@ -14,4 +14,29 @@
             </div>
         </div>
     </div>
+
+    <table class="table">
+        <tr>
+            <th scope="col">{{__('user id')}}</th>
+            <th scope="col">{{__('last name')}}</th>
+            <th scope="col">{{__('name')}}</th>
+            <th scope="col">{{__('second  name')}}</th>
+            <th scope="col">{{__('organization')}}</th>
+            <th scope="col">{{__('role')}}</th>
+            <th scope="col">{{__('Action')}}</a></th>
+        </tr>
+        <tbody>
+    @foreach($usersToShow as $user)
+        <tr>
+            <td>{{$user->id}}</td>
+            <td>{{$user->lastName}}</td>
+            <td>{{$user->name}}</td>
+            <td>{{$user->secondName}}</td>
+            <td>{{$user->organization}}</td>
+            <td>{{$user->userRole}}</td>
+            <td><a href="{{route('editUserOfMainUp', ['userForEditId' => $user->id])}}">{{__('Edit')}}</td>
+        </tr>
+    @endforeach
+        </tbody>
+    </table>
 </x-app-layout>

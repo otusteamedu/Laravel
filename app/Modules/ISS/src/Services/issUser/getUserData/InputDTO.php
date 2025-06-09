@@ -5,13 +5,17 @@ declare(strict_types=1);
 namespace App\Modules\ISS\src\Services\issUser\getUserData;
 
 /**
- * @var int $issUserId код пользователя ИОС
+ * @var string $fieldName критерий поиска пользователя ИОС
+ * @var string $fieldValue значение критерия посика
+ * @var array $returnedFields имена полей, которые хотим получить
  */
 
 class InputDTO
 {
     public function __construct(
-        public int $issUserId
+        public string $fieldName,
+        public string $fieldValue,
+        public array $returnedFields = ['*']
     )
     {
     }

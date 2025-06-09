@@ -10,6 +10,7 @@ use App\Modules\ISS\database\factories\EducationMaterialFactory;
 /**
  * Поля модели:
  * @property integer $id -- код учебного материала
+ * @property string $title -- название учебного материала
  * @property integer $material_type_id -- ссылка на тип учебного материала
  * @property string $file_path -- путь к файлу учебного материала
  * @property integer $point_id --ссылка на точку обучающего маршрута (из справочника)
@@ -20,7 +21,7 @@ use App\Modules\ISS\database\factories\EducationMaterialFactory;
 
 class EducationMaterial extends BaseModel
 {
-    protected $fillable = ['material_type_id', 'file_path', 'point_id'];
+    protected $fillable = ['material_type_id', 'file_path', 'point_id', 'title'];
 
     /**
      * Переопределил метод трейта чтобы расположить фабрику в произвольной папке

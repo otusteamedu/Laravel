@@ -13,7 +13,11 @@
 9) Ответы к вопросам (название ответа, тескт ответа, ссылка на вопрос)
 
 Создание миграций
-./vendor/bin/sail artisan make:migration _table_name_ --path=app/Modules/ISS/database/migrations
+./vendor/bin/sail artisan make:migration [create\alter\]_table_name_[table] --path=app/Modules/ISS/database/migrations
+Создание фабрик
+./vendor/bin/sail artisan make:factory ../../app/Modules/ISS/database/factories/EducationRouteFactory
+Создание сидера
+./vendor/bin/sail make:seeder /path/to/seeder/ModelNameSeeder.php
 
 Связи
 Тип учебного материала (1) -- (*) Учебный материал

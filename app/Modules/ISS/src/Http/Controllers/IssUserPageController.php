@@ -23,31 +23,34 @@ class IssUserPageController extends Controller
      * @return View
      */
     public function userAccount(
-        GetUserData $getUserData,
+        GetUserData                           $getUserData,
         GetAllEducationRoutesOfUserWithPoints $getAllEducationRoutesOfUserWithPoints,
-        GetRouteReadyPercentForUsersOfFirm $getRouteReadyPercentForUsersOfFirm,
-        int $issUserId
+        GetRouteReadyPercentForUsersOfFirm    $getRouteReadyPercentForUsersOfFirm,
+        int                                   $issUserId
     ): View
     {
-        /** @TODO пока нет авторизации здесь вручную ставлю код пользователя в сессию, потом переделаю как надо */
-        request()->session()->remove('userId');
-        session(['userId' => $issUserId]);
-
         //получаем данные из сервисов
-        $issUserParameters = $getUserData->getUserData(new userDataDTO(issUserId: $issUserId));
+        //основные данные пользователя
+        $issUserParameters = $getUserData->getUserData(new userDataDTO(fieldName: 'id', fieldValue: $issUserId));
 
         if (is_null($issUserParameters)) {
             abort(404, 'User not found');
         }
 
+        //обучающие маршруты пользователя
         $issUserRoutes = $getAllEducationRoutesOfUserWithPoints->getAllEducationRoutesOfUserWithPoints(
             new userRouteDTO(id: $issUserId)
         );
-        /** @TODO вызов этого сервиса надо обернуть в гейт -- если менеджер - разрешен, если сотрудник - нет */
-        /** @TODO сейчас вывод диаграммы запрещен для сотрудника (в шаблоне), но данные передаются во view - это плохо */
-        $diagramsData = $getRouteReadyPercentForUsersOfFirm->getRouteReadyPercentForUsersOfFirm(
-            new diagramDTO(id: $issUserId, isIssAdmin: $issUserParameters->roleName == 'admin' ? true : false)
-        );
+
+        //данные для диаграммы о степени прохождения обучающих маршрутов для менеджера
+        if ($issUserParameters->roleName == config('iss.ROLE_MANAGER')
+            || $issUserParameters->roleName == config('iss.ROLE_ADMIN')) {
+            $diagramsData = $getRouteReadyPercentForUsersOfFirm->getRouteReadyPercentForUsersOfFirm(
+                new diagramDTO(id: $issUserId, isIssAdmin: false)
+            );
+        } else {
+            $diagramsData = [];
+        }
 
 
         //переводим в требуемый вид (там где необходимо)
@@ -92,13 +95,14 @@ class IssUserPageController extends Controller
         return view(
             'iss::issUserPage',
             [
+                'issUserId' => $issUserId,
                 'userRole' => $issUserParameters->roleName,
                 'userParameters' => [
                     'userAvatar' => $issUserParameters->avatarFilePath,
                     'Organization' => $issUserParameters->organization,
                     'Name' => $issUserParameters->name,
-                    'SecondName' => $issUserParameters->second_name,
-                    'LastName' => $issUserParameters->last_name,
+                    'SecondName' => $issUserParameters->secondName,
+                    'LastName' => $issUserParameters->lastName,
                 ],
                 'routes' => $routes,
                 'diagrams' => $diagrams

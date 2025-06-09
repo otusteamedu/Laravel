@@ -24,7 +24,32 @@
         <img src="{{asset('/images/mainPageDecor.jpg')}}" alt="{{__('mainAppPage.decorImage')}}" />
     </div>
 
-    <div id="refToISS">
+    @guest
+    <div class="refOnMainPage">
+        <h3><a class="link-underline-info" href="{{route('register')}}">{{__('mainAppPage.refToMainAppRegister')}}</a></h3>
+    </div>
+    <div class="refOnMainPage">
+        <h3><a class="link-underline-info" href="{{route('login')}}">{{__('mainAppPage.refToMainAppLogin')}}</a></h3>
+    </div>
+    @endguest
+
+    @auth
+    <div class="refOnMainPage">
+        <h3><a class="link-underline-info" href="{{route('dashboard')}}">{{__('mainAppPage.refToMainAppDashboard')}}</a></h3>
+    </div>
+    <div class="refOnMainPage">
+        <h3><a class="link-underline-info" href="{{route('profile.edit')}}">{{__('mainAppPage.refToMainAppUserProfile')}}</a></h3>
+    </div>
+    <div class="refOnMainPage">
         <h3><a class="link-underline-info" href="{{route('iss')}}">{{__('mainAppPage.refToISS')}}</a></h3>
     </div>
+
+    <div class="refOnMainPage"> <!-- ПРИМЕР ТОЛЬКО ДЛЯ ДЗ №6 !!! -->
+        <h3>
+            <a class="link-underline-info" href="{{route('editUserOfMainUp', ['userForEditId' => $mainAppUserId])}}">
+                {{__('mainAppPage.ExampleHW6')}}
+            </a>
+        </h3>
+    </div>
+    @endauth
 @endsection('content')

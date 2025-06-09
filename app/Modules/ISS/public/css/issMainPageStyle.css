@@ -10,15 +10,18 @@
     font-size: 1em;
 }
 
-#welcomeISS /* блок содержания: приветствие */
+#welcomeISS, #issMainBlock /* блок содержания: приветствие и основной блок страницы */
 {
     text-align: center;
     width: 70%;
     min-width: 330px;
     margin: auto auto;
 }
+#issMainBlock { margin-top: 50px; }
+#refToMainISSPage { margin-top: 30px; }
 #welcomeISS h2 { font-size: 2.5vw; }
 #welcomeISS p { font-size: 1.5vw; }
+#issMainBlock h4 { font-size: 2.0vw; }
 
 #loginForm /* блок содержания: форма для авторизации */
 {
@@ -46,6 +49,13 @@
     justify-content: center;
 }
 
+/* Блок предупреждение что требуется авторизация в главном приложении */
+#authAlert
+{
+    padding-top: 50px;
+    color: red;
+}
+
 .hide { display: none; }
 .show { display: block; }
 
@@ -58,6 +68,7 @@
 {
     #welcomeISS h2 { font-size: 30px; }
     #welcomeISS p { font-size: 20px; }
+    #issMainBlock h4 { font-size: 20px; }
 
     #loginForm { width: 70vw; }
 
@@ -71,6 +82,7 @@
 {
     #welcomeISS h2 { font-size: 30px; }
     #welcomeISS p { font-size: 20px; }
+    #issMainBlock h4 { font-size: 20px; }
 
     .myFormCorrectionLabel { font-size: 20px; }
     .myFormCorrectionInput { font-size: 20px; }

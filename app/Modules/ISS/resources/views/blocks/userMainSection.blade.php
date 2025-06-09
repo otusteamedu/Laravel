@@ -39,7 +39,12 @@
                 <div class="routeChain">
                     @isset($route['points'])
                         @foreach($route['points'] as $pointKey => $pointValue)
-                            <a href="{{route('issEducationRoutePoint', ['routeId' => $route['routeId'], 'pointId' => $pointValue['realRoutePointId']])}}">
+                            <a href="{{route('issEducationRoutePoint',
+                                      [
+                                          'routeId' => $route['routeId'],
+                                          'pointId' => $pointValue['realRoutePointId'],
+                                          'issUserId' => $issUserId
+                                      ])}}">
                                 <div class="cover @isset($pointValue['pass']){{$pointValue['pass']}}@else wait @endisset">
                                     {{$pointKey}}
                                     <div class="tooltip hide">

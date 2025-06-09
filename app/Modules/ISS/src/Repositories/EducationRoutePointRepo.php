@@ -15,7 +15,8 @@ class EducationRoutePointRepo implements EducationRoutePointRepoInterface
      *                  $inputData['id'],
      *              код пользо-я ИОС
      *                  $inputData['user_data_id']
-     * @return array ['route_point_id'=>, 'exam_date'=>, 'route_name'=>, 'point_name'=>, 'last_passed_exam_date'=> ]
+     * @return array
+     *         ['route_point_id'=>, 'exam_date'=>, 'route_name'=>, 'point_name'=>, 'last_passed_exam_date'=>, 'exam_result'=>]
      */
     public function getRealPointMainData(array $inputData): array
     {
@@ -31,6 +32,7 @@ class EducationRoutePointRepo implements EducationRoutePointRepoInterface
         //    erp.name as point_name,
         //                       /* reru.last_pass_point_id,
         //                       rerp2.position, */
+        //    rerp2.exam_date as last_passed_exam_date
         //    case when rerp2.position is null ||  rerp.position > rerp2.position
         //             then case when rerp.exam_date >= current_date
         //                           then 'wait'

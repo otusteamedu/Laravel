@@ -16,6 +16,7 @@ return new class extends Migration
     {
         Schema::create('education_materials', function (Blueprint $table) {
             $table->id();
+            $table->string('title')->unique();
             $table->unsignedBigInteger('material_type_id');
             $table->foreign('material_type_id')->references('id')->on('education_material_types');
             $table->string('file_path', 500)->unique();
