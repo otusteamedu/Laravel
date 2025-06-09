@@ -8,14 +8,14 @@ use App\Modules\ISS\src\Http\Controllers\IssAdminController;
 use App\Modules\ISS\src\Http\Controllers\IssRoutePointController;
 
 Route::prefix('/iss')
-    //->middleware(['web', 'auth'])
+    ->middleware(['web', 'auth'])
     ->group(function () {
 
     //главная страница модуля
     Route::get('/', [IssStartPageController::class, 'index'])
         ->name('iss');
 
-    //Route::middleware('issAuthUser')->group(function () {
+
         //страница пользователя
         Route::get('/user/{issUserId}', [IssUserPageController::class, 'userAccount'])
             ->name('issUser');
@@ -25,10 +25,10 @@ Route::prefix('/iss')
             '/educationRoutePoint/{issUserId}/{routeId}/{pointId}',
             [IssRoutePointController::class, 'educationRoutePoint']
         )->name('issEducationRoutePoint');
-    //});
+
 
     //административный интерфейс
-    //Route::middleware('issAuthAdmin')->group(function () {
+
         //страница администратора
         Route::get('/admin', [IssAdminController::class, 'adminPanel'])->name('issAdmin');
         //добавление нового пользователя ИОС
@@ -43,7 +43,7 @@ Route::prefix('/iss')
 
         //инструмент для управления маршрутами пользователей ИОС
         //Route::get('/admin/router', [IssAdminController::class, 'routerShow'])->name('issAdminRouterShow');
-    //});
+
 
     //выход из ИОС
     Route::get('/issExit', [IssStartPageController::class, 'issExit'])->name('issExit');

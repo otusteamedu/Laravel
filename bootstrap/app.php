@@ -13,7 +13,8 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
-        
+
+
         $middleware->redirectUsersTo(fn (Request $request) => route('profile.edit'));
         //$middleware->redirectUsersTo(function (Request $request) {return redirect()->intended(route('profile.edit'));} );
     })
