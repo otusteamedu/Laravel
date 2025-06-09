@@ -6,4 +6,6 @@ use Illuminate\Support\Facades\Route;
 //     return view('welcome');
 // });
 
+// first commit
+
 Route::resource('blogs', \App\Http\Controllers\BlogsController::class);
