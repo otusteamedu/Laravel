@@ -2,6 +2,8 @@
 
 @push('mainStyles')
     <!-- <link type="text/css" rel="stylesheet" href="{{--asset('/css/iss/issUserPageStyle.css')--}}"> -->
+    <!-- <link type="text/css" rel="stylesheet" href="{{--asset('/css/iss/issSharedStyle.css')--}}"> -->
+    @vite(['app/Modules/ISS/public/css/issSharedStyle.css'])
     @vite(['app/Modules/ISS/public/css/issUserPageStyle.css'])
 @endpush
 
@@ -17,14 +19,7 @@
 
 @section('content')
     @switch($userRole)
-        @case('admin')
-            <h2>{{__('iss::issUserPage.adminSection')}}</h2>
-            @include('iss::blocks.userDiagrams')
-            <div id="makeEducationRouteInstrument">
-                education routes CONSTRUCTOR (plan to future)
-            </div>
-        @break
-        @case('manager')
+        @case(config('iss.ROLE_MANAGER')) @case(config('iss.ROLE_ADMIN'))
             @include('iss::blocks.userMainSection')
             @include('iss::blocks.userDiagrams')
         @break
@@ -34,5 +29,8 @@
         @default @break
     @endswitch
 
-    <p><a href="{{route('main')}}">{{__('iss::issMainPage.refToMain')}}</a></p>
+    <div id="refBack">
+        @include('iss::blocks.refToMainISS')
+        @include('iss::blocks.refToMainApp')
+    </div>
 @endsection('content')

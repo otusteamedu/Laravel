@@ -3,6 +3,8 @@
 
 @push('mainStyles')
     <!-- <link type="text/css" rel="stylesheet" href="{{--asset('/css/iss/issNodePageStyle.css')--}}"> -->
+    <!-- <link type="text/css" rel="stylesheet" href="{{--asset('/css/iss/issSharedStyle.css')--}}"> -->
+    @vite(['app/Modules/ISS/public/css/issSharedStyle.css'])
     @vite(['app/Modules/ISS/public/css/issNodePageStyle.css'])
 @endpush
 
@@ -70,7 +72,7 @@
 
         <div id="exam">
             <h2>{{__('iss::issNodePage.examHeader')}}</h2>
-            <form action="" method="POST"> <!-- КОГДА СДЕЛАЮ КОНТРОЛЛЕР ДОБАВИТЬ МАРШРУТ -->
+            <form action="" method="POST">
                 @csrf
                 @foreach ($pointData['questions'] as $question)
                 <div class="mb-3 correctQuestion">
@@ -113,7 +115,8 @@
     </div>
 
     <div id="refBack">
-        <p><a href="{{route('issUser', ['id' => $pointData['userId']])}}">{{__('iss::issNodePage.refToUser')}}</a></p>
-        <p><a href="{{route('main')}}">{{__('iss::issMainPage.refToMain')}}</a></p>
+        @include('iss::blocks.refToUser', ['issUserId' => $pointData['userId']])
+        @include('iss::blocks.refToMainISS')
+        @include('iss::blocks.refToMainApp')
     </div>
 @endsection

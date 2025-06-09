@@ -24,6 +24,9 @@ export default defineConfig({
                 //стиль для главной страницы (основное приложение)
                 'resources/css/mainAppPageStyle.css',
 
+                //общие стили для ISS
+                'app/Modules/ISS/public/css/issSharedStyle.css',
+
                 //стиль для главной страницы Модуля ISS
                 'app/Modules/ISS/public/css/issMainPageStyle.css',
 

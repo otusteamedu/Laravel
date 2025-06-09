@@ -6,10 +6,10 @@ namespace App\Modules\ISS\src\Services\EducationRoute\getAllEducationRoutesOfUse
 use App\Modules\ISS\src\Services\EducationRoute\getAllEducationRoutesOfUserWithPoints\PointDTO;
 
 /**
- * @var float $readyPercent процент прохождения обучающего маршрута
+ * @var float $readyPercent       процент прохождения обучающего маршрута
  * @var array<PointDTO[]> $points массив с данными для каждой точки маршрута
- * @var string $routeName название обучающего маршрута
- * @var int $routeId код обучающего маршрута
+ * @var string $routeName         название обучающего маршрута
+ * @var int $routeId              код обучающего маршрута
  */
 
 class OutputDTO

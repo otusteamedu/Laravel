@@ -87,10 +87,6 @@
 #exam form label { font-size: 2.5vw; }
 #exam form input { font-size: 2.5vw; }
 
-#refBack { min-width: 330px; }
-#refBack a { font-size: 2vw; }
-#refBack p { margin-bottom: 1vw; margin-top: 1vw; }
-
 .questionDamaged { color: red; }
 .correctQuestion
 {
@@ -139,9 +135,6 @@ hr { width: 20vw; }
     #exam input[type=reset] { min-width: 70%; margin-bottom: 10px; }
     #exam input[type=submit] { min-width: 70%; }
     #exam fieldset legend { font-size: 3vw; }
-
-    #refBack a { font-size: 2.5vw; }
-    #refBack p { margin-bottom: 0.5vw; }
 }
 @media screen and (max-width: 350px)  /* НАСТРОЙКА САЙТА для телефонов */
 {
@@ -160,7 +153,5 @@ hr { width: 20vw; }
     #exam form label { font-size: 10px; }
     #exam form input { font-size: 10px; }
     #exam fieldset legend { font-size: 10px; }
-
-    #refBack a { font-size: 10px; }
 }
 

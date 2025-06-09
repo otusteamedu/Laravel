@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Modules\ISS\src\Services\EducationRoutePoint\getRealPointMainData;
 
 /**
- * @var int $id код реальной точки обучающего маршрута
+ * @var int $id         код реальной точки обучающего маршрута
  * @var int $userDataId код пользователя ИОС
  */
 

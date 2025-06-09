@@ -2,7 +2,7 @@
     <h3>{{__('iss::issUserPage.diagramHeader')}}</h3>
     <div id="diagramCollection">
     @isset($diagrams)
-        @if((count($diagrams)  == 1 && $userRole == 'manager') || $userRole == 'admin')
+        @if((count($diagrams)  == 1 && $userRole == config('iss.ROLE_MANAGER')) || $userRole == config('iss.ROLE_ADMIN'))
             @foreach($diagrams as $organization => $value)
                 @if(!is_numeric($organization))
                 <div class="graphic">

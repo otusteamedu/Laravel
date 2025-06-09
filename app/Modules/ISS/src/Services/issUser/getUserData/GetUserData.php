@@ -22,7 +22,8 @@ class GetUserData
     public function getUserData(InputDTO $inputData): ?OutputDTO
     {
         try {
-            $result = $this->repository->getUserData($inputData->issUserId);
+            $result = $this->repository->getUserData(['field_name' => $inputData->fieldName,
+                'field_value' => $inputData->fieldValue, 'returned_fields' => $inputData->returnedFields]);
         } catch (\Error | \Exception $e) {
             return null;
             //запись в лог
@@ -39,8 +40,8 @@ class GetUserData
                 roleName: $result['user_role']['name'],
                 organization: $result['organization'],
                 name: $result['name'],
-                second_name: $result['second_name'],
-                last_name: $result['last_name'],
+                secondName: $result['second_name'],
+                lastName: $result['last_name'],
                 createdAt: $result['created_at'],
                 updatedAt: $result['updated_at'],
                 deletedAt: $result['deleted_at']

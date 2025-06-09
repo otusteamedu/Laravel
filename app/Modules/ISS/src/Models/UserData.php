@@ -19,6 +19,7 @@ use App\Modules\ISS\database\factories\UserDataFactory;
  * @property string $name -- имя сотрудника (загружается из основного приложения)
  * @property string $second_name -- отчество сотрудника (загружается из основного приложения)
  * @property string $last_name -- фамилия сотрудника (загружается из основного приложения)
+ * @property string $web_token -- жетон авторизации ИОС
  * @property \datetime $created_at
  * @property \datetime $updated_at
  * @property \datetime $deleted_at
@@ -26,9 +27,9 @@ use App\Modules\ISS\database\factories\UserDataFactory;
 
 class UserData extends BaseModel
 {
-    protected $fillable = ['user_id', 'role_id', 'user_iss_login', 'user_iss_password', 'user_iss_avatar_path',
-        'organization', 'name', 'second_name', 'last_name'];
-    protected $hidden = ['user_iss_login', 'user_iss_password'];
+    protected $fillable = ['user_id', 'role_id', 'user_iss_avatar_path',
+        'organization', 'name', 'second_name', 'last_name', 'web_token'];
+    //protected $hidden = ['user_iss_login', 'user_iss_password'];
     //protected $casts = ['created_at' => 'datetime', 'updated_at' => 'datetime'];
 
     /**

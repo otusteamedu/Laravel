@@ -11,8 +11,9 @@ interface EducationRoutePointRepoInterface
      *                  $inputData['id'],
      *              код пользо-я ИОС
      *                  $inputData['user_data_id']
-     * @return array ['route_point_id'=>, 'exam_date'=>, 'route_name'=>, 'point_name'=>, 'last_passed_exam_date'=> ]
-     */
+     * @return array
+     *         ['route_point_id'=>, 'exam_date'=>, 'route_name'=>, 'point_name'=>, 'last_passed_exam_date'=>, 'exam_result'=>]
+ */
     public function getRealPointMainData(array $inputData): array;
 
     /**

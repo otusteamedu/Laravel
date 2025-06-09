@@ -14,7 +14,12 @@ class EducationRouteRepo implements EducationRouteRepoInterface
      * @param array $inputData
      *              код пользователя ИОС
      *                  $inputData['user_data_id']
-     * @return array ['route_id'=>, 'route_name'=>, 'ready_percent'=>,]
+     * @return array
+     *              [
+     *                ['route_id'=>, 'route_name'=>, 'ready_percent'=>,],
+     *                ['route_id'=>, 'route_name'=>, 'ready_percent'=>,],
+     *                ...
+     *              ]
      */
     public function getUserRoutesWithPassPercent(array $inputData): array
     {
@@ -72,7 +77,12 @@ class EducationRouteRepo implements EducationRouteRepoInterface
      * @param array $inputData
      *              код пользователя ИОС
      *                  $inputData['user_data_id']
-     * @return array ['route_id'=>, 'real_route_point_id'=>, 'exam_date'=>, 'point_name'=>, 'pass'=> ]
+     * @return array
+     *              [
+     *                ['route_id'=>, 'real_route_point_id'=>, 'exam_date'=>, 'point_name'=>, 'pass'=> ],
+     *                ['route_id'=>, 'real_route_point_id'=>, 'exam_date'=>, 'point_name'=>, 'pass'=> ],
+     *                ...
+     *              ]
      */
     public function getAllRoutePointsForUser(array $inputData): array
     {

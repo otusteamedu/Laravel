@@ -9,6 +9,7 @@ return [
                           and current route point ":pointName". Navigate among them by tabs above.',
     'selectVideo' => 'Select video',
     'selectInstruction' => 'Select instruction file',
+    'selectInstructionType' => 'Select instruction file type',
     'loadVideo' => 'Load video file',
     'loadInstruction' => 'Load instruction file',
     'viewVideo' => 'View video file',

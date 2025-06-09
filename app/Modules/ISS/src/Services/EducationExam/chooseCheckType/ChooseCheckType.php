@@ -24,7 +24,7 @@ class ChooseCheckType
     public function chooseCheckType(InputDTO $inputData): OutputDTO
     {
         //если все вопросы simple то авто, если хоть один не simple то преподу
-        if ($this->isExamComplicated->isExamComplicated(new importedDTO($inputData->id))) {
+        if (($this->isExamComplicated->isExamComplicated(new importedDTO($inputData->id)))->isComplicated) {
             return new OutputDTO(checkType: 'manual');
         } else {
             return new OutputDTO(checkType: 'auto');

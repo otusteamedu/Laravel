@@ -12,7 +12,6 @@ use App\Modules\ISS\src\Http\Controllers\IssStartPageController;
 //    return view('welcome');
 //});
 
-
 Route::get('/', [MainAppStartPageController::class, 'index'])->name('main');
 
 Route::middleware('auth')->group(function () {

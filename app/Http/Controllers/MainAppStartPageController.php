@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Auth;
 
-
 class MainAppStartPageController extends Controller
 {
     public function index()

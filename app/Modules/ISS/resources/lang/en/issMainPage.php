@@ -10,5 +10,7 @@ return [
     'passwordPlaceholder' => 'Enter your password',
     'submit' => 'Enter ISS',
     'reset' => 'Reset',
-    'refToMain' => 'Come back to main page',
+    'alertNeedAuthorization' => 'You are not registered in ISS system. For register call your administrator.',
+    'refTuISSUserPage' => 'Enter ISS User account',
+    'refTuISSAdminPage' => 'Enter ISS Admin panel',
 ];
