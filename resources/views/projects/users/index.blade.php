@@ -44,7 +44,7 @@
                         @endcan
                         <div class="mb-4">
                             <h4 class="mb-4">Участники проекта</h4>
-                            <table class="table table-hover">
+                            <table class="project-user-table table table-hover">
                                 <thead>
                                     <tr>
                                         <th scope="col">Имя</th>

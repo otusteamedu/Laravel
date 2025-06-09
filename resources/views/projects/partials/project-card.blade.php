@@ -6,10 +6,11 @@
  * @var string $created
  */
 @endphp
-<div class="card mb-3">
+<div class="project-card card mb-3">
     <div class="card-header d-flex justify-content-between">
         <div><span class="fw-bold">{{ $name }}</span></div>
-        @can('project.user.left', [$projectId, Auth::user()->id])
+        @can('project.user.join', [$projectId, Auth::user()->id])
+        @elsecan('project.user.left', [$projectId, Auth::user()->id])
             <span class="text-muted">
                 <i class="ps-2 fa-solid fa-ban text-danger"></i>
                 <button
@@ -53,7 +54,7 @@
 
     @can('project.user.join', [$projectId, Auth::user()->id])
         <div class="card-footer bg-info-subtle">
-            <span>Вас приглавили к участию в проекте</span>
+            <span>Вас пригласили к участию в проекте</span>
                 <span class="text-muted">
                     <i class="ps-2 fa-solid fa-circle-check text-success"></i>
                     <span role="button"

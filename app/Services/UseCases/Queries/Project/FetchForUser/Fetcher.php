@@ -20,7 +20,7 @@ class Fetcher
         $projectDTOs = $this->repository->fetchUserProjects($query->userId);
 
         return new Result(
-            ptojectDTOs: $projectDTOs
+            projectDTOs: $projectDTOs
         );
     }
 }

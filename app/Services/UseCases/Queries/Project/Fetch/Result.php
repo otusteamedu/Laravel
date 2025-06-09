@@ -11,6 +11,6 @@ class Result
      * @param ProjectDTO
      */
     public function __construct(
-        public ProjectDTO $ptojectDTO,
+        public ProjectDTO $projectDTO,
     ) {}
 }

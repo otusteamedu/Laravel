@@ -4,6 +4,7 @@ namespace App\Infrastructure\Eloquent\Repositories;
 
 use App\Models\User;
 use App\Models\UserProfile;
+use Illuminate\Support\Facades\Hash;
 use App\Services\Repositories\DTOs\UserDTO;
 use App\Services\Repositories\DTOs\UserCreateDTO;
 use App\Services\Repositories\DTOs\UserProfileDTO;
@@ -41,10 +42,10 @@ class UserRepository implements UserRepositoryInterface
     public function add(UserCreateDTO $user): int
     {
         $dbUser = User::create([
-            'name'              => $user->name,
-            'email'             => $user->email,
-            'password'          => $user->password,
-            'email_verified_at' => $user->email_verified_at
+            'name'                  => $user->name,
+            'email'                 => $user->email,
+            'password'              => Hash::make($user->password),
+            'email_verified_at'     => $user->email_verified_at
         ]);
 
         return $dbUser->refresh()->id;

@@ -37,7 +37,7 @@ class Create extends Controller
 
             return redirect(route('projects.show', ['projectId' => $result->id]))->with('success', 'Проект добавлен');
         } catch (CreateModelFailedException $exception) {
-            return redirect()->back()->withInput()->with('error', $exception->getMessage());
+            return redirect()->route('projects.index')->withInput()->with('error', $exception->getMessage());
         }
     }
 }

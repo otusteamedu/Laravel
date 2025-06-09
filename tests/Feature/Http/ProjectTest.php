@@ -26,26 +26,37 @@ class ProjectTest extends TestCase
         $this->user = User::factory()->has(UserProfile::factory(), 'profile')->create();
     }
 
-    public function test_projects_list_is_displayed(): void
+    public function test_projects_list_page_is_displayed(): void
     {
         $response = $this
             ->actingAs($this->user)
             ->get(route(name: 'projects.index', absolute: false));
 
         $response->assertOk();
+        $response->assertSee(route('projects.create'), false);
     }
 
-    public function test_project_create_screen_can_be_rendered(): void
+    public function test_project_create_form_can_be_rendered(): void
     {
         $response = $this
             ->actingAs($this->user)
             ->get(route(name: 'projects.create', absolute: false));
 
         $response->assertOk();
+
+        $response->assertSee('name="name"', false);
+        $response->assertSee('name="description"', false);
+        $response->assertSee(route('projects.store'), false);
     }
 
-    public function test_new_project_create_validation_error(): void
+    public function test_project_create_validation_error(): void
     {
+        $response = $this
+            ->actingAs($this->user)
+            ->get(route(name: 'projects.create', absolute: false));
+
+        $response->assertOk();
+
         $payload = [
             'name'        => '1',
             'description' => 1,
@@ -55,10 +66,12 @@ class ProjectTest extends TestCase
             ->actingAs($this->user)
             ->post(route(name: 'projects.store', absolute: false), $payload);
 
-        $response->assertSessionHasErrors();
+        $response->assertRedirectBack();
+        $response->assertSessionHasErrors(['name' => 'Название проекта слишком короткое.']);
+        $response->assertSessionHasErrors(['description' => 'Описание проекта должно быть строкой.']);
     }
 
-    public function test_new_project_can_created(): void
+    public function test_project_can_created_succesfully(): void
     {
         $project = Project::factory()->make();
 
@@ -83,12 +96,23 @@ class ProjectTest extends TestCase
 
         $projectId = implode($diff);
 
-        $this->assertNotNull($projectId, 'TargetURL не соответсвует ожиданиям');
+        $this->assertNotNull($projectId, 'TargetURL не соответствует ожиданиям.');
         $response->assertRedirectToRoute('projects.show', ['projectId' => $projectId]);
 
         $project = $this->repository->find($projectId);
-
         $this->assertNotNull($project, 'Проект не найден');
+
+
+        $success = $this->repository->userHasRole($projectId, $this->user->id, [ProjectRoleEnum::ADMIN]);
+        $this->assertTrue($success, 'Администратор нового проекта не назначен');
+
+        $statuses = $this->repository->fetchTodoStatuses($projectId);
+        $todoStatuses = array_map(fn($status) => $status->name, $statuses);
+
+        $this->assertContains('Новая', $todoStatuses, 'Статус задачи "Новая" не добавлен в проект');
+        $this->assertContains('В работе', $todoStatuses, 'Статус задачи "В работе" не добавлен в проект');
+        $this->assertContains('Завершена', $todoStatuses, 'Статус задачи "Завершена" не добавлен в проект');
+        $this->assertContains('Архив', $todoStatuses, 'Статус задачи "Архив" не добавлен в проект');
     }
 
     public function test_project_can_show(): void
@@ -108,45 +132,7 @@ class ProjectTest extends TestCase
             ->get(route('projects.show', ['projectId' => $project->id], false));
 
         $response->assertOk();
-    }
-
-    public function test_project_user_admin_is_assigned(): void
-    {
-        $project = Project::factory()
-            ->has(ProjectUser::factory([
-                'user_id'    => $this->user->id,
-                'roles'      => [ProjectRoleEnum::ADMIN],
-                'invited_at' => now(),
-                'joined_at'  => now(),
-                'left_at'    => null
-            ]), 'projectUsers')
-            ->create();
-
-        $success = $this->repository->userHasRole($project->id, $this->user->id, [ProjectRoleEnum::ADMIN]);
-
-        $this->assertTrue($success, 'Администратор нового проекта не назначен');
-    }
-
-    public function test_project_default_todo_statuses_is_creaated(): void
-    {
-        $project = Project::factory()
-            ->has(ProjectUser::factory([
-                'user_id'    => $this->user->id,
-                'roles'      => [ProjectRoleEnum::ADMIN],
-                'invited_at' => now(),
-                'joined_at'  => now(),
-                'left_at'    => null
-            ]), 'projectUsers')
-            ->create();
-
-        $statuses = $this->repository->fetchTodoStatuses($project->id);
-
-        $todoStatuses = array_map(fn($status) => $status->name, $statuses);
-
-        $this->assertContains('Новая', $todoStatuses, 'Статус задачи "Новая" не добавлен в проект');
-        $this->assertContains('В работе', $todoStatuses, 'Статус задачи "В работе" не добавлен в проект');
-        $this->assertContains('Завершена', $todoStatuses, 'Статус задачи "Завершена" не добавлен в проект');
-        $this->assertContains('Архив', $todoStatuses, 'Статус задачи "Архив" не добавлен в проект');
+        $response->assertSeeInOrder(['<h4 class="mb-4">Информация</h4>', '<div class="project-card card mb-3">'], false);
     }
 
     public function test_project_update_validation_error(): void
@@ -161,6 +147,17 @@ class ProjectTest extends TestCase
             ]), 'projectUsers')
             ->create();
 
+        $response = $this
+            ->actingAs($this->user)
+            ->get(route('projects.show', ['projectId' => $project->id], false));
+
+
+        $response->assertOk();
+        $response->assertSee(['<h4 class="mb-4">Редактирование проекта</h4>'], false);
+        $response->assertSee('name="name"', false);
+        $response->assertSee('name="description"', false);
+        $response->assertSee(route('projects.update', ['projectId' => $project->id]), false);
+
         $payload = [
             'name'        => '1',
             'description' => 1,
@@ -170,7 +167,9 @@ class ProjectTest extends TestCase
             ->actingAs($this->user)
             ->put(route('projects.update', ['projectId' => $project->id],  false), $payload);
 
-        $response->assertSessionHasErrors();
+        $response->assertRedirectBack();
+        $response->assertSessionHasErrors(['name' => 'Название проекта слишком короткое.']);
+        $response->assertSessionHasErrors(['description' => 'Описание проекта должно быть строкой.']);
     }
 
     public function test_project_can_updated(): void
@@ -196,15 +195,15 @@ class ProjectTest extends TestCase
             ->actingAs($this->user)
             ->put(route('projects.update', ['projectId' => $project->id],  false), $payload);
 
+        $response->assertRedirectToRoute('projects.show', ['projectId' => $project->id]);
         $response->assertSessionHasNoErrors();
 
         $updated = $this->repository->find($project->id);
-
         $this->assertEquals($update->name, $updated->name, 'Имя проекта не обновилось');
         $this->assertEquals($update->description, $updated->description, 'Описание проекта не обновилось');
     }
 
-    public function test_project_can_delete(): void
+    public function test_project_can_deleted_succesfully(): void
     {
         $project = Project::factory()
             ->has(ProjectUser::factory([
@@ -220,14 +219,18 @@ class ProjectTest extends TestCase
             ->actingAs($this->user)
             ->delete(route('projects.destroy', ['projectId' => $project->id],  false));
 
+
+        $response->assertRedirectToRoute('projects.index');
         $response->assertSessionHasNoErrors();
 
         $check = $this->repository->find($project->id);
-
         $this->assertNull($check, 'Проект не удален');
+
+        $members = $this->repository->fetchUsers($project->id);
+        $this->assertEquals(0, count($members), 'Пользователи не удалены из проекта');
     }
 
-    public function test_project_view_access_denied(): void
+    public function test_project_view_access_denied_code_404_instead_403(): void
     {
         $project = Project::factory()->create();
 
@@ -235,7 +238,7 @@ class ProjectTest extends TestCase
             ->actingAs($this->user)
             ->get(route('projects.show', ['projectId' => $project->id], false));
 
-        $response->assertStatus(403);
+        $response->assertStatus(404);
     }
 
     public function test_project_update_access_denied(): void

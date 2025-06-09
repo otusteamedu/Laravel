@@ -49,7 +49,7 @@ class Handler
             $user = new UserCreateDTO(
                 name: $command->name,
                 email: $command->email,
-                password: Hash::make(Str::random(10)),
+                password: Str::random(10),
                 email_verified_at: now(),
             );
 

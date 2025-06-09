@@ -11,7 +11,7 @@
             <a href="{{ route('projects.create') }}" class="btn btn-outline-primary">Добавить проект</a>
         </div>
     @endcan
-    @if(empty($result->ptojectDTOs))
+    @if(empty($result->projectDTOs))
         <div class="alert alert-info">
             <h5>Упсс...</h5>
             <div>Вы еще не являетесь участником ни одного проекта.</div>
@@ -23,7 +23,7 @@
             @endcan
         </div>
     @endif
-    @foreach($result->ptojectDTOs as $projectDTO)
+    @foreach($result->projectDTOs as $projectDTO)
         @can('project.invited', $projectDTO->projectId)
             @include('projects.partials.project-card', [
                 'projectId' => $projectDTO->projectId,

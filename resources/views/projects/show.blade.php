@@ -4,7 +4,7 @@
 */
 @endphp
 @extends('layouts.main')
-@section('title', "ToDo: Проект $project->name")
+@section('title', "ToDo: Проект $projectDTO->name")
 
 @section('content')
 <div class="col-12">
@@ -14,7 +14,7 @@
                 <nav class="col-lg-3 border-end">
                     @include('projects.partials.nav', [
                         'active'    => 'project',
-                        'projectId' => $project->projectId,
+                        'projectId' => $projectDTO->projectId,
                     ])
                 </nav>
                 <div x-data="{showEdit: false}" 
@@ -23,28 +23,28 @@
                     <div class="p-4" id="info">
                         <div x-show="!showEdit" class="mb-4">
                             <h4 class="mb-4">Информация</h4>
-                            <div class="card mb-3">
+                            <div class="project-card card mb-3">
                                 <div class="card-header d-flex justify-content-between">
-                                    <div><span class="fw-bold">{{ $project->name }}</span></div>
-                                    @can('project.user.left', [$project->projectId, Auth::user()->id])
+                                    <div><span class="fw-bold">{{ $projectDTO->name }}</span></div>
+                                    @can('project.user.left', [$projectDTO->projectId, Auth::user()->id])
                                         <span class="text-muted">
                                             <i class="ps-2 fa-solid fa-ban text-danger"></i>
                                             <span
                                                 role="button"
                                                 class="fw-bold"
                                                 data-bs-toggle="modal" 
-                                                data-bs-target="#project-jeft-confirmation" 
-                                                x-data @click="$store.projects.left('{{ route('project.users.left', [$project->projectId, Auth::user()->id])}}', '{{ $project->name }}')"
+                                                data-bs-target="#projectDTO-jeft-confirmation" 
+                                                x-data @click="$store.projects.left('{{ route('project.users.left', [$projectDTO->projectId, Auth::user()->id])}}', '{{ $projectDTO->name }}')"
                                                 >Покинуть</span>
                                         </span>
                                     @endcan
                                 </div>
                                 <div class="card-body">
-                                    <p class="card-text">{{ $project->description }}</p>
-                                    <p class="card-text"><small class="text-muted">Создан: {{ $project->created->translatedFormat("j F Y") }}</small></p>
+                                    <p class="card-text">{{ $projectDTO->description }}</p>
+                                    <p class="card-text"><small class="text-muted">Создан: {{ $projectDTO->created->translatedFormat("j F Y") }}</small></p>
                                     {{-- ?TODO сводные данные по задачам --}}
                                     <p class="card-text d-flex flex-wrap justify-content-end gap-3">
-                                        @can('project.update', $project->projectId)
+                                        @can('project.update', $projectDTO->projectId)
                                             <span class="text-muted">
                                                 <i class="fa-solid fa-pen-to-square"></i>
                                                 <button type="button"
@@ -53,16 +53,16 @@
                                                     >Редактировать</button>
                                             </span>
                                         @endcan
-                                        @can('project.delete', $project->projectId)
+                                        @can('project.delete', $projectDTO->projectId)
                                             <span class="text-muted">
                                                 <i class="fa-solid fa-trash-can"></i>
                                                 <button
                                                     type="button"
                                                     class="btn p-0" 
                                                     data-bs-toggle="modal" 
-                                                    data-bs-target="#project-delete-confirmation" 
-                                                    data-bs-project-name="{{ $project->name }}"
-                                                    data-bs-project-id="{{ $project->projectId }}"                    
+                                                    data-bs-target="#projectDTO-delete-confirmation" 
+                                                    data-bs-projectDTO-name="{{ $projectDTO->name }}"
+                                                    data-bs-projectDTO-id="{{ $projectDTO->projectId }}"                    
                                                     >Удалить</button>
                                             </span>
                                         @endcan
@@ -70,13 +70,13 @@
                                 </div>
                             </div>
                         </div>
-                        @can('project.update', $project->projectId)
+                        @can('project.update', $projectDTO->projectId)
                             <div  x-show="showEdit" class="pt-4">
                                 <h4 class="mb-4">Редактирование проекта</h4>
-                                <form method="POST" action="{{ route('projects.update', ['projectId' => $project->projectId]) }}" autocomplete="off">
+                                <form method="POST" action="{{ route('projects.update', ['projectId' => $projectDTO->projectId]) }}" autocomplete="off">
                                     @csrf
                                     @method('put')
-                                    @include('projects.partials.form-fields', ['name' => $project->name, 'description' => $project->description])
+                                    @include('projects.partials.form-fields', ['name' => $projectDTO->name, 'description' => $projectDTO->description])
             
                                     <div class="col-12 my-2 text-end">
                                         <button class="btn btn-outline-primary">Сохранить</button>

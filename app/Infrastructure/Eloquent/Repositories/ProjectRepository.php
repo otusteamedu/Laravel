@@ -195,7 +195,6 @@ class ProjectRepository implements ProjectRepositoryInterface
         $updated = ProjectUser::query()
             ->where('project_id', $projectId)
             ->where('user_id', $userId)
-            ->whereNotNull('joined_at')
             ->whereNull('left_at')
             ->update(['left_at' => now()]);
 

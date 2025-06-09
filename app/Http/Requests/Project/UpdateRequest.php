@@ -56,7 +56,8 @@ class UpdateRequest extends FormRequest
 
     protected function failedValidation(Validator $validator)
     {
-        throw new HttpResponseException(redirect()->back()
+        throw new HttpResponseException(redirect()
+            ->back()
             ->withInput()
             ->withErrors($validator->errors())
             ->with('error', 'Ошибка валидации формы'));

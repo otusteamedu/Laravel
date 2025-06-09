@@ -25,7 +25,7 @@ class Fetcher
         }
 
         return new Result(
-            ptojectDTO: $projectDTO,
+            projectDTO: $projectDTO,
         );
     }
 }

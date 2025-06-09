@@ -26,12 +26,12 @@ Route::middleware('auth')
         Route::get('/create', [Projects\Create::class, 'create'])
             ->name('create')
             ->can('project.create');
-        Route::post('/', [Projects\Create::class, 'store'])
+        Route::post('/store', [Projects\Create::class, 'store'])
             ->name('store')
             ->can('project.create');
         Route::get('/{projectId}', Projects\Show::class)
-            ->name('show')
-            ->can('project.view', 'projectId');
+            ->name('show');
+        //->can('project.view', 'projectId');
         Route::put('/{projectId}', Projects\Update::class)
             ->name('update')
             ->can('project.update', 'projectId');

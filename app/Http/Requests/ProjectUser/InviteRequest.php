@@ -94,7 +94,8 @@ class InviteRequest extends FormRequest
     protected function failedValidation(Validator $validator)
     {
         debugbar()->info($validator->errors());
-        throw new HttpResponseException(redirect()->back()
+        throw new HttpResponseException(redirect()
+            ->back()
             ->withInput()
             ->withErrors($validator->errors())
             ->with('error', 'Ошибка валидации формы'));

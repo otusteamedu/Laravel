@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Services\UseCases\Commands\Auth\Register\Command;
+use App\Services\UseCases\Commands\Auth\Register\Handler;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -27,7 +29,7 @@ class RegisteredUserController extends Controller
      *
      * @throws \Illuminate\Validation\ValidationException
      */
-    public function store(Request $request): RedirectResponse
+    public function store(Request $request, Handler $handler): RedirectResponse
     {
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
@@ -35,11 +37,13 @@ class RegisteredUserController extends Controller
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
 
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-        ]);
+        $userId = $handler->handle(new Command(
+            name: $request->name,
+            email: $request->email,
+            password: $request->password
+        ));
+
+        $user = User::query()->where('id', $userId)->firstOrFail();
 
         event(new Registered($user));
 

@@ -22,16 +22,15 @@ class Invite extends Controller
         try {
             $handler->handle(
                 new Command(
-                    projectId: $validatesd['project_id'],
+                    projectId: $projectId,
                     userId: $validatesd['user_id'],
                     roles: [ProjectRoleEnum::MEMBER],
-
                 )
             );
 
-            return redirect()->back()->with('success', 'Пользователь приглашен к участию в проекте');
+            return redirect()->route('project.users.index', ['projectId' => $projectId])->with('success', 'Пользователь приглашен к участию в проекте');
         } catch (CreateModelFailedException $exception) {
-            return redirect()->back()->withInput()->with('error', $exception->getMessage());
+            return redirect()->route('project.users.index', ['projectId' => $projectId])->withInput()->with('error', $exception->getMessage());
         }
     }
 }

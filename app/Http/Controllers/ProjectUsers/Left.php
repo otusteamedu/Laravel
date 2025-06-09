@@ -16,14 +16,18 @@ class Left extends Controller
     public function __invoke(int $projectId, int $userId, Handler $handler): RedirectResponse
     {
         try {
-            $handler->handle(new Command(
+            $success = $handler->handle(new Command(
                 projectId: $projectId,
                 userId: $userId
             ));
 
-            return redirect()->route('projects.index')->with('success', 'Успешно');
+            if ($success) {
+                return redirect()->route('projects.index')->with('success', 'Успешно');
+            } else {
+                return redirect()->back()->with('error', 'Не получилось выйти из проекта');
+            }
         } catch (InviteNotFoundException $exception) {
-            return redirect()->back()->withInput()->with('error', $exception->getMessage());
+            return redirect()->back()->with('error', $exception->getMessage());
         }
     }
 }

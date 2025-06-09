@@ -8,9 +8,9 @@ use App\Services\Repositories\DTOs\ProjectDTO;
 class Result
 {
     /**
-     * @param ProjectDTO[] $ptojectDTOs
+     * @param ProjectDTO[] $projectDTOs
      */
     public function __construct(
-        public array $ptojectDTOs,
+        public array $projectDTOs,
     ) {}
 }
