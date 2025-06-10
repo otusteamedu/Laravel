@@ -13,13 +13,12 @@ use Illuminate\Support\Facades\Log;
 
 class TelegramRateLimitedHandler extends AbstractProcessingHandler
 {
-    /**
-     * @param int|string|Level $level
-     * @param bool             $bubble
-     * @param string           $apiKey
-     * @param string           $channel
-     */
-    public function __construct(int|string|Level $level = Level::Debug, bool $bubble = true, protected string $apiKey, protected string $channel, protected string $fallbackChannel)
+    public function __construct(
+        int|string|Level $level = Level::Debug,
+        bool $bubble = true,
+        protected string $apiKey,
+        protected string $channel,
+        protected string $fallbackChannel)
     {
         parent::__construct($level, $bubble);
     }
@@ -34,7 +33,7 @@ class TelegramRateLimitedHandler extends AbstractProcessingHandler
     {
         $executed = RateLimiter::attempt(
             'telegram-log-send:' . $this->channel,
-            1,
+            20,
             function () use ($record) {
                 $handler = new TelegramBotHandler(
                     $this->apiKey,
