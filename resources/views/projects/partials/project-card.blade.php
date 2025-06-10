@@ -6,20 +6,19 @@
  * @var string $created
  */
 @endphp
-<div class="project-card card mb-3">
+<div id="project-list-{{ $projectId }}" class="project-card card mb-3">
     <div class="card-header d-flex justify-content-between">
         <div><span class="fw-bold">{{ $name }}</span></div>
         @can('project.user.join', [$projectId, Auth::user()->id])
         @elsecan('project.user.left', [$projectId, Auth::user()->id])
             <span class="text-muted">
                 <i class="ps-2 fa-solid fa-ban text-danger"></i>
-                <button
-                    type="button"
-                    class="btn p-0" 
+                <span role="button"
+                    id="project-left-btn-{{ $projectId }}"
                     data-bs-toggle="modal" 
-                    data-bs-target="#project-jeft-confirmation" 
+                    data-bs-target="#project-left-confirmation" 
                     x-data @click="$store.projects.left('{{ route('project.users.left', [$projectId, Auth::user()->id])}}', '{{ $name }}')"
-                    >Покинуть</button>
+                    >Покинуть</span>
             </span>
         @endcan
     </div>
@@ -58,6 +57,7 @@
                 <span class="text-muted">
                     <i class="ps-2 fa-solid fa-circle-check text-success"></i>
                     <span role="button"
+                        id="invite-accept-btn-{{ $projectId }}"
                         class="fw-bold"
                         x-data @click="$store.projects.join('{{ route('project.users.join', [$projectId, Auth::user()->id])}}')"
                         >Принять</span>
@@ -65,7 +65,10 @@
                 <span class="text-muted">
                     <i class="ps-2 fa-solid fa-ban text-danger"></i>
                     <span role="button"
+                        id="invite-reject-btn-{{ $projectId }}"
                         class="fw-bold"
+                        data-bs-toggle="modal" 
+                        data-bs-target="#project-invite-reject-confirmation" 
                         x-data @click="$store.projects.left('{{ route('project.users.left', [$projectId, Auth::user()->id])}}', '{{ $name }}')"
                         >Отказаться</span>
                 </span>

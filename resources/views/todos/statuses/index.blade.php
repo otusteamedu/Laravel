@@ -32,11 +32,16 @@
                                     </button>
                                 </div>
                             @endcan
-                            <div class="d-flex flex-wrap"
-                                x-data="$store.todoStatuses.data"
-                                :key="status">
-                                @include('todos.statuses.templates.status-card', ['projectId' => $project->projectId])
-                        
+                            <div class="d-flex flex-wrap">
+                                @foreach($statuses as $status)
+                                    @include('todos.statuses.status-card', [
+                                        'projectId' => $project->projectId,
+                                        'statusId'  => $status->statusId,
+                                        'name'      => $status->name,
+                                        'color'     => $status->color,
+                                        'sort'      => $status->sort
+                                    ])
+                                @endforeach                        
                             </div>
                         </div>
                         <div class="mb-4">

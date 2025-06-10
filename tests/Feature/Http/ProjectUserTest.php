@@ -2,7 +2,6 @@
 
 namespace Tests\Feature\Http;
 
-use App\Services\UseCases\Commands\ProjectUser\Invite\Command;
 use Tests\TestCase;
 use App\Models\User;
 use App\Models\Project;
@@ -10,21 +9,16 @@ use App\Models\ProjectUser;
 use App\Models\UserProfile;
 use App\Models\ProjectRoleEnum;
 use PHPUnit\Framework\Attributes\Group;
-use App\Infrastructure\Eloquent\Repositories\ProjectRepository;
-
 
 #[Group('http')]
 class ProjectUserTest extends TestCase
 {
-    protected ProjectRepository $repository;
     protected User $user;
     protected Project $project;
 
     protected function setUp(): void
     {
         $this->setUpTheTestEnvironment();
-
-        $this->repository = new ProjectRepository;
 
         $this->user = User::factory()->has(UserProfile::factory(), 'profile')->create();
 
@@ -46,7 +40,7 @@ class ProjectUserTest extends TestCase
             ->get(route('project.users.index', ['projectId' => $this->project->id],  false));
 
         $response->assertOk();
-        $response->assertSeeInOrder(['<h4 class="mb-4">Участники проекта</h4>', '<table class="project-user-table table table-hover">'], false);
+        $response->assertSeeInOrder(['Участники проекта', 'project-user-table'], false);
     }
 
     public function test_user_can_invited_and_finded_in_project(): void
@@ -59,7 +53,7 @@ class ProjectUserTest extends TestCase
 
         $formAction = route('project.users.invite', ['projectId' => $this->project->id]);
         $response->assertSee($formAction, false);
-        $response->assertSeeInOrder(['<h4 class="mb-4">Пригласить пользователя</h4>', '<input name="email"'], false);
+        $response->assertSeeInOrder(['Пригласить пользователя', 'name="email"'], false);
 
         $member = User::factory()->create();
 
@@ -74,8 +68,12 @@ class ProjectUserTest extends TestCase
         $response->assertRedirectToRoute('project.users.index', ['projectId' => $this->project->id]);
         $response->assertSessionHasNoErrors();
 
-        $finded = $this->repository->findUser($this->project->id, $member->id);
-        $this->assertNotNull($finded);
+        $response = $this
+            ->actingAs($this->user)
+            ->get(route('project.users.index', ['projectId' => $this->project->id],  false));
+
+        $response->assertOk();
+        $response->assertSeeInOrder([$member->name, 'Пользователь', now()->translatedFormat("j F Y")], false);
     }
 
     public function test_user_invite_to_project_with_unverified_mail_failed(): void
@@ -96,11 +94,15 @@ class ProjectUserTest extends TestCase
             ->actingAs($this->user)
             ->post(route('project.users.invite', ['projectId' => $this->project->id],  false), $payload);
 
-        $response->assertRedirectBack();
+        $response->assertRedirect(route('project.users.index', ['projectId' => $this->project->id]));
         $response->assertSessionHasErrors(['email' => 'Пользователь должен подтвердить саой email, прежде чем его можно будет приглашать для участия в проектах']);
 
-        $finded = $this->repository->findUser($this->project->id, $member->id);
-        $this->assertNull($finded);
+        $response = $this
+            ->actingAs($this->user)
+            ->get(route('project.users.index', ['projectId' => $this->project->id],  false));
+
+        $response->assertOk();
+        $response->assertSee('Пользователь должен подтвердить саой email, прежде чем его можно будет приглашать для участия в проектах');
     }
 
     public function test_user_can_accept_invite(): void
@@ -126,16 +128,33 @@ class ProjectUserTest extends TestCase
 
         $response->assertSee(route('project.users.join', ['projectId' => $this->project->id, 'userId' => $member->id]), false);
         $response->assertSee(route('project.users.left', ['projectId' => $this->project->id, 'userId' => $member->id]), false);
+        $response->assertSeeInOrder([
+            sprintf('id="project-list-%d"', $this->project->id),
+            sprintf('id="invite-accept-btn-%d"', $this->project->id),
+            sprintf('id="invite-reject-btn-%d"', $this->project->id)
+        ], false);
 
         $response = $this
             ->actingAs($member)
             ->patch(route('project.users.join', ['projectId' => $this->project->id, 'userId' => $member->id]));
 
-        $response->assertRedirectBack();
+
+        $response->assertRedirectToRoute('projects.index');
         $response->assertSessionHasNoErrors();
 
-        $success = $this->repository->userHasRole($this->project->id, $member->id, [ProjectRoleEnum::MEMBER]);
-        $this->assertTrue($success);
+        $response = $this
+            ->actingAs($member)
+            ->get(route(name: 'projects.index', absolute: false));
+
+        $response->assertOk();
+
+        $response->assertSeeInOrder([
+            sprintf('id="project-list-%d"', $this->project->id),
+            sprintf('id="project-left-btn-%d"', $this->project->id)
+        ]);
+
+        $response->assertDontSee(sprintf('id="invite-accept-btn-%d"', $this->project->id));
+        $response->assertDontSee(sprintf('id="invite-reject-btn-%d"', $this->project->id));
     }
 
     public function test_user_can_reject_invite(): void
@@ -160,6 +179,11 @@ class ProjectUserTest extends TestCase
         $response->assertOk();
         $response->assertSee(route('project.users.join', ['projectId' => $this->project->id, 'userId' => $member->id]), false);
         $response->assertSee(route('project.users.left', ['projectId' => $this->project->id, 'userId' => $member->id]), false);
+        $response->assertSeeInOrder([
+            sprintf('id="project-list-%d"', $this->project->id),
+            sprintf('id="invite-accept-btn-%d"', $this->project->id),
+            sprintf('id="invite-reject-btn-%d"', $this->project->id)
+        ], false);
 
         $response = $this
             ->actingAs($member)
@@ -168,8 +192,12 @@ class ProjectUserTest extends TestCase
         $response->assertRedirectToRoute('projects.index');
         $response->assertSessionHasNoErrors();
 
-        $finded = $this->repository->findUser($this->project->id, $member->id);
-        $this->assertNull($finded);
+        $response = $this
+            ->actingAs($member)
+            ->get(route(name: 'projects.index', absolute: false));
+
+        $response->assertOk();
+        $response->assertDontSee(sprintf('id="project-list-%d"', $this->project->id));
     }
 
     public function test_user_can_left_project(): void
@@ -192,7 +220,11 @@ class ProjectUserTest extends TestCase
             ->get(route('projects.show', ['projectId' => $this->project->id], false));
 
         $response->assertOk();
-        $response->assertSee(route('project.users.left', ['projectId' => $this->project->id, 'userId' => $member->id]), false);
+        $response->assertSeeInOrder([
+            sprintf('id="project-view-%d"', $this->project->id),
+            sprintf('id="project-left-btn-%d"', $this->project->id),
+            route('project.users.left', ['projectId' => $this->project->id, 'userId' => $member->id])
+        ], false);
 
         $response = $this
             ->actingAs($member)
@@ -201,7 +233,11 @@ class ProjectUserTest extends TestCase
         $response->assertRedirectToRoute('projects.index');
         $response->assertSessionHasNoErrors();
 
-        $finded = $this->repository->findUser($this->project->id, $member->id);
-        $this->assertNull($finded);
+        $response = $this
+            ->actingAs($member)
+            ->get(route(name: 'projects.index', absolute: false));
+
+        $response->assertOk();
+        $response->assertDontSee(sprintf('id="project-list-%d"', $this->project->id));
     }
 }

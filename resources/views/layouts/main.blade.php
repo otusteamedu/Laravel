@@ -43,7 +43,6 @@
 
             join(path)
             {
-
                 form = document.getElementById('join-form')
                 form.action = path
 

@@ -57,7 +57,7 @@
                                 </thead>
                                 <tbody>
                                     @foreach($users as $user)
-                                    <tr>
+                                    <tr id="project-member-list-{{ $user->userId }}">
                                         <td>{{ $user->name }}</td>
                                         <td>
                                             @foreach($user->roles as $role)

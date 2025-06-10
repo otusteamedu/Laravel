@@ -36,4 +36,5 @@
     
     @include('projects.partials.delete-confirmation')
     @include('projects.partials.left-confirmation')
+    @include('projects.partials.invite-reject-confirmation')
 @endsection

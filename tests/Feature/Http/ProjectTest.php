@@ -9,19 +9,15 @@ use App\Models\ProjectUser;
 use App\Models\UserProfile;
 use App\Models\ProjectRoleEnum;
 use PHPUnit\Framework\Attributes\Group;
-use App\Infrastructure\Eloquent\Repositories\ProjectRepository;
 
 #[Group('http')]
 class ProjectTest extends TestCase
 {
-    protected ProjectRepository $repository;
     protected User $user;
 
     protected function setUp(): void
     {
         $this->setUpTheTestEnvironment();
-
-        $this->repository = new ProjectRepository;
 
         $this->user = User::factory()->has(UserProfile::factory(), 'profile')->create();
     }
@@ -34,6 +30,26 @@ class ProjectTest extends TestCase
 
         $response->assertOk();
         $response->assertSee(route('projects.create'), false);
+    }
+
+    public function test_project_can_show(): void
+    {
+        $project = Project::factory()
+            ->has(ProjectUser::factory([
+                'user_id'    => $this->user->id,
+                'roles'      => [ProjectRoleEnum::ADMIN],
+                'invited_at' => now(),
+                'joined_at'  => now(),
+                'left_at'    => null
+            ]), 'projectUsers')
+            ->create();
+
+        $response = $this
+            ->actingAs($this->user)
+            ->get(route('projects.show', ['projectId' => $project->id], false));
+
+        $response->assertOk();
+        $response->assertSeeInOrder(['Информация', sprintf('id="project-view-%d"', $project->id)], false);
     }
 
     public function test_project_create_form_can_be_rendered(): void
@@ -66,9 +82,17 @@ class ProjectTest extends TestCase
             ->actingAs($this->user)
             ->post(route(name: 'projects.store', absolute: false), $payload);
 
-        $response->assertRedirectBack();
+        $response->assertRedirectToRoute('projects.create');
         $response->assertSessionHasErrors(['name' => 'Название проекта слишком короткое.']);
         $response->assertSessionHasErrors(['description' => 'Описание проекта должно быть строкой.']);
+
+        $response = $this
+            ->actingAs($this->user)
+            ->get(route(name: 'projects.create', absolute: false));
+
+        $response->assertOk();
+        $response->assertSee('Название проекта слишком короткое.', false);
+        $response->assertSee('Описание проекта должно быть строкой.', false);
     }
 
     public function test_project_can_created_succesfully(): void
@@ -97,42 +121,31 @@ class ProjectTest extends TestCase
         $projectId = implode($diff);
 
         $this->assertNotNull($projectId, 'TargetURL не соответствует ожиданиям.');
+
         $response->assertRedirectToRoute('projects.show', ['projectId' => $projectId]);
-
-        $project = $this->repository->find($projectId);
-        $this->assertNotNull($project, 'Проект не найден');
-
-
-        $success = $this->repository->userHasRole($projectId, $this->user->id, [ProjectRoleEnum::ADMIN]);
-        $this->assertTrue($success, 'Администратор нового проекта не назначен');
-
-        $statuses = $this->repository->fetchTodoStatuses($projectId);
-        $todoStatuses = array_map(fn($status) => $status->name, $statuses);
-
-        $this->assertContains('Новая', $todoStatuses, 'Статус задачи "Новая" не добавлен в проект');
-        $this->assertContains('В работе', $todoStatuses, 'Статус задачи "В работе" не добавлен в проект');
-        $this->assertContains('Завершена', $todoStatuses, 'Статус задачи "Завершена" не добавлен в проект');
-        $this->assertContains('Архив', $todoStatuses, 'Статус задачи "Архив" не добавлен в проект');
-    }
-
-    public function test_project_can_show(): void
-    {
-        $project = Project::factory()
-            ->has(ProjectUser::factory([
-                'user_id'    => $this->user->id,
-                'roles'      => [ProjectRoleEnum::ADMIN],
-                'invited_at' => now(),
-                'joined_at'  => now(),
-                'left_at'    => null
-            ]), 'projectUsers')
-            ->create();
 
         $response = $this
             ->actingAs($this->user)
-            ->get(route('projects.show', ['projectId' => $project->id], false));
+            ->get($targetUrl);
 
         $response->assertOk();
-        $response->assertSeeInOrder(['<h4 class="mb-4">Информация</h4>', '<div class="project-card card mb-3">'], false);
+        $response->assertSeeInOrder(['Информация', sprintf('id="project-view-%d"', $projectId)], false);
+        $response->assertSee(route('project.users.index', ['projectId' => $projectId]));
+
+        $response = $this
+            ->actingAs($this->user)
+            ->get(route('project.users.index', ['projectId' => $projectId], false));
+
+        $response->assertOk();
+        $response->assertSeeInOrder([sprintf('id="project-member-list-%d"', $this->user->id), $this->user->name, 'Администратор'], false);
+        $response->assertSee(route('project.todostatuses.index', ['projectId' => $projectId]));
+
+        $response = $this
+            ->actingAs($this->user)
+            ->get(route('project.todostatuses.index', ['projectId' => $projectId], false));
+
+        $response->assertOk();
+        $response->assertSeeInOrder(['Добавить статус', 'Новая', 'В работе', 'Завершена', 'Архив'], false);
     }
 
     public function test_project_update_validation_error(): void
@@ -151,12 +164,14 @@ class ProjectTest extends TestCase
             ->actingAs($this->user)
             ->get(route('projects.show', ['projectId' => $project->id], false));
 
-
         $response->assertOk();
-        $response->assertSee(['<h4 class="mb-4">Редактирование проекта</h4>'], false);
+        $response->assertSee('Редактирование проекта', false);
         $response->assertSee('name="name"', false);
         $response->assertSee('name="description"', false);
-        $response->assertSee(route('projects.update', ['projectId' => $project->id]), false);
+        $response->assertSeeInOrder([
+            sprintf('id="project-edit-form-%d"', $project->id),
+            route('projects.update', ['projectId' => $project->id], false)
+        ]);
 
         $payload = [
             'name'        => '1',
@@ -167,9 +182,18 @@ class ProjectTest extends TestCase
             ->actingAs($this->user)
             ->put(route('projects.update', ['projectId' => $project->id],  false), $payload);
 
-        $response->assertRedirectBack();
+        $response->assertRedirectToRoute('projects.show', ['projectId' => $project->id]);
         $response->assertSessionHasErrors(['name' => 'Название проекта слишком короткое.']);
         $response->assertSessionHasErrors(['description' => 'Описание проекта должно быть строкой.']);
+
+
+        $response = $this
+            ->actingAs($this->user)
+            ->get(route('projects.show', ['projectId' => $project->id], false));
+
+        $response->assertOk();
+        $response->assertSee('Название проекта слишком короткое.', false);
+        $response->assertSee('Описание проекта должно быть строкой.', false);
     }
 
     public function test_project_can_updated(): void
@@ -198,9 +222,13 @@ class ProjectTest extends TestCase
         $response->assertRedirectToRoute('projects.show', ['projectId' => $project->id]);
         $response->assertSessionHasNoErrors();
 
-        $updated = $this->repository->find($project->id);
-        $this->assertEquals($update->name, $updated->name, 'Имя проекта не обновилось');
-        $this->assertEquals($update->description, $updated->description, 'Описание проекта не обновилось');
+        $response = $this
+            ->actingAs($this->user)
+            ->get(route('projects.show', ['projectId' => $project->id], false));
+
+        $response->assertOk();
+        $response->assertSee($update->name, false);
+        $response->assertSee($update->description, false);
     }
 
     public function test_project_can_deleted_succesfully(): void
@@ -223,11 +251,12 @@ class ProjectTest extends TestCase
         $response->assertRedirectToRoute('projects.index');
         $response->assertSessionHasNoErrors();
 
-        $check = $this->repository->find($project->id);
-        $this->assertNull($check, 'Проект не удален');
+        $response = $this
+            ->actingAs($this->user)
+            ->get(route(name: 'projects.index', parameters: false));
 
-        $members = $this->repository->fetchUsers($project->id);
-        $this->assertEquals(0, count($members), 'Пользователи не удалены из проекта');
+        $response->assertOk();
+        $response->assertDontSee(sprintf('id="project-list-%d"', $project->id));
     }
 
     public function test_project_view_access_denied_code_404_instead_403(): void
