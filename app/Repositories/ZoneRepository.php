@@ -6,7 +6,7 @@ use Exception;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
-class DeliveryRepository
+class ZoneRepository
 {
     const DELIVERY_ZONES = ['near', 'middle', 'far'];
 

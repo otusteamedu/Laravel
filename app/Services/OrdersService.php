@@ -6,6 +6,8 @@ use App\Dto\Admin\Order\UpdateDto;
 use App\Models\Order;
 use App\Repositories\OrdersRepository;
 use App\Repositories\ProductsRepository;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class OrdersService
 {
@@ -14,16 +16,25 @@ class OrdersService
         private ProductsRepository $productsRepository,
     ) {}
 
-    public function getAll(): \Illuminate\Database\Eloquent\Collection
+    /**
+     * @return Collection<array-key, Order>
+     */
+    public function getAll(): Collection
     {
         return $this->repository->fetchAll();
     }
 
-    public function getList(string $sort, string $direction): \Illuminate\Pagination\LengthAwarePaginator
+    /**
+     * @return LengthAwarePaginator<array-key, Order>
+     */
+    public function getList(string $sort, string $direction): LengthAwarePaginator
     {
         return $this->repository->fetchList($sort, $direction);
     }
 
+    /**
+     * @return Order
+     */
     public function getById($orderId): Order
     {
         return $this->repository->find($orderId);
@@ -41,7 +52,7 @@ class OrdersService
             $items[$id] = ['count' => $countsByProductId[$id], 'paid_price' => $product->getPrice()];
         }
 
-        $this->repository->addProducts($order, $items);
+        $order->products()->sync($items);
     }
 
     public function update(UpdateDto $updateDto, array $product_ids, array $counts): void
@@ -59,18 +70,19 @@ class OrdersService
             }
         }
 
-        $this->repository->addProducts($order, $items);
+        $order->products()->sync($items);
     }
 
     public function delete($orderId): void
     {
-        $products = $this->repository->find($orderId)->getProducts();
+        $order = $this->repository->find($orderId);
+        $products = $order->getProducts();
         foreach ($products as $product) {
             $product->stock += $product->pivot->count;
             $product->save();
         }
 
-        $this->repository->deleteProducts($orderId);
+        $order->products()->detach();
         $this->repository->delete($orderId);
     }
 }

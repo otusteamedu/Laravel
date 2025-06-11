@@ -15,26 +15,41 @@ class ProductsService
         private ProductsRepository $repository,
     ) {}
 
+    /**
+     * @return Collection<array-key, Product>
+     */
     public function getAll(): Collection
     {
         return $this->repository->fetchAll();
     }
 
+    /**
+     * @return LengthAwarePaginator<array-key, Product>
+     */
     public function getList(string $sort, string $direction): LengthAwarePaginator
     {
         return $this->repository->fetchList($sort, $direction);
     }
 
+    /**
+     * @return LengthAwarePaginator<array-key, Product>
+     */
     public function getAllWithImage(): LengthAwarePaginator
     {
         return $this->repository->fetchAllWithImage();
     }
 
+    /**
+     * @return Collection<array-key, Product>
+     */
     public function getByCategoryId(int $categoryId): Collection
     {
         return $this->repository->fetchByCategoryId($categoryId);
     }
 
+    /**
+     * @return Product
+     */
     public function getById($productId): Product
     {
         return $this->repository->find($productId);
@@ -52,7 +67,7 @@ class ProductsService
                 $items[] = ['asset_url' => $path, 'type' => $type];
             }
 
-            $this->repository->addAssets($product, $items);
+            $product->assets()->createMany($items);
         }
 
     }
@@ -69,19 +84,27 @@ class ProductsService
                 $items[] = ['asset_url' => $path, 'type' => $type];
             }
 
-            $this->repository->deleteAssets($updateDto->id);
-            $this->repository->addAssets($product, $items);
+            $oldAssets = $product->getAssets();
+
+            foreach ($oldAssets as $asset) {
+                Storage::delete($asset->asset_url);
+            }
+
+            $product->assets()->delete();
+            $product->assets()->createMany($items);
         }
     }
 
     public function delete($productId): void
     {
-        $assets = $this->repository->fetchAssets($productId);
+        $product = $this->repository->find($productId);
+        $assets = $product->getAssets();
+
         foreach ($assets as $asset) {
             Storage::delete($asset->asset_url);
         }
 
-        $this->repository->deleteAssets($productId);
+        $product->assets()->delete();
         $this->repository->delete($productId);
     }
 }

@@ -8,21 +8,32 @@ use App\Dto\User\PasswordDto;
 use App\Dto\User\ProfileDto;
 use App\Exceptions\UserNotFoundException;
 use App\Models\User;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class UsersRepository
 {
     const USERS_PER_PAGE = 10;
     
-    public function fetchAll(): \Illuminate\Database\Eloquent\Collection
+    /**
+     * @return Collection<array-key, User>
+     */
+    public function fetchAll(): Collection
     {
         return User::all();
     }
 
-    public function fetchList(string $sort, string $direction): \Illuminate\Pagination\LengthAwarePaginator
+    /**
+     * @return LengthAwarePaginator<array-key, User>
+     */
+    public function fetchList(string $sort, string $direction): LengthAwarePaginator
     {
         return User::orderBy($sort, $direction)->paginate(self::USERS_PER_PAGE)->withQueryString();
     }
 
+    /**
+     * @return User
+     */
     public function find(int $userId): User
     {
         $user = User::with(['role'])->find($userId);

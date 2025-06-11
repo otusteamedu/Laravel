@@ -6,6 +6,9 @@ use App\Dto\Admin\User\UpdateDto;
 use App\Dto\User\PasswordDto;
 use App\Dto\User\ProfileDto;
 use App\Repositories\UsersRepository;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Pagination\LengthAwarePaginator;
+use App\Models\User;
 
 class UsersService
 {
@@ -13,17 +16,26 @@ class UsersService
         private UsersRepository $repository,
     ) {}
 
-    public function getAll(): \Illuminate\Database\Eloquent\Collection
+    /**
+     * @return Collection<array-key, User>
+     */
+    public function getAll(): Collection
     {
         return $this->repository->fetchAll();
     }
 
-    public function getList(string $sort, string $direction): \Illuminate\Pagination\LengthAwarePaginator
+    /**
+     * @return LengthAwarePaginator<array-key, User>
+     */
+    public function getList(string $sort, string $direction): LengthAwarePaginator
     {
         return $this->repository->fetchList($sort, $direction);
     }
 
-    public function getById($userId): \App\Models\User
+     /**
+     * @return User
+     */
+    public function getById($userId): User
     {
         return $this->repository->find($userId);
     }

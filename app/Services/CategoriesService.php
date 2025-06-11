@@ -4,6 +4,8 @@ namespace App\Services;
 use App\Dto\Admin\Category\StoreDto;
 use App\Dto\Admin\Category\UpdateDto;
 use App\Repositories\CategoriesRepository;
+use Illuminate\Database\Eloquent\Collection;
+use App\Models\Category;
 
 class CategoriesService
 {
@@ -11,17 +13,26 @@ class CategoriesService
         private CategoriesRepository $repository,
     ) {}
 
-    public function getAll(): \Illuminate\Database\Eloquent\Collection
+    /**
+     * @return Collection<array-key, Category>
+     */
+    public function getAll(): Collection
     {
         return $this->repository->fetchAll();
     }
 
-    public function getAllWithSort(string $sort, string $direction): \Illuminate\Database\Eloquent\Collection
+    /**
+     * @return Collection<array-key, Category>
+     */
+    public function getAllWithSort(string $sort, string $direction): Collection
     {
         return $this->repository->fetchAllWithSort($sort, $direction);
     }
 
-    public function getById($categoryId): \App\Models\Category
+    /**
+     * @return Category
+     */
+    public function getById($categoryId): Category
     {
         return $this->repository->find($categoryId);
     }

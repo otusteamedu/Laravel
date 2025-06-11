@@ -6,19 +6,29 @@ use App\Dto\Admin\Category\StoreDto;
 use App\Dto\Admin\Category\UpdateDto;
 use App\Exceptions\CategoryNotFoundException;
 use App\Models\Category;
+use Illuminate\Database\Eloquent\Collection;
 
 class CategoriesRepository
 {
-    public function fetchAll(): \Illuminate\Database\Eloquent\Collection
+    /**
+     * @return Collection<array-key, Category>
+     */
+    public function fetchAll(): Collection
     {
         return Category::all();
     }
 
-    public function fetchAllWithSort(string $sort, string $direction): \Illuminate\Database\Eloquent\Collection
+    /**
+     * @return Collection<array-key, Category>
+     */
+    public function fetchAllWithSort(string $sort, string $direction): Collection
     {
         return Category::orderBy($sort, $direction)->get();
     }
 
+    /**
+     * @return Category
+     */
     public function find(int $categoryId): Category
     {
         $category = Category::find($categoryId);

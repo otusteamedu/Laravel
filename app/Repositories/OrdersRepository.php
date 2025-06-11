@@ -7,18 +7,25 @@ use App\Dto\Admin\Order\UpdateDto;
 use App\Exceptions\OrderNotFoundException;
 use App\Models\Order;
 use App\Models\User;
-use App\Models\OrderProduct;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class OrdersRepository
 {
     const ORDERS_PER_PAGE = 10;
 
-    public function fetchAll(): \Illuminate\Database\Eloquent\Collection
+    /**
+     * @return Collection<array-key, Order>
+     */
+    public function fetchAll(): Collection
     {
         return Order::with('user')->get();
     }
 
-    public function fetchList(string $sort, string $direction): \Illuminate\Pagination\LengthAwarePaginator
+    /**
+     * @return LengthAwarePaginator<array-key, Order>
+     */
+    public function fetchList(string $sort, string $direction): LengthAwarePaginator
     {
         $paginator = Order::with('user');
 
@@ -32,6 +39,9 @@ class OrdersRepository
         return $paginator;
     }
 
+    /**
+     * @return Order
+     */
     public function find(int $orderId): Order
     {
         $order = Order::with(['user', 'products'])->find($orderId);
@@ -43,6 +53,9 @@ class OrdersRepository
         return $order;
     }
 
+    /**
+     * @return Order
+     */
     public function add(StoreDto $storeDto): Order
     {
         $order = new Order();
@@ -52,11 +65,9 @@ class OrdersRepository
         return $order;
     }
 
-    public function addProducts(Order $order, array $items): void
-    {
-        $order->products()->sync($items);
-    }
-
+    /**
+     * @return Order
+     */
     public function save(UpdateDto $updateDto): Order
     {
         $order = Order::find($updateDto->id);
@@ -80,10 +91,5 @@ class OrdersRepository
         }
         
         $order->delete();
-    }
-
-    public function deleteProducts(int $orderId): void
-    {
-        OrderProduct::where('order_id', $orderId)->delete();
     }
 }

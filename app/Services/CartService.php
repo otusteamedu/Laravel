@@ -2,16 +2,16 @@
 namespace App\Services;
 
 use App\Exceptions\StockIsEmptyException;
-use App\Repositories\DeliveryRepository;
+use App\Repositories\ZoneRepository;
 use App\Repositories\ProductsRepository;
-use Illuminate\Support\Facades\Log;
 
 class CartService
 {
     public function __construct(
         private ProductsRepository $repository,
-        private DeliveryRepository $deliveryRepository,
+        private ZoneRepository $zoneRepository,
     ) {}
+    
     public function getCart(): array
     {
         return session()->get('cart', []);
@@ -106,7 +106,7 @@ class CartService
         
         $lat = $data['lat'];
         $lon = $data['lon'];
-        $zone = $this->deliveryRepository->fetchZone($lon, $lat);
+        $zone = $this->zoneRepository->fetchZone($lon, $lat);
         $delivery = [
             'lat' => $data['lat'],
             'lon' => $data['lon'],
