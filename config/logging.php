@@ -58,6 +58,18 @@ return [
             'ignore_exceptions' => false,
         ],
 
+// My telegram bot channel____________________________________________________
+        'myTelegramLog' => [
+            'driver' => 'monolog',
+            'handler' => Monolog\Handler\TelegramBotHandler::class,
+            'level' => 'error', //env('LOG_LEVEL', 'error'),
+            'with' => [
+                    'apiKey' => env('TELEGRAM_API_KEY'),
+                    'channel' => env('TELEGRAM_CHANNEL')
+            ]
+        ],
+//_____________________________________________________________________________
+
         'single' => [
             'driver' => 'single',
             'path' => storage_path('logs/laravel.log'),
