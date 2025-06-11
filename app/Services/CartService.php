@@ -1,18 +1,40 @@
 <?php
 namespace App\Services;
 
-use App\Models\Product;
 use App\Exceptions\StockIsEmptyException;
+use App\Repositories\DeliveryRepository;
 use App\Repositories\ProductsRepository;
+use Illuminate\Support\Facades\Log;
 
 class CartService
 {
     public function __construct(
         private ProductsRepository $repository,
+        private DeliveryRepository $deliveryRepository,
     ) {}
     public function getCart(): array
     {
         return session()->get('cart', []);
+    }
+
+    public function getAddress(): string
+    {
+        $delivery =  session()->get('delivery', []);
+        $address = $delivery['address'] ?? '';
+        return $address;
+    }
+
+    public function getLat(): string
+    {
+        $delivery =  session()->get('delivery', []);
+        $lat= $delivery['lat'] ?? '';
+        return $lat;
+    }
+    public function getLon(): string
+    {
+        $delivery =  session()->get('delivery', []);
+        $lon = $delivery['lon'] ?? '';
+        return $lon;
     }
 
     public function calculateTotal(array $cart): int
@@ -29,6 +51,7 @@ class CartService
     public function clearCart(): void
     {
         session()->forget('cart');
+        session()->forget('delivery');
     }
 
     public function add(int $productId): void
@@ -72,8 +95,28 @@ class CartService
 
         if (empty($cart)) {
             session()->forget('cart');
+            session()->forget('delivery');
         } else {
             session()->put('cart', $cart);
         }
+    }
+
+    public function setDelivery(array $data): void
+    {
+        
+        $lat = $data['lat'];
+        $lon = $data['lon'];
+        $zone = $this->deliveryRepository->fetchZone($lon, $lat);
+        $delivery = [
+            'lat' => $data['lat'],
+            'lon' => $data['lon'],
+            'address' => $data['address'],
+            'zone' => $zone,
+        ];
+        session()->put('delivery', $delivery);
+    }
+
+    public function unsetDelivery(): void{
+        session()->forget('delivery');
     }
 }

@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Exceptions\StockIsEmptyException;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Cart\DeliveryRequest;
 use App\Services\CartService;
 use Illuminate\Contracts\View\View;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 
 class CartController extends Controller
@@ -17,9 +19,12 @@ class CartController extends Controller
     public function index(): View
     {
         $cart = $this->service->getCart();
+        $address = $this->service->getAddress();
+        $lat = $this->service->getLat();
+        $lon = $this->service->getLon();
         $total = $this->service->calculateTotal($cart);
         
-        return view('cabinet.cart', compact('cart', 'total'));
+        return view('cabinet.cart', compact('cart', 'total', 'address', 'lat', 'lon'));
     }
 
     public function add(int $productId): RedirectResponse
@@ -45,5 +50,25 @@ class CartController extends Controller
         $this->service->clearCart();
         
         return redirect()->route('cart.index')->with('success', 'Корзина очищена');
+    }
+
+    public function delivery(DeliveryRequest $request): JsonResponse
+    {
+        $data = $request->validated();
+        
+        $this->service->setDelivery($data);
+        
+        return response()->json([
+            'success' => true,
+        ]);
+    }
+
+    public function pickup(): JsonResponse
+    {
+        $this->service->unsetDelivery();
+        
+        return response()->json([
+            'success' => true,
+        ]);
     }
 }

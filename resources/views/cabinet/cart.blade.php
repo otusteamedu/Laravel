@@ -7,7 +7,7 @@
     </div>
 </div>
 
-<div class="container mb-5">
+<div class="container mb-5" data-lat="{{ $lat }}" data-lon="{{ $lon }}">
     <div>
         @if (session('success'))
         <div class="alert alert-success mt-3">
@@ -60,9 +60,35 @@
 
             <form action="{{ route('cart.clear') }}" method="POST">
                 @csrf
-                <button type="submit" class="btn btn-danger">Очистить корзину</button>
+                <button type="submit" class="btn btn-danger mb-4">Очистить корзину</button>
             </form>
             @endif
+
+            <div>
+                <div class="row">
+                    <div class="col-12 col-md-2 mb-1">Доставка</div>
+
+                    <div class="col-12 col-md-5 mb-1 d-flex">
+                        <div class="form-check ms-3">
+                            <input class="form-check-input" type="radio" name="delivery" id="pickup" value="pickup" 
+                                @checked(empty($address)) @disabled(empty($cart))>
+                            <label class="form-check-label" for="pickup">Самовывоз</label>
+                        </div>
+                        <div class="form-check ms-3">
+                            <input class="form-check-input" type="radio" name="delivery" id="curier" value="curier"
+                                @checked(!empty($address)) @disabled(empty($cart))>
+                            <label class="form-check-label" for="curier">Курьером по адресу</label>
+                        </div>
+                    </div>
+                    
+                    <div class="col-12 col-md-5 mb-1">
+                        <input type="text" class="form-control" placeholder="Адрес доставки" id="address" name="address" 
+                            value="{{ $address }}" @disabled(empty($address))>
+                    </div>
+                </div>
+            </div>
+
+            <div id="map" class="w-100 mt-4 mb-1"></div>
         </div>
     </div>
 </div>

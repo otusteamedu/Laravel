@@ -13,9 +13,20 @@
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=Nunito" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/suggestions-jquery@22.6.0/dist/css/suggestions.min.css" rel="stylesheet" />
+    <script src="https://api-maps.yandex.ru/2.1/?apikey=a46e85a0-6711-4c3f-a275-beb7118ecbb3&lang=ru_RU" type="text/javascript">
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/suggestions-jquery@22.6.0/dist/js/jquery.suggestions.min.js"></script>
 
     <!-- Scripts -->
-    @vite(['resources/sass/app.scss', 'resources/css/carousel.css', 'resources/css/about.css', 'resources/js/app.js'])
+    @vite([
+        'resources/sass/app.scss', 
+        'resources/css/carousel.css', 
+        'resources/css/about.css', 
+        'resources/js/app.js', 
+        'resources/js/site.js'
+    ])
 </head>
 
 <body class="d-flex flex-column h-100">
