@@ -2,8 +2,8 @@
 
 return [
     'available_locales' => [
-        'Русский' => 'ru',
-        'English' => 'en',
-        'Deutschland' => 'de',
+        'ru' => 'Русский',
+        'en' => 'English',
+        'de' => 'Deutschland',
     ],
 ];
