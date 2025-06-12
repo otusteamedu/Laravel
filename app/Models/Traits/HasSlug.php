@@ -36,7 +36,7 @@ trait HasSlug
         return 'title';
     }
 
-    private function slugUnique(string $slug): string {
+    protected function slugUnique(string $slug): string {
         $originalSlug = $slug;
         $i = 0;
 
@@ -48,7 +48,7 @@ trait HasSlug
         return $slug;
     }
 
-    private function isSlugExists(string $slug): bool {
+    protected function isSlugExists(string $slug): bool {
         $query = $this->newQuery()
                       ->where(self::slugColumn(), $slug)
                       ->where($this->getKeyName(), '!=', $this->getKey())

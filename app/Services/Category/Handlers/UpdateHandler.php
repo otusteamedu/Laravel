@@ -28,10 +28,13 @@ class UpdateHandler
         }
 
         $category->name = $commandDTO->name;
-        $category->sort = $commandDTO->sort;
+
+        if (!is_null($commandDTO->sort)) {
+            $category->sort = $commandDTO->sort;
+        }
 
         $this->categoryRepository->save($category);
 
-        return new CategoryDTO($category->id, $category->name, $category->slug, $category->sort);
+        return new CategoryDTO($category->id, $category->name, $category->slug, $category->sort,);
     }
 }

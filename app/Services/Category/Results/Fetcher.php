@@ -10,9 +10,9 @@ class Fetcher
     /**
      * @param Category[] $categories
      *
-     * @return Result
+     * @return CategoriesDTO
      */
-    public function fetch(array $categories): Result
+    public function fetch(array $categories): CategoriesDTO
     {
         $categoryDTOs = array_map(fn (Category $category) => new CategoryDTO(
             id: $category->id,
@@ -21,6 +21,6 @@ class Fetcher
             sort: $category->sort,
         ), $categories);
 
-        return new Result($categoryDTOs);
+        return new CategoriesDTO($categoryDTOs);
     }
 }
