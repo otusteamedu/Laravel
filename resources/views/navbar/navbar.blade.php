@@ -1,4 +1,4 @@
-<nav class="navbar navbar-dark bg-dark flex-nowrap">
+<nav class="navbar navbar-expand-md navbar-dark bg-dark flex-nowrap">
     <div class="container-fluid">
         <a class="navbar-brand" href="{{ route('home') }}">
             <img src="{{ Vite::asset('resources/images/logo.png') }}" class="d-inline-block" alt="ToDo Logo" />
@@ -53,6 +53,7 @@
                 </li>
             @endauth
             <li class="nav-item">
+                <a href="{{ route('about') }}" 
                     @class([
                         'nav-link', 
                         'active' => request()->path() === trim(route(name: 'about', absolute: false ), '/')
