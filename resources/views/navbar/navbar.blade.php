@@ -11,7 +11,7 @@
                     @class([
                         'nav-link', 
                         'active' => request()->path() === trim(route(name: 'about', absolute: false ), '/')
-                    ])>О сервисе</a>
+                    ])>{{ __('About the service') }}</a>
                 </li>
                 @auth
                     <li class="nav-item">
@@ -23,7 +23,7 @@
                     </li>
                 @endauth
             </ul>
-            <div class="ms-auto navbar-nav">
+            <div class="navbar-nav">
                 @include('navbar.sign-desktop')
             </div>
         </div>
@@ -57,7 +57,7 @@
                     @class([
                         'nav-link', 
                         'active' => request()->path() === trim(route(name: 'about', absolute: false ), '/')
-                    ])><i class="fa-solid fa-circle-check pe-2"></i>О сервисе
+                    ])><i class="fa-solid fa-circle-check pe-2"></i>{{ __('About the service') }}
                 </a>
             </li>
             @include('navbar.sign-mobile')
