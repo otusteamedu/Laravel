@@ -1,11 +1,10 @@
 <?php
 
+// use Http\Controllers\Middleware\Copyright;
 use Illuminate\Support\Facades\Route;
 
 // Route::get('/', function () {
 //     return view('welcome');
 // });
-
-// first commit
 
 Route::resource('blogs', \App\Http\Controllers\BlogsController::class);
