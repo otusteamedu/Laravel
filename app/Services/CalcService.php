@@ -4,13 +4,8 @@ namespace App\Services;
 
 class CalcService
 {
-    public function sum($a, $b)
+    public function sqrt($a)
     {
-        return $a + $b;
-    }
-
-    public function sub($a, $b)
-    {
-        return $a - $b;
+        return sqrt($a);
     }
 }
