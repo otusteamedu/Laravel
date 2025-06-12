@@ -1,6 +1,5 @@
 <?php
 
-// use Http\Controllers\Middleware\Copyright;
 use Illuminate\Support\Facades\Route;
 
 // Route::get('/', function () {
