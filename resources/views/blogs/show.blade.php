@@ -15,8 +15,14 @@
             {{ $blog->title }}
         </h2>
         <div class="showblog__date">
-            <div>Created: {{ $blog->created_at->format('d-m-Y H-i-s') }}</div>
-            <div>Updated: {{ $blog->updated_at->format('d-m-Y H-i-s') }}</div>
+            <div>
+                {{  app()->getLocale() === "en" ? "Created: " : 'Создано:' }}
+                {{ $blog->created_at->format('d-m-Y H-i-s') }}
+            </div>
+            <div>
+                {{  app()->getLocale() === "en" ? "Updated: " : 'Отредактировано:' }}
+                {{ $blog->updated_at->format('d-m-Y H-i-s') }}
+            </div>
         </div>
         <div class="showblog__preview">
             {!! $blog->preview !!}
@@ -26,7 +32,10 @@
         </div>
 
         <div>
-            <a href="{{ route('blogs.edit', ['blog' => $blog]) }}">Edit</a>
+            <a href="{{ route('blogs.edit', ['blog' => $blog, 'locale' => app()->getLocale()]) }}">
+                {{  app()->getLocale() === "en" ? "Edit" : 'Редактировать' }}
+
+            </a>
         </div>
 
     </div>

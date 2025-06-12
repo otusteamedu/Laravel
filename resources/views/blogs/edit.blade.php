@@ -25,7 +25,7 @@
             </ul>
         @endif
 
-        <form action="{{ isset($blogId) ? route('blogs.update', $blogId) : route('blogs.store') }}" method="POST">
+        <form action="{{ isset($blogId) ? route('blogs.update', app()->getLocale()) : route('blogs.store', app()->getLocale()) }}" method="POST">
             @csrf
             @if (isset($blogId))
                 @method('PUT')

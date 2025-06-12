@@ -9,7 +9,16 @@
     <div class="container">
         <div class="row">
             <div class="col-3 menu-item">
-                <a href="/blogs">К списку блогов </a>
+                <a href="/ru/blogs">RU </a> &nbsp;&nbsp;&nbsp;&nbsp;<a href="/en/blogs">EN </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-3 menu-item">
+                <a href="/{{ app()->getLocale() }}/blogs">
+                {{  app()->getLocale() === "en" ? "Blog list: " : 'К списку блогов:' }} </a>
             </div>
         </div>
     </div>

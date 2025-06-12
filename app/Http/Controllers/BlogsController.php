@@ -60,7 +60,7 @@ class BlogsController extends Controller
         $blog->save();
 
         return redirect()
-            ->route('blogs.index')
+            ->route('blogs.index', ['locale' => app()->getLocale()])
             ->with('success', 'Блог успешно создан');
     }
 

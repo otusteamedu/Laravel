@@ -1,19 +1,22 @@
 
-
     <div class="newscont">
          <div class="newscont__id">
-            <a class="" href="{{ route('blogs.show', ['blog' => $blogId]) }}">{{ $blogId }}</a>
+            {{ $blogId }}
         </div>
         <div class="newscont__title">
-            <a class="" href="{{ route('blogs.show', ['blog' => $blogId]) }}">{{ $title }}</a>
+            {{ $title }}
         </div>
         <div class="newscont__date">
             {{ $date }}
         </div>
-        <div class="newscont__action">
-            <a class="" href="{{ route('blogs.show', ['blog' => $blogId]) }}">Read more</a>
-            <a class="" href="{{ route('blogs.edit', ['blog' => $blog]) }}">Edit</a>
+        {{-- <div class="newscont__action">
+            <a class="" href="{{ route('blogs.show', ['blog' => $blogId, 'locale' => app()->getLocale()]) }}">
+                {{  app()->getLocale() === "en" ? "Read more: " : 'Подробнее:' }}
+            </a>
+            <a class="" href="{{ route('blogs.show', ['blog' => $blogId, 'locale' => app()->getLocale()]) }}">
+                {{  app()->getLocale() === "en" ? "Edit " : 'Редактировать' }}
+            </a>
 
-        </div>
+        </div> --}}
     </div>
 

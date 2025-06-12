@@ -13,10 +13,9 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withMiddleware(function (Middleware $middleware) {
 
         $middleware->append([
-            \App\Http\Middleware\Copyright::class,
             \App\Http\Middleware\Redirect::class,
             \App\Http\Middleware\Logging::class,
-
+            \App\Http\Middleware\SetLocale::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
