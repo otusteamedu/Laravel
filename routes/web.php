@@ -2,10 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 
-// Route::get('/', function () {
-//     return view('welcome');
-// });
-
-// first commit
+Route::get('/', function () {
+    return view('welcome');
+});
 
 Route::resource('blogs', \App\Http\Controllers\BlogsController::class);
