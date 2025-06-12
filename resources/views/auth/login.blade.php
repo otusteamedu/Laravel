@@ -4,17 +4,17 @@
 
 @section('content')
     <div class="mx-auto" style="max-width: 400px;">
-        <h4 class="mt-3 text-center">С возвращением!</h4>
+        <h4 class="mt-3 text-center">{{ __('Welcome back!') }}</h4>
 
         <x-login-form />
 
         <div class="divider-text">
-            <span class=bg-light>ИЛИ ПРОДОЛЖИТЬ ЧЕРЕЗ</span>
+            <span class=bg-light>{{ mb_strtoupper(__('or continue with')) }}</span>
         </div>
         @include('partials.social-login')
 
         <div class="text-center py-3">
-            Еще не зарегистрированы? <a href="{{ route('register') }}" class="text-decoration-none ms-2">Зарегистрироваться</a>
+            {{ __('Not registered yet?') }} <a href="{{ route('register') }}" class="text-decoration-none ms-2">{{ __('Register') }}</a>
         </div>
     </div>
 @endsection

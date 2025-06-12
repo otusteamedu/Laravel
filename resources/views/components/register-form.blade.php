@@ -14,7 +14,7 @@
                 'form-control',
                 'is-invalid' => !empty($errors->get('name'))
             ]) 
-            placeholder="Имя" required autofocus autocomplete="name" >
+            placeholder="{{ __('Name') }}" required autofocus autocomplete="name" >
         <x-invalid-feedback :errors="$errors->get('name')"/>
     </div>
     <div class="mb-3 input-group">
@@ -35,7 +35,7 @@
             'form-control',
             'is-invalid' => !empty($errors->get('password'))
         ]) 
-        placeholder="Пароль" required autocomplete="new-password">
+        placeholder="{{ __('Password') }}" required autocomplete="new-password">
         <x-invalid-feedback :errors="$errors->get('password')"/>
     </div>
     <div class="mb-3 input-group">
@@ -45,10 +45,10 @@
             'form-control',
             'is-invalid' => !empty($errors->get('password_confirmation'))
         ]) 
-        placeholder="Подтвердите пароль" required autocomplete="new-password">
+        placeholder="{{ __('Confirm Password') }}" required autocomplete="new-password">
         <x-invalid-feedback :errors="$errors->get('password_confirmation')"/>
     </div>                                      
     <div class="form-group mb-3">
-        <button type="submit" class="btn btn-primary w-100">Зарегистрироваться</button>
+        <button type="submit" class="btn btn-primary w-100">{{ __('Register') }}</button>
     </div>
 </form>
