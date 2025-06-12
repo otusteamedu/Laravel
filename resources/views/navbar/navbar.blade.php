@@ -22,9 +22,8 @@
                             ])>Проекты</a>
                     </li>
                 @endauth
-                @endphp
             </ul>
-            <div class="ms-auto navbar-nav ">
+            <div class="ms-auto navbar-nav">
                 @include('navbar.sign-desktop')
             </div>
         </div>
