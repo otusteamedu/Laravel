@@ -18,6 +18,7 @@ class Blog extends Model
         'title',
         'preview',
         'text',
+        'author_id',
         'created_at',
         'updated_at',
     ];

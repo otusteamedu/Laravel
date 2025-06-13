@@ -84,7 +84,15 @@ img {
 }
 
 .newscont__action {
-    width: 30%;
+    width: 20%;
+}
+
+.newscont__action a {
+    margin-right: 10px;
+}
+
+.newscont__author {
+    width: 10%;
 }
 
 .mb-40 {
@@ -136,6 +144,19 @@ img {
 
 .editfield input, .editfield textarea {
     padding: 10px;
+}
+
+.topmenu {
+    display: flex;
+}
+
+.topmenu__col1 {
+    width: 50%;
+}
+
+.topmenu__col2 {
+    width: 50%;
+    text-align: right;
 }
 
 /* ====================       450px       ====================================== */
