@@ -23,6 +23,19 @@
                     </li>
                 @endauth
             </ul>
+            <ul class="navbar-nav">
+                <li class="nav-item dropdown">
+                    <span class="nav-link dropdown-toggle" id="localeDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="fa-solid fa-globe me-2"></i>
+                        <span class="app-locale">{{ $locales[App::getLocale()] }}</span>
+                    </span>
+                    <ul class="dropdown-menu" aria-labelledby="localeDropdown">
+                        @foreach($locales as $locale => $localeName)
+                            <li><a class="dropdown-item" href="{{ route('locale.set',['locale' => $locale]) }}">{{ $localeName }}</a></li>
+                        @endforeach
+                    </ul>
+                </li>
+            </ul>
             <div class="navbar-nav">
                 @include('navbar.sign-desktop')
             </div>
@@ -60,6 +73,18 @@
                     ])><i class="fa-solid fa-circle-check pe-2"></i>{{ __('About the service') }}
                 </a>
             </li>
+            <li class="accordion nav-item" id="accordionLocale">
+                <a class="nav-link collapsed" role="button" data-bs-toggle="collapse" data-bs-target="#collapseLocale" aria-expanded="false" aria-controls="collapseLocale">
+                        <i class="fa-solid fa-globe me-2"></i>
+                        {{ $locales[App::getLocale()] }}
+                </a>
+                <div id="collapseLocale" class="accordion-collapse collapse ps-4" aria-labelledby="collapseLocale" data-bs-parent="#accordionLocale">
+                    @foreach($locales as $locale => $localeName)
+                        <a class="nav-link" href="{{ route('locale.set',['locale' => $locale]) }}">{{ $localeName }}</a>
+                    @endforeach
+                </div>
+            </li>
+
             @include('navbar.sign-mobile')
         </ul>
     </div>
