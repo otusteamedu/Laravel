@@ -23,7 +23,7 @@ class OutputDTO
         public string $examDate,
         public string $routeName,
         public string $pointName,
-        public string $lastPassedExamDate,
+        public string|null $lastPassedExamDate,
         public string $examResult
     )
     {

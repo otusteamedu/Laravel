@@ -14,6 +14,7 @@ use App\Modules\ISS\database\seeders\RealEducationRoutePointSeeder;
 use App\Modules\ISS\database\seeders\RealEducationRoutesOfUserSeeder;
 use App\Modules\ISS\database\seeders\UserRoleSeeder;
 use App\Modules\ISS\database\seeders\UserDataSeeder;
+use App\Modules\ISS\database\seeders\FillInitialDataSeeder;
 
 
 class BaseISSSeeder extends Seeder
@@ -23,16 +24,18 @@ class BaseISSSeeder extends Seeder
      */
     public function run(): void
     {
-        $this->call(EducationRouteSeeder::class);
-        $this->call(EducationRoutePointSeeder::class);
-        $this->call(EducationMaterialTypeSeeder::class);
-        $this->call(EducationMaterialSeeder::class);
-        $this->call(ExamQuestionTypeSeeder::class);
-        $this->call(ExamQuestionSeeder::class);
-        $this->call(ExamAnswerSeeder::class);
-        $this->call(RealEducationRoutePointSeeder::class);
-        $this->call(RealEducationRoutesOfUserSeeder::class);
-        $this->call(UserRoleSeeder::class);
-        $this->call(UserDataSeeder::class);
+        //$this->call(EducationRouteSeeder::class);
+        //$this->call(EducationRoutePointSeeder::class);
+        //$this->call(EducationMaterialTypeSeeder::class);
+        //$this->call(EducationMaterialSeeder::class);
+        //$this->call(ExamQuestionTypeSeeder::class);
+        //$this->call(ExamQuestionSeeder::class);
+        //$this->call(ExamAnswerSeeder::class);
+        //$this->call(RealEducationRoutePointSeeder::class);
+        //$this->call(RealEducationRoutesOfUserSeeder::class);
+        //$this->call(UserRoleSeeder::class);
+        //$this->call(UserDataSeeder::class);
+
+        $this->call(FillInitialDataSeeder::class);
     }
 }

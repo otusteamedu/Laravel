@@ -15,7 +15,7 @@ Route::prefix('/iss')
     Route::get('/', [IssStartPageController::class, 'index'])
         ->name('iss');
 
-
+    
         //страница пользователя
         Route::get('/user/{issUserId}', [IssUserPageController::class, 'userAccount'])
             ->name('issUser');
