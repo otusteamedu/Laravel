@@ -58,10 +58,14 @@
 
             <p class="fw-bold fs-5">Общая стоимость: {{ Illuminate\Support\Number::format($total, locale: 'ru') }} руб.</p>
 
-            <form action="{{ route('cart.clear') }}" method="POST">
-                @csrf
-                <button type="submit" class="btn btn-danger mb-4">Очистить корзину</button>
-            </form>
+            <div class="d-flex align-items-start">
+                <a href="{{ route('cart.order') }}" class="btn btn-success">Оформить заказ</a>
+                <form action="{{ route('cart.clear') }}" method="POST">
+                    @csrf
+                    <button type="submit" class="btn btn-danger mb-4 ms-1">Очистить корзину</button>
+                </form>
+            </div>
+            
             @endif
 
             <div>

@@ -71,4 +71,20 @@ class CartController extends Controller
             'success' => true,
         ]);
     }
+
+    public function order(): View
+    {
+        $cart = $this->service->getCart();
+        $total = $this->service->calculateTotal($cart);
+        $address = $this->service->getAddress();
+        $deliveryPrice = $this->service->getDeliveryPrice();
+        
+        if (!empty($address) && empty($deliveryPrice)) {
+            $address .= ' - К сожалению, на ваш адрес доставка не осуществляется. Возможен только самовывоз';
+        }
+        $address = !empty($address) ? $address : 'Самовывоз';
+        $totalPrice = $total + $deliveryPrice;
+        
+        return view('cabinet.order', compact('cart', 'total', 'address', 'deliveryPrice', 'totalPrice'));
+    }
 }

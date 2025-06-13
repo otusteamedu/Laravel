@@ -22,6 +22,7 @@ Route::delete('/cart/remove/{productId}', [CartController::class, 'remove'])->na
 Route::post('/cart/clear', [CartController::class, 'clear'])->name('cart.clear');
 Route::post('/cart/delivery', [CartController::class, 'delivery'])->name('cart.delivery');
 Route::post('/cart/pickup', [CartController::class, 'pickup'])->name('cart.pickup');
+Route::get('/cart/order', [CartController::class, 'order'])->name('cart.order');
 
 Route::view('/admin', 'admin.index')->name('admin.index')->middleware('can:employee-access');
 

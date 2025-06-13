@@ -24,6 +24,13 @@ class CartService
         return $address;
     }
 
+    public function getDeliveryPrice(): string
+    {
+        $delivery =  session()->get('delivery', []);
+        $price = $delivery['zonePrice'] ?? 0;
+        return $price;
+    }
+
     public function getLat(): string
     {
         $delivery =  session()->get('delivery', []);
@@ -106,12 +113,16 @@ class CartService
         
         $lat = $data['lat'];
         $lon = $data['lon'];
-        $zone = $this->zoneRepository->fetchZone($lon, $lat);
+        $zoneData = $this->zoneRepository->fetchZone($lon, $lat);
+        $zoneTitle = $zoneData['title'] ?? '';
+        $zonePrice = $zoneData['price'] ?? 0;
+
         $delivery = [
             'lat' => $data['lat'],
             'lon' => $data['lon'],
             'address' => $data['address'],
-            'zone' => $zone,
+            'zoneTitle' => $zoneTitle,
+            'zonePrice' => $zonePrice,
         ];
         session()->put('delivery', $delivery);
     }
