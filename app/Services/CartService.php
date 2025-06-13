@@ -130,4 +130,9 @@ class CartService
     public function unsetDelivery(): void{
         session()->forget('delivery');
     }
+
+    public function checkCartNotEmpty(): bool
+    {
+        return session()->has('cart');
+    }
 }
