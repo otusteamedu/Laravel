@@ -3,8 +3,12 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
+// Route::get('/', function () {
+//     return view('welcome');
+// });
+
 Route::get('/', function () {
-    return view('welcome');
+    return redirect('/blogs');
 });
 
 Route::get('/dashboard', function () {
@@ -17,6 +21,6 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::resource('blogs', \App\Http\Controllers\BlogsController::class);
+Route::resource('blogs', \App\Http\Controllers\BlogsController::class)->middleware('auth');
 
 require __DIR__.'/auth.php';

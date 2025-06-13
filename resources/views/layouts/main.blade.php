@@ -7,10 +7,14 @@
 
 @section('head-bottom')
     <div class="container">
-        <div class="row">
-            <div class="col-3 menu-item">
+        <div class="topmenu">
+            <div class="topmenu__col1">
                 <a href="/blogs">К списку блогов </a>
             </div>
+            <div class="topmenu__col2">
+                <a href="/dashboard">User: {{ Auth::user()->name }} </a>
+            </div>
+
         </div>
     </div>
 @endsection

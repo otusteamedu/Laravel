@@ -39,6 +39,8 @@
                        required>
             </div>
 
+            <input type="hidden" name="author_id" id="author_id" value="{{ Auth::user()->id  }}" />
+
             <div class="mb-4 editfield">
                 <label for="preview">Preview</label>
                 <textarea name="preview" id="preview" cols="100" rows="5" class=" {{$errors->has('title') ? 'invalid' : ''}}" required>{{ old('preview', $preview ?? '') }}</textarea>

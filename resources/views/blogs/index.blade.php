@@ -1,4 +1,9 @@
-@php use App\Models\Blog; @endphp
+@php
+    use App\Models\Blog;
+    use App\Models\User;
+
+@endphp
+
 @extends ('layouts.main')
 
 @php
@@ -14,6 +19,25 @@
             <a href="{{ route('blogs.create') }}">Create Blog</a>
         </button>
     </div>
+    <div class="newscont">
+         <div class="newscont__id">
+            Id
+        </div>
+        <div class="newscont__title">
+            Title
+        </div>
+        <div class="newscont__date">
+            Date_create
+        </div>
+        <div class="newscont__action">
+            Action
+        </div>
+        <div class="newscont__author">
+            Author_id
+        </div>
+    </div>
+
+
 
     @foreach($blogs as $blog)
             @include('blogs.components.blog', [
@@ -21,6 +45,7 @@
                 'date' => $blog->created_at->format('d-m-Y H-i-s'),
                 'title' => $blog->title,
                 'preview' => $blog->preview,
+                'author_id' => User::where('id', $blog->author_id)->first()->name,
                 'body' => $blog->text,
                 'blog' => $blog,
             ])

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\UpdateBlogRequest;
 use App\Models\Blog;
+use Illuminate\Contracts\Auth\Access\Gate;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
@@ -56,6 +57,7 @@ class BlogsController extends Controller
         $blog->title = $request->input('title');
         $blog->preview = $request->input('preview');
         $blog->text = $request->input('text');
+        $blog->author_id = $request->input('author_id');
 
         $blog->save();
 
@@ -76,8 +78,12 @@ class BlogsController extends Controller
      * - Здесь не передаем модель, а только примитивные данные, которые необходимы для шаблона
      * - Не используем compact()
      */
-    public function edit(Blog $blog): View
+    public function edit(Blog $blog, Gate $gate): View
     {
+        if (! $gate->allows('blogs.update', $blog)) {
+            abort(403, 'You are not allowed to edit this blog');
+        }
+
         return view('blogs.edit', [
             'blogId' => $blog->id,
             'title' => $blog->title,
