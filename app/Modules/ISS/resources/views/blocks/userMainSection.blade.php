@@ -20,8 +20,10 @@
                 <tbody>
                 @foreach($userParameters as $key => $val)
                     <tr>
+                        @if($key != 'userAvatar')
                         <td>{{$key}}</td>
                         <td>{{$val}}</td>
+                        @endif
                     </tr>
                 @endforeach
                 </tbody>

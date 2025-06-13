@@ -16,7 +16,7 @@ use Illuminate\Notifications\Notifiable;
  * @property string $organization
  * @property string $second_name
  * @property string $last_name
- * @property string $user_role
+ * @property string $user_role роль пользователя для главного прил-я (emp \ admin)
  * @property \datetime $created_at
  * @property \datetime $updated_at
  * @property \datetime $deleted_at
