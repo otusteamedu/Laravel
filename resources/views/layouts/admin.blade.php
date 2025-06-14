@@ -110,7 +110,7 @@
         <div class="w-100 d-none d-md-block"></div>
         <div class="navbar-nav">
             <div class="nav-item text-nowrap">
-                <a class="nav-link px-3" href="{{ route('home') }}">
+                <a class="nav-link px-3" href="{{ route('home', ['locale' => app()->getLocale()]) }}">
                     <i class="fas fa-home"></i> <span class="d-none d-sm-inline">На сайт</span>
                 </a>
             </div>

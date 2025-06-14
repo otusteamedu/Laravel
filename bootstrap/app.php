@@ -5,6 +5,7 @@ use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
 use App\Http\Middleware\AdminMiddleware;
 use Illuminate\Support\Facades\Route;
+use App\Http\Middleware\SetLocaleMiddleware;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -19,13 +20,19 @@ return Application::configure(basePath: dirname(__DIR__))
         },
     )
     ->withMiddleware(function (Middleware $middleware) {
-        $middleware->alias([
-           'check_admin' => AdminMiddleware::class
-        ]);
+
+        $middleware->alias(
+            [
+               'check_admin' => AdminMiddleware::class,
+               'locale' => SetLocaleMiddleware::class,
+            ]
+        );
+
         $middleware->appendToGroup('admin', [
             'auth',
             'check_admin',
         ]);
+
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //
