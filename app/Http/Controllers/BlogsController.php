@@ -69,6 +69,8 @@ class BlogsController extends Controller
      */
     public function show(Blog $blog, Factory $viewFactory)
     {
+        dump($blog);
+
         return $viewFactory->make('blogs.show', compact('blog'));
     }
 

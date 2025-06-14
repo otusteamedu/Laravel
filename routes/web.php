@@ -2,8 +2,6 @@
 
 use Illuminate\Support\Facades\Route;
 
-// Route::resource('blogs', \App\Http\Controllers\BlogsController::class);
-
 Route::group([
     'prefix' => '{locale}',
     'where' => ['locale' => '[a-zA-Z]{2}'],
@@ -12,8 +10,6 @@ Route::group([
     Route::get('/', function () {
         return view('welcome');
     });
-
-    // Route::get('/home', 'HomeController@index')->name('home');
 
     Route::resource('blogs', \App\Http\Controllers\BlogsController::class);
 

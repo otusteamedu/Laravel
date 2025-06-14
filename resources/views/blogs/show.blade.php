@@ -1,6 +1,6 @@
 @extends ('layouts.main')
 
-@props(['$blogId', 'title', 'preview', 'text', 'body', ])
+@props(['$blogId', 'app()->getLocale()', 'title', 'preview', 'text', 'body', ])
 
 @php
 /**

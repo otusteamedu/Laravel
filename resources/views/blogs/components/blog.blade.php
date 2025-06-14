@@ -1,3 +1,4 @@
+@php use App\Models\Blog; @endphp
 
     <div class="newscont">
          <div class="newscont__id">
@@ -11,12 +12,15 @@
         </div>
         <div class="newscont__action">
             <a class="" href="{{ route('blogs.show', ['blog' => $blogId, 'locale' => app()->getLocale()]) }}">
-                {{  app()->getLocale() === "en" ? "Read more: " : 'Подробнее:' }}
+                {{  app()->getLocale() === "en" ? "Read more  " : 'Подробнее' }}
             </a>
-            <a class="" href="{{ route('blogs.show', ['blog' => $blogId, 'locale' => app()->getLocale()]) }}">
-                {{  app()->getLocale() === "en" ? "Edit " : 'Редактировать' }}
-            </a>
+            &nbsp;&nbsp;&nbsp;
+            {{-- <a class="" href="{{ route('blogs.show', ['blog' => $blogId, 'locale' => app()->getLocale()] ) }}">
+                {{  app()->getLocale() === "en" ? "Edit   " : 'Редактировать' }}
+            </a> --}}
 
         </div>
+
     </div>
+
 
