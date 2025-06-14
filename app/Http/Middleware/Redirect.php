@@ -3,6 +3,8 @@
 namespace App\Http\Middleware;
 
 use Closure;
+use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Для заданных страниц элементов блога делаем редирект на страницу раздела
@@ -15,7 +17,7 @@ class Redirect
         'blogs/5',
     ];
 
-    public function handle($request, Closure $next)
+    public function handle(Request $request, Closure $next): Response
     {
 
         if (in_array($request->path(), static::$arUrls)) {

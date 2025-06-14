@@ -9,7 +9,7 @@
         <div class="newscont__date">
             {{ $date }}
         </div>
-        {{-- <div class="newscont__action">
+        <div class="newscont__action">
             <a class="" href="{{ route('blogs.show', ['blog' => $blogId, 'locale' => app()->getLocale()]) }}">
                 {{  app()->getLocale() === "en" ? "Read more: " : 'Подробнее:' }}
             </a>
@@ -17,6 +17,6 @@
                 {{  app()->getLocale() === "en" ? "Edit " : 'Редактировать' }}
             </a>
 
-        </div> --}}
+        </div>
     </div>
 
