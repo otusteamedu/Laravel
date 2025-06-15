@@ -17,6 +17,8 @@ use Illuminate\Http\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Gate;
+use App\Exports\UsersExport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class UserController extends Controller
 {
@@ -162,5 +164,10 @@ class UserController extends Controller
         }
 
         return redirect()->route('admin.users.index');
+    }
+
+    public function export() 
+    {
+        return Excel::download(new UsersExport($this->service), 'users.xlsx');
     }
 }

@@ -17,6 +17,7 @@
 
     <div class="my-4">
         <a href="{{ route('admin.orders.create') }}" class="btn btn-primary">Создать заказ</a>
+        <a href="{{ route('admin.orders.export') }}" class="btn btn-success">Экспорт в Excel</a>
     </div>
 
     <table class="table">

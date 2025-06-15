@@ -17,6 +17,7 @@
 
     <div class="my-4">
         <a href="{{ route('admin.users.create') }}" class="btn btn-primary">Создать нового пользователя</a>
+        <a href="{{ route('admin.users.export') }}" class="btn btn-success">Экспорт в Excel</a>
     </div>
 
     <table class="table">

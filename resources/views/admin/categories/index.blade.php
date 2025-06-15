@@ -17,6 +17,7 @@
 
     <div class="my-4">
         <a href="{{ route('admin.categories.create') }}" class="btn btn-primary">Создать категорию</a>
+        <a href="{{ route('admin.categories.export') }}" class="btn btn-success">Экспорт в Excel</a>
     </div>
 
     <table class="table">

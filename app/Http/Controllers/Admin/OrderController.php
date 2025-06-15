@@ -15,6 +15,8 @@ use App\Services\OrdersService;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use App\Exceptions\OrderNotFoundException;
 use Illuminate\Http\RedirectResponse;
+use App\Exports\OrdersExport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class OrderController extends Controller
 {
@@ -154,5 +156,10 @@ class OrderController extends Controller
         }
 
         return redirect()->route('admin.orders.index');
+    }
+
+    public function export() 
+    {
+        return Excel::download(new OrdersExport($this->service), 'orders.xlsx');
     }
 }

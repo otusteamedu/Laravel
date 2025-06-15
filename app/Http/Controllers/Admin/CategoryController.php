@@ -13,6 +13,8 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use App\Exports\CategoriesExport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class CategoryController extends Controller
 {
@@ -131,5 +133,10 @@ class CategoryController extends Controller
         }
 
         return redirect()->route('admin.categories.index');
+    }
+
+    public function export() 
+    {
+        return Excel::download(new CategoriesExport($this->service), 'categories.xlsx');
     }
 }

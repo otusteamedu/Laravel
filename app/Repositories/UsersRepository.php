@@ -20,7 +20,7 @@ class UsersRepository
      */
     public function fetchAll(): Collection
     {
-        return User::all();
+        return User::with(['role'])->get();
     }
 
     /**

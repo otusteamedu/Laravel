@@ -31,6 +31,17 @@ Route::prefix('admin')
     ->namespace('App\Http\Controllers\Admin')
     ->middleware('can:employee-access')
     ->group(function () {
+        Route::get('/categories/export', [App\Http\Controllers\Admin\CategoryController::class, 'export'])
+            ->middleware('can:admin-access')
+            ->name('categories.export');
+        Route::get('/products/export', [App\Http\Controllers\Admin\ProductController::class, 'export'])
+            ->middleware('can:admin-access')
+            ->name('products.export');
+        Route::get('/orders/export', [App\Http\Controllers\Admin\OrderController::class, 'export'])
+            ->name('orders.export');
+        Route::get('/users/export', [App\Http\Controllers\Admin\UserController::class, 'export'])
+            ->name('users.export');
+
         Route::resource('/categories', CategoryController::class)->middleware('can:admin-access');
         Route::resource('/products', ProductController::class)->middleware('can:admin-access');
         Route::resource('/orders', OrderController::class);

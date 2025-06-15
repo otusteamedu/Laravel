@@ -15,6 +15,8 @@ use Illuminate\Http\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Illuminate\Support\Number;
 use Illuminate\Http\RedirectResponse;
+use App\Exports\ProductsExport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class ProductController extends Controller
 {
@@ -163,5 +165,10 @@ class ProductController extends Controller
         }
 
         return redirect()->route('admin.products.index');
+    }
+
+    public function export() 
+    {
+        return Excel::download(new ProductsExport($this->service), 'products.xlsx');
     }
 }
