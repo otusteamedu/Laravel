@@ -13,8 +13,10 @@ class LocalizationController extends Controller
 
         if (in_array($locale, array_keys(config()->get('locale.available_locales')))) {
             $request->session()->put('locale', $locale);
+
+            return redirect()->back();
         }
 
-        return redirect()->back();
+        return redirect()->back()->with('error',  __("Localization :locale not available yet", ['locale' => $locale]));
     }
 }
