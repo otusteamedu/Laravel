@@ -9,9 +9,13 @@
 
 @section('content')
     <div class="flex items-center justify-between">
-        <h1>Blogs</h1>
+        <h1>
+            {{  app()->getLocale() === "en" ? "Blogs " : 'Блоги' }}
+        </h1>
         <button class="mb-40">
-            <a href="{{ route('blogs.create') }}">Create Blog</a>
+            <a href="{{ route('blogs.create', app()->getLocale()) }}">
+                {{  app()->getLocale() === "en" ? "Create Blog" : 'Создать блог' }}
+            </a>
         </button>
     </div>
 

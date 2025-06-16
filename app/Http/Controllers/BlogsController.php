@@ -38,9 +38,9 @@ class BlogsController extends Controller
         \Illuminate\Contracts\Auth\Factory $auth
     ): RedirectResponse {
         $validator = $validationFactory->make(request()->all(), [
-            'title' => ['required', 'min:10', 'max: 255'],
-            'preview' => ['min:10'],
-            'text' => ['required', 'min:10'],
+            'title' => ['required', 'min:3', 'max: 255'],
+            'preview' => ['min:7'],
+            'text' => ['required', 'min:7'],
         ]);
 
         try {
@@ -60,15 +60,18 @@ class BlogsController extends Controller
         $blog->save();
 
         return redirect()
-            ->route('blogs.index')
+            ->route('blogs.index', ['locale' => app()->getLocale()])
             ->with('success', 'Блог успешно создан');
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Blog $blog, Factory $viewFactory)
+    public function show($locale, $blogId, Factory $viewFactory)
     {
+        $blogObj = new Blog;
+        $blog = $blogObj->find($blogId);
+
         return $viewFactory->make('blogs.show', compact('blog'));
     }
 
@@ -76,8 +79,11 @@ class BlogsController extends Controller
      * - Здесь не передаем модель, а только примитивные данные, которые необходимы для шаблона
      * - Не используем compact()
      */
-    public function edit(Blog $blog): View
+    public function edit($blog, $blogId): View
     {
+        $blogObj = new Blog;
+        $blog = $blogObj->find($blogId);
+
         return view('blogs.edit', [
             'blogId' => $blog->id,
             'title' => $blog->title,
@@ -89,16 +95,19 @@ class BlogsController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateBlogRequest $request, Blog $blog)
+    public function update(UpdateBlogRequest $request, $locale, $blogId)
     {
         $requestData = $request->validated();
+
+        $blogObj = new Blog;
+        $blog = $blogObj->find($blogId);
 
         $blog->title = $requestData['title'];
         $blog->preview = $requestData['preview'];
         $blog->text = $requestData['text'];
         $blog->save();
 
-        return redirect()->route('blogs.show', ['blog' => $blog]);
+        return redirect()->route('blogs.show', ['blog' => $blog, 'locale' => $locale]);
     }
 
     /**
