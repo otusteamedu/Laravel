@@ -25,7 +25,8 @@
             </ul>
         @endif
 
-        <form action="{{ isset($blogId) ? route('blogs.update', app()->getLocale()) : route('blogs.store', app()->getLocale()) }}" method="POST">
+        <form action="{{ isset($blogId) ? route('blogs.update', ['blog' => $blogId, 'locale' => app()->getLocale()]) :
+            route('blogs.store', ['locale' => app()->getLocale()]) }}" method="POST">
             @csrf
             @if (isset($blogId))
                 @method('PUT')
@@ -36,17 +37,18 @@
                 <input type="text" name="title" id="title" value="{{ old('title', $title ?? '') }}"
                        class="{{$errors->has('title') ? 'invalid' : ''}}"
                        style="width: 1040px"
+                       placeholder="min 3 symbols"
                        required>
             </div>
 
             <div class="mb-4 editfield">
                 <label for="preview">Preview</label>
-                <textarea name="preview" id="preview" cols="100" rows="5" class=" {{$errors->has('title') ? 'invalid' : ''}}" required>{{ old('preview', $preview ?? '') }}</textarea>
+                <textarea name="preview" id="preview" cols="100" rows="5" class=" {{$errors->has('title') ? 'invalid' : ''}}" placeholder="min 7 symbols" required>{{ old('preview', $preview ?? '') }}</textarea>
             </div>
 
             <div class="mb-4 editfield">
                 <label for="text">Text</label>
-                <textarea name="text" id="text" cols="100" rows="5" class=" {{$errors->has('title') ? 'invalid' : ''}}" required>{{ old('text', $text ?? '') }}</textarea>
+                <textarea name="text" id="text" cols="100" rows="5" class=" {{$errors->has('title') ? 'invalid' : ''}}" placeholder="min 7 symbols" required>{{ old('text', $text ?? '') }}</textarea>
             </div>
 
             <div>

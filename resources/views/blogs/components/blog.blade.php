@@ -15,9 +15,9 @@
                 {{  app()->getLocale() === "en" ? "Read more  " : 'Подробнее' }}
             </a>
             &nbsp;&nbsp;&nbsp;
-            {{-- <a class="" href="{{ route('blogs.show', ['blog' => $blogId, 'locale' => app()->getLocale()] ) }}">
+            <a class="" href="{{ route('blogs.show', ['blog' => $blogId, 'locale' => app()->getLocale()] ) }}">
                 {{  app()->getLocale() === "en" ? "Edit   " : 'Редактировать' }}
-            </a> --}}
+            </a>
 
         </div>
 

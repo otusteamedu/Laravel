@@ -1,6 +1,6 @@
 @extends ('layouts.main')
 
-@props(['$blogId', 'app()->getLocale()', 'title', 'preview', 'text', 'body', ])
+@props(['$blogId', 'blog', 'app()->getLocale()', 'title', 'preview', 'text', 'body', ])
 
 @php
 /**
@@ -32,7 +32,7 @@
         </div>
 
         <div>
-            <a href="{{ route('blogs.edit', ['blog' => $blog, 'locale' => app()->getLocale()]) }}">
+            <a href="{{ route('blogs.edit', ['blog' => $blog->id , 'locale' => app()->getLocale()]) }}">
                 {{  app()->getLocale() === "en" ? "Edit" : 'Редактировать' }}
 
             </a>
