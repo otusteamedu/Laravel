@@ -12,7 +12,6 @@ Route::view('/', 'pages.index')->name('home');
 Route::view('/about', 'pages.about')->name('about');
 
 Route::get('locale/{locale}', LocalizationController::class)
-    ->whereIn('locale', array_keys(config()->get('locale.available_locales')))
     ->name('locale.set');
 
 Route::middleware('auth')->group(function () {

@@ -51,12 +51,23 @@ class AppLocaleTest extends TestCase
         $this->assertEquals($newLocale, App::getLocale());
     }
 
-    public function test_app_locale_unavailable(): void
+    public function test_app_locale_cant_change_if_unavailable(): void
     {
+        $appLocale = App::getLocale();
+        $availableLocales = Config::get('locale.available_locales');
+        $current = sprintf('<span class="app-locale">%s</span>', $availableLocales[$appLocale]);
+
         $response = $this->get(route('home'));
         $response->assertOk();
+        $response->assertSee($current, false);
 
         $response = $this->get(route('locale.set', ['locale' => '00']));
-        $response->assertStatus(404);
+        $response->assertRedirect(route('home'));
+
+        $response = $this->get(route('home'));
+        $response->assertOk();
+        $response->assertSee($current, false);
+
+        $this->assertEquals($appLocale, App::getLocale());
     }
 }

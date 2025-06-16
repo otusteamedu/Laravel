@@ -9,7 +9,11 @@ class LocalizationController extends Controller
 {
     public function __invoke(Request $request): RedirectResponse
     {
-        $request->session()->put('locale', $request->locale);
+        $locale = $request->locale;
+
+        if (in_array($locale, array_keys(config()->get('locale.available_locales')))) {
+            $request->session()->put('locale', $locale);
+        }
 
         return redirect()->back();
     }
