@@ -2,16 +2,16 @@
 
 namespace App\Services\TeamPlayer;
 
-class PlayerData
+final class PlayerData
 {
 
-    private ?int $id;
-    private string $nickname;
-    private string $name;
-    private string $position;
-    private int $team_id;
-    private int $price;
-    private ?string $avatar_path;
+    public ?int $id;
+    public string $nickname;
+    public string $name;
+    public string $position;
+    public int $team_id;
+    public int $price;
+    public ?string $avatar_path;
 
 
     public function __construct(array $data)
@@ -38,40 +38,4 @@ class PlayerData
             'avatar_path' => $this->avatar_path,
         ];
     }
-
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
-
-    public function getNickname(): string
-    {
-        return $this->nickname;
-    }
-
-    public function getName(): string
-    {
-        return $this->name;
-    }
-
-    public function getPosition(): string
-    {
-        return $this->position;
-    }
-
-    public function getTeamId(): int
-    {
-        return $this->team_id;
-    }
-
-    public function getPrice(): int
-    {
-        return $this->price;
-    }
-
-    public function getAvatarPath(): ?string
-    {
-        return $this->avatar_path;
-    }
-
 }

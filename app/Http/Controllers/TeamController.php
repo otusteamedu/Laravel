@@ -10,6 +10,7 @@ use App\Services\Team\TeamsViewService;
 use App\Services\Team\TeamUpdateService;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Storage;
 use Throwable;
 
@@ -31,6 +32,7 @@ class TeamController extends Controller
      */
     public function create(): View
     {
+        Gate::authorize('team.create');
         return view('teams.create');
     }
 
@@ -82,6 +84,7 @@ class TeamController extends Controller
         TeamsViewService $teamsViewService,
     ): View
     {
+        Gate::authorize('team.update', $id);
         $data['team'] = $teamsViewService->fetchOne($id);
 
         if (is_null($data['team'])) {
@@ -130,6 +133,7 @@ class TeamController extends Controller
         TeamDestroyService $teamDestroyService,
     ): RedirectResponse
     {
+        Gate::authorize('team.delete', $id);
         try {
             $teamDestroyService->handle($id);
         } catch (Throwable $e) {
