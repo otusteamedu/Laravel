@@ -7,13 +7,17 @@ use App\Models\Post;
 use App\Models\PostPreview;
 use App\Models\User;
 use App\Queries\UserQueries;
+use Illuminate\Contracts\Cache\LockTimeoutException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Auth;
+use function PHPUnit\Framework\returnArgument;
 
 Route::get('/', function () {
-    return view('welcome');
+    return Cache::remember('main-page:' . Auth::id(), 10, fn() => view('welcome')->render());
 });
 
 Route::view('/page', 'page');
@@ -177,6 +181,90 @@ Route::group(['prefix' => '/e'], function () {
 
     Route::get("/poly", function () {
         Post::find(1);
+    });
+});
+
+Route::group(['prefix' => '/cache'], function () {
+    Route::get('/get', function () {
+        // $cachedUsers = Cache::get('users');
+
+        // if (is_null($cachedUsers)) {
+        //     $cachedUsers = $users = User::all();
+        //     Cache::set('users', $users, 10);
+        // }
+
+
+        $cachedUsers = Cache::remember('users', 10, function () {
+            return User::all();
+
+        });
+
+        return $cachedUsers;
+
+        // return Cache::remember("name", 70, fn() => "rember");
+        // return Cache::get('name', 'anon');
+    });
+
+    Route::get('/set', function () {
+        return Cache::set('name', 'Kate', 5);
+    });
+
+    Route::get('lock', function () {
+        $lock = Cache::lock("monthly_report_generation", 10);
+
+        try {
+            $lock->block(3);
+            dump($lock);
+            sleep(7);
+            $lock->release();
+            return "ok";
+        } catch (LockTimeoutException $e) {
+            return "locked";
+        }
+    });
+
+    Route::get('/optional', function () {
+        $obj = null;
+        dump(optional($obj)->name());
+        return '';
+    });
+
+    Route::get('/set-tags', function () {
+        Cache::tags(['people', 'admins'])->set('current_admin', 'John');
+        Cache::tags(['people', 'users'])->set('current_user', 'Kate');
+
+        return "ok";
+    });
+
+    Route::get('/get-tags', function () {
+        return Cache::tags(['people', 'admins'])->get('current_admin', 'anon');
+    });
+    Route::get('/flush-tags', function () {
+        return Cache::tags(['admins'])->flush();
+    });
+
+    Route::get('/all-posts', function () {
+        $posts = Post::remember(now()->add(20, 'seconds'), 'my-posts')
+            ->cacheTags(['posts'])
+            ->get();
+
+        dump($posts[0]->title);
+        return "";
+    });
+
+    Route::get('/all-posts2', function () {
+        $posts = Post::remember(now()->add(20, 'seconds'))
+            ->cacheTags(['posts'])
+            ->get();
+
+        dump($posts[0]->title);
+        return "";
+    });
+
+    Route::get('/all-posts-flush', function () {
+        Post::flushCache('posts');
+
+        return "ok";
     });
 });
 
