@@ -1,21 +1,24 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Projects;
+use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProjectUsers;
 use App\Http\Controllers\TodoStatuses;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\LocalizationController;
 
 Route::view('/', 'pages.index')->name('home');
 
 Route::view('/about', 'pages.about')->name('about');
+
+Route::get('locale/{locale}', LocalizationController::class)
+    ->name('locale.set');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
-
 
 Route::middleware('auth')
     ->prefix('projects')
