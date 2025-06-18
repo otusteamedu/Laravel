@@ -15,7 +15,7 @@ interface ProjectRepositoryInterface
      * Получить все проекты
      * @return ProjectDTO[]|null
      */
-    public function fetchAll(int $id): ?array;
+    public function fetchAll(): ?array;
 
     /**
      * Получить проект по id

@@ -21,7 +21,7 @@ class ProjectRepository implements ProjectRepositoryInterface
      * Получить все проекты
      * @return ProjectDTO[]|null
      */
-    public function fetchAll(int $id): ?array
+    public function fetchAll(): ?array
     {
         $dbProjects = Project::query()
             ->get();
