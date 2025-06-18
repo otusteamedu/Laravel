@@ -4,7 +4,6 @@ namespace App\Services\Repositories;
 
 use App\Models\ProjectRoleEnum;
 use App\Services\Repositories\DTOs\ProjectDTO;
-use App\Services\Repositories\Todo\TodoFetchDTO;
 use App\Services\Repositories\DTOs\TodoStatusDTO;
 use App\Services\Repositories\DTOs\ProjectUserDTO;
 use App\Services\Repositories\DTOs\InsertTodoStatusesDTO;
@@ -12,6 +11,12 @@ use App\Services\Repositories\DTOs\ProjectInvitedUserDTO;
 
 interface ProjectRepositoryInterface
 {
+    /**
+     * Получить все проекты
+     * @return ProjectDTO[]|null
+     */
+    public function fetchAll(int $id): ?array;
+
     /**
      * Получить проект по id
      * @param int $id

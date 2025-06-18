@@ -18,6 +18,31 @@ use App\Services\Repositories\ProjectRepositoryInterface;
 class ProjectRepository implements ProjectRepositoryInterface
 {
     /**
+     * Получить все проекты
+     * @return ProjectDTO[]|null
+     */
+    public function fetchAll(int $id): ?array
+    {
+        $dbProjects = Project::query()
+            ->get();
+
+        if ($dbProjects === null) {
+            return null;
+        }
+
+        return array_map(
+            fn($project) =>
+            new ProjectDTO(
+                projectId: $project->id,
+                name: $project->name,
+                description: $project->description,
+                created: $project->created_at,
+            ),
+            Arr::from($dbProjects)
+        );
+    }
+
+    /**
      * Получить проект по id
      * @param int $id
      * @return ProjectDTO|null
