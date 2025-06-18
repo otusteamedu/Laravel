@@ -4,7 +4,7 @@ namespace App\Services\Team;
 
 use App\Models\Team;
 
-readonly class TeamCreateService
+class TeamCreateService
 {
 
     public function __construct(

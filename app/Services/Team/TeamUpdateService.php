@@ -4,7 +4,7 @@ namespace App\Services\Team;
 
 use App\Models\Team;
 
-readonly class TeamUpdateService
+class TeamUpdateService
 {
     public function __construct(
         private TeamRepositoryInterface $teamRepository,
