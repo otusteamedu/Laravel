@@ -2,6 +2,7 @@
 
 namespace App\Services\UseCases\Commands\TodoStatus\Delete;
 
+use Illuminate\Support\Facades\Cache;
 use App\Services\Repositories\ProjectRepositoryInterface;
 
 class Handler
@@ -26,6 +27,8 @@ class Handler
         if ($modelDTO) {
             $result = $this->projectRepository->destroyTodoStatus($modelDTO->projectId, $modelDTO->statusId);
         }
+
+        Cache::forget("project_{$command->projectId}_todo_statuses");
 
         return $result;
     }

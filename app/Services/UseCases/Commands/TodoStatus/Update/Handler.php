@@ -2,6 +2,7 @@
 
 namespace App\Services\UseCases\Commands\TodoStatus\Update;
 
+use Illuminate\Support\Facades\Cache;
 use App\Services\Repositories\DTOs\TodoStatusDTO;
 use App\Services\Repositories\ProjectRepositoryInterface;
 
@@ -35,6 +36,8 @@ class Handler
 
             $result = $this->projectRepository->saveTodoStatus($updatedDTO);
         }
+
+        Cache::forget("project_{$command->projectId}_todo_statuses");
 
         return $result;
     }
