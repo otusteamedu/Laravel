@@ -4,17 +4,12 @@ use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\WithdrawController;
 use App\Models\Post;
-use App\Models\PostPreview;
 use App\Models\User;
-use App\Queries\UserQueries;
 use Illuminate\Contracts\Cache\LockTimeoutException;
 use Illuminate\Http\Request;
-use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
-use function PHPUnit\Framework\returnArgument;
 
 Route::get('/', function () {
     return Cache::remember('main-page:' . Auth::id(), 10, fn() => view('welcome')->render());

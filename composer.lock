@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "1e88eaa499c5e4793f6d16bcfcadc599",
+    "content-hash": "92799e5e82c08e4757fac328fd156e42",
     "packages": [
         {
             "name": "brick/math",
@@ -1053,6 +1053,27 @@
                 }
             ],
             "time": "2025-02-03T10:55:03+00:00"
+        },
+        {
+            "name": "ilya-nurullin/img2ascii",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/ilya-nurullin/img2ascii.git",
+                "reference": "70a51f142817a6f4171c1dd9ef13bc1f75aa66ad"
+            },
+            "require": {
+                "ext-gd": "*",
+                "php": ">= 5.3"
+            },
+            "default-branch": true,
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Img2Ascii\\": "src/"
+                }
+            },
+            "time": "2021-09-14T14:55:11+00:00"
         },
         {
             "name": "laravel/framework",
@@ -5711,6 +5732,37 @@
             "time": "2024-12-21T16:25:41+00:00"
         },
         {
+            "name": "vagrant/ascii",
+            "version": "dev-main",
+            "dist": {
+                "type": "path",
+                "url": "../ascii",
+                "reference": "36eff396d93584300dde25d0b70510595ebbf7c0"
+            },
+            "require": {
+                "illuminate/http": "^12.0",
+                "illuminate/support": "^12.0",
+                "ilya-nurullin/img2ascii": "dev-master"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Vagrant\\Ascii\\ServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Vagrant\\Ascii\\": "src/"
+                }
+            },
+            "description": "Image to Ascii generator",
+            "transport-options": {
+                "relative": true
+            }
+        },
+        {
             "name": "vlucas/phpdotenv",
             "version": "v5.6.1",
             "source": {
@@ -8478,8 +8530,10 @@
         }
     ],
     "aliases": [],
-    "minimum-stability": "stable",
-    "stability-flags": [],
+    "minimum-stability": "dev",
+    "stability-flags": {
+        "vagrant/ascii": 20
+    },
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
