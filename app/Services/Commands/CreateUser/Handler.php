@@ -4,14 +4,15 @@ namespace App\Services\Commands\CreateUser;
 
 use App\Models\User;
 use App\Repositories\Users\UserRepositoryInterface;
+use App\Infrastructure\PasswordHasher\PasswordHasherInterface;
 use App\Services\Exceptions\Users\UserEmailAlreadyExistsException;
 use App\Services\Exceptions\Users\UserSaveException;
-use Illuminate\Support\Facades\Hash;
 
 class Handler
 {
     public function __construct(
-        private UserRepositoryInterface $userRepository
+        private UserRepositoryInterface $userRepository,
+        private PasswordHasherInterface $passwordHasher
     ) {
     }
 
@@ -28,7 +29,7 @@ class Handler
         $user->email = $command->email;
 
         if ($command->password) {
-            $user->password = Hash::make($command->password);
+            $user->password = $this->passwordHasher->hash($command->password);
         }
 
         $result = $this->userRepository->save($user);
