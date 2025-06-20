@@ -24,6 +24,12 @@ interface CategoryRepositoryInterface
     public function count(): int;
 
     /**
+     * @param string $name
+     * @return bool
+     */
+    public function existsByName(string $name): bool;
+
+    /**
      * @param int $id
      *
      * @return Category|null

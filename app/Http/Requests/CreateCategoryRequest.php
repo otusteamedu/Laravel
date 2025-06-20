@@ -28,4 +28,20 @@ class CreateCategoryRequest extends FormRequest
             'description' => ['nullable', 'string'],
         ];
     }
+
+    /**
+     * Get custom error messages for validator
+     *
+     * @return array
+     */
+    public function messages()
+    {
+        return [
+            'name.required' => 'Название категории обязательно для заполнения',
+            'name.max' => 'Название категории не должно превышать 255 символов',
+            'name.unique' => 'Категория с таким названием уже существует',
+            'color.required' => 'Цвет категории обязателен для выбора',
+            'color.regex' => 'Неверный формат цвета. Используйте формат #RRGGBB или #RGB',
+        ];
+    }
 }

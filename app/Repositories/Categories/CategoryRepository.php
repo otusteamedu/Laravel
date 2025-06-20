@@ -36,6 +36,15 @@ class CategoryRepository implements CategoryRepositoryInterface
     }
 
     /**
+     * @param string $name
+     * @return bool
+     */
+    public function existsByName(string $name): bool
+    {
+        return Category::where('name', $name)->exists();
+    }
+
+    /**
      * @param int $id
      * @return Category|null
      */
