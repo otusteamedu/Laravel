@@ -36,6 +36,15 @@ class UserRepository implements UserRepositoryInterface
     }
 
     /**
+     * @param string $email
+     * @return bool
+     */
+    public function existsByEmail(string $email): bool
+    {
+        return User::where('email', $email)->exists();
+    }
+
+    /**
      * @param int $id
      * @return User|null
      */

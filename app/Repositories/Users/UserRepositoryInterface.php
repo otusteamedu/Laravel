@@ -26,6 +26,12 @@ interface UserRepositoryInterface
     public function count(): int;
 
     /**
+     * @param string $email
+     * @return bool
+     */
+    public function existsByEmail(string $email): bool;
+
+    /**
      * @param int $id
      * @return User|null
      */

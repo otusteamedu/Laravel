@@ -4,6 +4,8 @@ namespace App\Services\Commands\CreateUser;
 
 use App\Models\User;
 use App\Repositories\Users\UserRepositoryInterface;
+use App\Services\Exceptions\Users\UserEmailAlreadyExistsException;
+use App\Services\Exceptions\Users\UserSaveException;
 use Illuminate\Support\Facades\Hash;
 
 class Handler
@@ -15,6 +17,11 @@ class Handler
 
     public function handle(Command $command): bool
     {
+        // Проверяем, существует ли уже пользователь с таким email
+        if ($this->userRepository->existsByEmail($command->email)) {
+            throw new UserEmailAlreadyExistsException($command->email);
+        }
+
         $user = new User();
 
         $user->name = $command->name;
@@ -24,6 +31,12 @@ class Handler
             $user->password = Hash::make($command->password);
         }
 
-        return $this->userRepository->save($user);
+        $result = $this->userRepository->save($user);
+        
+        if (!$result) {
+            throw new UserSaveException("Не удалось сохранить пользователя '{$command->name}'");
+        }
+
+        return $result;
     }
 } 
