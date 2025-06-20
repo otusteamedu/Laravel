@@ -3,7 +3,6 @@
 namespace App\Repositories\Tasks;
 
 use App\Models\Task;
-use Illuminate\Pagination\LengthAwarePaginator;
 
 class TaskRepository implements TaskRepositoryInterface
 {
@@ -15,11 +14,26 @@ class TaskRepository implements TaskRepositoryInterface
     }
 
     /**
-     * @param int $perPage
-     * @return LengthAwarePaginator
+     * @param int $limit
+     * @param int $offset
+     * @return Task[]
      */
-    public function getAllPaginated(int $perPage = 10): LengthAwarePaginator {
-        return Task::with(['executor', 'category', 'priority'])->orderBy('id', 'desc')->paginate($perPage);
+    public function fetchPaginated(int $limit, int $offset): array
+    {
+        return Task::with(['executor', 'category', 'priority'])
+            ->orderBy('id', 'desc')
+            ->limit($limit)
+            ->offset($offset)
+            ->get()
+            ->all();
+    }
+
+    /**
+     * @return int
+     */
+    public function count(): int
+    {
+        return Task::count();
     }
 
     /**

@@ -3,8 +3,7 @@
 namespace App\Repositories\Categories;
 
 use App\Models\Category;
-use App\Repositories\RepositoryInterface;
-use Illuminate\Pagination\LengthAwarePaginator;
+
 interface CategoryRepositoryInterface
 {
     /**
@@ -13,12 +12,16 @@ interface CategoryRepositoryInterface
     public function fetchAll(): array;
 
     /**
-     * @param string $column
-     * @param        $direction
-     *
-     * @return LengthAwarePaginator
+     * @param int $limit
+     * @param int $offset
+     * @return Category[]
      */
-    public function getAllPaginated( int $perPage = 10): LengthAwarePaginator;
+    public function fetchPaginated(int $limit, int $offset): array;
+
+    /**
+     * @return int
+     */
+    public function count(): int;
 
     /**
      * @param int $id
