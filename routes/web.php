@@ -67,4 +67,14 @@ Route::prefix('admin')
     });
 });
 
+Route::middleware(['auth'])->get('/dashboard', function () {
+    // Здесь можно получить статистику задач пользователя
+    $user = auth()->user();
+    $tasksTotal = $user->tasks()->count();
+    $tasksNew = $user->tasks()->where('status', 'new')->count();
+    $tasksInProgress = $user->tasks()->where('status', 'in_progress')->count();
+    $tasksDone = $user->tasks()->where('status', 'done')->count();
+    return view('dashboard', compact('tasksTotal', 'tasksNew', 'tasksInProgress', 'tasksDone'));
+})->name('dashboard');
+
 require __DIR__.'/auth.php';
