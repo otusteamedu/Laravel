@@ -31,6 +31,7 @@ class CreateController extends Controller
             $command = new Command(
                 name: $request->get('name'),
                 email: $request->get('email'),
+                isAdmin: (bool) $request->get('is_admin', false),
                 password: $request->get('password')
             );
 

@@ -18,10 +18,12 @@ class TaskFactory extends Factory
         return [
             'title' => $this->faker->sentence(),
             'description' => $this->faker->paragraph(rand(1, 3)),
+            'status' => $this->faker->randomElement(['новая', 'в работе', 'выполнена', 'отменена']),
             'due_date' => $this->faker->dateTimeBetween('now', '+30 days'),
             'priority_id' => Priority::inRandomOrder()->first()->id ?? Priority::factory(),
             'category_id' => Category::inRandomOrder()->first()->id ?? Category::factory(),
             'executor_id' => User::inRandomOrder()->first()->id ?? User::factory(),
+            'creator_id' => User::inRandomOrder()->first()->id ?? User::factory(),
             'created_at' => now(),
             'updated_at' => now(),
         ];

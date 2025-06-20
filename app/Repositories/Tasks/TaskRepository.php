@@ -10,7 +10,7 @@ class TaskRepository implements TaskRepositoryInterface
      * @return Task[]
      */
     public function fetchAll(): array {
-        return Task::with(['executor', 'category', 'priority'])->get()->all();
+        return Task::with(['executor', 'category', 'priority', 'creator'])->get()->all();
     }
 
     /**
@@ -20,7 +20,7 @@ class TaskRepository implements TaskRepositoryInterface
      */
     public function fetchPaginated(int $limit, int $offset): array
     {
-        return Task::with(['executor', 'category', 'priority'])
+        return Task::with(['executor', 'category', 'priority', 'creator'])
             ->orderBy('id', 'desc')
             ->limit($limit)
             ->offset($offset)
@@ -41,7 +41,7 @@ class TaskRepository implements TaskRepositoryInterface
      * @return Task|null
      */
     public function find(int $id): ?Task {
-        return Task::with(['executor', 'category', 'priority'])->find($id);
+        return Task::with(['executor', 'category', 'priority', 'creator'])->find($id);
     }
 
     /**
@@ -59,4 +59,4 @@ class TaskRepository implements TaskRepositoryInterface
     public function delete(Task $task): ?bool {
         return $task->delete();
     }
-} 
+}

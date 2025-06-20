@@ -20,6 +20,7 @@
                         <th>#</th>
                         <th>Имя</th>
                         <th>Email</th>
+                        <th>Роль</th>
                         <th>Дата регистрации</th>
                         <th>Действия</th>
                     </tr>
@@ -30,6 +31,13 @@
                             <td>{{ $user->id }}</td>
                             <td>{{ $user->name }}</td>
                             <td>{{ $user->email }}</td>
+                            <td>
+                                @if($user->isAdmin)
+                                    <span class="badge bg-danger">Администратор</span>
+                                @else
+                                    <span class="badge bg-secondary">Пользователь</span>
+                                @endif
+                            </td>
                             <td>{{ $user->createdAt->format('d.m.Y H:i') }}</td>
                             <td>
                                 <div class="d-flex">
@@ -49,7 +57,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="5" class="text-center">Пользователей пока нет</td>
+                            <td colspan="6" class="text-center">Пользователей пока нет</td>
                         </tr>
                     @endforelse
                 </tbody>

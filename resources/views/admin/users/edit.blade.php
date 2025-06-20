@@ -47,6 +47,20 @@
                        id="password_confirmation" name="password_confirmation">
             </div>
             
+            <div class="mb-3">
+                <div class="form-check">
+                    <input type="checkbox" class="form-check-input @error('is_admin') is-invalid @enderror" 
+                           id="is_admin" name="is_admin" value="1" 
+                           {{ old('is_admin', $user->isAdmin) ? 'checked' : '' }}>
+                    <label class="form-check-label" for="is_admin">
+                        Администратор
+                    </label>
+                    @error('is_admin')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
+                </div>
+            </div>
+            
             <div class="d-flex justify-content-between">
                 <a href="{{ route('admin.users.index') }}" class="btn btn-outline-secondary">
                     <i class="fas fa-arrow-left me-1"></i> Назад

@@ -27,6 +27,7 @@ class Handler
 
         $user->name = $command->name;
         $user->email = $command->email;
+        $user->is_admin = $command->isAdmin;
 
         if ($command->password) {
             $user->password = $this->passwordHasher->hash($command->password);

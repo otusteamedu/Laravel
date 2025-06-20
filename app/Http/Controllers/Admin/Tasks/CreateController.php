@@ -48,6 +48,7 @@ class CreateController extends Controller
             executorId: (int)$request->get('executor_id'),
             categoryId: (int)$request->get('category_id'),
             priorityId: (int)$request->get('priority_id'),
+            creatorId: auth()->id(),
             status: $request->get('status', 'новая'),
             dueDate: $request->get('due_date')
         );

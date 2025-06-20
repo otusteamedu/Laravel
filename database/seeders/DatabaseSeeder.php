@@ -16,7 +16,11 @@ class DatabaseSeeder extends Seeder
             CategoriesTableSeeder::class,
         ]);
 
-        \App\Models\User::factory(5)->create();
+        // Создаем администратора первым
+        \App\Models\User::factory()->admin()->create();
+        
+        // Создаем обычных пользователей
+        \App\Models\User::factory(4)->create();
 
         $this->call([
             TasksTableSeeder::class,

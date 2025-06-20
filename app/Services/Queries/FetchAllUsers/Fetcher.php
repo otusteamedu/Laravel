@@ -23,6 +23,7 @@ class Fetcher
                 id: $user->id,
                 name: $user->name,
                 email: $user->email,
+                isAdmin: $user->is_admin,
                 createdAt: $user->created_at,
                 updatedAt: $user->updated_at,
                 emailVerifiedAt: $user->email_verified_at,

@@ -10,6 +10,7 @@ final readonly class UserDTO
         public int $id,
         public string $name,
         public string $email,
+        public bool $isAdmin,
         public Carbon $createdAt,
         public Carbon $updatedAt,
         public ?Carbon $emailVerifiedAt,

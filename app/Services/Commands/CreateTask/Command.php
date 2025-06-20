@@ -10,6 +10,7 @@ final readonly class Command
         public int $executorId,
         public int $categoryId,
         public int $priorityId,
+        public int $creatorId,
         public string $status = 'новая',
         public ?string $dueDate = null,
     ) {

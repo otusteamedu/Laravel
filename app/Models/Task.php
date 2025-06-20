@@ -18,6 +18,7 @@ class Task extends Model
         'priority_id',
         'category_id',
         'executor_id',
+        'creator_id',
     ];
 
 
@@ -40,5 +41,10 @@ class Task extends Model
     public function executor()
     {
         return $this->belongsTo(User::class, 'executor_id');
+    }
+
+    public function creator()
+    {
+        return $this->belongsTo(User::class, 'creator_id');
     }
 }

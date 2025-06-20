@@ -6,6 +6,8 @@ use Illuminate\Support\ServiceProvider;
 use Illuminate\Pagination\Paginator;
 use App\Infrastructure\PasswordHasher\PasswordHasherInterface;
 use App\Infrastructure\PasswordHasher\LaravelPasswordHasher;
+use Illuminate\Auth\Middleware\RedirectIfAuthenticated;
+use Illuminate\Support\Facades\Gate;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -26,5 +28,15 @@ class AppServiceProvider extends ServiceProvider
     {
         // Используем Bootstrap для пагинации
         Paginator::useBootstrap();
+
+        // Настраиваем редирект для авторизованных пользователей
+        RedirectIfAuthenticated::redirectUsing(function () {
+            return route('tasks.index');
+        });
+
+        // Определяем Gate для админского доступа
+        Gate::define('admin-access', function ($user) {
+            return $user->isAdmin();
+        });
     }
 }

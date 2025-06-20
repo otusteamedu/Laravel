@@ -21,6 +21,7 @@ class Handler
         $task->executor_id = $command->executorId;
         $task->category_id = $command->categoryId;
         $task->priority_id = $command->priorityId;
+        $task->creator_id = $command->creatorId;
         $task->status = $command->status;
 
         if ($command->dueDate) {

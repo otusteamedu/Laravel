@@ -5,13 +5,31 @@ use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\Categories;
 use App\Http\Controllers\Admin\Tasks;
 use App\Http\Controllers\Admin\Users;
+use App\Http\Controllers\Public\Tasks as PublicTasks;
 
 Route::get('/', function () {
     return view('welcome');
 });
 
+// Публичные роуты для задач
+Route::prefix('tasks')
+    ->name('tasks.')
+    ->middleware(['auth'])
+    ->group(function () {
+    Route::get('/', [PublicTasks\IndexController::class, 'index'])->name('index');
+    Route::get('/create', [PublicTasks\CreateController::class, 'create'])->name('create');
+    Route::post('/', [PublicTasks\CreateController::class, 'store'])->name('store');
+    Route::get('/{task}', [PublicTasks\ShowController::class, 'show'])->name('show');
+    Route::get('/{task}/edit', [PublicTasks\UpdateController::class, 'edit'])->name('edit');
+    Route::put('/{task}', [PublicTasks\UpdateController::class, 'update'])->name('update');
+    Route::delete('/{task}', [PublicTasks\DeleteController::class, 'destroy'])->name('destroy');
+});
+
 // Маршруты админ-панели
-Route::prefix('admin')->name('admin.')->group(function () {
+Route::prefix('admin')
+    ->name('admin.')
+    ->middleware(['auth', 'can:admin-access'])
+    ->group(function () {
     // Дашборд
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
 
@@ -48,3 +66,5 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::delete('/{user}', [Users\DestroyController::class, 'destroy'])->name('destroy');
     });
 });
+
+require __DIR__.'/auth.php';

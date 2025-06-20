@@ -65,6 +65,7 @@ class UpdateController extends Controller
                 executorId: (int)$request->get('executor_id'),
                 categoryId: (int)$request->get('category_id'),
                 priorityId: (int)$request->get('priority_id'),
+                creatorId: auth()->id(),
                 status: $request->get('status'),
                 dueDate: $request->get('due_date')
             );

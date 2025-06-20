@@ -30,6 +30,8 @@ class Fetcher
                 categoryColor: $task->category ? $task->category->color : '',
                 priorityId: $task->priority_id,
                 priorityName: $task->priority ? $task->priority->name : '',
+                creatorId: $task->creator_id,
+                creatorName: $task->creator ? $task->creator->name : '',
                 status: $task->status ?? 'новая',
                 dueDate: $task->due_date,
                 createdAt: $task->created_at,

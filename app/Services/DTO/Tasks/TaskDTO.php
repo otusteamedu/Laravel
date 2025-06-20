@@ -17,6 +17,8 @@ final readonly class TaskDTO
         public string $categoryColor,
         public int $priorityId,
         public string $priorityName,
+        public int $creatorId,
+        public string $creatorName,
         public string $status,
         public ?Carbon $dueDate,
         public Carbon $createdAt,
