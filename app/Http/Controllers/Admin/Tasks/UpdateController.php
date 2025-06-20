@@ -3,13 +3,15 @@
 namespace App\Http\Controllers\Admin\Tasks;
 
 use App\Http\Controllers\Controller;
-use App\Models\Category;
 use App\Models\Priority;
-use App\Models\User;
 use App\Services\Commands\UpdateTask\Command;
 use App\Services\Commands\UpdateTask\Handler;
 use App\Services\Queries\FetchTaskById\Query;
 use App\Services\Queries\FetchTaskById\Fetcher;
+use App\Services\Queries\FetchAllUsers\Query as FetchAllUsersQuery;
+use App\Services\Queries\FetchAllUsers\Fetcher as UsersFetcher;
+use App\Services\Queries\FetchAllCategories\Query as FetchAllCategoriesQuery;
+use App\Services\Queries\FetchAllCategories\Fetcher as CategoriesFetcher;
 use App\Http\Requests\UpdateTaskRequest;
 use Illuminate\View\View;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -19,8 +21,12 @@ class UpdateController extends Controller
     /**
      * Показать форму редактирования задачи
      */
-    public function edit(Fetcher $fetcher, string $taskId): View
-    {
+    public function edit(
+        Fetcher $fetcher, 
+        UsersFetcher $usersFetcher, 
+        CategoriesFetcher $categoriesFetcher, 
+        string $taskId
+    ): View {
         try {
             $query = new Query((int)$taskId);
             $task = $fetcher->fetch($query);
@@ -28,8 +34,17 @@ class UpdateController extends Controller
             throw new NotFoundHttpException('Задача не найдена');
         }
 
-        $users = User::all();
-        $categories = Category::all();
+        // Получаем всех пользователей через фетчер
+        $usersQuery = new FetchAllUsersQuery();
+        $usersResult = $usersFetcher->fetch($usersQuery);
+        $users = $usersResult->items;
+
+        // Получаем все категории через фетчер
+        $categoriesQuery = new FetchAllCategoriesQuery();
+        $categoriesResult = $categoriesFetcher->fetch($categoriesQuery);
+        $categories = $categoriesResult->items;
+
+        // Priority пока оставляем как есть
         $priorities = Priority::all();
 
         return view('admin.tasks.edit', compact('task', 'users', 'categories', 'priorities'));
