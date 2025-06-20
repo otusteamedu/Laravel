@@ -23,9 +23,24 @@ class CreateCategoryRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => ['required', 'string', 'max:255', 'unique:categories'],
+            'name' => ['required', 'string', 'max:255'],
             'color' => ['required', 'string', 'regex:/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/', 'max:7'],
             'description' => ['nullable', 'string'],
+        ];
+    }
+
+    /**
+     * Get custom error messages for validator
+     *
+     * @return array
+     */
+    public function messages()
+    {
+        return [
+            'name.required' => 'Название категории обязательно для заполнения',
+            'name.max' => 'Название категории не должно превышать 255 символов',
+            'color.required' => 'Цвет категории обязателен для выбора',
+            'color.regex' => 'Неверный формат цвета. Используйте формат #RRGGBB или #RGB',
         ];
     }
 }

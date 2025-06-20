@@ -3,14 +3,15 @@
 namespace App\Services\Commands\UpdateUser;
 
 use App\Repositories\Users\UserRepositoryInterface;
+use App\Infrastructure\PasswordHasher\PasswordHasherInterface;
 use App\Services\Exceptions\Users\UserNotFoundException;
 use App\Services\DTO\Users\UserDTO;
-use Illuminate\Support\Facades\Hash;
 
 class Handler
 {
     public function __construct(
-        private UserRepositoryInterface $userRepository
+        private UserRepositoryInterface $userRepository,
+        private PasswordHasherInterface $passwordHasher
     ) {
     }
 
@@ -27,7 +28,7 @@ class Handler
         $user->is_admin = $command->isAdmin;
 
         if ($command->password) {
-            $user->password = Hash::make($command->password);
+            $user->password = $this->passwordHasher->hash($command->password);
         }
 
         $this->userRepository->save($user);

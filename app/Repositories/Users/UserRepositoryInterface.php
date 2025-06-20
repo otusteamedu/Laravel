@@ -14,10 +14,22 @@ interface UserRepositoryInterface
     public function fetchAll(): array;
 
     /**
-     * @param int $perPage
-     * @return LengthAwarePaginator
+     * @param int $limit
+     * @param int $offset
+     * @return User[]
      */
-    public function getAllPaginated(int $perPage = 10): LengthAwarePaginator;
+    public function fetchPaginated(int $limit, int $offset): array;
+
+    /**
+     * @return int
+     */
+    public function count(): int;
+
+    /**
+     * @param string $email
+     * @return bool
+     */
+    public function existsByEmail(string $email): bool;
 
     /**
      * @param int $id

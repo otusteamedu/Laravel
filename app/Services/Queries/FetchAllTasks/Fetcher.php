@@ -4,7 +4,7 @@ namespace App\Services\Queries\FetchAllTasks;
 
 use App\Repositories\Tasks\TaskRepositoryInterface;
 use App\Services\DTO\Tasks\TaskDTO;
-use Illuminate\Pagination\LengthAwarePaginator;
+use App\Services\DTO\Tasks\PaginatedResult;
 
 class Fetcher
 {
@@ -13,10 +13,10 @@ class Fetcher
     ) {
     }
 
-    public function fetch(Query $query): LengthAwarePaginator
+    public function fetch(Query $query): PaginatedResult
     {
-        $paginatedTasks = $this->taskRepository->getAllPaginated($query->perPage);
-        $tasks = $paginatedTasks->items();
+        $tasks = $this->taskRepository->fetchPaginated($query->limit, $query->offset);
+        $total = $this->taskRepository->count();
 
         $taskDTOs = array_map(function ($task) {
             return new TaskDTO(
@@ -39,14 +39,11 @@ class Fetcher
             );
         }, $tasks);
 
-        $paginator = new LengthAwarePaginator(
-            $taskDTOs,
-            $paginatedTasks->total(),
-            $paginatedTasks->perPage(),
-            $paginatedTasks->currentPage(),
-            ['path' => $paginatedTasks->path()]
+        return new PaginatedResult(
+            items: $taskDTOs,
+            total: $total,
+            limit: $query->limit,
+            offset: $query->offset
         );
-
-        return $paginator->withQueryString();
     }
 } 

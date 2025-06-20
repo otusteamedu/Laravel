@@ -4,7 +4,7 @@ namespace App\Services\Queries\FetchAllCategories;
 
 use App\Repositories\Categories\CategoryRepositoryInterface;
 use App\Services\DTO\Categories\CategoryDTO;
-use Illuminate\Pagination\LengthAwarePaginator;
+use App\Services\DTO\Categories\PaginatedResult;
 
 class Fetcher
 {
@@ -13,10 +13,10 @@ class Fetcher
     ) {
     }
 
-    public function fetch(Query $query): LengthAwarePaginator
+    public function fetch(Query $query): PaginatedResult
     {
-        $paginatedCategories = $this->categoryRepository->getAllPaginated($query->perPage);
-        $categories = $paginatedCategories->items();
+        $categories = $this->categoryRepository->fetchPaginated($query->limit, $query->offset);
+        $total = $this->categoryRepository->count();
 
         $categoryDTOs = array_map(function ($category) {
             return new CategoryDTO(
@@ -28,14 +28,11 @@ class Fetcher
             );
         }, $categories);
 
-        $paginator = new LengthAwarePaginator(
-            $categoryDTOs,
-            $paginatedCategories->total(),
-            $paginatedCategories->perPage(),
-            $paginatedCategories->currentPage(),
-            ['path' => $paginatedCategories->path()]
+        return new PaginatedResult(
+            items: $categoryDTOs,
+            total: $total,
+            limit: $query->limit,
+            offset: $query->offset
         );
-
-        return $paginator->withQueryString();
     }
 } 

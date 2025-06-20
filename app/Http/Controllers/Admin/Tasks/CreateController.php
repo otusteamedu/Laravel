@@ -3,11 +3,13 @@
 namespace App\Http\Controllers\Admin\Tasks;
 
 use App\Http\Controllers\Controller;
-use App\Models\Category;
 use App\Models\Priority;
-use App\Models\User;
 use App\Services\Commands\CreateTask\Command;
 use App\Services\Commands\CreateTask\Handler;
+use App\Services\Queries\FetchAllUsers\Query as FetchAllUsersQuery;
+use App\Services\Queries\FetchAllUsers\Fetcher as UsersFetcher;
+use App\Services\Queries\FetchAllCategories\Query as FetchAllCategoriesQuery;
+use App\Services\Queries\FetchAllCategories\Fetcher as CategoriesFetcher;
 use App\Http\Requests\CreateTaskRequest;
 
 class CreateController extends Controller
@@ -15,10 +17,19 @@ class CreateController extends Controller
     /**
      * Показать форму для создания задачи
      */
-    public function create()
+    public function create(UsersFetcher $usersFetcher, CategoriesFetcher $categoriesFetcher)
     {
-        $users = User::all();
-        $categories = Category::all();
+        // Получаем всех пользователей через фетчер
+        $usersQuery = new FetchAllUsersQuery();
+        $usersResult = $usersFetcher->fetch($usersQuery);
+        $users = $usersResult->items;
+
+        // Получаем все категории через фетчер
+        $categoriesQuery = new FetchAllCategoriesQuery();
+        $categoriesResult = $categoriesFetcher->fetch($categoriesQuery);
+        $categories = $categoriesResult->items;
+
+        // Priority пока оставляем как есть
         $priorities = Priority::all();
 
         return view('admin.tasks.create', compact('users', 'categories', 'priorities'));

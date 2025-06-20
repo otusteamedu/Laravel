@@ -4,7 +4,7 @@ namespace App\Services\Queries\FetchAllUsers;
 
 use App\Repositories\Users\UserRepositoryInterface;
 use App\Services\DTO\Users\UserDTO;
-use Illuminate\Pagination\LengthAwarePaginator;
+use App\Services\DTO\Users\PaginatedResult;
 
 class Fetcher
 {
@@ -13,10 +13,10 @@ class Fetcher
     ) {
     }
 
-    public function fetch(Query $query): LengthAwarePaginator
+    public function fetch(Query $query): PaginatedResult
     {
-        $paginatedUsers = $this->userRepository->getAllPaginated($query->perPage);
-        $users = $paginatedUsers->items();
+        $users = $this->userRepository->fetchPaginated($query->limit, $query->offset);
+        $total = $this->userRepository->count();
 
         $userDTOs = array_map(function ($user) {
             return new UserDTO(
@@ -30,14 +30,11 @@ class Fetcher
             );
         }, $users);
 
-        $paginator = new LengthAwarePaginator(
-            $userDTOs,
-            $paginatedUsers->total(),
-            $paginatedUsers->perPage(),
-            $paginatedUsers->currentPage(),
-            ['path' => $paginatedUsers->path()]
+        return new PaginatedResult(
+            items: $userDTOs,
+            total: $total,
+            limit: $query->limit,
+            offset: $query->offset
         );
-
-        return $paginator->withQueryString();
     }
 } 

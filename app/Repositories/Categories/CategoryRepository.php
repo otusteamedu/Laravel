@@ -3,7 +3,6 @@
 namespace App\Repositories\Categories;
 
 use App\Models\Category;
-use Illuminate\Pagination\LengthAwarePaginator;
 
 class CategoryRepository implements CategoryRepositoryInterface
 {
@@ -15,19 +14,38 @@ class CategoryRepository implements CategoryRepositoryInterface
     }
 
     /**
-     * @param string $column
-     * @param        $direction
-     * @param int    $perPage
-     *
-     * @return LengthAwarePaginator
+     * @param int $limit
+     * @param int $offset
+     * @return Category[]
      */
-    public function getAllPaginated(int $perPage = 10): LengthAwarePaginator {
-        return Category::orderBy('id', 'desc')->paginate($perPage);
+    public function fetchPaginated(int $limit, int $offset): array
+    {
+        return Category::orderBy('id', 'desc')
+            ->limit($limit)
+            ->offset($offset)
+            ->get()
+            ->all();
+    }
+
+    /**
+     * @return int
+     */
+    public function count(): int
+    {
+        return Category::count();
+    }
+
+    /**
+     * @param string $name
+     * @return bool
+     */
+    public function existsByName(string $name): bool
+    {
+        return Category::where('name', $name)->exists();
     }
 
     /**
      * @param int $id
-     *
      * @return Category|null
      */
     public function find(int $id): ?Category {
@@ -36,7 +54,6 @@ class CategoryRepository implements CategoryRepositoryInterface
 
     /**
      * @param Category $category
-     *
      * @return bool
      */
     public function save(Category $category): bool {
@@ -45,7 +62,6 @@ class CategoryRepository implements CategoryRepositoryInterface
 
     /**
      * @param Category $category
-     *
      * @return bool|null
      */
     public function delete(Category $category): ?bool {

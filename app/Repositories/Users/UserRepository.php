@@ -3,7 +3,6 @@
 namespace App\Repositories\Users;
 
 use App\Models\User;
-use Illuminate\Pagination\LengthAwarePaginator;
 
 class UserRepository implements UserRepositoryInterface
 {
@@ -15,11 +14,34 @@ class UserRepository implements UserRepositoryInterface
     }
 
     /**
-     * @param int $perPage
-     * @return LengthAwarePaginator
+     * @param int $limit
+     * @param int $offset
+     * @return User[]
      */
-    public function getAllPaginated(int $perPage = 10): LengthAwarePaginator {
-        return User::orderBy('id', 'desc')->paginate($perPage);
+    public function fetchPaginated(int $limit, int $offset): array
+    {
+        return User::orderBy('id', 'desc')
+            ->limit($limit)
+            ->offset($offset)
+            ->get()
+            ->all();
+    }
+
+    /**
+     * @return int
+     */
+    public function count(): int
+    {
+        return User::count();
+    }
+
+    /**
+     * @param string $email
+     * @return bool
+     */
+    public function existsByEmail(string $email): bool
+    {
+        return User::where('email', $email)->exists();
     }
 
     /**
