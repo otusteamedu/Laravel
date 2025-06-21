@@ -2,10 +2,7 @@
 
 namespace App\Http\Requests\Todo;
 
-use Illuminate\Validation\Rule;
 use Illuminate\Auth\AuthManager;
-use Illuminate\Database\Query\Builder;
-use Vhar\EmbedVideo\Rules\EmbedVideoRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Http\Exceptions\HttpResponseException;
