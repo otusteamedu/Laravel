@@ -29,7 +29,7 @@ class WarmCacheNews extends Command
     {
         $this->info('Начинаем прогрев кэша новостей...');
 
-        $latestNews = $getLatestNewsUseCase()->results;
+        $latestNews = $getLatestNewsUseCase();
 
         Cache::put('latest_news_list', $latestNews, env('LATEST_NEWS_CACHE_TIME', 600));
 
