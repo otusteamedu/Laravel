@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "cb5d3efc4cddc956318e587c3d0dc480",
+    "content-hash": "c893f01f8fa50397e7d4541e1f94783d",
     "packages": [
         {
             "name": "brick/math",
@@ -2645,6 +2645,44 @@
                 }
             ],
             "time": "2024-07-20T21:41:07+00:00"
+        },
+        {
+            "name": "pshenichkin_maxim/laravel-user-logo",
+            "version": "dev-MPshenichkin/hw11",
+            "dist": {
+                "type": "path",
+                "url": "./packages/laravel-user-logo",
+                "reference": "83fe1612b0e030c995eb7f495692cee8fae071f8"
+            },
+            "require": {
+                "ext-gd": "*",
+                "illuminate/support": "^12.11",
+                "php": "^8.2"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "PshenichkinMaxim\\UserLogo\\ServiceProvider"
+                    ],
+                    "aliases": {
+                        "UserLogo": "PshenichkinMaxim\\UserLogo\\Facades\\UserLogo"
+                    }
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "PshenichkinMaxim\\UserLogo\\": "src/"
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "description": "Generates a logo based on the full name",
+            "transport-options": {
+                "symlink": true,
+                "relative": true
+            }
         },
         {
             "name": "psr/clock",
@@ -8291,8 +8329,10 @@
         }
     ],
     "aliases": [],
-    "minimum-stability": "stable",
-    "stability-flags": {},
+    "minimum-stability": "dev",
+    "stability-flags": {
+        "pshenichkin_maxim/laravel-user-logo": 20
+    },
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
