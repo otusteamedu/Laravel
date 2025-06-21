@@ -60,7 +60,7 @@
     row-gap: 10px;
     column-gap: 1vw;
 }
-#instructionSelector, #instructionTypeSelector
+#instructionSelector, #instructionTypeSelector, #instructionTypeSelectorVideo
 {
     width: 90%;
     font-size: 2vw;
@@ -125,7 +125,7 @@ hr { width: 20vw; }
     #loadVideo  { font-size: 2.5vw; width: 51%; }
     #viewVideo  { font-size: 2.5vw; width: 51%; }
 
-    #instructionSelector, #instructionTypeSelector { font-size: 2.5vw; }
+    #instructionSelector, #instructionTypeSelector, #instructionTypeSelectorVideo { font-size: 2.5vw; }
     #loadInstruction  { font-size: 2.5vw; width: 51%; }
     #viewInstruction  { font-size: 2.5vw; width: 51%; }
 
@@ -145,7 +145,7 @@ hr { width: 20vw; }
     #loadVideo  { font-size: 9px; }
     #viewVideo  { font-size: 9px; }
 
-    #instructionSelector, #instructionTypeSelector { font-size: 9px; }
+    #instructionSelector, #instructionTypeSelector, #instructionTypeSelectorVideo { font-size: 9px; }
     #loadInstruction  { font-size: 9px; }
     #viewInstruction  { font-size: 9px; }
 

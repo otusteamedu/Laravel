@@ -31,6 +31,7 @@ class ExamAnswer extends BaseModel
         return ExamAnswerFactory::new();
     }
 
+    //связи
     public function examQuestion()
     {
         return $this->belongsTo(ExamQuestion::class, 'question_id');

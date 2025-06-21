@@ -7,8 +7,8 @@
 <div id="userData">
     <div id="userAvatar">
         <div>
-            <img src="@isset($userParameters['userAvatar']){{asset('images/iss/'.$userParameters['userAvatar'])}}
-            @else{{asset('images/iss/defaultUserAvatar.png')}}@endisset" alt="{{__('iss::issUserPage.altAvatar')}}" />
+            <img src="@isset($userParameters['userAvatar']){{asset('issPublic/'.$userParameters['userAvatar'])}}
+            @else{{asset('issPublic/defaultUserAvatar.png')}}@endisset" alt="{{__('iss::issUserPage.altAvatar')}}" />
         </div>
     </div>
     <div id="dataTable">

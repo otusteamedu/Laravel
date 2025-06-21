@@ -30,6 +30,14 @@ return [
 
     'disks' => [
 
+        'iss' => [
+            'driver' => 'local',
+            'root' => base_path('app/Modules/ISS/storage/app'),
+            'serve' => true,
+            'throw' => false,
+            'report' => false,
+        ],
+
         'local' => [
             'driver' => 'local',
             'root' => storage_path('app/private'),
@@ -75,6 +83,8 @@ return [
 
     'links' => [
         public_path('storage') => storage_path('app/public'),
+        //public_path('issPrivate') => base_path('app/Modules/ISS/storage/app/private'),
+        public_path('issPublic') => base_path('app/Modules/ISS/storage/app/public'),
     ],
 
 ];

@@ -72,6 +72,8 @@ interface IssUserRepoInterface
      *                         $inputData['second_name']
      *                    название организации пользователя из основного приложения
      *                         $inputData['organization']
+     *                    электронная почта пользователя из основного приложения
+     *                         $inputData['email']
      * @return bool
      */
     public function updateIssUserByMainAppData(array $inputData): bool;

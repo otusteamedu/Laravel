@@ -1,0 +1,101 @@
+
+/* Форма результатов проверки экзамена */
+#examCheck
+{
+    min-width: 330px;
+
+}
+#examCheck h2 { font-size: 2.5vw;  font-weight: bold; }
+#examCheck form label { font-size: 2.5vw; }
+#examCheck form input { font-size: 2.5vw; }
+
+.correctInput
+{
+    background-color: rgb(123, 220, 169, 0.3);
+    padding-bottom: 2vw;
+}
+form input[type=text]
+{
+    width: 95%;
+    margin: 1px auto;
+}
+.result
+{
+    text-align: left;
+}
+.result label { margin-left: 2vw; }
+.result input { margin-left: 2vw; }
+hr { width: 20vw; }
+
+#resultExam
+{
+    width: 100%;
+}
+
+.errorMsg
+{
+    color: red;
+    font-size: 2.5vw;
+}
+#serviceError
+{
+    min-width: 330px;
+    margin-top: 20px;
+    color: black;
+    font-size: 5vw;
+    font-weight: bolder;
+    position: absolute;
+    top: 0;
+    background-color: rgba(300,100,100,0.8);
+    width: 100%;
+    height: 100%;
+    text-align: center;
+}
+
+#examChecked
+{
+    min-width: 330px;
+    margin-top: 20px;
+    color: black;
+    font-size: 5vw;
+    font-weight: bolder;
+    position: absolute;
+    top: 0;
+    background-color: rgba(100,200,100,0.8);
+    width: 100%;
+    height: 100%;
+    text-align: center;
+}
+
+
+
+@media screen and (min-width: 800px)  /* НАСТРОЙКА САЙТА для ПК и планшетов */
+{
+
+}
+@media screen and (max-width: 800px)  /* НАСТРОЙКА САЙТА для телефонов */
+{
+    #examCheck h2 { font-size: 3vw; }
+    #examCheck form label { font-size: 3vw; }
+    #examCheck form input { font-size: 3vw; }
+
+    #examCheck input[type=reset] { min-width: 70%; margin-bottom: 10px; }
+    #examCheck input[type=submit] { min-width: 70%; }
+    #examCheck fieldset legend { font-size: 3vw; }
+
+    .errorMsg { font-size: 3vw; }
+    #serviceError { font-size: 4vw; }
+    #examChecked { font-size: 4vw; }
+}
+@media screen and (max-width: 350px)  /* НАСТРОЙКА САЙТА для телефонов */
+{
+    #examCheck h2 { font-size: 10px; }
+    #examCheck form label { font-size: 10px; }
+    #examCheck form input { font-size: 10px; }
+    #examCheck fieldset legend { font-size: 10px; }
+
+    .errorMsg { font-size: 10px; }
+    #serviceError { font-size: 20px; }
+    #examChecked { font-size: 20px; }
+}
+

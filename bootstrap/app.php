@@ -13,7 +13,12 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
-
+        $middleware->alias(
+            [
+                'issAuthAdmin' => \App\Modules\ISS\src\Http\Middleware\IssAuthAdmin::class,
+                'issAuthUser' => \App\Modules\ISS\src\Http\Middleware\IssAuthUser::class
+            ]
+        );
 
         $middleware->redirectUsersTo(fn (Request $request) => route('profile.edit'));
         //$middleware->redirectUsersTo(function (Request $request) {return redirect()->intended(route('profile.edit'));} );

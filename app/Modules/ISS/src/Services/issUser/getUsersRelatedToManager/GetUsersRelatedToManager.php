@@ -20,7 +20,7 @@ class GetUsersRelatedToManager
      * @param InputDTO $inputData
      * @return OutputDTO
      */
-    public function getUsersRelatedToManager(InputDTO $inputData): OutputDTO
+    public function __invoke(InputDTO $inputData): OutputDTO
     {
         if ($inputData->currentUser->issUserRole != config('iss.ROLE_MANAGER')) {
             return new OutputDTO(users: []);

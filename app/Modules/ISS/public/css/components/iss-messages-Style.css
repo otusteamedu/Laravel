@@ -1,0 +1,26 @@
+#component-iss-messages
+{
+    min-width: 330px;
+    margin-top: 20px;
+    color: black;
+    font-size: 5vw;
+    font-weight: bolder;
+    position: absolute;
+    top: 0;
+    background-color: rgba(100,200,100,0.8);
+    width: 100%;
+    height: 100%;
+    text-align: center;
+}
+
+
+
+
+@media screen and (max-width: 800px)  /* НАСТРОЙКА САЙТА для телефонов */
+{
+    #component-iss-messages { font-size: 4vw; }
+}
+@media screen and (max-width: 350px)  /* НАСТРОЙКА САЙТА для телефонов */
+{
+    #component-iss-messages { font-size: 20px; }
+}

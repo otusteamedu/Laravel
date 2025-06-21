@@ -19,7 +19,7 @@ class GetUserData
      * @param InputDTO $inputData
      * @return ?OutputDTO
      */
-    public function getUserData(InputDTO $inputData): ?OutputDTO
+    public function __invoke(InputDTO $inputData): ?OutputDTO
     {
         try {
             $result = $this->repository->getUserData(['field_name' => $inputData->fieldName,
@@ -33,18 +33,19 @@ class GetUserData
             return null;
         } else {
             return new OutputDTO(
-                id: $result['id'],
-                avatarFilePath: $result['user_iss_avatar_path'],
-                userId: $result['user_id'],
-                roleId: $result['role_id'],
-                roleName: $result['user_role']['name'],
-                organization: $result['organization'],
-                name: $result['name'],
-                secondName: $result['second_name'],
-                lastName: $result['last_name'],
-                createdAt: $result['created_at'],
-                updatedAt: $result['updated_at'],
-                deletedAt: $result['deleted_at']
+                id: $result['id'] ?? null,
+                avatarFilePath: $result['user_iss_avatar_path'] ?? null,
+                userId: $result['user_id'] ?? null,
+                roleId: $result['role_id'] ?? null,
+                roleName: $result['user_role']['name'] ?? null,
+                organization: $result['organization'] ?? null,
+                name: $result['name'] ?? null,
+                secondName: $result['second_name'] ?? null,
+                lastName: $result['last_name'] ?? null,
+                email: $result['email'] ?? null,
+                createdAt: $result['created_at'] ?? null,
+                updatedAt: $result['updated_at'] ?? null,
+                deletedAt: $result['deleted_at'] ?? null,
             );
         }
     }

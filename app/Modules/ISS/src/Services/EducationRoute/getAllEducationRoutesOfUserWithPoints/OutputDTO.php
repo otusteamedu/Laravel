@@ -9,7 +9,7 @@ use App\Modules\ISS\src\Services\EducationRoute\getAllEducationRoutesOfUserWithP
  * @var float $readyPercent       процент прохождения обучающего маршрута
  * @var array<PointDTO[]> $points массив с данными для каждой точки маршрута
  * @var string $routeName         название обучающего маршрута
- * @var int $routeId              код обучающего маршрута
+ * @var int $routeId              код реального обучающего маршрута пользователя
  */
 
 class OutputDTO

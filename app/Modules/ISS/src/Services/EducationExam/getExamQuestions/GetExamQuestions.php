@@ -8,7 +8,7 @@ use App\Modules\ISS\src\Services\EducationExam\getExamQuestions\OutputDTO;
 
 class GetExamQuestions
 {
-    public EducationExamRepoInterface $repository;
+    private EducationExamRepoInterface $repository;
 
     public function __construct(EducationExamRepoInterface $repository)
     {
@@ -20,13 +20,13 @@ class GetExamQuestions
      * @param InputDTO $inputData
      * @return OutputDTO[]
      */
-    public function getExamQuestions(InputDTO $inputData): array
+    public function __invoke(InputDTO $inputData): array
     {
         try {
             $questions = $this->repository->getExamQuestions(['id' => $inputData->id]);
 
             for ($i=0; $i < count($questions); $i++) {
-                $questions[$i]['answers'] = $this->repository->getExamAnswers(['questionId' => $questions[$i]['questionId']]);
+                $questions[$i]['answers'] = $this->repository->getExamAnswers(['question_id' => $questions[$i]['questionId']]);
             }
         } catch (\Error | \Exception $e) {
             $questions = [];

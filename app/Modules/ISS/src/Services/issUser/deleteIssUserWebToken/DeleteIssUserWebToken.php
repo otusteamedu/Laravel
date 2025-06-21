@@ -20,7 +20,7 @@ class DeleteIssUserWebToken
      * @param InputDTO $inputData
      * @return OutputDTO
      */
-    public function deleteIssUserWebToken(InputDTO $inputData): OutputDTO
+    public function __invoke(InputDTO $inputData): OutputDTO
     {
         try {
             $result = $this->repository->delWebToken(

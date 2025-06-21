@@ -39,6 +39,12 @@ export default defineConfig({
                 //'app/Modules/ISS/public/js/Chartjs4-4-9.js',
                 //'app/Modules/ISS/public/js/issUserPage.js',
 
+                //стили и скрипты для страницы Форма ввода результатов проверки для преподавателя
+                'app/Modules/ISS/public/css/issExamCheckPageStyle.css',
+
+                //стили для компонентов
+                'app/Modules/ISS/public/css/components/iss-messages-Style.css',
+
 
 
             ],

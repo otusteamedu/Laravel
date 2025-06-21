@@ -20,7 +20,7 @@ class LoadUserDataFromMainApp
      * @param InputDTO $inputData
      * @return OutputDTO
      */
-    public function loadUserDataFromMainApp(InputDTO $inputData): OutputDTO
+    public function __invoke(InputDTO $inputData): OutputDTO
     {
         $result = null;
 
@@ -66,15 +66,27 @@ class LoadUserDataFromMainApp
                     ]
                 );
 
+                $userContacts = $this->repository->getUserDataFromMainApp(
+                    [
+                        'table_name' => $inputData->contact->tableName,
+                        'fields' => [
+                            $inputData->contact->fieldEmail,
+                        ],
+                        'field_code_name' => $inputData->contact->fieldCodeName,
+                        'user_id' => $mainAppUserId,
+                    ]
+                );
+
             } catch (\Error | \Exception $e) {
                 $userFio = [];
                 $userOrganization = [];
+                $userContacts = [];
                 $result = $e->getMessage() ? $e->getMessage() : 'unknown error';
                 //запись в лог
             }
 
             //записываем данные из основного приложения в ИОС
-            if (!empty($userFio) && !empty($userOrganization)) {
+            if (!empty($userFio) && !empty($userOrganization) && !empty($userContacts)) {
                 try {
                     $updateResult = $this->repository->updateIssUserByMainAppData(
                         [
@@ -82,7 +94,8 @@ class LoadUserDataFromMainApp
                             'name' => $userFio[$inputData->fio->fieldName],
                             'last_name' => $userFio[$inputData->fio->fieldLastName],
                             'second_name' => $userFio[$inputData->fio->fieldSecondName],
-                            'organization' => $userOrganization[$inputData->organization->fieldOrganizationName]
+                            'organization' => $userOrganization[$inputData->organization->fieldOrganizationName],
+                            'email' => $userContacts[$inputData->contact->fieldEmail],
                         ]
                     );
                 } catch (\Error | \Exception $e) {

@@ -33,6 +33,7 @@ class ExamQuestion extends BaseModel
         return ExamQuestionFactory::new();
     }
 
+    //связи
     public function educationRoutePoint()
     {
         return $this->belongsTo(EducationRoutePoint::class, 'point_id');

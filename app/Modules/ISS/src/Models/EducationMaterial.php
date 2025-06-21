@@ -31,6 +31,7 @@ class EducationMaterial extends BaseModel
         return EducationMaterialFactory::new();
     }
 
+    //связи
     public function educationMaterialType()
     {
         return $this->belongsTo(EducationMaterialType::class, 'material_type_id');

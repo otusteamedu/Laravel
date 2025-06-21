@@ -11,11 +11,17 @@ use App\Modules\ISS\src\Services\EducationRoute\getAllEducationRoutesOfUserWithP
 use App\Modules\ISS\src\Services\EducationRoute\getRouteReadyPercentForUsersOfFirm\GetRouteReadyPercentForUsersOfFirm;
 use App\Modules\ISS\src\Services\EducationRoute\getRouteReadyPercentForUsersOfFirm\InputDTO as diagramDTO;
 
+/**
+ * Контроллер страницы пользователя ИОС
+ * содержит:
+ * - метод для отображения страницы
+ */
+
 class IssUserPageController extends Controller
 {
 
     /**
-     * Контроллер страницы пользователя
+     * Отображение страницы пользователя
      * @param GetUserData $getUserData
      * @param GetAllEducationRoutesOfUserWithPoints $getAllEducationRoutesOfUserWithPoints
      * @param GetRouteReadyPercentForUsersOfFirm $getRouteReadyPercentForUsersOfFirm
@@ -31,21 +37,19 @@ class IssUserPageController extends Controller
     {
         //получаем данные из сервисов
         //основные данные пользователя
-        $issUserParameters = $getUserData->getUserData(new userDataDTO(fieldName: 'id', fieldValue: $issUserId));
+        $issUserParameters = $getUserData(new userDataDTO(fieldName: 'id', fieldValue: $issUserId));
 
         if (is_null($issUserParameters)) {
             abort(404, 'User not found');
         }
 
         //обучающие маршруты пользователя
-        $issUserRoutes = $getAllEducationRoutesOfUserWithPoints->getAllEducationRoutesOfUserWithPoints(
-            new userRouteDTO(id: $issUserId)
-        );
+        $issUserRoutes = $getAllEducationRoutesOfUserWithPoints(new userRouteDTO(id: $issUserId));
 
         //данные для диаграммы о степени прохождения обучающих маршрутов для менеджера
         if ($issUserParameters->roleName == config('iss.ROLE_MANAGER')
             || $issUserParameters->roleName == config('iss.ROLE_ADMIN')) {
-            $diagramsData = $getRouteReadyPercentForUsersOfFirm->getRouteReadyPercentForUsersOfFirm(
+            $diagramsData = $getRouteReadyPercentForUsersOfFirm(
                 new diagramDTO(id: $issUserId, isIssAdmin: false)
             );
         } else {

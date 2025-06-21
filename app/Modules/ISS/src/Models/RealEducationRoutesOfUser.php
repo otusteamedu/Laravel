@@ -31,6 +31,7 @@ class RealEducationRoutesOfUser extends BaseModel
         return RealEducationRoutesOfUserFactory::new();
     }
 
+    //связи
     public function userData()
     {
         return $this->belongsTo(UserData::class, 'user_data_id');

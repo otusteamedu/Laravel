@@ -27,6 +27,7 @@ class ExamQuestionType extends BaseModel
         return ExamQuestionTypeFactory::new();
     }
 
+    //связи
     public function examQuestion()
     {
         return $this->hasMany(ExamQuestion::class, 'question_type_id');

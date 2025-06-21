@@ -1,14 +1,34 @@
+/* блок ссылок для возврата на предыдущие страницы */
 #refBack { min-width: 330px; }
 #refBack a { font-size: 2vw; }
 #refBack p { margin-bottom: 1vw; margin-top: 1vw; }
+
+/* блок для отображения всплывающих сообщений ajax */
+#issMessage
+{
+    min-width: 330px;
+    margin-top: 20px;
+    color: black;
+    font-size: 5vw;
+    font-weight: bolder;
+    position: absolute;
+    top: 0;
+    background-color: rgba(100,200,100,0.8);
+    width: 100%;
+    height: 100%;
+    text-align: center;
+}
+
 
 @media screen and (max-width: 800px)  /* НАСТРОЙКА САЙТА для телефонов */
 {
     #refBack a { font-size: 2.5vw; }
     #refBack p { margin-bottom: 0.5vw; }
+    #issMessage { font-size: 4vw; }
 }
 
 @media screen and (max-width: 350px)  /* НАСТРОЙКА САЙТА для телефонов */
 {
     #refBack a { font-size: 10px; }
+    #issMessage { font-size: 20px; }
 }

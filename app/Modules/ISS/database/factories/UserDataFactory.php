@@ -32,6 +32,7 @@ class UserDataFactory extends Factory
             'name' => fake()->name(),
             'second_name' => fake()->name(),
             'last_name' => fake()->lastName(),
+            'email' => fake()->email(),
             'web_token' => fake()->word()
         ];
     }

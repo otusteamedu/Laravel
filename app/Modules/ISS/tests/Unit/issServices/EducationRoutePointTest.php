@@ -34,7 +34,7 @@ class EducationRoutePointTest extends TestCase
     {
         //сервис отработал правильно
         $fakeRepo = $this->mock(EducationRoutePointRepo::class, function (MockInterface $mock) {
-            $mock->shouldReceive('getFilesOfRealPointData')->times(3)
+            $mock->shouldReceive('getFilesOfRealPointData')->times(5)
                 ->andReturn(
                     [
                         ['title' =>'example1', 'file_path' => 'example\file\text\1'],
@@ -44,7 +44,7 @@ class EducationRoutePointTest extends TestCase
         });
 
         $testedService = new GetFilesOfRealPointData($fakeRepo);
-        $result = $testedService->getFilesOfRealPointData(new filesInputDTO(id: 0));
+        $result = $testedService(new filesInputDTO(id: 0));
 
         $this->assertInstanceOf(filesOutputDTO::class, $result, 'Wrong result type');
         $this->assertIsArray($result->materials, 'Materials must be 2 dimension array');
@@ -64,7 +64,7 @@ class EducationRoutePointTest extends TestCase
         $fakeRepo->method('getFilesOfRealPointData')->will($this->throwException(new \Exception()));
 
         $testedService = new GetFilesOfRealPointData($fakeRepo);
-        $result = $testedService->getFilesOfRealPointData(new filesInputDTO(id: 0));
+        $result = $testedService(new filesInputDTO(id: 0));
 
         $this->assertNull($result, 'If error should return null');
     }
@@ -92,7 +92,7 @@ class EducationRoutePointTest extends TestCase
         });
 
         $testedService = new GetRealPointMainData($fakeRepo);
-        $result = $testedService->getRealPointMainData(new mainDataInputDTO(id: 0, userDataId: 0));
+        $result = $testedService(new mainDataInputDTO(id: 0, userDataId: 0));
 
         $this->assertInstanceOf(mainDataOutputDTO::class, $result, 'Wrong result type');
         $this->assertNotNull($result->routeName, 'RouteName missing');
@@ -108,7 +108,7 @@ class EducationRoutePointTest extends TestCase
         });
 
         $testedService = new GetRealPointMainData($fakeRepo);
-        $result = $testedService->getRealPointMainData(new mainDataInputDTO(id: 0, userDataId: 0));
+        $result = $testedService(new mainDataInputDTO(id: 0, userDataId: 0));
 
         $this->assertNull($result, 'No data found return null');
 
@@ -117,7 +117,7 @@ class EducationRoutePointTest extends TestCase
         $fakeRepo->method('getRealPointMainData')->will($this->throwException(new \Exception()));
 
         $testedService = new GetRealPointMainData($fakeRepo);
-        $result = $testedService->getRealPointMainData(new mainDataInputDTO(id: 0, userDataId: 0));
+        $result = $testedService(new mainDataInputDTO(id: 0, userDataId: 0));
 
         $this->assertNull($result, 'If any errors return null');
     }

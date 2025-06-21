@@ -8,7 +8,7 @@ use App\Modules\ISS\src\Services\EducationRoutePoint\getRealPointMainData\Output
 
 class GetRealPointMainData
 {
-    public EducationRoutePointRepo $repository;
+    private EducationRoutePointRepo $repository;
 
     public function __construct(EducationRoutePointRepo $repository)
     {
@@ -20,7 +20,7 @@ class GetRealPointMainData
      * @param InputDTO $inputData
      * @return OutputDTO
      */
-    public function getRealPointMainData(InputDTO $inputData): ?OutputDTO
+    public function __invoke(InputDTO $inputData): ?OutputDTO
     {
         try {
             $educationPointData = $this->repository->getRealPointMainData(

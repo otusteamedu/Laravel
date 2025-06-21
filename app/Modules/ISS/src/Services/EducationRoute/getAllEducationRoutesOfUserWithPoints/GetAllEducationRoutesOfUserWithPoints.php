@@ -9,7 +9,7 @@ use App\Modules\ISS\src\Services\EducationRoute\getAllEducationRoutesOfUserWithP
 
 class GetAllEducationRoutesOfUserWithPoints
 {
-    public EducationRouteRepoInterface $repository;
+    private EducationRouteRepoInterface $repository;
 
     public function __construct(EducationRouteRepoInterface $repository)
     {
@@ -22,7 +22,7 @@ class GetAllEducationRoutesOfUserWithPoints
      * @param InputDTO $inputData
      * @return OutputDTO[]
      */
-    public function getAllEducationRoutesOfUserWithPoints(InputDTO $inputData): array
+    public function __invoke(InputDTO $inputData): array
     {
         $result = [];
 

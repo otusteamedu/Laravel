@@ -21,7 +21,7 @@ class CreateIssUserWebToken
      * @param InputDTO $inputData
      * @return OutputDTO
      */
-    public function createIssUserWebToken(InputDTO $inputData): OutputDTO
+    public function __invoke(InputDTO $inputData): OutputDTO
     {
         $token = Str::random(50);
 

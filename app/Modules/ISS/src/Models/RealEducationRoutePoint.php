@@ -6,6 +6,7 @@ use App\Modules\ISS\src\Models\BaseModel;
 use App\Modules\ISS\src\Models\EducationRoutePoint;
 use App\Modules\ISS\src\Models\EducationRoute;
 use App\Modules\ISS\src\Models\RealEducationRoutesOfUser;
+use App\Modules\ISS\src\Models\ExamCheckCode;
 use App\Modules\ISS\database\factories\RealEducationRoutePointFactory;
 use Carbon\Carbon;
 
@@ -34,6 +35,7 @@ class RealEducationRoutePoint extends BaseModel
         return RealEducationRoutePointFactory::new();
     }
 
+    //связи
     public function educationRoutePoint()
     {
         return $this->belongsTo(EducationRoutePoint::class, 'route_point_id');
@@ -47,5 +49,10 @@ class RealEducationRoutePoint extends BaseModel
     public function realEducationRoutesOfUser()
     {
         return $this->hasMany(RealEducationRoutesOfUser::class, 'last_pass_point_id');
+    }
+
+    public function examCheckCode()
+    {
+        return $this->hasMany(ExamCheckCode::class, 'real_route_point_id');
     }
 }
