@@ -8,7 +8,7 @@ use App\Modules\ISS\src\Services\EducationExam\isExamComplicated\OutputDTO;
 
 class IsExamComplicated
 {
-    public EducationExamRepoInterface $repository;
+    private EducationExamRepoInterface $repository;
 
     public function __construct(EducationExamRepoInterface $repository)
     {
@@ -20,7 +20,7 @@ class IsExamComplicated
      * @param InputDTO $inputData
      * @return OutputDTO
      */
-    public function isExamComplicated(InputDTO $inputData): OutputDTO
+    public function __invoke(InputDTO $inputData): OutputDTO
     {
         $result = $this->repository->complicatedQuestionsCount(['id' => $inputData->id]);
 

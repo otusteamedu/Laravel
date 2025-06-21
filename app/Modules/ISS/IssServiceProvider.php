@@ -14,8 +14,9 @@ use App\Modules\ISS\src\Services\EducationRoutePoint\EducationRoutePointRepoInte
 use App\Modules\ISS\src\Repositories\EducationRoutePointRepo;
 use App\Modules\ISS\src\Services\EducationRoute\EducationRouteRepoInterface;
 use App\Modules\ISS\src\Repositories\EducationRouteRepo;
-//use App\Modules\ISS\src\Services\Notify\NotifyRepoInterface;
-//use App\Modules\ISS\src\Repositories\NotifyRepo;
+use App\Modules\ISS\src\Services\NotifyService\NotifyServiceRepoInterface;
+use App\Modules\ISS\src\Repositories\NotifyServiceRepo;
+use App\Modules\ISS\src\View\Components\IssMessages;
 
 
 class IssServiceProvider extends ServiceProvider
@@ -41,8 +42,7 @@ class IssServiceProvider extends ServiceProvider
         $this->app->bind(EducationExamRepoInterface::class, EducationExamRepo::class);
         $this->app->bind(EducationRoutePointRepoInterface::class, EducationRoutePointRepo::class);
         $this->app->bind(EducationRouteRepoInterface::class, EducationRouteRepo::class);
-        //$this->app->bind(NotifyRepoInterface::class, NotifyRepo::class);
-
+        $this->app->bind(NotifyServiceRepoInterface::class, NotifyServiceRepo::class);
     }
 
     /**
@@ -96,5 +96,7 @@ class IssServiceProvider extends ServiceProvider
         );
         Blade::directive('endissGuest', function() { return "<?php endif; ?>"; });
 
+        //регистрация компонентов (обязательно скинуть кэш artisan optimize:clear)
+        Blade::component('iss-messages', IssMessages::class);
     }
 }

@@ -17,6 +17,7 @@ use App\Modules\ISS\src\Models\ExamAnswer;
 use App\Modules\ISS\src\Models\EducationMaterial;
 use App\Modules\ISS\src\Models\RealEducationRoutePoint;
 use App\Modules\ISS\src\Models\RealEducationRoutesOfUser;
+use App\Modules\ISS\src\Models\Teacher;
 
 
 class FillInitialDataSeeder  extends Seeder
@@ -43,7 +44,8 @@ class FillInitialDataSeeder  extends Seeder
                     'organization' => $data['org'],
                     'name' => $data['roleName'] . ' ' . $data['org'],
                     'second_name' => $data['roleName'] . ' ' . $data['org'],
-                    'last_name' => $data['roleName'] . ' ' . $data['org']
+                    'last_name' => $data['roleName'] . ' ' . $data['org'],
+                    'email' => $data['roleName'] . '_' . $data['org'] . '_mail',
                 ]
             );
         }
@@ -57,10 +59,20 @@ class FillInitialDataSeeder  extends Seeder
 
         //заполняем справочник обучающих материалов
         for($i=1 ;$i<10; $i++) {
+            $type = fake()->numberBetween(1,5);
+            switch ($type) {
+                case 1: $filePath = fake()->randomElement(['mp4-1.mp4', 'mp4-2.mp4']); break;
+                case 2: break;
+                case 3: $filePath = fake()->randomElement(['t1.txt', 't2.txt']); break;
+                case 4: $filePath = fake()->randomElement(['p1.pdf', 'p2.pdf']); break;
+                case 5: $filePath = fake()->randomElement(['doc1.docx']); break;
+                default: $filePath = null; break;
+            }
             EducationMaterial::factory()->create(
                 [
                     'point_id' => fake()->randomDigit(),
-                    'material_type_id' => fake()->numberBetween(1,3),
+                    'material_type_id' => $type,
+                    'file_path' => $filePath
                 ]
             );
         }
@@ -168,5 +180,13 @@ class FillInitialDataSeeder  extends Seeder
         $org2adminUser = UserData::where('id', 7)->first();
         RealEducationRoutesOfUser::factory()
             ->create(['user_data_id' => $org2adminUser->id, 'route_id' => $route4->id, 'last_pass_point_id' => null]);
+
+        //создаем преподавателей
+        $teacher1 = Teacher::factory()->create(
+            ['connected_organization' => 'org1', 'teacher_email' => 'alekseev.a@v2grp.ru']
+        );
+        $teacher2 = Teacher::factory()->create(
+            ['connected_organization' => 'org1', 'teacher_email' => 'alekseev.a@v2grp.ru']
+        );
     }
 }

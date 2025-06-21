@@ -8,7 +8,7 @@ use App\Modules\ISS\src\Services\EducationRoute\getRouteReadyPercentForUsersOfFi
 
 class GetRouteReadyPercentForUsersOfFirm
 {
-    public EducationRouteRepoInterface $repository;
+    private EducationRouteRepoInterface $repository;
 
     public function __construct(EducationRouteRepoInterface $repository)
     {
@@ -32,7 +32,7 @@ class GetRouteReadyPercentForUsersOfFirm
      *              ...
      *          ]
      */
-    public function getRouteReadyPercentForUsersOfFirm(InputDTO $inputData): array
+    public function __invoke(InputDTO $inputData): array
     {
         $result = [];
 

@@ -20,7 +20,7 @@ class GetAllUsers
      * @param InputDTO $inputData
      * @return OutputDTO
      */
-    public function getAllUsers(InputDTO $inputData): OutputDTO
+    public function __invoke(InputDTO $inputData): OutputDTO
     {
         $users = [];
         try {

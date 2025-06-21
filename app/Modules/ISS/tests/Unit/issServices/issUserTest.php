@@ -32,14 +32,17 @@ use App\Modules\ISS\src\Services\issUser\loadUserDataFromMainApp\InputDTO as loa
 use App\Modules\ISS\src\Services\issUser\loadUserDataFromMainApp\OutputDTO as loadOutputDTO;
 use App\Modules\ISS\src\Services\issUser\loadUserDataFromMainApp\OrganizationDTO;
 use App\Modules\ISS\src\Services\issUser\loadUserDataFromMainApp\FioDTO;
+use App\Modules\ISS\src\Services\issUser\loadUserDataFromMainApp\ContactDTO;
 use App\Modules\ISS\src\Services\issUser\IssUser;
 
-class issUserTest extends TestCase
+class IssUserTest extends TestCase
 {
     private $orgDTO;
     private $fioDTO;
+    private $contactDTO;
     private $setOrganization;
     private $setFio;
+    private $setContact;
 
     public function setUp(): void
     {
@@ -59,6 +62,12 @@ class issUserTest extends TestCase
             fieldCodeName: config('iss.CONFIG_DATA_FROM_MAIN_APP.fio.fieldCodeName'),
         );
 
+        $this->contactDTO = new ContactDTO(
+            tableName: config('iss.CONFIG_DATA_FROM_MAIN_APP.contact.tableName'),
+            fieldEmail: config('iss.CONFIG_DATA_FROM_MAIN_APP.contact.fieldEmail'),
+            fieldCodeName: config('iss.CONFIG_DATA_FROM_MAIN_APP.contact.fieldCodeName')
+        );
+
         $this->setOrganization = [
             'table_name' => $this->orgDTO->tableName,
             'fields' => [$this->orgDTO->fieldOrganizationName],
@@ -69,6 +78,13 @@ class issUserTest extends TestCase
             'table_name' => $this->fioDTO->tableName,
             'fields' => [$this->fioDTO->fieldName, $this->fioDTO->fieldSecondName, $this->fioDTO->fieldLastName],
             'field_code_name' => $this->fioDTO->fieldCodeName,
+            'user_id' => 132435
+        ];
+
+        $this->setContact = [
+            'table_name' => $this->contactDTO->tableName,
+            'fields' => [$this->contactDTO->fieldEmail],
+            'field_code_name' => $this->contactDTO->fieldCodeName,
             'user_id' => 132435
         ];
     }
@@ -92,7 +108,7 @@ class issUserTest extends TestCase
         });
 
         $testedService = new CreateIssUserWebToken($fakeRepo);
-        $result = $testedService->createIssUserWebToken(new CreateTokenInputDTO(issUserId: 0));
+        $result = $testedService(new CreateTokenInputDTO(issUserId: 0));
 
         $this->assertInstanceOf(createTokenOutputDTO::class, $result);
         $this->assertIsString($result->issUserWebToken);
@@ -102,7 +118,7 @@ class issUserTest extends TestCase
         $fakeRepo->method('setWebToken')->will($this->throwException(new \Exception()));
 
         $testedService = new CreateIssUserWebToken($fakeRepo);
-        $result = $testedService->createIssUserWebToken(new CreateTokenInputDTO(issUserId: 0));
+        $result = $testedService(new CreateTokenInputDTO(issUserId: 0));
         $this->assertInstanceOf(createTokenOutputDTO::class, $result);
         $this->assertNull($result->issUserWebToken);
     }
@@ -119,7 +135,7 @@ class issUserTest extends TestCase
         });
 
         $testedService = new DeleteIssUserWebToken($fakeRepo);
-        $result = $testedService->deleteIssUserWebToken(new deleteTokenInputDTO(issUserId: 0));
+        $result = $testedService(new deleteTokenInputDTO(issUserId: 0));
 
         $this->assertInstanceOf(deleteTokenOutputDTO::class, $result);
         $this->assertTrue($result->result);
@@ -129,7 +145,7 @@ class issUserTest extends TestCase
         $fakeRepo->method('delWebToken')->will($this->throwException(new \Exception()));
 
         $testedService = new DeleteIssUserWebToken($fakeRepo);
-        $result = $testedService->deleteIssUserWebToken(new deleteTokenInputDTO(issUserId: 0));
+        $result = $testedService(new deleteTokenInputDTO(issUserId: 0));
         $this->assertInstanceOf(deleteTokenOutputDTO::class, $result);
         $this->assertFalse($result->result);
     }
@@ -146,7 +162,7 @@ class issUserTest extends TestCase
         });
 
         $testedService = new FetchIssUserWebToken($fakeRepo);
-        $result = $testedService->fetchIssUserWebToken(new fetchTokenInputDTO(issUserId: 0));
+        $result = $testedService(new fetchTokenInputDTO(issUserId: 0));
 
         $this->assertInstanceOf(fetchTokenOutputDTO::class, $result);
         $this->assertIsString($result->issUserWebToken);
@@ -156,7 +172,7 @@ class issUserTest extends TestCase
         $fakeRepo->method('fetchWebToken')->will($this->throwException(new \Exception()));
 
         $testedService = new FetchIssUserWebToken($fakeRepo);
-        $result = $testedService->fetchIssUserWebToken(new fetchTokenInputDTO(issUserId: 0));
+        $result = $testedService(new fetchTokenInputDTO(issUserId: 0));
         $this->assertInstanceOf(fetchTokenOutputDTO::class, $result);
         $this->assertNull($result->issUserWebToken);
     }
@@ -208,7 +224,7 @@ class issUserTest extends TestCase
         });
 
         $testedService = new GetAllUsers($fakeRepo);
-        $result = $testedService->getAllUsers(new GetAllUsersInputDTO());
+        $result = $testedService(new GetAllUsersInputDTO());
 
         $this->assertInstanceOf(getAllUsersOutputDTO::class, $result, 'Wrong result type');
         $this->assertIsArray($result->users, 'Property "users" must be of type array');
@@ -237,7 +253,7 @@ class issUserTest extends TestCase
         });
 
         $testedService = new GetAllUsers($fakeRepo);
-        $result = $testedService->getAllUsers(new GetAllUsersInputDTO(returnedFields: ['id', 'user_iss_avatar_path']));
+        $result = $testedService(new GetAllUsersInputDTO(returnedFields: ['id', 'user_iss_avatar_path']));
 
         $this->assertInstanceOf(getAllUsersOutputDTO::class, $result);
         $this->assertIsArray($result->users);
@@ -254,7 +270,7 @@ class issUserTest extends TestCase
         $fakeRepo->method('getAllUsersData')->will($this->throwException(new \Exception()));
 
         $testedService = new GetAllUsers($fakeRepo);
-        $result = $testedService->getAllUsers(new GetAllUsersInputDTO());
+        $result = $testedService(new GetAllUsersInputDTO());
 
         $this->assertInstanceOf(getAllUsersOutputDTO::class, $result);
         $this->assertIsArray($result->users);
@@ -292,7 +308,7 @@ class issUserTest extends TestCase
         });
 
         $testedService = new getUserData($fakeRepo);
-        $result = $testedService->getUserData(new getOneUserInputDTO(fieldName: 'id', fieldValue: 0));
+        $result = $testedService(new getOneUserInputDTO(fieldName: 'id', fieldValue: 0));
 
         $this->assertInstanceOf(getOneUserOutputDTO::class, $result);
 
@@ -302,7 +318,7 @@ class issUserTest extends TestCase
         });
 
         $testedService = new getUserData($fakeRepo);
-        $result = $testedService->getUserData(new getOneUserInputDTO(fieldName: 'id', fieldValue: 0));
+        $result = $testedService(new getOneUserInputDTO(fieldName: 'id', fieldValue: 0));
 
         $this->assertNull($result, 'If no data found must return null');
 
@@ -311,7 +327,7 @@ class issUserTest extends TestCase
         $fakeRepo->method('getUserData')->will($this->throwException(new \Exception()));
 
         $testedService = new getUserData($fakeRepo);
-        $result = $testedService->getUserData(new getOneUserInputDTO(fieldName: 'id', fieldValue: 0));
+        $result = $testedService(new getOneUserInputDTO(fieldName: 'id', fieldValue: 0));
 
         $this->assertNull($result, 'If any errors or exceptions must return null');
 
@@ -364,7 +380,7 @@ class issUserTest extends TestCase
         });
 
         $testedService = new GetUsersRelatedToManager($fakeRepo);
-        $result = $testedService->getUsersRelatedToManager(
+        $result = $testedService(
             new getSomeUsersInputDTO(
             currentUser:  new IssUser(issUserRole: config('iss.ROLE_MANAGER'))
             )
@@ -387,7 +403,7 @@ class issUserTest extends TestCase
         });
 
         $testedService = new GetUsersRelatedToManager($fakeRepo);
-        $result = $testedService->getUsersRelatedToManager(
+        $result = $testedService(
             new getSomeUsersInputDTO(
                 currentUser:  new IssUser(issUserRole: 'haker')
             )
@@ -402,7 +418,7 @@ class issUserTest extends TestCase
         $fakeRepo->method('getManyUsersData')->will($this->throwException(new \Exception()));
 
         $testedService = new GetUsersRelatedToManager($fakeRepo);
-        $result = $testedService->getUsersRelatedToManager(
+        $result = $testedService(
             new getSomeUsersInputDTO(
                 currentUser:  new IssUser(issUserRole: config('iss.ROLE_MANAGER'))
             )
@@ -426,8 +442,9 @@ class issUserTest extends TestCase
         });
 
         $testedService = new LoadUserDataFromMainApp($fakeRepo);
-        $result = $testedService
-            ->loadUserDataFromMainApp(new loadInputDTO(organization: $this->orgDTO, fio: $this->fioDTO, issUserId: 0));
+        $result = $testedService(
+            new loadInputDTO(organization: $this->orgDTO, fio: $this->fioDTO, issUserId: 0, contact: $this->contactDTO)
+        );
 
         $this->assertSame('iss user not found', $result->result);
 
@@ -436,19 +453,21 @@ class issUserTest extends TestCase
         $fakeRepo->method('getUserData')->will($this->throwException(new \Exception()));
 
         $testedService = new LoadUserDataFromMainApp($fakeRepo);
-        $result = $testedService
-            ->loadUserDataFromMainApp(new loadInputDTO(organization: $this->orgDTO, fio: $this->fioDTO, issUserId: 0));
+        $result = $testedService(
+            new loadInputDTO(organization: $this->orgDTO, fio: $this->fioDTO, issUserId: 0, contact: $this->contactDTO)
+        );
 
         $this->assertSame('iss user not found', $result->result);
 
-        //ошибка сервиса (данные по ФИО или организации не найдены в основном приложении или возникли ошибки при загрузке)
+        //ошибка сервиса (данные ФИО или организации или email не найдены в основном приложении или возникли ошибки при загрузке)
         $fakeRepo = $this->createMock(IssUserRepoInterface::class);
         $fakeRepo->method('getUserData')->willReturn(['user_id' => 132435]);
         $fakeRepo->method('getUserDataFromMainApp')->will($this->throwException(new \Exception()));
 
         $testedService = new LoadUserDataFromMainApp($fakeRepo);
-        $result = $testedService
-            ->loadUserDataFromMainApp(new loadInputDTO(organization: $this->orgDTO, fio: $this->fioDTO, issUserId: 0));
+        $result = $testedService(
+            new loadInputDTO(organization: $this->orgDTO, fio: $this->fioDTO, issUserId: 0, contact: $this->contactDTO)
+        );
 
         $this->assertSame('error loading user data from main application', $result->result);
 
@@ -458,13 +477,15 @@ class issUserTest extends TestCase
         $map = [
             [$this->setOrganization, ['orgName' =>'o']],
             [$this->setFio, ['uName' =>'t', 'usName' => 'tt', 'ulName' => 'ttt']],
+            [$this->setContact, ['my_email' => 'werty@mail.ru']],
         ];
         $fakeRepo->method('getUserDataFromMainApp')->willReturnMap($map);
         $fakeRepo->method('updateIssUserByMainAppData')->will($this->throwException(new \Exception()));
 
         $testedService = new LoadUserDataFromMainApp($fakeRepo);
-        $result = $testedService
-            ->loadUserDataFromMainApp(new loadInputDTO(organization: $this->orgDTO, fio: $this->fioDTO, issUserId: 0));
+        $result = $testedService(
+            new loadInputDTO(organization: $this->orgDTO, fio: $this->fioDTO, issUserId: 0, contact: $this->contactDTO)
+        );
 
         $this->assertSame('error updating iss user by main app data', $result->result);
 
@@ -480,13 +501,18 @@ class issUserTest extends TestCase
                 $this->setFio,
                 [$this->fioDTO->fieldName =>'t', $this->fioDTO->fieldSecondName => 'tt', $this->fioDTO->fieldLastName => 'ttt']
             ],
+            [
+                $this->setContact,
+                [$this->contactDTO->fieldEmail => 'werty@mail.ru']
+            ]
         ];
         $fakeRepo->method('getUserDataFromMainApp')->willReturnMap($map);
         $fakeRepo->method('updateIssUserByMainAppData')->willReturn(true);
 
         $testedService = new LoadUserDataFromMainApp($fakeRepo);
-        $result = $testedService
-            ->loadUserDataFromMainApp(new loadInputDTO(organization: $this->orgDTO, fio: $this->fioDTO, issUserId: 0));
+        $result = $testedService(
+            new loadInputDTO(organization: $this->orgDTO, fio: $this->fioDTO, issUserId: 0, contact: $this->contactDTO)
+        );
 
         $this->assertSame('ok', $result->result);
     }

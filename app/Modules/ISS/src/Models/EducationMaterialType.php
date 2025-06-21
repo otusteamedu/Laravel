@@ -26,6 +26,7 @@ class EducationMaterialType extends BaseModel
         return EducationMaterialTypeFactory::new();
     }
 
+    //связи
     public function educationMaterial()
     {
         return $this->hasMany(EducationMaterial::class, 'material_type_id');

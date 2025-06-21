@@ -31,8 +31,8 @@ class IssAuthAdmin
             $this->issUser = null;
         }
 
-        $this->approvedToken = ($fetchIssUserWebToken
-            ->fetchIssUserWebToken(new fetchTokenDTO(issUserId: $this->issUser->issUserId)))->issUserWebToken;
+        $this->approvedToken =
+            ($fetchIssUserWebToken(new fetchTokenDTO(issUserId: $this->issUser->issUserId)))->issUserWebToken;
 
     }
 

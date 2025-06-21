@@ -6,6 +6,7 @@
     <!-- <link type="text/css" rel="stylesheet" href="{{--asset('/css/iss/issSharedStyle.css')--}}"> -->
     @vite(['app/Modules/ISS/public/css/issSharedStyle.css'])
     @vite(['app/Modules/ISS/public/css/issNodePageStyle.css'])
+    @vite(['app/Modules/ISS/public/css/components/iss-messages-Style.css'])
 @endpush
 
 @push('mainScripts')
@@ -34,18 +35,24 @@
         </div>
 
         <div id="videoInstructions">
-            <select id="videoSelector">
-                <option>{{__('iss::issNodePage.selectVideo')}}</option>
-                @isset($pointData['materials']['video'])
-                    @foreach($pointData['materials']['video'] as $title => $videoFile)
-                        <option value="{{$videoFile}}">{{$title}}</option>
-                    @endforeach
-                @endisset
+            <select id="instructionTypeSelectorVideo">
+                <option>{{__('iss::issNodePage.selectInstructionType')}}</option>
+                @foreach($pointData['videoFileTypes'] as $type)
+                    <option>{{$type}}</option>
+                @endforeach
             </select>
-
+            <select id="videoSelector">
+                <option initial value="">{{__('iss::issNodePage.selectVideo')}}</option>
+                @foreach($pointData['videoFileTypes'] as $type)
+                    @isset($pointData['materials'][$type])
+                        @foreach($pointData['materials'][$type] as $title => $file)
+                            <option hidden materialType="{{$type}}" value="{{$file}}">{{$title}}</option>
+                        @endforeach
+                    @endisset
+                @endforeach
+            </select>
             <input type="button" id="loadVideo" value="{{__('iss::issNodePage.loadVideo')}}" />
             <input type="button" id="viewVideo" value="{{__('iss::issNodePage.viewVideo')}}" />
-            <div id="videoFrame"></div>
         </div>
 
         <div id="textAndPdfInstructions">
@@ -56,7 +63,7 @@
                 @endforeach
             </select>
             <select id="instructionSelector">
-                <option initial>{{__('iss::issNodePage.selectInstruction')}}</option>
+                <option initial value="">{{__('iss::issNodePage.selectInstruction')}}</option>
                 @foreach($pointData['textFileTypes'] as $type)
                     @isset($pointData['materials'][$type])
                         @foreach($pointData['materials'][$type] as $title => $file)
@@ -67,13 +74,14 @@
             </select>
             <input type="button" id="loadInstruction" value="{{__('iss::issNodePage.loadInstruction')}}" />
             <input type="button" id="viewInstruction" value="{{__('iss::issNodePage.viewInstruction')}}" />
-            <div id="instructionFrame"></div>
         </div>
 
         <div id="exam">
             <h2>{{__('iss::issNodePage.examHeader')}}</h2>
-            <form action="" method="POST">
+            <form id="checkExamForm" method="POST">
                 @csrf
+                <input type="hidden" name="issUserId" value="{{$pointData['userId']}}" />
+                <input type="hidden" name="realEducationRoutePointId" value="{{$pointData['pointId']}}" />
                 @foreach ($pointData['questions'] as $question)
                 <div class="mb-3 correctQuestion">
                     @isset($question['answers'])
@@ -89,6 +97,8 @@
                         @else
                             <fieldset>
                                 <legend class="form-label">{{$question['questionText']}}</legend>
+                                <input type="radio" hidden checked
+                                       name="question_{{$question['questionId']}}" value="0" />
                             @foreach($question['answers'] as $answer)
                                     <div class="answer">
                                         <input type="radio" id="answer_{{$answer['id']}}" class="form-check-input"
@@ -107,12 +117,25 @@
                 </div>
                 @endforeach
                 <div class="formButtonWrap">
-                    <input type="reset" class="btn btn-primary" value="{{__('iss::issNodePage.resetExam')}}"/>
-                    <input type="submit" class="btn btn-primary" value="{{__('iss::issNodePage.sendExam')}}"/>
+                    <input type="reset" class="btn btn-primary"
+                           @if($pointData['examResult'] == config('iss.REAL_ROUTE_POINT_STATE.passed'))
+                               disabled
+                           @endif
+                           value="{{__('iss::issNodePage.resetExam')}}"/>
+                    <input type="button" id="submitExam" class="btn btn-primary"
+                           @if($pointData['examResult'] == config('iss.REAL_ROUTE_POINT_STATE.passed'))
+                               disabled
+                           @endif
+                           value="{{__('iss::issNodePage.sendExam')}}"/>
                 </div>
             </form>
         </div>
     </div>
+
+<!-- php $m='test';                        пример использования компонента -->
+<!-- <x-iss-messages :issMessage="@$m" />  пример использования компонента -->
+
+<div id="issMessage" hidden></div>
 
     <div id="refBack">
         @include('iss::blocks.refToUser', ['issUserId' => $pointData['userId']])

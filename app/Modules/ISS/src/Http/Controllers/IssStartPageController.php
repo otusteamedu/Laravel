@@ -2,7 +2,8 @@
 
 namespace App\Modules\ISS\src\Http\Controllers;
 
-use Illuminate\Support\Facades\Auth;
+use App\Modules\ISS\src\Services\issUser\loadUserDataFromMainApp\ContactDTO;
+use Illuminate\View\View;
 use Illuminate\Auth\AuthManager;
 use App\Modules\ISS\src\Services\issUser\IssUser;
 use App\Modules\ISS\src\Services\issUser\getUserData\GetUserData;
@@ -20,9 +21,24 @@ use App\Modules\ISS\src\Services\issUser\createIssUserWebToken\InputDTO as setTo
 use App\Modules\ISS\src\Services\issUser\deleteIssUserWebToken\DeleteIssUserWebToken;
 use App\Modules\ISS\src\Services\issUser\deleteIssUserWebToken\InputDTO as delTokenDelDTO;
 
+/**
+ * Контроллер главной страницы ИОС
+ * содержит:
+ * - метод для отображения страницы
+ */
 
 class IssStartPageController extends Controller
 {
+   /**
+    * Отображение начальной страницы ИОС
+    * @param AuthManager              $auth
+    * @param GetUserData              $getUserData
+    * @param GetAllUsers              $getAllUsers
+    * @param GetUsersRelatedToManager $getUsersRelatedToManager
+    * @param LoadUserDataFromMainApp  $loadUserDataFromMainApp
+    * @param CreateIssUserWebToken    $createIssUserWebToken
+    * @return View
+    */
    public function index(
        AuthManager              $auth,
        GetUserData              $getUserData,
@@ -30,7 +46,7 @@ class IssStartPageController extends Controller
        GetUsersRelatedToManager $getUsersRelatedToManager,
        LoadUserDataFromMainApp  $loadUserDataFromMainApp,
        CreateIssUserWebToken    $createIssUserWebToken,
-   )
+   ): View
    {
        //авторизация в ИОС
        if (!session()->has('issUser') || is_null(session('issUser')->issUserId)) {
@@ -39,11 +55,11 @@ class IssStartPageController extends Controller
            $issUser = new IssUser();
 
            //находим пользователя ИОС по коду пользователя из основного приложения
-           $issUserData = $getUserData->getUserData(new userDataIssDTO(fieldName: 'user_id', fieldValue: $auth->user()->id));
+           $issUserData = $getUserData(new userDataIssDTO(fieldName: 'user_id', fieldValue: $auth->user()->id));
 
            //создание в сессии объекта для авторизованного пользователя ИОС
            if ($issUserData) {
-               $token = $createIssUserWebToken->createIssUserWebToken(new setTokenDelDTO(issUserId: $issUserData->id));
+               $token = $createIssUserWebToken(new setTokenDelDTO(issUserId: $issUserData->id));
 
                $issUser->issUserId = $issUserData->id;
                $issUser->issUserRole = $issUserData->roleName;
@@ -66,7 +82,7 @@ class IssStartPageController extends Controller
                        function ($item) {
                            return $item->id;
                        },
-                       $getAllUsers->getAllUsers(
+                       $getAllUsers(
                            new allUsersDataDTO(
                                returnedFields: ['id']
                            )
@@ -79,7 +95,7 @@ class IssStartPageController extends Controller
                        function ($item) {
                            return $item->id;
                        },
-                       $getUsersRelatedToManager->getUsersRelatedToManager(
+                       $getUsersRelatedToManager(
                            new someUsersDataDTO(
                                currentUser: $issUser,
                                returnedFields: ['id']
@@ -94,7 +110,7 @@ class IssStartPageController extends Controller
 
                //вызов сервиса обновления данных для всех найденных пользователей
                foreach ($issUserIds as $issUserId) {
-                   $operResult = $loadUserDataFromMainApp->loadUserDataFromMainApp(
+                   $operResult = $loadUserDataFromMainApp(
                        new userDataMainAppDTO(
                            organization: new OrganizationDTO(
                                tableName: config('iss.CONFIG_DATA_FROM_MAIN_APP.organization.tableName'),
@@ -107,6 +123,11 @@ class IssStartPageController extends Controller
                                fieldSecondName: config('iss.CONFIG_DATA_FROM_MAIN_APP.fio.fieldSecondName'),
                                fieldLastName: config('iss.CONFIG_DATA_FROM_MAIN_APP.fio.fieldLastName'),
                                fieldCodeName: config('iss.CONFIG_DATA_FROM_MAIN_APP.fio.fieldCodeName'),
+                           ),
+                           contact: new ContactDTO(
+                               tableName: config('iss.CONFIG_DATA_FROM_MAIN_APP.contact.tableName'),
+                               fieldEmail: config('iss.CONFIG_DATA_FROM_MAIN_APP.contact.fieldEmail'),
+                               fieldCodeName: config('iss.CONFIG_DATA_FROM_MAIN_APP.contact.fieldCodeName'),
                            ),
                            issUserId: $issUserId
                        )
@@ -128,7 +149,7 @@ class IssStartPageController extends Controller
    public function issExit(DeleteIssUserWebToken $deleteIssUserWebToken)
    {
        if (!is_null(session('issUser')->issUserId) && !is_null(session('issUser')->webToken)) {
-           $deleteIssUserWebToken->deleteIssUserWebToken(new delTokenDelDTO(issUserId: session('issUser')->issUserId));
+           $deleteIssUserWebToken(new delTokenDelDTO(issUserId: session('issUser')->issUserId));
        }
 
        session()->remove('issUser');

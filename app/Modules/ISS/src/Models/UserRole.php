@@ -27,6 +27,7 @@ class UserRole extends BaseModel
         return UserRoleFactory::new();
     }
 
+    //связи
     public function userData()
     {
         return $this->hasMany(UserData::class, 'role_id');

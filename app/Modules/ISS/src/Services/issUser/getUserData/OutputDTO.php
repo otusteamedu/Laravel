@@ -14,6 +14,7 @@ namespace App\Modules\ISS\src\Services\issUser\getUserData;
  * @var string|null $name           имя пользователя из основного приложения
  * @var string|null $secondName    отвество пользователя из основного приложения
  * @var string|null $lastName      фамилия пользователя из основного приложения
+ * @var string|null $email         email пользователя из основного приложения
  * @var string|null $createdAt
  * @var string|null $updatedAt
  * @var string|null $deletedAt
@@ -22,15 +23,16 @@ namespace App\Modules\ISS\src\Services\issUser\getUserData;
 class OutputDTO
 {
     public function __construct(
-        public int $id,
+        public int|null $id,
         public string|null $avatarFilePath,
         public int|null $userId,
-        public int $roleId,
-        public string $roleName,
+        public int|null $roleId,
+        public string|null $roleName,
         public string|null $organization,
         public string|null $name,
         public string|null $secondName,
         public string|null $lastName,
+        public string|null $email,
         public string|null $createdAt,
         public string|null $updatedAt,
         public string|null $deletedAt

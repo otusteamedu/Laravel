@@ -27,12 +27,14 @@ class IssAuthUser
     {
         if (session()->has('issUser')) {
             $this->issUser = session('issUser');
+
+            if (isset($this->issUser->issUserId)) {
+                $this->approvedToken =
+                    ($fetchIssUserWebToken(new fetchTokenDTO(issUserId: $this->issUser->issUserId)))->issUserWebToken;
+            }
         } else {
             $this->issUser = null;
         }
-
-        $this->approvedToken = ($fetchIssUserWebToken
-            ->fetchIssUserWebToken(new fetchTokenDTO(issUserId: $this->issUser->issUserId)))->issUserWebToken;
     }
 
     /**
@@ -43,7 +45,8 @@ class IssAuthUser
     public function handle(Request $request, Closure $next): Response
     {
         //если пользователь не авторизовался в ИОС то запрещаем доступ
-        if (!isset($this->issUser->issUserId) ||
+        if (is_null($this->issUser) ||
+            !isset($this->issUser->issUserId) ||
             $this->issUser->webToken != $this->approvedToken
         ) {
             abort(403, __('iss::issMiddleware.accessUserDenied'));

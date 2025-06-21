@@ -110,6 +110,8 @@ class IssUserRepo implements IssUserRepoInterface
      *                  $inputData['second_name']
      *              название организации пользователя из основного приложения
      *                  $inputData['organization']
+     *              электронная почта пользователя из основного приложения
+     *                  $inputData['email']
      * @return bool
      */
     public function updateIssUserByMainAppData(array $inputData): bool
@@ -120,6 +122,7 @@ class IssUserRepo implements IssUserRepoInterface
             $issUser->second_name = $inputData['second_name'];
             $issUser->last_name = $inputData['last_name'];
             $issUser->organization = $inputData['organization'];
+            $issUser->email = $inputData['email'];
 
         return $issUser->save();
     }

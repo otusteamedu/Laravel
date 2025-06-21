@@ -13,26 +13,23 @@ use App\Modules\ISS\src\Services\EducationExam\getExamQuestions\InputDTO as exam
 use App\Modules\ISS\src\Services\EducationRoutePoint\getFilesOfRealPointData\GetFilesOfRealPointData;
 use App\Modules\ISS\src\Services\EducationRoutePoint\getFilesOfRealPointData\InputDTO as filesDTO;
 
+/**
+ * Контроллер страницы для реальной точки обучающего маршрута
+ * содержит:
+ * - метод для отображения страницы
+ */
 
 class IssRoutePointController extends Controller
 {
-    /**@var int $userId код пользователя из сессии */
-    //public int $userId;
-
-    //public function __construct()
-    //{
-    //    $this->userId = session()->get('issUser')->issUserId;
-    //}
-
     /**
-     * Контроллер страницы для точки обучающего маршрута
-     * @param GetRealPointMainData $getRealPointMainData
-     * @param IsExamComplicated $isExamComplicated
-     * @param GetExamQuestions $getExamQuestions
-     * @param GetFilesOfRealPointData $getFilesOfRealPointData
-     * @param int $issUserId
-     * @param int $routeId
-     * @param int $pointId
+     * Отображение страницы
+     * @param GetRealPointMainData $getRealPointMainData сервис
+     * @param IsExamComplicated $isExamComplicated сервис
+     * @param GetExamQuestions $getExamQuestions сервис
+     * @param GetFilesOfRealPointData $getFilesOfRealPointData сервис
+     * @param int $issUserId код пользователя ИОС
+     * @param int $routeId код реального обучающего маршрута пользователя
+     * @param int $pointId код реальной точки обучающего маршрута
      * @return View
      */
     public function educationRoutePoint(
@@ -46,7 +43,7 @@ class IssRoutePointController extends Controller
     ): View
     {
         //получаем данные из сервисов
-        $pointMainData = $getRealPointMainData->getRealPointMainData(
+        $pointMainData = $getRealPointMainData(
             new pointMainDataDTO(id: $pointId, userDataId: $issUserId)
         );
 
@@ -54,9 +51,9 @@ class IssRoutePointController extends Controller
             abort(404);
         }
 
-        $isComplicated = $isExamComplicated->isExamComplicated(new examComplicatedDTO($pointId));
-        $examQuestionsWithAnswers = $getExamQuestions->getExamQuestions(new examQuestionsDTO($pointId));
-        $educationMaterials = $getFilesOfRealPointData->getFilesOfRealPointData(new filesDTO($pointId))->materials;
+        $isComplicated = $isExamComplicated(new examComplicatedDTO($pointId));
+        $examQuestionsWithAnswers = $getExamQuestions(new examQuestionsDTO($pointId));
+        $educationMaterials = $getFilesOfRealPointData(new filesDTO($pointId))->materials;
 
         //переводим в требуемый вид (там где необходимо)
         //экзаменационные вопросы и варианты ответов (для простых вопросов)
@@ -98,6 +95,7 @@ class IssRoutePointController extends Controller
             'questions' => $questions,
 
             'textFileTypes' => config('iss.ALLOWED_EDUCATION_TEXT_MATERIAL_TYPES'),
+            'videoFileTypes' => config('iss.ALLOWED_EDUCATION_VIDEO_MATERIAL_TYPES'),
             'materials' => $educationMaterialsFiles,
         ];
 

@@ -3,14 +3,20 @@
 namespace App\Modules\ISS\src\Http\Controllers;
 
 use Illuminate\View\View;
-use App\Modules\ISS\src\Services\issUser\IssUserRepoInterface;
 use App\Modules\ISS\src\Services\EducationRoute\getRouteReadyPercentForUsersOfFirm\GetRouteReadyPercentForUsersOfFirm;
 use App\Modules\ISS\src\Services\EducationRoute\getRouteReadyPercentForUsersOfFirm\InputDTO as diagramDTO;
+
+/**
+ * Контроллер для интерфейса администратора (работа с пользователями ИОС)
+ * содержит:
+ * - методы для отображения форм для всех действия администратора
+ * - методы для выполнения этих действий
+ */
 
 class IssAdminController extends Controller
 {
     /**
-     * Контроллер страницы администратора ИОС
+     * Отображение страницы администратора ИОС
      * @param GetRouteReadyPercentForUsersOfFirm $getRouteReadyPercentForUsersOfFirm
      * @return View
      */
@@ -20,7 +26,7 @@ class IssAdminController extends Controller
     {
         //получаем данные из сервисов
         //данные для диаграмм о степени прохождения обучающих маршрутов сотрудниками разных фирм
-        $diagramsData = $getRouteReadyPercentForUsersOfFirm->getRouteReadyPercentForUsersOfFirm(
+        $diagramsData = $getRouteReadyPercentForUsersOfFirm(
             new diagramDTO(id: null, isIssAdmin: true)
         );
 

@@ -29,6 +29,7 @@ class EducationRoutePoint extends BaseModel
         return EducationRoutePointFactory::new();
     }
 
+    //связи
     public function educationMaterial()
     {
         return $this->hasMany(EducationMaterial::class, 'point_id');

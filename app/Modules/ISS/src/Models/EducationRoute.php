@@ -28,6 +28,7 @@ class EducationRoute extends BaseModel
         return EducationRouteFactory::new();
     }
 
+    //связи
     public function realEducationRoutePoint()
     {
         return $this->hasMany(RealEducationRoutePoint::class, 'route_id');

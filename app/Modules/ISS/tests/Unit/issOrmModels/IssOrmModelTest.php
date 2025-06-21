@@ -16,6 +16,8 @@ use App\Modules\ISS\src\Models\RealEducationRoutePoint;
 use App\Modules\ISS\src\Models\RealEducationRoutesOfUser;
 use App\Modules\ISS\src\Models\UserData;
 use App\Modules\ISS\src\Models\UserRole;
+use App\Modules\ISS\src\Models\Teacher;
+use App\Modules\ISS\src\Models\ExamCheckCode;
 
 class IssOrmModelTest extends TestCase
 {
@@ -69,6 +71,12 @@ class IssOrmModelTest extends TestCase
 
         $realEducationRoutesOfUser = RealEducationRoutesOfUser::factory()->create();
         $this->assertModelExists($realEducationRoutesOfUser, 'Model RealEducationRoutesOfUser not created!');
+
+        $teacher = Teacher::factory()->create();
+        $this->assertModelExists($teacher, 'Model Teacher not created!');
+
+        $examCheckCode = ExamCheckCode::factory()->create();
+        $this->assertModelExists($examCheckCode, 'Model ExamCheckCode not created!');
     }
 
     /**
@@ -272,6 +280,39 @@ class IssOrmModelTest extends TestCase
             1,
             $realEducationRoutePoint->realEducationRoutesOfUser()->count(),
             'Relation RealEducationRoutesOfUser <- RealEducationRoutePoint not created!'
+        );
+        //____________________________________________________________________
+
+        //Model ExamCheckCode
+        $examCheckCode = ExamCheckCode::factory()->create(
+            [
+                'iss_user_id' => $userData->id,
+                'real_route_point_id' => $realEducationRoutePoint->id
+            ]
+        );
+
+        //Связь ExamCheckCode <-> UserData
+        $this->assertSame(
+            $userData->name,
+            $examCheckCode->userData()->first()->name,
+            'Relation ExamCheckCode -> UserData not created!'
+        );
+        $this->assertEquals(
+            1,
+            $userData->examCheckCode()->count(),
+            'Relation ExamCheckCode <- UserData not created!'
+        );
+
+        //Связь ExamCheckCode <-> RealEducationRoutePoint
+        $this->assertSame(
+            $realEducationRoutePoint->position,
+            $examCheckCode->realEducationRoutePoint()->first()->position,
+            'Relation ExamCheckCode -> RealEducationRoutePoint not created!'
+        );
+        $this->assertEquals(
+            1,
+            $realEducationRoutePoint->examCheckCode()->count(),
+            'Relation ExamCheckCode <- RealEducationRoutePoint not created!'
         );
     }
 }

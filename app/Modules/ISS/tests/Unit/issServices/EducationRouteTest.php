@@ -56,7 +56,7 @@ class EducationRouteTest  extends TestCase
         });
 
         $testedService = new GetAllEducationRoutesOfUserWithPoints($fakeRepo);
-        $result = $testedService->getAllEducationRoutesOfUserWithPoints(new getRoutesInputDTO(id: 0));
+        $result = $testedService(new getRoutesInputDTO(id: 0));
 
         $this->assertIsArray($result, 'Result must have type of Array');
         $this->assertCount(2, $result, 'Must be 2 routes');
@@ -82,7 +82,7 @@ class EducationRouteTest  extends TestCase
         $fakeRepo->method('getUserRoutesWithPassPercent')->will($this->throwException(new \Exception()));
 
         $testedService = new GetAllEducationRoutesOfUserWithPoints($fakeRepo);
-        $result = $testedService->getAllEducationRoutesOfUserWithPoints(new getRoutesInputDTO(id: 0));
+        $result = $testedService(new getRoutesInputDTO(id: 0));
 
         $this->assertIsArray($result, 'Result must have type of Array');
         $this->assertEmpty($result, 'Must be empty array');
@@ -94,7 +94,7 @@ class EducationRouteTest  extends TestCase
         $fakeRepo->method('getAllRoutePointsForUser')->will($this->throwException(new \Exception()));
 
         $testedService = new GetAllEducationRoutesOfUserWithPoints($fakeRepo);
-        $result = $testedService->getAllEducationRoutesOfUserWithPoints(new getRoutesInputDTO(id: 0));
+        $result = $testedService(new getRoutesInputDTO(id: 0));
 
         $this->assertIsArray($result, 'Result must have type of Array');
         $this->assertEmpty($result, 'Must be empty array');
@@ -123,7 +123,7 @@ class EducationRouteTest  extends TestCase
         });
 
         $testedService = new GetRouteReadyPercentForUsersOfFirm($fakeRepo);
-        $result = $testedService->getRouteReadyPercentForUsersOfFirm(new percentInputDTO(id: 0, isIssAdmin: false));
+        $result = $testedService(new percentInputDTO(id: 0, isIssAdmin: false));
 
         $this->assertIsArray($result, 'Result must have type of Array');
         $this->assertCount(2, $result, 'Must be 2 firms');
@@ -156,7 +156,7 @@ class EducationRouteTest  extends TestCase
         $fakeRepo->method('getRouteReadyPercentForUsersOfFirm')->will($this->throwException(new \Exception()));
 
         $testedService = new GetRouteReadyPercentForUsersOfFirm($fakeRepo);
-        $result = $testedService->getRouteReadyPercentForUsersOfFirm(new percentInputDTO(id: 0, isIssAdmin: false));
+        $result = $testedService(new percentInputDTO(id: 0, isIssAdmin: false));
 
         $this->assertIsArray($result, 'Result must have type of Array');
         $this->assertEmpty($result, 'Array must be empty');

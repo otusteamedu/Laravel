@@ -23,7 +23,7 @@ interface EducationRoutePointRepoInterface
      *                  $inputData['id']
      *              тип обучающего материала
      *                  $inputData['material_type']
-     * @return array ['example\file\path\1', 'example\file\path\2', 'example\file\path\3', .....]
+     * @return array [['title' =>'example1', 'file_path' => 'example\file\path\1'], [...], [],...]
      */
     public function getFilesOfRealPointData(array $inputData): array;
 

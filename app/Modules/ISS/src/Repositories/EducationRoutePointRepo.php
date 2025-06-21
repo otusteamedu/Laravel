@@ -60,10 +60,10 @@ class EducationRoutePointRepo implements EducationRoutePointRepoInterface
                                 case when rerp2.position is null ||
                                 real_education_route_points.position > rerp2.position
                                 then case when real_education_route_points.exam_date >= current_date
-                                          then \'wait\'
-                                          else \'expired\'
+                                          then \'' . config('iss.REAL_ROUTE_POINT_STATE.wait') . '\'
+                                          else \'' . config('iss.REAL_ROUTE_POINT_STATE.expired') . '\'
                                           end
-                                else           \'passed\'
+                                else           \'' . config('iss.REAL_ROUTE_POINT_STATE.passed') . '\'
                                 end exam_result
                 ')
             )

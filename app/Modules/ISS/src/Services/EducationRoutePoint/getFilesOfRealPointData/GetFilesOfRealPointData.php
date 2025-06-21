@@ -8,7 +8,7 @@ use App\Modules\ISS\src\Services\EducationRoutePoint\getFilesOfRealPointData\Out
 
 class GetFilesOfRealPointData
 {
-    public EducationRoutePointRepo $repository;
+    private EducationRoutePointRepo $repository;
 
     public function __construct(EducationRoutePointRepo $repository)
     {
@@ -16,11 +16,11 @@ class GetFilesOfRealPointData
     }
 
     /**
-     * Достать видео/пдф/текстовые файлы точки обучающего маршрута
+     * Достать данные для видео/пдф/текстовых файлов точки обучающего маршрута
      * @param InputDTO $inputData
      * @return OutputDTO
      */
-    public function getFilesOfRealPointData(InputDTO $inputData): ?OutputDTO
+    public function __invoke(InputDTO $inputData): ?OutputDTO
     {
         $result = null;
         try {
