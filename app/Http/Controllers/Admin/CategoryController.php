@@ -29,11 +29,11 @@ class CategoryController extends Controller
     public function index(Request $request): View
     {
         $sort = $request->get('sort', 'id');
-        $allowedSorts = ['id', 'title', 'created_at'];
+        $allowedSorts = config('custom.categoriesSorts');
         $sort = in_array($sort, $allowedSorts) ? $sort : 'id';
 
         $direction = $request->get('direction', 'asc');
-        $allowedDirections= ['asc', 'desc'];
+        $allowedDirections= config('custom.categoriesDirections');
         $direction = in_array($direction, $allowedDirections) ? $direction: 'asc';
 
         $categories = $this->service->getAllWithSort($sort, $direction);

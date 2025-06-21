@@ -26,17 +26,17 @@ class ProductsService
     /**
      * @return LengthAwarePaginator<array-key, Product>
      */
-    public function getList(string $sort, string $direction): LengthAwarePaginator
+    public function getList(string $sort, string $direction, int $page): LengthAwarePaginator
     {
-        return $this->repository->fetchList($sort, $direction);
+        return $this->repository->fetchList($sort, $direction, $page);
     }
 
     /**
      * @return LengthAwarePaginator<array-key, Product>
      */
-    public function getAllWithImage(): LengthAwarePaginator
+    public function getAllWithImage(int $page): LengthAwarePaginator
     {
-        return $this->repository->fetchAllWithImage();
+        return $this->repository->fetchAllWithImage($page);
     }
 
     /**

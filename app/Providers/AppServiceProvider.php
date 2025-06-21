@@ -5,6 +5,7 @@ namespace App\Providers;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Pagination\Paginator;
+use Illuminate\Support\Facades\Blade;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -35,5 +36,19 @@ class AppServiceProvider extends ServiceProvider
         });
 
         Paginator::useBootstrapFive();
+
+        Blade::directive('cachedblock', function ($expression) {
+            list($block, $view) = explode(',', str_replace(["'", " "], "", $expression));
+            
+            return "<?php 
+                if (!app('cache')->has('static.{$block}')) {
+                    echo app('cache')->rememberForever('static.{$block}', function () {
+                        return view('{$view}')->render();
+                    });
+                } else {
+                    echo app('cache')->get('static.{$block}');
+                }
+            ?>";
+        });
     }
 }

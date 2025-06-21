@@ -10,33 +10,72 @@ use App\Exceptions\UserNotFoundException;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Facades\Cache;
 
 class UsersRepository
 {
-    const USERS_PER_PAGE = 10;
-    
     /**
      * @return Collection<array-key, User>
      */
-    public function fetchAll(): Collection
+    public function fetchAll(bool $warmup = false): Collection
     {
-        return User::with(['role'])->get();
+        $key = 'users.all';
+        $ttl = now()->addDay();
+        $tag = 'user-list';
+
+        if ($warmup) {
+            $users = User::with(['role'])->get();;
+            Cache::tags($tag)->put($key, $users, $ttl);
+            return $users;
+        }
+
+        $users = Cache::tags($tag)->remember($key, $ttl, function () {
+            return User::with(['role'])->get();
+        });
+
+        return $users;
     }
 
     /**
      * @return LengthAwarePaginator<array-key, User>
      */
-    public function fetchList(string $sort, string $direction): LengthAwarePaginator
+    public function fetchList(string $sort, string $direction, int $page, bool $warmup = false): LengthAwarePaginator
     {
-        return User::orderBy($sort, $direction)->paginate(self::USERS_PER_PAGE)->withQueryString();
+        $key = 'users.' . $sort . '.' . $direction . '.' . $page;
+        $ttl = now()->addDay();
+        $tag = 'user-list';
+
+        $paginator = Cache::tags($tag)->get($key);
+
+        if (!$paginator || $warmup) {
+            $perPage = config('custom.perPageAdmin');
+            $paginator = User::orderBy($sort, $direction)->paginate($perPage)->withQueryString();
+            Cache::tags($tag)->put($key, $paginator, $ttl);
+            return $paginator;
+        }
+
+        return $paginator;
     }
 
     /**
      * @return User
      */
-    public function find(int $userId): User
+    public function find(int $userId, bool $warmup = false): User
     {
-        $user = User::with(['role'])->find($userId);
+        $key = 'user.' . $userId;
+        $ttl = now()->addDay();
+
+        if ($warmup) {
+            $user = User::with(['role'])->find($userId);
+            if ($user) {
+                Cache::put($key, $user, $ttl);
+            }
+            return $user;
+        }
+
+        $user = Cache::remember($key, $ttl, function () use($userId) {
+            return User::with(['role'])->find($userId);
+        });
 
         if (!$user) {
             throw new UserNotFoundException();
@@ -53,6 +92,8 @@ class UsersRepository
         $user->password = $storeDto->password_hash;
         $user->role_id = $storeDto->role_id;
         $user->save();
+
+        Cache::tags('user-list')->flush();
     }
 
     public function save(UpdateDto $updateDto): void
@@ -67,6 +108,9 @@ class UsersRepository
         $user->email = $updateDto->email;
         $user->role_id = $updateDto->role_id;
         $user->save();
+
+        Cache::forget('user.' . $updateDto->id);
+        Cache::tags('user-list')->flush();
     }
 
     public function saveProfile(ProfileDto $profileDto): void
@@ -80,6 +124,9 @@ class UsersRepository
         $user->name = $profileDto->name;
         $user->email = $profileDto->email;
         $user->save();
+
+        Cache::forget('user.' . $profileDto->id);
+        Cache::tags('user-list')->flush();
     }
 
     public function savePassword(PasswordDto $passwordDto): void
@@ -92,6 +139,9 @@ class UsersRepository
 
         $user->password = $passwordDto->password_hash;
         $user->save();
+
+        Cache::forget('user.' . $passwordDto->id);
+        Cache::tags('user-list')->flush();
     }
 
     public function delete(int $userId): void
@@ -103,5 +153,32 @@ class UsersRepository
         }
         
         $user->delete();
+
+        Cache::forget('user.' . $userId);
+        Cache::tags('user-list')->flush();
+    }
+
+    public function warmupCache(): void
+    {
+        $users = $this->fetchAll(true);
+
+        $perPage = config('custom.perPageAdmin');
+        $totalPage = ceil(count($users) / $perPage);
+
+        $sorts = config('custom.usersSorts');
+        $directions = config('custom.usersDirections');
+        $pages = range(1, $totalPage);
+        foreach ($sorts as $sort) {
+            foreach ($directions as $direction) {
+                foreach ($pages as $page) {
+                    $this->fetchList($sort, $direction, $page, true);
+                }
+            }
+        }
+        
+        $ids = $users->pluck('id')->toArray();
+        foreach ($ids as $userId) {
+            $this->find($userId, true);
+        }
     }
 }

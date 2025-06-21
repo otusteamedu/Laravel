@@ -34,14 +34,16 @@ class UserController extends Controller
     public function index(Request $request): View
     {
         $sort = $request->get('sort', 'id');
-        $allowedSorts = ['id', 'name', 'email', 'created_at'];
+        $allowedSorts = config('custom.usersSorts');
         $sort = in_array($sort, $allowedSorts) ? $sort : 'id';
 
         $direction = $request->get('direction', 'asc');
-        $allowedDirections= ['asc', 'desc'];
+        $allowedDirections= config('custom.usersDirections');
         $direction = in_array($direction, $allowedDirections) ? $direction: 'asc';
 
-        $users = $this->service->getList($sort, $direction);
+        $page = (int) ($request->get('page')?? 1);
+
+        $users = $this->service->getList($sort, $direction, $page);
         return view('admin.users.index', compact('users', 'direction'));
     }
 
