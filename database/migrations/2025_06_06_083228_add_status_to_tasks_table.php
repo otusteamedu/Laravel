@@ -12,9 +12,11 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('tasks', function (Blueprint $table) {
-            $table->enum('status', ['новая', 'в работе', 'выполнена', 'отменена'])
-                  ->default('новая')
-                  ->after('priority_id');
+            if (!Schema::hasColumn('tasks', 'status')) {
+                $table->enum('status', ['новая', 'в работе', 'выполнена', 'отменена'])
+                      ->default('новая')
+                      ->after('priority_id');
+            }
         });
     }
 
@@ -24,7 +26,9 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('tasks', function (Blueprint $table) {
-            $table->dropColumn('status');
+            if (Schema::hasColumn('tasks', 'status')) {
+                $table->dropColumn('status');
+            }
         });
     }
 };
