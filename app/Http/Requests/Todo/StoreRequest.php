@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Todo;
 
 use Illuminate\Auth\AuthManager;
+use Vhar\EmbedVideo\Rules\EmbedVideoRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Http\Exceptions\HttpResponseException;
@@ -34,6 +35,8 @@ class StoreRequest extends FormRequest
             'description' => ['required', 'string'],
             'deadline' => ['required', 'date', 'after_or_equal:now'],
             'options' => ['nullable', 'array'],
+            'options.isHot' => ['nullable', 'string'],
+            'options.video' => ['nullable', new EmbedVideoRule],
         ];
     }
 

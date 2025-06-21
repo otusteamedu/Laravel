@@ -45,3 +45,19 @@
     >
     <x-invalid-feedback :errors="$errors->get('deadline')"/>
 </div>
+
+<div class="col-12 mb-3">
+    <div class="input-group">
+        <span class="input-group-text"><i class="fa-brands fa-youtube"></i></span>
+        <input id="todo-options-video" name="options[video]" type="text"
+            value="{{ old('options[video]', $todo->options['video'] ?? '') }}"
+            @class([
+                'form-control',
+                'is-invalid' => !empty($errors->get('options.video'))
+            ]) 
+            placeholder="Укажите ссылку на видео" autocomplete="off"
+        >
+        <x-invalid-feedback :errors="$errors->get('options.video')"/>
+    </div>
+    <small id="todo-options-video-help" class="form-text text-muted">Вставьте ссылку на видео с YouTube, Rutube или VKVideo</small>
+</div>

@@ -56,6 +56,11 @@
                                     Редактировать
                                 </span>
                             </div>
+                            @if(!empty($todo->options['embed']))
+                                <div class="video col-12 mb-4">
+                                    <embed src="{{ $todo->options['embed']->video }}"/>
+                                </div>
+                            @endif
                         </div>
                         <div x-show="showEdit" class="pt-4">
                                 <h4 class="mb-4">Редактирование задачи</h4>

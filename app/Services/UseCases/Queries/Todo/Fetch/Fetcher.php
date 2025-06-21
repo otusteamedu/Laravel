@@ -2,9 +2,11 @@
 
 namespace App\Services\UseCases\Queries\Todo\Fetch;
 
+use Vhar\EmbedVideo\Facades\EmbedVideo;
+use App\Services\Repositories\Todo\TodoFetchDTO;
+use App\Services\Repositories\ProjectRepositoryInterface;
 use App\Services\Repositories\Todo\TodoRepositoryInterface;
 use App\Services\Repositories\Exceptions\ModelNotFoundException;
-use App\Services\Repositories\ProjectRepositoryInterface;
 
 class Fetcher
 {
@@ -32,9 +34,29 @@ class Fetcher
             throw new ModelNotFoundException('Задача не найдена');
         }
 
+        $todo = $todoDTO;
+
+        if (!empty($todo->options['video'])) {
+            $options = $todo->options;
+
+            $options['embed'] = EmbedVideo::handle($options['video']);
+
+            $todo = new TodoFetchDTO(
+                todoId: $todo->todoId,
+                title: $todo->title,
+                author: $todo->author,
+                status: $todo->status,
+                description: $todo->description,
+                deadline: $todo->deadline,
+                created: $todo->created,
+                updated: $todo->updated,
+                options: $options,
+            );
+        }
+
         return new Result(
             projectDTO: $projectDTO,
-            todoDTO: $todoDTO,
+            todoDTO: $todo,
         );
     }
 }
