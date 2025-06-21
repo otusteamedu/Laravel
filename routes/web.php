@@ -15,9 +15,9 @@ Auth::routes();
 Route::get('/home', HomeController::class)->middleware(['auth'])->name('home');
 Route::view('/about', 'about');
 
-Route::get('/test-package', function (UserLogo $userLogo) {
-
-   // dd(UserLogo::generate('Иванов Иван'));
+Route::get('/test-package', function () {
+    //dd(UserLogo::generate('Иванов Иван'));
     //dd(userlogo('Иванов Иван'));
+
     return '';
 });
