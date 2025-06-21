@@ -49,7 +49,7 @@ class CreateController extends Controller
                 ->withInput()
                 ->with('error', $e->getMessage());
 
-        } catch (Exception $e) {
+        }  catch (Exception $e) {
             return redirect()->back()
                 ->withInput()
                 ->with('error', 'Произошла непредвиденная ошибка при создании категории. Попробуйте позже.');

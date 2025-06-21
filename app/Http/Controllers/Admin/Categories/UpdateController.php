@@ -44,11 +44,17 @@ class UpdateController extends Controller
             );
 
             $category = $handler->handle($command);
+
+            return redirect()->route('admin.categories.index')
+                ->with('success', "Категория \"{$category->name}\" успешно обновлена");
+
+        } catch (\App\Services\Exceptions\Categories\CategoryAlreadyExistsException $e) {
+            return redirect()->back()
+                ->withInput()
+                ->with('error', $e->getMessage());
+
         } catch (\Exception) {
             throw new NotFoundHttpException('Категория не найдена');
         }
-
-        return redirect()->route('admin.categories.index')
-            ->with('success', "Категория \"{$category->name}\" успешно обновлена");
     }
 }

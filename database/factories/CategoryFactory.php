@@ -12,7 +12,7 @@ class CategoryFactory extends Factory
     public function definition(): array
     {
         return [
-            'color' => $this->faker->randomElement(['red', 'blue', 'green', 'yellow', 'orange', 'purple', 'pink']),
+            'color' => $this->faker->hexColor(),
             'name' => $this->faker->sentence(rand(1, 3)),
             'description' => $this->faker->paragraph(),
         ];
