@@ -27,9 +27,9 @@ class OrdersService
     /**
      * @return LengthAwarePaginator<array-key, Order>
      */
-    public function getList(string $sort, string $direction): LengthAwarePaginator
+    public function getList(string $sort, string $direction, int $page): LengthAwarePaginator
     {
-        return $this->repository->fetchList($sort, $direction);
+        return $this->repository->fetchList($sort, $direction, $page);
     }
 
     /**

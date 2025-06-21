@@ -32,14 +32,16 @@ class ProductController extends Controller
     public function index(Request $request): View
     {
         $sort = $request->get('sort', 'id');
-        $allowedSorts = ['id', 'title', 'category', 'created_at'];
+        $allowedSorts = config('custom.productsSorts');
         $sort = in_array($sort, $allowedSorts) ? $sort : 'id';
 
         $direction = $request->get('direction', 'asc');
-        $allowedDirections= ['asc', 'desc'];
+        $allowedDirections= config('custom.productsDirections');
         $direction = in_array($direction, $allowedDirections) ? $direction: 'asc';
 
-        $products = $this->service->getList($sort, $direction);
+        $page = (int) ($request->get('page') ?? 1);
+
+        $products = $this->service->getList($sort, $direction, $page);
         return view('admin.products.index', compact('products', 'direction'));
     }
 

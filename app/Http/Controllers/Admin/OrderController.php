@@ -33,13 +33,16 @@ class OrderController extends Controller
     public function index(Request $request): View
     {
         $sort = $request->get('sort', 'id');
-        $allowedSorts = ['id', 'user', 'created_at'];
+        $allowedSorts = config('custom.ordersSorts');
         $sort = in_array($sort, $allowedSorts) ? $sort : 'id';
 
         $direction = $request->get('direction', 'asc');
-        $allowedDirections= ['asc', 'desc'];
+        $allowedDirections= config('custom.ordersDirections');
         $direction = in_array($direction, $allowedDirections) ? $direction: 'asc';
-        $orders = $this->service->getList($sort, $direction);
+
+        $page = (int) ($request->get('page') ?? 1);
+
+        $orders = $this->service->getList($sort, $direction, $page);
         return view('admin.orders.index', compact('orders', 'direction'));
     }
 

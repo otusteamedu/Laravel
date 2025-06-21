@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Services\CategoriesService;
 use App\Services\ProductsService;
+use Illuminate\Http\Request;
 use Illuminate\View\View;
 
 class CatalogController extends Controller
@@ -13,9 +14,10 @@ class CatalogController extends Controller
         private CategoriesService $categoriesService
     ) {}
 
-    public function index(): View
+    public function index(Request $request): View
     {
-        $products = $this->service->getAllWithImage();
+        $page = (int) $request->get('page');
+        $products = $this->service->getAllWithImage($page);
         $categories = $this->categoriesService->getAll();
         $currentCategory = null;
         return view('catalog.index', compact('products', 'categories', 'currentCategory'));
