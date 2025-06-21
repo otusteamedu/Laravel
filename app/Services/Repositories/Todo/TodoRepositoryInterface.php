@@ -14,7 +14,7 @@ interface TodoRepositoryInterface
      * Получить задачу по id
      * @param int $todoId
      * @param int $projectId
-     * @return TodoDTO|null
+     * @return TodoFetchDTO|null
      */
     public function find(int $todoId, int $projectId): ?TodoFetchDTO;
 
@@ -47,7 +47,7 @@ interface TodoRepositoryInterface
      * @param int|null $userId
      * @return TodoFetchDTO[]
      */
-    public function fetch(int $projectId, int $userId = null): array;
+    public function fetchForProject(int $projectId, int $userId = null): array;
 
     /**
      * Найти пользователя среди участников задачи

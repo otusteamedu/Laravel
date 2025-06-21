@@ -2,11 +2,13 @@
 
 namespace App\Infrastructure\Eloquent\Repositories;
 
+use Carbon\Carbon;
 use App\Models\Todo;
 use App\Models\User;
 use App\Models\TodoUser;
 use App\Models\TodoComment;
 use App\Models\TodoRoleEnum;
+use Vhar\EmbedVideo\Facades\EmbedVideo;
 use App\Services\Repositories\DTOs\UserDTO;
 use App\Services\Repositories\Todo\TodoDTO;
 use App\Services\Repositories\Todo\TodoUserDTO;
@@ -14,7 +16,6 @@ use App\Services\Repositories\Todo\TodoFetchDTO;
 use App\Services\Repositories\DTOs\TodoStatusDTO;
 use App\Services\Repositories\Todo\TodoCommentDTO;
 use App\Services\Repositories\Todo\TodoRepositoryInterface;
-use Carbon\Carbon;
 
 class TodoRepository implements TodoRepositoryInterface
 {
@@ -121,7 +122,7 @@ class TodoRepository implements TodoRepositoryInterface
      * @param int|null $userId
      * @return TodoFetchDTO[]
      */
-    public function fetch(int $projectId, int $userId = null): array
+    public function fetchForProject(int $projectId, int $userId = null): array
     {
         $query = Todo::query()
             ->with('author')

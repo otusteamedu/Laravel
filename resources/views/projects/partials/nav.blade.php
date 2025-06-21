@@ -15,6 +15,15 @@
         >
             <i class="fa-solid fa-circle-info me-2"></i>Информация
         </a>
+        <a href="{{ route('project.todos.index', ['projectId' => $projectId]) }}" 
+            id="todo-tab"
+            @class([
+                'nav-link',
+                'active' => $active === 'todos',
+            ])
+        >
+            <i class="fa-solid fa-list-check me-2"></i>Задачи
+        </a>
         @can('project.user.list', $projectId)
             <a href="{{ route('project.users.index', ['projectId' => $projectId]) }}" 
                 id="user-tab"

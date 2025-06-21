@@ -3,9 +3,12 @@
 use App\Http\Controllers\Projects;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProjectUsers;
+use App\Http\Controllers\Todo;
 use App\Http\Controllers\TodoStatuses;
+use App\Http\Controllers\VideoController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\LocalizationController;
+
 
 Route::view('/', 'pages.index')->name('home');
 
@@ -77,6 +80,22 @@ Route::middleware('auth')
         Route::post('/destroy', TodoStatuses\Delete::class)
             ->name('destroy')
             ->can('todostatuses.manage', 'projectId');
+    });
+
+Route::middleware('auth')
+    ->prefix('project/{projectId}/todo')
+    ->name('project.todos.')
+    ->group(function () {
+        Route::get('/', Todo\Index::class)
+            ->name('index');
+        Route::post('/store', Todo\Create::class)
+            ->name('store');
+        Route::get('/{todoId}', Todo\Show::class)
+            ->name('show');
+        Route::put('/{todoId}', Todo\Update::class)
+            ->name('update');
+        Route::delete('/{todoId}', Todo\Delete::class)
+            ->name('destroy');
     });
 
 require __DIR__ . '/auth.php';
