@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "88970a0117c062eed55fa8728fc43833",
+    "content-hash": "ee4e8077de9033db19e123ac8631e2af",
     "packages": [
         {
             "name": "brick/math",
@@ -5571,6 +5571,41 @@
             "time": "2024-12-21T16:25:41+00:00"
         },
         {
+            "name": "vagrant/exchange",
+            "version": "dev-main",
+            "dist": {
+                "type": "path",
+                "url": "../exchange",
+                "reference": "6f4d31e3146185528055783c13ebaa1f1b98923a"
+            },
+            "require": {
+                "illuminate/http": "^12.0",
+                "illuminate/support": "^12.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Vagrant\\Exchange\\ServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Vagrant\\Exchange\\": "src/"
+                }
+            },
+            "authors": [
+                {
+                    "name": "Olga Lukianova"
+                }
+            ],
+            "description": "Gets and prints curent excgange rate from CBR official site",
+            "transport-options": {
+                "relative": true
+            }
+        },
+        {
             "name": "vlucas/phpdotenv",
             "version": "v5.6.2",
             "source": {
@@ -8075,7 +8110,9 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {},
+    "stability-flags": {
+        "vagrant/exchange": 20
+    },
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
