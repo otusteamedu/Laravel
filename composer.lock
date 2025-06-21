@@ -2652,7 +2652,7 @@
             "dist": {
                 "type": "path",
                 "url": "./packages/laravel-user-logo",
-                "reference": "83fe1612b0e030c995eb7f495692cee8fae071f8"
+                "reference": "271e6980c9147d51e6a69d5f08ab21703474b173"
             },
             "require": {
                 "ext-gd": "*",
@@ -2673,7 +2673,10 @@
             "autoload": {
                 "psr-4": {
                     "PshenichkinMaxim\\UserLogo\\": "src/"
-                }
+                },
+                "files": [
+                    "helpers/helpers.php"
+                ]
             },
             "license": [
                 "MIT"
