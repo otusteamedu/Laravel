@@ -1,5 +1,5 @@
 <?php
-namespace Tests\Unit\Services\Commands;
+namespace Tests\Unit\Categories\Commands;
 
 use Tests\TestCase;
 use App\Services\Commands\CreateCategory\Command;
@@ -10,7 +10,7 @@ use App\Repositories\Categories\CategoryRepositoryInterface;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Mockery;
 
-class CreateCategoryHandlerTest extends TestCase
+class CreateCategoryTest extends TestCase
 {
     use RefreshDatabase;
 

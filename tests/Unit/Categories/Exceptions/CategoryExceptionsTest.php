@@ -1,5 +1,5 @@
 <?php
-namespace Tests\Unit\Exceptions;
+namespace Tests\Unit\Categories\Exceptions;
 
 use App\Services\Exceptions\Categories\CategoryHasTasksException;
 use Tests\TestCase;

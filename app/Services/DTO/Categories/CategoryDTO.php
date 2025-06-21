@@ -8,7 +8,7 @@ final readonly class CategoryDTO
         public int $id,
         public string $name,
         public string $color,
-        public string $description,
+        public ?string $description,
         public int $tasks_count,
     ) {
     }

@@ -1,12 +1,12 @@
 <?php
-namespace Tests\Unit\Requests;
+namespace Tests\Unit\Categories\Requests;
 
 use Tests\TestCase;
 use App\Http\Requests\CreateCategoryRequest;
 use App\Http\Requests\UpdateCategoryRequest;
 use Illuminate\Support\Facades\Validator;
 
-class CategoryRequestTest extends TestCase
+class CategoryRequestsTest extends TestCase
 {
     public function test_validation_create_category_with_valid_data()
     {

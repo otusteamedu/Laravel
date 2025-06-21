@@ -1,5 +1,5 @@
 <?php
-namespace Tests\Unit\Factories;
+namespace Tests\Unit\Categories\Factory;
 
 use Tests\TestCase;
 use App\Models\Category;

@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit\Services\Queries;
+namespace Tests\Unit\Categories\Queries;
 
 use Tests\TestCase;
 use App\Services\Queries\FetchAllCategories\Query;
@@ -11,7 +11,7 @@ use App\Repositories\Categories\CategoryRepositoryInterface;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Mockery;
 
-class FetchAllCategoriesFetcherTest extends TestCase {
+class FetchAllCategoriesTest extends TestCase {
     use RefreshDatabase;
 
     public function test_returns_paginated_categories()

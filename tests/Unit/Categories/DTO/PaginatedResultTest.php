@@ -1,5 +1,5 @@
 <?php
-namespace Tests\Unit\Services\DTO\Categories;
+namespace Tests\Unit\Categories\DTO;
 
 use Tests\TestCase;
 use App\Services\DTO\Categories\PaginatedResult;
@@ -7,8 +7,8 @@ use App\Services\DTO\Categories\CategoryDTO;
 
 class PaginatedResultTest extends TestCase
 {
-    /** @test */
-    public function can_create_paginated_result()
+
+    public function test_can_create_paginated_result()
     {
         $items = [
             new CategoryDTO(1, 'Работа', '#ff0000', 'Описание', 5),
@@ -28,8 +28,8 @@ class PaginatedResultTest extends TestCase
         $this->assertEquals(0, $result->offset);
     }
 
-    /** @test */
-    public function calculates_current_page_correctly()
+
+    public function test_calculates_current_page_correctly()
     {
         // Первая страница (offset = 0)
         $result = new PaginatedResult([], 25, 10, 0);
@@ -44,16 +44,14 @@ class PaginatedResultTest extends TestCase
         $this->assertEquals(3, $result->getCurrentPage());
     }
 
-    /** @test */
-    public function returns_per_page_limit()
+    public function test_returns_per_page_limit()
     {
         $result = new PaginatedResult([], 25, 15, 0);
 
         $this->assertEquals(15, $result->getPerPage());
     }
 
-    /** @test */
-    public function checks_if_has_more_pages()
+    public function test_checks_if_has_more_pages()
     {
         // Есть еще страницы (offset=0, limit=10, total=25)
         $result = new PaginatedResult([], 25, 10, 0);
@@ -72,8 +70,8 @@ class PaginatedResultTest extends TestCase
         $this->assertFalse($result->hasMorePages());
     }
 
-    /** @test */
-    public function handles_edge_cases()
+
+    public function test_handles_edge_cases()
     {
         // Пустой результат
         $result = new PaginatedResult([], 0, 10, 0);
