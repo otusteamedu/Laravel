@@ -2,17 +2,21 @@
 
 namespace App\Http\Controllers;
 
-//use Illuminate\Http\Request;
+use App\Services\News\Handlers\GetLatestHandler;
 use Illuminate\View\View;
+
 
 class HomeController extends Controller
 {
-
     /**
+     * Display a listing of the resource.
+     *
      * @return View
      */
-   public function __invoke(): View
-   {
-       return view('home');
-   }
+    public function __invoke(GetLatestHandler $getLatestNewsUseCase): View
+    {
+        $latestNews = $getLatestNewsUseCase()->results;
+
+        return view('home', compact('latestNews'));
+    }
 }

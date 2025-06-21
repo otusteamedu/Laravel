@@ -5,6 +5,7 @@ namespace App\Services\News\Handlers;
 
 use App\Services\News\Exceptions\NewsNotFoundException;
 use App\Services\News\Repositories\NewsRepositoryInterface;
+use Illuminate\Support\Facades\Cache;
 
 class DestroyHandler
 {
@@ -25,6 +26,10 @@ class DestroyHandler
             throw new NewsNotFoundException('News not found');
         }
 
-        return $this->newsRepository->delete($news);
+        $res = $this->newsRepository->delete($news);
+
+        Cache::forget('latest_news_list');
+
+        return $res;
     }
 }

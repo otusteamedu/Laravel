@@ -61,4 +61,17 @@ class NewsRepository implements NewsRepositoryInterface
     public function delete(News $news): ?bool {
         return $news->delete();
     }
+
+    /**
+     * @param int $limit
+     *
+     * @return array
+     */
+    public function getLatest(int $limit = 10): array {
+        return News::query()->where('is_draft', false)
+           ->orderBy('published_at', 'desc')
+           ->limit($limit)
+           ->get()
+           ->all();
+    }
 }

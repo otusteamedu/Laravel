@@ -1,11 +1,11 @@
 services:
     laravel.test:
         build:
-            context: './vendor/laravel/sail/runtimes/8.4'
+            context: ./vendor/laravel/sail/runtimes/8.4
             dockerfile: Dockerfile
             args:
                 WWWGROUP: '${WWWGROUP}'
-        image: 'sail-8.4/app'
+        image: sail-8.4/app
         extra_hosts:
             - 'host.docker.internal:host-gateway'
         ports:
@@ -24,6 +24,7 @@ services:
         depends_on:
             - pgsql
             - redis
+            - memcached
     pgsql:
         image: 'postgres:17'
         ports:
@@ -64,6 +65,24 @@ services:
                 - ping
             retries: 3
             timeout: 5s
+    memcached:
+        image: 'memcached:alpine'
+        ports:
+            - '${FORWARD_MEMCACHED_PORT:-11211}:11211'
+        networks:
+            - sail
+    scheduler:
+        image: sail-8.4/app
+        container_name: laravel_scheduler
+        volumes:
+            - '.:/var/www/html'
+        working_dir: /var/www/html
+        networks:
+            - sail
+        depends_on:
+            - laravel.test
+        entrypoint: /bin/sh -c "while true; do php artisan schedule:run --verbose --no-interaction; sleep 60; done"
+
 networks:
     sail:
         driver: bridge
