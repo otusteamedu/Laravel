@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "c893f01f8fa50397e7d4541e1f94783d",
+    "content-hash": "1e866504988af2540d08194008e0462b",
     "packages": [
         {
             "name": "brick/math",
@@ -1053,6 +1053,53 @@
                 }
             ],
             "time": "2025-02-03T10:55:03+00:00"
+        },
+        {
+            "name": "irbis45/laravel-user-logo",
+            "version": "dev-MPshenichkin/hw11",
+            "dist": {
+                "type": "path",
+                "url": "./packages/laravel-user-logo",
+                "reference": "2d36bbcafe32f7ff9b57c7d8e2578d45e564667e"
+            },
+            "require": {
+                "ext-gd": "*",
+                "illuminate/support": "^9|^10|^11|^12",
+                "php": "^8.2"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Irbis45\\UserLogo\\ServiceProvider"
+                    ],
+                    "aliases": {
+                        "UserLogo": "Irbis45\\UserLogo\\Facades\\UserLogo"
+                    }
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Irbis45\\UserLogo\\": "src/"
+                },
+                "files": [
+                    "helpers/helpers.php"
+                ]
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Maxim",
+                    "email": "irbis45@inbox.ru"
+                }
+            ],
+            "description": "Generates a logo based on the full name",
+            "transport-options": {
+                "symlink": true,
+                "relative": true
+            }
         },
         {
             "name": "laravel/framework",
@@ -2645,47 +2692,6 @@
                 }
             ],
             "time": "2024-07-20T21:41:07+00:00"
-        },
-        {
-            "name": "pshenichkin_maxim/laravel-user-logo",
-            "version": "dev-MPshenichkin/hw11",
-            "dist": {
-                "type": "path",
-                "url": "./packages/laravel-user-logo",
-                "reference": "271e6980c9147d51e6a69d5f08ab21703474b173"
-            },
-            "require": {
-                "ext-gd": "*",
-                "illuminate/support": "^12.11",
-                "php": "^8.2"
-            },
-            "type": "library",
-            "extra": {
-                "laravel": {
-                    "providers": [
-                        "PshenichkinMaxim\\UserLogo\\ServiceProvider"
-                    ],
-                    "aliases": {
-                        "UserLogo": "PshenichkinMaxim\\UserLogo\\Facades\\UserLogo"
-                    }
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "PshenichkinMaxim\\UserLogo\\": "src/"
-                },
-                "files": [
-                    "helpers/helpers.php"
-                ]
-            },
-            "license": [
-                "MIT"
-            ],
-            "description": "Generates a logo based on the full name",
-            "transport-options": {
-                "symlink": true,
-                "relative": true
-            }
         },
         {
             "name": "psr/clock",
@@ -8334,7 +8340,7 @@
     "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
-        "pshenichkin_maxim/laravel-user-logo": 20
+        "irbis45/laravel-user-logo": 20
     },
     "prefer-stable": true,
     "prefer-lowest": false,

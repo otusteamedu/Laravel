@@ -7,10 +7,10 @@
     "license": "MIT",
     "require": {
         "php": "^8.2",
+        "irbis45/laravel-user-logo": "dev-MPshenichkin/hw11",
         "laravel/framework": "^12.0",
         "laravel/tinker": "^2.10.1",
-        "laravel/ui": "^4.6",
-        "pshenichkin_maxim/laravel-user-logo": "dev-MPshenichkin/hw11"
+        "laravel/ui": "^4.6"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.15",
