@@ -2,34 +2,27 @@
 
 namespace Tests\Feature\Admin\Users;
 
+use Tests\Feature\Admin\AdminTestCase;
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Tests\TestCase;
 
-class UserUpdateTest extends TestCase {
-    use RefreshDatabase;
-
-    private User $adminUser;
-
+class UserUpdateTest extends AdminTestCase
+{
     private User $testUser;
 
     protected function setUp(): void
     {
         parent::setUp();
-        $this->adminUser = User::factory()->create(['is_admin' => true]);
-        $this->testUser  = User::factory()->create(
-            [
-                'name'     => 'Петров Петр Петрович',
-                'email'    => 'petrov@laraveltest.io',
-                'password' => 'password',
-                'is_admin' => false,
-            ]
-        );
+        $this->testUser = User::factory()->create([
+            'name' => 'Петров Петр Петрович',
+            'email' => 'petrov@laraveltest.io',
+            'password' => 'password',
+            'is_admin' => false,
+        ]);
     }
 
     public function test_admin_can_open_edit_form()
     {
-        $response = $this->actingAs($this->adminUser)
+        $response = $this->asAdmin()
             ->get(route('admin.users.edit', $this->testUser));
 
         $response->assertStatus(200);
@@ -41,30 +34,28 @@ class UserUpdateTest extends TestCase {
     public function test_admin_can_update_user()
     {
         $newData = [
-            'name'                  => 'Петров Александр Петрович',
-            'email'                 => 'petrov.alex@laraveltest.io',
-            'password'              => 'password2',
+            'name' => 'Петров Александр Петрович',
+            'email' => 'petrov.alex@laraveltest.io',
+            'password' => 'password2',
             'password_confirmation' => 'password2',
         ];
 
-        $response = $this->actingAs($this->adminUser)
+        $response = $this->asAdmin()
             ->put(route('admin.users.update', $this->testUser), $newData);
 
         $response->assertRedirect(route('admin.users.index'));
 
         // Проверяем что данные обновились в базе
-        $this->assertDatabaseHas(
-            'users', [
-                       'id'    => $this->testUser->id,
-                       'name'  => 'Петров Александр Петрович',
-                       'email' => 'petrov.alex@laraveltest.io',
-                   ]
-        );
+        $this->assertDatabaseHas('users', [
+            'id' => $this->testUser->id,
+            'name' => 'Петров Александр Петрович',
+            'email' => 'petrov.alex@laraveltest.io',
+        ]);
 
         $response->assertSessionHas('success');
     }
 
-    public function test_cannot_update_category_with_existing_email()
+    public function test_cannot_update_user_with_existing_email()
     {
         // Создаем другого пользователя
         $otherUser = User::factory()->create(['email' => 'other.user@example.com']);
@@ -74,13 +65,11 @@ class UserUpdateTest extends TestCase {
             'email' => 'other.user@example.com', // пытаемся использовать уже занятый email
         ];
 
-        $response = $this->actingAs($this->adminUser)
+        $response = $this->asAdmin()
             ->put(route('admin.users.update', $this->testUser), $updateData);
 
-        // Проверяем ошибки, а не сессионную ошибку
+        // Проверяем валидационные ошибки
         $response->assertSessionHasErrors('email');
-
-        // Или можно проверить конкретное сообщение
         $response->assertSessionHasErrors(['email' => 'The email has already been taken.']);
 
         // Проверяем что исходная почта не изменилась
@@ -92,23 +81,19 @@ class UserUpdateTest extends TestCase {
 
     public function test_edit_returns_404_for_nonexistent_user()
     {
-        $response = $this->actingAs($this->adminUser)
-            ->get(route('admin.users.edit', 999));
-
-        $response->assertStatus(404);
+        $this->assert404ForNonexistentResource('admin.users.edit', ['user' => 999]);
     }
 
-    public function test_update_returns_404_for_nonexistent_category()
+    public function test_update_returns_404_for_nonexistent_user()
     {
         $updateData = [
             'name' => 'Петров Петр Петрович',
             'email' => 'other.user@example.com',
         ];
 
-        $response = $this->actingAs($this->adminUser)
+        $response = $this->asAdmin()
             ->put(route('admin.users.update', 999), $updateData);
 
         $response->assertStatus(404);
     }
-
-}
+} 

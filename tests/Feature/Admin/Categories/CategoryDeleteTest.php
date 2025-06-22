@@ -1,74 +1,61 @@
 <?php
+
 namespace Tests\Feature\Admin\Categories;
 
-use Tests\TestCase;
-use App\Models\User;
 use App\Models\Category;
 use App\Models\Task;
-use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\Feature\Admin\AdminTestCase;
 
-class CategoryDeleteTest extends TestCase
+class CategoryDeleteTest extends AdminTestCase
 {
-    use RefreshDatabase;
+    private Category $category;
 
-    private User $adminUser;
     protected function setUp(): void
     {
         parent::setUp();
-        $this->adminUser = User::factory()->create(['is_admin' => true]);
+        $this->category = Category::factory()->create();
     }
 
-    public function test_admin_can_delete_empty_category()
+    public function test_guest_cannot_delete_category()
     {
-        $category = Category::factory()->create(['name' => 'Для удаления']);
-
-        $response = $this->actingAs($this->adminUser)
-            ->delete(route('admin.categories.destroy', $category));
-
-        $response->assertRedirect(route('admin.categories.index'));
-
-        // Проверяем что категория удалилась из базы
-        $this->assertDatabaseMissing('categories', ['id' => $category->id]);
-
-        $response->assertSessionHas('success');
+        $this->assertGuestRedirectedToLogin("admin.categories.destroy", 'delete', [], ['category' => $this->category->id]);
     }
 
-    public function test_admin_cannot_delete_category_with_tasks()
+    public function test_regular_user_cannot_delete_category()
     {
-        $category = Category::factory()->create();
-
-        // Создаем задачи в этой категории
-        Task::factory()->count(3)->create(['category_id' => $category->id]);
-
-        $response = $this->actingAs($this->adminUser)
-            ->delete(route('admin.categories.destroy', $category));
-
-        // Проверяем что получили ошибку
-        $response->assertSessionHas('error');
-
-        // Проверяем что категория НЕ удалилась
-        $this->assertDatabaseHas('categories', ['id' => $category->id]);
+        $this->asRegularUser()
+            ->delete(route('admin.categories.destroy', $this->category))
+            ->assertStatus(403);
     }
 
-    public function test_simple_user_cannot_delete_category()
+    public function test_admin_can_delete_category()
     {
-        $regularUser = User::factory()->create(['is_admin' => false]);
-        $category = Category::factory()->create();
+        $this->asAdmin()
+            ->delete(route('admin.categories.destroy', $this->category))
+            ->assertRedirect(route('admin.categories.index'))
+            ->assertSessionHas('success');
 
-        $response = $this->actingAs($regularUser)
-            ->delete(route('admin.categories.destroy', $category));
-
-        $response->assertStatus(403);
-
-        // Проверяем что категория не удалилась
-        $this->assertDatabaseHas('categories', ['id' => $category->id]);
+        $this->assertDatabaseMissing('categories', ['id' => $this->category->id]);
     }
 
-    public function test_returns_404_for_nonexistent_category()
+    public function test_delete_with_nonexistent_category()
     {
-        $response = $this->actingAs($this->adminUser)
-            ->delete(route('admin.categories.destroy', 999));
-
-        $response->assertStatus(404);
+        $this->asAdmin()
+            ->delete(route('admin.categories.destroy', ['category' => 999]))
+            ->assertStatus(404);
     }
-}
+
+    public function test_cannot_delete_category_with_tasks()
+    {
+        // Создаем задачу для категории
+        Task::factory()->create(['category_id' => $this->category->id]);
+
+        $this->asAdmin()
+            ->delete(route('admin.categories.destroy', $this->category))
+            ->assertRedirect(route('admin.categories.index'))
+            ->assertSessionHas('error');
+
+        // Категория не должна быть удалена
+        $this->assertDatabaseHas('categories', ['id' => $this->category->id]);
+    }
+} 

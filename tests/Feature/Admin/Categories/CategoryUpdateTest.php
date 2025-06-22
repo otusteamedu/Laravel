@@ -2,169 +2,144 @@
 
 namespace Tests\Feature\Admin\Categories;
 
-use Tests\TestCase;
-use App\Models\User;
 use App\Models\Category;
-use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\Feature\Admin\AdminTestCase;
 use App\Services\Commands\UpdateCategory\Handler;
 use App\Services\Exceptions\Categories\CategoryAlreadyExistsException;
-class CategoryUpdateTest extends TestCase {
-    use RefreshDatabase;
-
-    private User $adminUser;
+class CategoryUpdateTest extends AdminTestCase
+{
     private Category $category;
 
     protected function setUp(): void
     {
         parent::setUp();
-        $this->adminUser = User::factory()->create(['is_admin' => true]);
-        $this->category  = Category::factory()->create(
-            [
-                'name'        => 'Старое название',
-                'color'       => '#ff0000',
-                'description' => 'Старое описание'
-            ]
-        );
+        $this->category = Category::factory()->create();
     }
 
-    public function test_admin_can_open_edit_form()
+    public function test_guest_cannot_access_edit_form()
     {
-        $response = $this->actingAs($this->adminUser)
-            ->get(route('admin.categories.edit', $this->category));
+        $this->assertGuestRedirectedToLogin("admin.categories.edit", 'get', [], ['category' => $this->category->id]);
+    }
 
-        $response->assertStatus(200);
-        $response->assertViewIs('admin.categories.edit');
-        $response->assertSee('Старое название');
-        $response->assertSee($this->category->color);
+    public function test_regular_user_cannot_access_edit_form()
+    {
+        $this->asRegularUser()
+            ->get(route('admin.categories.edit', $this->category))
+            ->assertStatus(403);
+    }
+
+    public function test_admin_can_access_edit_form()
+    {
+        $this->asAdmin()
+            ->get(route('admin.categories.edit', $this->category))
+            ->assertStatus(200)
+            ->assertViewIs('admin.categories.edit')
+            ->assertViewHas('category')
+            ->assertSee($this->category->name);
+    }
+
+    public function test_admin_can_access_edit_form_with_nonexistent_category()
+    {
+        $this->assert404ForNonexistentResource('admin.categories.edit', ['category' => 999]);
+    }
+
+    public function test_guest_cannot_update_category()
+    {
+        $this->assertGuestRedirectedToLogin("admin.categories.update", 'put', [
+            'name' => 'Новое название',
+            'color' => '#00ff00',
+            'description' => 'Новое описание'
+        ], ['category' => $this->category->id]);
+    }
+
+    public function test_regular_user_cannot_update_category()
+    {
+        $this->asRegularUser()
+            ->put(route('admin.categories.update', $this->category), [
+                'name' => 'Новое название',
+                'color' => '#00ff00',
+                'description' => 'Новое описание'
+            ])
+            ->assertStatus(403);
     }
 
     public function test_admin_can_update_category()
     {
-        $newData = [
+        $updateData = [
             'name' => 'Новое название',
             'color' => '#00ff00',
             'description' => 'Новое описание'
         ];
 
-        $response = $this->actingAs($this->adminUser)
-            ->put(route('admin.categories.update', $this->category), $newData);
+        $this->asAdmin()
+            ->put(route('admin.categories.update', $this->category), $updateData)
+            ->assertRedirect(route('admin.categories.index'))
+            ->assertSessionHas('success');
 
-        $response->assertRedirect(route('admin.categories.index'));
-
-        // Проверяем что данные обновились в базе
-        $this->assertDatabaseHas('categories', [
-            'id' => $this->category->id,
-            'name' => 'Новое название',
-            'color' => '#00ff00',
-            'description' => 'Новое описание'
-        ]);
-
-        $response->assertSessionHas('success');
+        $this->assertDatabaseHas('categories', array_merge(['id' => $this->category->id], $updateData));
     }
 
-    public function test_cannot_update_category_with_existing_name()
+    public function test_update_with_nonexistent_category()
     {
-        // Создаем другую категорию
-        $otherCategory = Category::factory()->create(['name' => 'Уникальное название']);
-
-        $updateData = [
-            'name' => 'Уникальное название', // пытаемся использовать уже занятое название
-            'color' => '#00ff00',
-            'description' => 'Описание'
-        ];
-
-        $response = $this->actingAs($this->adminUser)
-            ->put(route('admin.categories.update', $this->category), $updateData);
-
-        // Проверяем ВАЛИДАЦИОННЫЕ ошибки, а не сессионную ошибку
-        $response->assertSessionHasErrors('name');
-
-        // Или можно проверить конкретное сообщение
-        $response->assertSessionHasErrors(['name' => 'The name has already been taken.']);
-
-        // Проверяем что исходная категория не изменилась
-        $this->assertDatabaseHas('categories', [
-            'id' => $this->category->id,
-            'name' => 'Старое название'
-        ]);
+        $this->asAdmin()
+            ->put(route('admin.categories.update', ['category' => 999]), [
+                'name' => 'Новое название',
+                'color' => '#00ff00',
+                'description' => 'Новое описание'
+            ])
+            ->assertStatus(404);
     }
 
-    public function test_can_update_category_with_same_name()
+    public function test_update_requires_name()
     {
-        $updateData = [
-            'name' => 'Старое название', // оставляем то же название
-            'color' => '#00ff00',
-            'description' => 'Новое описание'
-        ];
-
-        $response = $this->actingAs($this->adminUser)
-            ->put(route('admin.categories.update', $this->category), $updateData);
-
-        $response->assertRedirect(route('admin.categories.index'));
-        $response->assertSessionHas('success');
+        $this->asAdmin()
+            ->put(route('admin.categories.update', $this->category), [
+                'color' => '#00ff00',
+                'description' => 'Updated Description'
+            ])
+            ->assertSessionHasErrors('name');
     }
 
-    public function test_edit_returns_404_for_nonexistent_category()
+    public function test_update_requires_color()
     {
-        $response = $this->actingAs($this->adminUser)
-            ->get(route('admin.categories.edit', 999));
-
-        $response->assertStatus(404);
-    }
-
-    public function test_update_returns_404_for_nonexistent_category()
-    {
-        $updateData = [
-            'name' => 'Новое название',
-            'color' => '#00ff00',
-            'description' => 'Описание'
-        ];
-
-        $response = $this->actingAs($this->adminUser)
-            ->put(route('admin.categories.update', 999), $updateData);
-
-        $response->assertStatus(404);
+        $this->asAdmin()
+            ->put(route('admin.categories.update', $this->category), [
+                'name' => 'Updated Category',
+                'description' => 'Updated Description'
+            ])
+            ->assertSessionHasErrors('color');
     }
 
     public function test_update_handles_category_already_exists_exception()
     {
-        // Мок Handler чтобы он выбросил CategoryAlreadyExistsException
-        $this->mock(Handler::class, function ($mock) {
-            $mock->shouldReceive('handle')
-                ->andThrow(new CategoryAlreadyExistsException('Тест'));
-        });
+        // Мокаем Handler чтобы выбросить CategoryAlreadyExistsException
+        $this->mock(Handler::class)
+            ->shouldReceive('handle')
+            ->andThrow(new CategoryAlreadyExistsException('Existing Category'));
 
-        $updateData = [
-            'name' => 'Тестовое название',
-            'color' => '#ff0000',
-            'description' => 'Описание'
-        ];
-
-        $response = $this->actingAs($this->adminUser)
-            ->put(route('admin.categories.update', $this->category), $updateData);
-
-        $response->assertRedirect();
-        $response->assertSessionHas('error');
-        $response->assertSessionHasInput('name', 'Тестовое название');
+        $this->asAdmin()
+            ->put(route('admin.categories.update', $this->category), [
+                'name' => 'Existing Category',
+                'color' => '#00ff00',
+                'description' => 'Updated Description'
+            ])
+            ->assertRedirect()
+            ->assertSessionHas('error', "Категория с именем 'Existing Category' уже существует");
     }
 
-    public function test_update_handles_unexpected_exception()
+    public function test_update_handles_general_exception()
     {
-        // Мок Handler чтобы он выбросил обычное Exception
-        $this->mock(Handler::class, function ($mock) {
-            $mock->shouldReceive('handle')
-                ->andThrow(new \Exception('Неожиданная ошибка'));
-        });
+        // Мокаем Handler чтобы выбросить общее исключение
+        $this->mock(Handler::class)
+            ->shouldReceive('handle')
+            ->andThrow(new \Exception('Неожиданная ошибка'));
 
-        $updateData = [
-            'name' => 'Тестовое название',
-            'color' => '#ff0000',
-            'description' => 'Описание'
-        ];
-
-        $response = $this->actingAs($this->adminUser)
-            ->put(route('admin.categories.update', $this->category), $updateData);
-
-        $response->assertStatus(404);
+        $this->asAdmin()
+            ->put(route('admin.categories.update', $this->category), [
+                'name' => 'Тестовое название',
+                'color' => '#ff0000',
+                'description' => 'Описание'
+            ])
+            ->assertStatus(404);
     }
 }

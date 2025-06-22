@@ -1,32 +1,35 @@
 <?php
+
 namespace Tests\Feature\Admin\Users;
 
+use Tests\Feature\Admin\AdminTestCase;
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Tests\TestCase;
 
-class UserDeleteTest extends TestCase{
-    use RefreshDatabase;
-
-    private User $adminUser;
-    protected function setUp(): void
-    {
-        parent::setUp();
-        $this->adminUser = User::factory()->create(['is_admin' => true]);
-    }
-
+class UserDeleteTest extends AdminTestCase
+{
     public function test_admin_can_delete_user()
     {
-        $testUser = User::factory()->create(['name' => 'Пользователь Для Удаления']);
+        $userToDelete = User::factory()->create(['name' => 'Для удаления']);
 
-        $response = $this->actingAs($this->adminUser)
-            ->delete(route('admin.users.destroy', $testUser));
+        $response = $this->asAdmin()
+            ->delete(route('admin.users.destroy', $userToDelete));
 
         $response->assertRedirect(route('admin.users.index'));
-
-        // Проверяем что категория удалилась из базы
-        $this->assertDatabaseMissing('categories', ['id' => $testUser->id]);
-
+        $this->assertDatabaseMissing('users', ['id' => $userToDelete->id]);
         $response->assertSessionHas('success');
     }
-}
+
+    public function test_returns_404_for_nonexistent_user()
+    {
+        $response = $this->asAdmin()
+            ->delete(route('admin.users.destroy', 999));
+
+        $response->assertStatus(404);
+    }
+
+    public function test_unauthorized_user_redirected_to_login()
+    {
+        $user = User::factory()->create();
+        $this->assertGuestRedirectedToLogin('admin.users.destroy', 'delete', [], ['user' => $user->id]);
+    }
+} 

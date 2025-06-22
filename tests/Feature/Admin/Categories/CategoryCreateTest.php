@@ -2,74 +2,53 @@
 
 namespace Tests\Feature\Admin\Categories;
 
-use Tests\TestCase;
-use App\Models\User;
 use App\Models\Category;
-use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\Feature\Admin\AdminTestCase;
 use App\Services\Commands\CreateCategory\Handler;
 use App\Services\Exceptions\Categories\CategorySaveException;
-class CategoryCreateTest extends TestCase {
-    use RefreshDatabase;
-
-    private User $adminUser;
-
-    protected function setUp(): void
+class CategoryCreateTest extends AdminTestCase
+{
+    public function test_guest_cannot_access_create_form()
     {
-        parent::setUp();
-
-        // Создаем администратора для тестов
-        $this->adminUser = User::factory()->create(['is_admin' => true]);
+        $this->assertGuestRedirectedToLogin('admin.categories.create');
     }
 
-    public function test_admin_can_open_form_create_category()
+    public function test_regular_user_cannot_access_create_form()
     {
-        $response = $this->actingAs($this->adminUser)
-            ->get(route('admin.categories.create'));
-
-        $response->assertStatus(200);
-        $response->assertViewIs('admin.categories.create');
+        $this->asRegularUser()
+            ->get(route('admin.categories.create'))
+            ->assertStatus(403);
     }
 
-    public function test_admin_can_create_new_category()
+    public function test_admin_can_access_create_form()
     {
-        $categoryData = [
+        $this->asAdmin()
+            ->get(route('admin.categories.create'))
+            ->assertStatus(200)
+            ->assertViewIs('admin.categories.create');
+    }
+
+    public function test_guest_cannot_create_category()
+    {
+        $this->assertGuestRedirectedToLogin('admin.categories.store', 'post', [
             'name'        => 'Спорт',
             'color'       => '#00ff00',
             'description' => 'Спортивные задачи'
-        ];
-
-        $response = $this->actingAs($this->adminUser)
-            ->post(route('admin.categories.store'), $categoryData);
-
-        // Проверяем что нас перенаправили на список категорий
-        $response->assertRedirect(route('admin.categories.index'));
-
-        // Проверяем что в базе появилась новая категория
-        $this->assertDatabaseHas('categories', $categoryData);
-
-        // Проверяем что показано сообщение об успехе
-        $response->assertSessionHas('success', "Категория 'Спорт' успешно создана");
+        ]);
     }
 
-    public function test_cannot_create_category_with_empty_name()
+    public function test_simple_user_cannot_create_category()
     {
-        $categoryData = [
-            'name'        => '', // пустое название
-            'color'       => '#00ff00',
-            'description' => 'Описание'
-        ];
-
-        $response = $this->actingAs($this->adminUser)
-            ->post(route('admin.categories.store'), $categoryData);
-
-        // Проверяем что нас вернули обратно с ошибкой
-        $response->assertSessionHasErrors('name');
-
-        // Проверяем что в базе ничего не создалось
-        $this->assertDatabaseMissing('categories', ['description' => 'Описание']);
+        $this->asRegularUser()
+            ->post(route('admin.categories.store'), [
+                'name'        => 'Спорт',
+                'color'       => '#00ff00',
+                'description' => 'Спортивные задачи'
+            ])
+            ->assertStatus(403);
     }
 
-    public function test_cannot_create_category_with_wrong_color()
+    public function test_admin_can_create_category()
     {
         $categoryData = [
             'name'        => 'Тест',
@@ -77,88 +56,80 @@ class CategoryCreateTest extends TestCase {
             'description' => 'Описание'
         ];
 
-        $response = $this->actingAs($this->adminUser)
-            ->post(route('admin.categories.store'), $categoryData);
+        $this->asAdmin()
+            ->post(route('admin.categories.store'), $categoryData)
+            ->assertRedirect(route('admin.categories.index'))
+            ->assertSessionHas('success');
 
-        $response->assertSessionHasErrors('color');
+        $this->assertDatabaseHas('categories', $categoryData);
     }
 
-    public function test_cannot_create_category_with_existing_name()
+    public function test_create_requires_name()
     {
-        // Создаем категорию
-        Category::factory()->create(['name' => 'Работа']);
-
-        $categoryData = [
-            'name'        => 'Работа', // такое название уже есть
-            'color'       => '#00ff00',
-            'description' => 'Другое описание'
-        ];
-
-        $response = $this->actingAs($this->adminUser)
-            ->post(route('admin.categories.store'), $categoryData);
-
-        // Проверяем что получили ошибку
-        $response->assertSessionHas('error');
-
-        // Проверяем что дубликат не создался
-        $this->assertEquals(1, Category::where('name', 'Работа')->count());
+        $this->asAdmin()
+            ->post(route('admin.categories.store'), [
+                'name'        => 'Работа', // такое название уже есть
+                'color'       => '#00ff00',
+                'description' => 'Другое описание'
+            ])
+            ->assertSessionHasErrors('name');
     }
 
-    public function test_simple_user_cannot_create_category()
+    public function test_create_requires_color()
     {
-        $simpleUser = User::factory()->create(['is_admin' => false]);
-
-        $response = $this->actingAs($simpleUser)
-            ->get(route('admin.categories.create'));
-
-        // Проверяем что доступ запрещен
-        $response->assertStatus(403);
+        $this->asAdmin()
+            ->post(route('admin.categories.store'), [
+                'name' => 'Тестовая категория',
+                'description' => 'Описание'
+            ])
+            ->assertSessionHasErrors('color');
     }
 
-    public function test_unauthorized_user_redirected_to_login() {
-        $response = $this->get(route('admin.categories.create'));
-        $response->assertRedirect(route('login'));
-    }
-
-    public function test_handles_category_save_exception()
+    public function test_create_handles_category_already_exists_exception()
     {
-        // Мок Handler чтобы он выбросил CategorySaveException
-        $this->mock(Handler::class, function ($mock) {
-            $mock->shouldReceive('handle')
-                ->andThrow(new CategorySaveException('Ошибка сохранения'));
-        });
+        Category::factory()->create(['name' => 'Existing Category']);
 
-        $categoryData = [
-            'name' => 'Тестовая категория',
-            'color' => '#ff0000',
-            'description' => 'Описание'
-        ];
-
-        $response = $this->actingAs($this->adminUser)
-            ->post(route('admin.categories.store'), $categoryData);
-
-        $response->assertRedirect();
-        $response->assertSessionHas('error', 'Ошибка сохранения');
+        $this->asAdmin()
+            ->post(route('admin.categories.store'), [
+                'name' => 'Тестовая категория',
+                'color' => '#ff0000',
+                'description' => 'Описание'
+            ])
+            ->assertRedirect()
+            ->assertSessionHas('error');
     }
 
-    public function test_handles_unexpected_exception()
+    public function test_create_handles_category_save_exception()
     {
-        // Мок Handler чтобы он выбросил обычное Exception
-        $this->mock(Handler::class, function ($mock) {
-            $mock->shouldReceive('handle')
-                ->andThrow(new \Exception('Неожиданная ошибка'));
-        });
+        // Мокаем Handler чтобы выбросить CategorySaveException
+        $this->mock(Handler::class)
+            ->shouldReceive('handle')
+            ->andThrow(new CategorySaveException('Ошибка сохранения'));
 
-        $categoryData = [
-            'name' => 'Тестовая категория',
-            'color' => '#ff0000',
-            'description' => 'Описание'
-        ];
+        $this->asAdmin()
+            ->post(route('admin.categories.store'), [
+                'name' => 'Тестовая категория',
+                'color' => '#ff0000',
+                'description' => 'Описание'
+            ])
+            ->assertRedirect()
+            ->assertSessionHas('error', 'Ошибка сохранения');
+    }
 
-        $response = $this->actingAs($this->adminUser)
-            ->post(route('admin.categories.store'), $categoryData);
+    public function test_create_handles_general_exception()
+    {
+        // Мокаем Handler чтобы выбросить общее исключение
+        $this->mock(Handler::class)
+            ->shouldReceive('handle')
+            ->andThrow(new \Exception('Неожиданная ошибка'));
 
-        $response->assertRedirect();
-        $response->assertSessionHas('error', 'Произошла непредвиденная ошибка при создании категории. Попробуйте позже.');
+        $this->asAdmin()
+            ->post(route('admin.categories.store'), [
+                'name' => 'Тестовая категория',
+                'color' => '#ff0000',
+                'description' => 'Описание'
+            ])
+            ->assertRedirect()
+            ->assertSessionHas('error', 'Произошла непредвиденная ошибка при создании категории. Попробуйте позже.');
     }
 }
