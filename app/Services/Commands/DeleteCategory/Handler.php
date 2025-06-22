@@ -3,6 +3,7 @@
 namespace App\Services\Commands\DeleteCategory;
 
 use App\Repositories\Categories\CategoryRepositoryInterface;
+use App\Services\Exceptions\Categories\CategoryHasTasksException;
 use App\Services\Exceptions\Categories\CategoryNotFoundException;
 
 class Handler
@@ -20,6 +21,10 @@ class Handler
             throw new CategoryNotFoundException('Категория не найдена');
         }
 
+        if ($category->tasks()->count() > 0) {
+            throw new CategoryHasTasksException($category->name);
+        }
+
         return $this->categoryRepository->delete($category);
     }
-} 
+}

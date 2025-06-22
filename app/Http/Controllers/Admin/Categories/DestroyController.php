@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Services\Commands\DeleteCategory\Command;
 use App\Services\Commands\DeleteCategory\Handler;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-
+use App\Services\Exceptions\Categories\CategoryHasTasksException;
 class DestroyController extends Controller
 {
     /**
@@ -17,7 +17,12 @@ class DestroyController extends Controller
         try {
             $command = new Command((int)$categoryId);
             $handler->handle($command);
-        } catch (\Exception) {
+        }
+        catch (CategoryHasTasksException $e) {
+            return redirect()->route('admin.categories.index')
+                ->with('error', $e->getMessage());
+        }
+        catch (\Exception) {
             throw new NotFoundHttpException('Категория не найдена');
         }
 

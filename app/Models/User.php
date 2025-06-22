@@ -57,4 +57,20 @@ class User extends Authenticatable
     {
         return $this->is_admin;
     }
+
+    /**
+     * Задачи, где пользователь исполнитель
+     */
+    public function tasks()
+    {
+        return $this->hasMany(Task::class, 'executor_id');
+    }
+
+    /**
+     * Задачи, созданные пользователем
+     */
+    public function createdTasks()
+    {
+        return $this->hasMany(Task::class, 'creator_id');
+    }
 }

@@ -3,6 +3,7 @@
 namespace App\Services\Commands\UpdateCategory;
 
 use App\Repositories\Categories\CategoryRepositoryInterface;
+use App\Services\Exceptions\Categories\CategoryAlreadyExistsException;
 use App\Services\Exceptions\Categories\CategoryNotFoundException;
 use App\Services\DTO\Categories\CategoryDTO;
 
@@ -21,6 +22,11 @@ class Handler
             throw new CategoryNotFoundException('Категория не найдена');
         }
 
+        if ($category->name !== $command->name &&
+            $this->categoryRepository->existsByName($command->name)) {
+            throw new CategoryAlreadyExistsException($command->name);
+        }
+
         $category->name = $command->name;
         $category->color = $command->color;
         $category->description = $command->description;
@@ -35,4 +41,4 @@ class Handler
             tasks_count: $category->tasks()->count(),
         );
     }
-} 
+}
