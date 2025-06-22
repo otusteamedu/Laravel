@@ -52,7 +52,7 @@ class CategoryCreateTest extends AdminTestCase
     {
         $categoryData = [
             'name'        => 'Тест',
-            'color'       => 'красный', // неправильный формат цвета
+            'color'       => '#ff0000',
             'description' => 'Описание'
         ];
 
@@ -68,9 +68,8 @@ class CategoryCreateTest extends AdminTestCase
     {
         $this->asAdmin()
             ->post(route('admin.categories.store'), [
-                'name'        => 'Работа', // такое название уже есть
                 'color'       => '#00ff00',
-                'description' => 'Другое описание'
+                'description' => 'Описание'
             ])
             ->assertSessionHasErrors('name');
     }
@@ -87,11 +86,11 @@ class CategoryCreateTest extends AdminTestCase
 
     public function test_create_handles_category_already_exists_exception()
     {
-        Category::factory()->create(['name' => 'Existing Category']);
+        Category::factory()->create(['name' => 'Существующая категория']);
 
         $this->asAdmin()
             ->post(route('admin.categories.store'), [
-                'name' => 'Тестовая категория',
+                'name' => 'Существующая категория',
                 'color' => '#ff0000',
                 'description' => 'Описание'
             ])
