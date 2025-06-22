@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "1e866504988af2540d08194008e0462b",
+    "content-hash": "69d3606ade0855e423754d33da22f2cf",
     "packages": [
         {
             "name": "brick/math",
@@ -1056,11 +1056,17 @@
         },
         {
             "name": "irbis45/laravel-user-logo",
-            "version": "dev-MPshenichkin/hw11",
+            "version": "v0.0.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/irbis45/laravel-user-logo.git",
+                "reference": "5aee61b0d7970b80aeb1edcc8d50ba991c31c7b0"
+            },
             "dist": {
-                "type": "path",
-                "url": "./packages/laravel-user-logo",
-                "reference": "2d36bbcafe32f7ff9b57c7d8e2578d45e564667e"
+                "type": "zip",
+                "url": "https://api.github.com/repos/irbis45/laravel-user-logo/zipball/5aee61b0d7970b80aeb1edcc8d50ba991c31c7b0",
+                "reference": "5aee61b0d7970b80aeb1edcc8d50ba991c31c7b0",
+                "shasum": ""
             },
             "require": {
                 "ext-gd": "*",
@@ -1070,22 +1076,23 @@
             "type": "library",
             "extra": {
                 "laravel": {
-                    "providers": [
-                        "Irbis45\\UserLogo\\ServiceProvider"
-                    ],
                     "aliases": {
                         "UserLogo": "Irbis45\\UserLogo\\Facades\\UserLogo"
-                    }
+                    },
+                    "providers": [
+                        "Irbis45\\UserLogo\\ServiceProvider"
+                    ]
                 }
             },
             "autoload": {
-                "psr-4": {
-                    "Irbis45\\UserLogo\\": "src/"
-                },
                 "files": [
                     "helpers/helpers.php"
-                ]
+                ],
+                "psr-4": {
+                    "Irbis45\\UserLogo\\": "src/"
+                }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -1095,11 +1102,12 @@
                     "email": "irbis45@inbox.ru"
                 }
             ],
-            "description": "Generates a logo based on the full name",
-            "transport-options": {
-                "symlink": true,
-                "relative": true
-            }
+            "description": "Generates a logo Base64 based on the full name",
+            "support": {
+                "issues": "https://github.com/irbis45/laravel-user-logo/issues",
+                "source": "https://github.com/irbis45/laravel-user-logo/tree/v0.0.2"
+            },
+            "time": "2025-06-22T13:48:16+00:00"
         },
         {
             "name": "laravel/framework",
@@ -8338,11 +8346,9 @@
         }
     ],
     "aliases": [],
-    "minimum-stability": "dev",
-    "stability-flags": {
-        "irbis45/laravel-user-logo": 20
-    },
-    "prefer-stable": true,
+    "minimum-stability": "stable",
+    "stability-flags": {},
+    "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
         "php": "^8.2"
