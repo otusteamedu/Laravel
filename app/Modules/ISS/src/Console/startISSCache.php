@@ -31,6 +31,21 @@ class startISSCache extends Command
      */
     protected $description;
 
+    /** @var GetRouteReadyPercentForUsersOfFirm $getRouteReadyPercentForUsersOfFirm сервис ИОС (описание в сервисе) */
+    private GetRouteReadyPercentForUsersOfFirm $getRouteReadyPercentForUsersOfFirm;
+
+    /** @var GetAllManagers $getAllManagers сервис ИОС (описание в сервисе) */
+    private GetAllManagers $getAllManagers;
+
+    /** @var GetAllUsers $getAllUsers сервис ИОС (описание в сервисе) */
+    private GetAllUsers $getAllUsers;
+
+    /** @var GetUserData $getUserData сервис ИОС (описание в сервисе) */
+    private GetUserData $getUserData;
+
+    /** @var GetAllEducationRoutesOfUserWithPoints $getAllEducationRoutesOfUserWithPoints сервис ИОС (описание в сервисе) */
+    private GetAllEducationRoutesOfUserWithPoints $getAllEducationRoutesOfUserWithPoints;
+
     /**
      * @param GetRouteReadyPercentForUsersOfFirm $getRouteReadyPercentForUsersOfFirm сервис
      * @param GetAllManagers $getAllManagers сервис
@@ -39,11 +54,11 @@ class startISSCache extends Command
      * @param GetAllEducationRoutesOfUserWithPoints $getAllEducationRoutesOfUserWithPoints сервис
      */
     public function __construct(
-        private GetRouteReadyPercentForUsersOfFirm $getRouteReadyPercentForUsersOfFirm,
-        private GetAllManagers $getAllManagers,
-        private GetAllUsers $getAllUsers,
-        private GetUserData $getUserData,
-        private GetAllEducationRoutesOfUserWithPoints $getAllEducationRoutesOfUserWithPoints,
+        GetRouteReadyPercentForUsersOfFirm $getRouteReadyPercentForUsersOfFirm,
+        GetAllManagers $getAllManagers,
+        GetAllUsers $getAllUsers,
+        GetUserData $getUserData,
+        GetAllEducationRoutesOfUserWithPoints $getAllEducationRoutesOfUserWithPoints,
     )
     {
         $this->signature = 'iss:cache ' . '{start : ' . __('iss::issCommands.cache.startCommand') . '}';
@@ -51,6 +66,10 @@ class startISSCache extends Command
         $this->description = __('iss::issCommands.cache.description');
 
         $this->getRouteReadyPercentForUsersOfFirm = $getRouteReadyPercentForUsersOfFirm;
+        $this->getAllManagers = $getAllManagers;
+        $this->getAllUsers = $getAllUsers;
+        $this->getUserData = $getUserData;
+        $this->getAllEducationRoutesOfUserWithPoints = $getAllEducationRoutesOfUserWithPoints;
     }
 
     /**
@@ -110,5 +129,7 @@ class startISSCache extends Command
                 }
             );
         }
+
+        $this->info('Cache hot started!');
     }
 }
