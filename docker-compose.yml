@@ -63,6 +63,12 @@ services:
                 - ping
             retries: 3
             timeout: 5s
+    memcached:
+        image: 'memcached:alpine'
+        ports:
+            - '${FORWARD_REDIS_PORT:-11211}:11211'
+        networks:
+            - sail
 networks:
     sail:
         driver: bridge

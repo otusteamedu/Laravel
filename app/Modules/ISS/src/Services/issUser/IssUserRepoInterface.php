@@ -14,6 +14,15 @@ interface IssUserRepoInterface
     public function getAllUsersData(array $inputData): array;
 
     /**
+     * Запрос БД получить данные всех пользователей ИОС, имеющих роль менеджер
+     * @param array $inputData
+     *                 массив имен полей, которые хотим получить
+     *                     $inputData['returned_fields']
+     * @return array
+     */
+    public function getAllManagersData(array $inputData): array;
+
+    /**
      * Запрос БД получить данные нескольких пользователей ИОС по заданному значению из выбранного поля
      * @param array $inputData
      *                 название поля

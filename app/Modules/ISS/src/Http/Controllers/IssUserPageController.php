@@ -3,6 +3,7 @@
 namespace App\Modules\ISS\src\Http\Controllers;
 
 use Illuminate\View\View;
+use Illuminate\Support\Facades\Cache;
 use App\Modules\ISS\src\Services\issUser\IssUserRepoInterface;
 use App\Modules\ISS\src\Services\issUser\getUserData\GetUserData;
 use App\Modules\ISS\src\Services\issUser\getUserData\InputDTO as userDataDTO;
@@ -37,20 +38,37 @@ class IssUserPageController extends Controller
     {
         //получаем данные из сервисов
         //основные данные пользователя
-        $issUserParameters = $getUserData(new userDataDTO(fieldName: 'id', fieldValue: $issUserId));
+        $issUserParameters = Cache::tags(['userData', 'userDataMain'])->remember(
+            'userDataMain_' . $issUserId,
+            60*60,
+            function () use ($issUserId, $getUserData) {
+                return $getUserData(new userDataDTO(fieldName: 'id', fieldValue: $issUserId));
+            }
+        );
 
         if (is_null($issUserParameters)) {
             abort(404, 'User not found');
         }
 
         //обучающие маршруты пользователя
-        $issUserRoutes = $getAllEducationRoutesOfUserWithPoints(new userRouteDTO(id: $issUserId));
+        $issUserRoutes = Cache::tags(['userData', 'userDataRoutes'])->remember(
+            'userDataRoutes_' . $issUserId,
+            60*60,
+            function () use ($issUserId, $getAllEducationRoutesOfUserWithPoints) {
+                return $getAllEducationRoutesOfUserWithPoints(new userRouteDTO(id: $issUserId));
+            }
+        );
 
         //данные для диаграммы о степени прохождения обучающих маршрутов для менеджера
         if ($issUserParameters->roleName == config('iss.ROLE_MANAGER')
             || $issUserParameters->roleName == config('iss.ROLE_ADMIN')) {
-            $diagramsData = $getRouteReadyPercentForUsersOfFirm(
-                new diagramDTO(id: $issUserId, isIssAdmin: false)
+            $diagramsData = Cache::tags(['diagram', 'managerDiagram'])->remember(
+                'managerDiagram_' . $issUserId,
+                60*60,
+                function () use ($issUserId, $getRouteReadyPercentForUsersOfFirm) {
+                    return $getRouteReadyPercentForUsersOfFirm(
+                        new diagramDTO(id: $issUserId, isIssAdmin: false));
+                }
             );
         } else {
             $diagramsData = [];

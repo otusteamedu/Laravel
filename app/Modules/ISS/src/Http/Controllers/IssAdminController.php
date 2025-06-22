@@ -3,6 +3,7 @@
 namespace App\Modules\ISS\src\Http\Controllers;
 
 use Illuminate\View\View;
+use Illuminate\Support\Facades\Cache;
 use App\Modules\ISS\src\Services\EducationRoute\getRouteReadyPercentForUsersOfFirm\GetRouteReadyPercentForUsersOfFirm;
 use App\Modules\ISS\src\Services\EducationRoute\getRouteReadyPercentForUsersOfFirm\InputDTO as diagramDTO;
 
@@ -24,10 +25,16 @@ class IssAdminController extends Controller
         GetRouteReadyPercentForUsersOfFirm $getRouteReadyPercentForUsersOfFirm,
     ): View
     {
-        //получаем данные из сервисов
-        //данные для диаграмм о степени прохождения обучающих маршрутов сотрудниками разных фирм
-        $diagramsData = $getRouteReadyPercentForUsersOfFirm(
-            new diagramDTO(id: null, isIssAdmin: true)
+        $diagramsData = Cache::tags(['diagram', 'adminDiagrams'])->remember(
+            'adminDiagrams',
+            60*60,
+            function () use ($getRouteReadyPercentForUsersOfFirm) {
+                //получаем данные из сервисов
+                //данные для диаграмм о степени прохождения обучающих маршрутов сотрудниками разных фирм
+                return $getRouteReadyPercentForUsersOfFirm(
+                    new diagramDTO(id: null, isIssAdmin: true)
+                );
+            }
         );
 
         //переводим в требуемый вид (там где необходимо)

@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Cache;
 use App\Modules\ISS\src\Services\issUser\IssUser;
 use App\Modules\ISS\src\Services\issUser\fetchIssUserWebToken\FetchIssUserWebToken;
 use App\Modules\ISS\src\Services\issUser\fetchIssUserWebToken\InputDTO as fetchTokenDTO;
@@ -55,6 +56,8 @@ class IssAuthUser
         //если пользователь не админ, то запрещаем ему просмотр страниц других пользователей
         if ($this->issUser->issUserId != $request->issUserId && $this->issUser->issUserRole != config('iss.ROLE_ADMIN')) {
             abort(403, 'iss::issMiddleware.accessAnotherUserDenied');
+        } else {
+            Cache::tags(['diagram', 'managerDiagram'])->forget('managerDiagram_' . $request->issUserId);
         }
 
 

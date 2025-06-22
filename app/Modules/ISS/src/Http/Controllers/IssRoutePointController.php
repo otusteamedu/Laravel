@@ -4,6 +4,7 @@ namespace App\Modules\ISS\src\Http\Controllers;
 
 use Illuminate\View\View;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Cache;
 use App\Modules\ISS\src\Services\EducationRoutePoint\getRealPointMainData\GetRealPointMainData;
 use App\Modules\ISS\src\Services\EducationRoutePoint\getRealPointMainData\InputDTO as pointMainDataDTO;
 use App\Modules\ISS\src\Services\EducationExam\isExamComplicated\IsExamComplicated;
@@ -43,17 +44,44 @@ class IssRoutePointController extends Controller
     ): View
     {
         //получаем данные из сервисов
-        $pointMainData = $getRealPointMainData(
-            new pointMainDataDTO(id: $pointId, userDataId: $issUserId)
+        $pointMainData = Cache::tags(['pointData', 'mainPointData'])->remember(
+            'mainPointData_' . $issUserId . '_' . $pointId,
+            60*5,
+            function () use ($pointId, $issUserId, $getRealPointMainData) {
+                return $getRealPointMainData(
+                    new pointMainDataDTO(id: $pointId, userDataId: $issUserId)
+                );
+            }
         );
 
         if (is_null($pointMainData) || $pointMainData->routePointId != $pointId) {
             abort(404);
         }
 
-        $isComplicated = $isExamComplicated(new examComplicatedDTO($pointId));
-        $examQuestionsWithAnswers = $getExamQuestions(new examQuestionsDTO($pointId));
-        $educationMaterials = $getFilesOfRealPointData(new filesDTO($pointId))->materials;
+        $isComplicated = Cache::tags(['pointData', 'pointExam'])->remember(
+            'pointExam_' . $pointId,
+            60*60,
+            function () use ($pointId, $isExamComplicated) {
+                return $isExamComplicated(new examComplicatedDTO($pointId));
+            }
+        );
+
+        $examQuestionsWithAnswers = Cache::tags(['pointData', 'pointExam', 'questionsWithAnswers'])->remember(
+            'questionsWithAnswers_' . $pointId,
+            60*60,
+            function () use ($pointId, $getExamQuestions) {
+                return $getExamQuestions(new examQuestionsDTO($pointId));
+            }
+        );
+
+
+        $educationMaterials = Cache::tags(['pointData', 'pointMaterials'])->remember(
+            'pointMaterials_' . $pointId,
+            60*60,
+            function () use ($pointId, $getFilesOfRealPointData) {
+                return $getFilesOfRealPointData(new filesDTO($pointId))->materials;
+            }
+        );
 
         //переводим в требуемый вид (там где необходимо)
         //экзаменационные вопросы и варианты ответов (для простых вопросов)

@@ -98,7 +98,14 @@ Route::prefix('/iss')
     Route::get('/issExit', [IssStartPageController::class, 'issExit'])->name('issExit');
 
     //тестовый
-    //Route::get('/test', function () { dd(auth()->check(), auth()->user(), session()->all()); });
+    //Route::get('/test', function () {
+        // dd(auth()->check(),
+        // auth()->user(),
+        // session()->all());
+        // phpinfo();
+        //class_exists('Memcache');
+        //extension_loaded('memcache');
+        // });
 });
 
 //проверка экзамена преподавателем (по защищенной ссылке из письма)

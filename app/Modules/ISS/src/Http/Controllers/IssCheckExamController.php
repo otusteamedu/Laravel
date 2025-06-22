@@ -6,12 +6,15 @@ use Illuminate\View\View;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Cache;
 use App\Modules\ISS\src\Services\NotifyService\getDataForExamStatusNotify\GetDataForExamStatusNotify;
 use App\Modules\ISS\src\Services\NotifyService\getDataForExamStatusNotify\InputDTO as notifyInputDTO;
 use App\Modules\ISS\src\Services\EducationExam\processTeacherFeedback\ProcessTeacherFeedback;
 use App\Modules\ISS\src\Services\EducationExam\processTeacherFeedback\InputDTO as feedbackDTO;
 use App\Modules\ISS\src\Services\EducationExam\processExamCheck\ProcessExamCheck;
 use App\Modules\ISS\src\Services\EducationExam\processExamCheck\InputDTO as processExamCheckInputDTO;
+use App\Modules\ISS\src\Services\EducationExam\getUserAndPointDataByCheckCode\GetUserAndPointDataByCheckCode;
+use App\Modules\ISS\src\Services\EducationExam\getUserAndPointDataByCheckCode\InputDTO as checkCodeInputDTO;
 
 /**
  * Контроллер для проверки экзаменационных тестов
@@ -40,8 +43,8 @@ class IssCheckExamController extends Controller
     {
         //валидация
         $validationRules= [
-            'issUserId' =>   'required',
-            'realEducationRoutePointId'   =>   'required',
+            'issUserId'                 => 'required',
+            'realEducationRoutePointId' => 'required',
         ];
         $validator = Validator::make($request->input(), $validationRules);
         if ($validator->fails()) {
@@ -95,6 +98,13 @@ class IssCheckExamController extends Controller
         // В бланк письма \ISS\src\Mails\issExamStatusNotify
         // передаю $mainNotifyData-> + $examProcessed->examCheckResult
 
+        //инвалидация кэша
+        Cache::tags(['diagram'])->flush();
+        Cache::tags(['pointData', 'mainPointData'])->forget('mainPointData_' .
+                           $request->input('issUserId') . '_' .
+                           $request->input('realEducationRoutePointId')
+        );
+
         return json_encode(['success' => $examProcessed->examCheckResult]);
         //НА ФРОНТЕ ОБНОВИТЬ страницу чтобы если простой экзамен сдан--блокировать кнопку
     }
@@ -118,12 +128,15 @@ class IssCheckExamController extends Controller
      * Обработать результат проверки экзамена преподавателем (после того как препод заполнил и отправил форму проверки)
      * @param ProcessTeacherFeedback $processTeacherFeedback сервис (обработать данные от преподавателя)
      * @param GetDataForExamStatusNotify $getDataForExamStatusNotify сервис (извлеч данные для бланка уведомления ученику)
+     * @param GetUserAndPointDataByCheckCode $getUserAndPointDataByCheckCode сервис
+     *                                       (найти код польз-я ИОС и точки маршрута по коду проверки преподавателя)
      * @param Request $request
      * @return
      */
     public function setExamManualCheckResult(
         ProcessTeacherFeedback         $processTeacherFeedback,
         GetDataForExamStatusNotify     $getDataForExamStatusNotify,
+        GetUserAndPointDataByCheckCode $getUserAndPointDataByCheckCode,
         Request                        $request
     )
     {
@@ -147,6 +160,9 @@ class IssCheckExamController extends Controller
             'examCheckResult.in' => __('iss::issExamCheckPage.resultInArray')
         ];
         $validated = $request->validate($validationRules, $errorMessages, ['examCheckCode'=> __('iss::examCheckCode')]);
+
+        //определение кода точки маршрута и кода пользователя (данные используются только для очистки кэша!)
+        $dataForCacheRefresh = $getUserAndPointDataByCheckCode(new checkCodeInputDTO(examCheckCode: $validated['examCheckCode']));
 
         //обработка ответа преподавателя
         try {
@@ -179,6 +195,14 @@ class IssCheckExamController extends Controller
         // передаю $mainNotifyData-> + $examResultForNotify->examResult
 
         Session::flash('examChecked', __('iss::issExamCheckPage.examChecked'));
+
+        //инвалидация кэша
+        Cache::tags(['diagram'])->flush();
+        Cache::tags(['pointData', 'mainPointData'])
+            ->forget('mainPointData_' .
+                $dataForCacheRefresh->issUserId . '_' .
+                $dataForCacheRefresh->realRoutePointId
+        );
         return redirect()->back();
     }
 }
