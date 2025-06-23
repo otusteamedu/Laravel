@@ -4,7 +4,7 @@ namespace App\Services\Team;
 
 use App\Services\TeamPlayer\PlayerRepositoryInterface;
 
-readonly class TeamDestroyService
+class TeamDestroyService
 {
     public function __construct(
         private TeamRepositoryInterface $teamRepository,

@@ -29,7 +29,7 @@ class TeamRepository implements TeamRepositoryInterface
         $team->delete();
     }
 
-    public function update($team): void
+    public function update(Team $team): void
     {
         $team->save();
     }

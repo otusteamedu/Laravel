@@ -5,7 +5,7 @@ namespace App\Services\Team;
 use App\Models\Team;
 use App\Repositories\TeamRepository;
 
-readonly class TeamsViewService
+class TeamsViewService
 {
     public function __construct(
         private TeamRepository $teamRepository,
