@@ -26,7 +26,7 @@ class TeamUpdateServiceTest extends TestCase
 
     public function testHandleSuccess()
     {
-        $team = Team::factory()->make();
+        $team = (new Team())->fill($this->teamData->toArray());
         $this->mock(TeamRepository::class, function (MockInterface $mock) use ($team) {
             $mock->shouldReceive('one')
                 ->with($this->teamData->id)
@@ -38,7 +38,8 @@ class TeamUpdateServiceTest extends TestCase
         });
 
         $service = app(TeamUpdateService::class);
-        $service->handle($this->teamData);
+        $logoPath = $service->handle($this->teamData);
+        $this->assertEquals($team->logo_path, $logoPath);
     }
 
     public function testHandleFail()
@@ -50,10 +51,10 @@ class TeamUpdateServiceTest extends TestCase
                 ->andReturn(null);
         });
 
+        //Метод $this->expectException() в PHPUnit регистрирует ожидание исключения до вызова кода,
+        // который потенциально может его выбросить. Поэтому здесь всёработает
         $this->expectException(TeamNotFoundException::class);
-
         $service = app(TeamUpdateService::class);
-        $logoPath = $service->handle($this->teamData);
-        $this->assertEquals($this->teamData->logo_path, $logoPath);
+        $service->handle($this->teamData);
     }
 }

@@ -33,7 +33,7 @@ class TeamsViewServiceTest extends TestCase
         });
 
         $service = app(TeamsViewService::class);
-        $service->fetchOne($this->teamData->id);
+        $this->assertNull($service->fetchOne($this->teamData->id));
     }
 
     public function testFetchOneReturnsTeam()

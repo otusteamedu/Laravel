@@ -4,7 +4,6 @@ namespace Tests\Feature;
 
 use App\Http\Controllers\TeamController;
 use App\Models\User;
-use App\Services\Team\TeamCreateService;
 use App\Services\Team\TeamData;
 use App\Services\Team\TeamDestroyService;
 use App\Services\Team\TeamNotFoundException;
@@ -14,7 +13,7 @@ use Illuminate\Support\Facades\Storage;
 use Mockery\MockInterface;
 use Tests\TestCase;
 
-class TeamControllerServiceTest extends TestCase
+class TeamControllerTest extends TestCase
 {
 
     protected function setUp(): void
@@ -39,6 +38,8 @@ class TeamControllerServiceTest extends TestCase
     {
         $response = $this->get(route('teams.index'));
         $response->assertStatus(200);
+        $response->assertSessionHasNoErrors();
+        $response->assertSeeText('Команды');
     }
 
     /**
@@ -48,6 +49,7 @@ class TeamControllerServiceTest extends TestCase
     {
         $response = $this->get(route('teams.create'));
         $response->assertStatus(200);
+        $response->assertSeeText('Создание команды');
     }
 
     /**
@@ -55,10 +57,6 @@ class TeamControllerServiceTest extends TestCase
      */
     public function testStoreSuccess()
     {
-        $this->mock(TeamCreateService::class, function (MockInterface $mock) {
-            $mock->shouldReceive('handle')->once();
-        });
-
         $response = $this->post(route('teams.store'), $this->teamData->toArray());
         $response->assertRedirect(route('teams.index'));
     }
@@ -70,6 +68,7 @@ class TeamControllerServiceTest extends TestCase
     {
         $response = $this->post(route('teams.store'));
         $response->assertStatus(302);
+        $response->assertSessionHasErrors(['nickname', 'name']);
     }
 
     /**
@@ -83,6 +82,7 @@ class TeamControllerServiceTest extends TestCase
 
         $response = $this->get(route('teams.show', ['team' => $this->teamData->id]));
         $response->assertStatus(200);
+        $response->assertSeeText($this->teamData->name);
     }
 
     /**
@@ -109,6 +109,7 @@ class TeamControllerServiceTest extends TestCase
 
         $response = $this->get(route('teams.edit', ['team' => $this->teamData->id]));
         $response->assertStatus(200);
+        $response->assertSeeText($this->teamData->name);
     }
 
     /**
