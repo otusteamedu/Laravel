@@ -29,6 +29,7 @@
    данные:       $issUserRoutes
    тэги:         ['userData', 'userDataRoutes']
    ключ:         'userDataRoutes_' . $issUserId
+   инвалидация:  в IssCheckExamController (checkExam, setExamManualCheckResult) перед отправкой ответа
    инвалидация:  в /НЕ РЕАЛИЗУЕТСЯ В РАМКАХ ОБУЧЕНИЯ в ОТУС
                     контроллер админ интерфейса,
                     инструмент составления обучающих маршрутов
