@@ -25,7 +25,7 @@
         'resources/css/carousel.css', 
         'resources/css/about.css', 
         'resources/js/app.js', 
-        'resources/js/site.js'
+        'resources/js/site.js' 
     ])
 </head>
 

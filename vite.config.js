@@ -11,6 +11,7 @@ export default defineConfig({
                 'resources/css/sidebars.css',
                 'resources/js/app.js',
                 'resources/js/admin.js',
+                'resources/js/site.js',
             ],
             refresh: true,
         }),
