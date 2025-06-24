@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\Categories;
 use App\Http\Controllers\Admin\Tasks;
 use App\Http\Controllers\Admin\Users;
 use App\Http\Controllers\Public\Tasks as PublicTasks;
+use Illuminate\Support\Facades\Log;
 
 Route::get('/', function () {
     return view('welcome');
@@ -75,5 +76,32 @@ Route::middleware(['auth'])->get('/dashboard', function () {
     $tasksDone = $user->tasks()->where('status', 'done')->count();
     return view('dashboard', compact('tasksTotal', 'tasksNew', 'tasksInProgress', 'tasksDone'));
 })->name('dashboard');
+
+// Тестовые маршруты для Telegram логирования
+Route::prefix('test-telegram')->group(function () {
+    Route::get('/error', function () {
+        Log::channel('telegram')->error('Тест ERROR уровня', [
+            'user_id' => 123,
+            'action' => 'test_error_level',
+            'timestamp' => now()
+        ]);
+        return 'ERROR сообщение отправлено в Telegram';
+    });
+
+    Route::get('/fallback', function () {
+        // Тест с неправильным токеном для проверки fallback
+        $handler = new \App\Logging\TelegramHandler('invalid_token', 'invalid_chat_id');
+        $record = new \Monolog\LogRecord(
+            datetime: new \DateTimeImmutable(),
+            channel: 'test',
+            level: \Monolog\Level::Error,
+            message: 'Тест fallback механизма - должно записаться в файл',
+            context: ['test' => 'fallback'],
+            extra: []
+        );
+        $handler->handle($record);
+        return 'Fallback тест выполнен - проверьте storage/logs/laravel.log';
+    });
+});
 
 require __DIR__.'/auth.php';
