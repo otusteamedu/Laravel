@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use Database\Factories\TeamFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Facades\Cache;
 
 /**
  * @property int $id;
@@ -28,5 +29,20 @@ class Team extends BaseModel
     public function players(): HasMany
     {
         return $this->hasMany(Player::class);
+    }
+
+    protected static function booted(): void
+    {
+        static::created(function () {
+            Cache::forget('teams');
+        });
+
+        static::updated(function () {
+            Cache::forget('teams');
+        });
+
+        static::deleted(function () {
+            Cache::forget('teams');
+        });
     }
 }

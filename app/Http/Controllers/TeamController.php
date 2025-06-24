@@ -24,9 +24,6 @@ class TeamController extends Controller
         TeamsViewService $teamsViewService,
     ): View
     {
-        Log::error('проверка', [
-            'telegram' => 'ok',
-        ]);
         $data['teams'] = $teamsViewService->fetchAll();
         return view('teams.index', $data);
     }
