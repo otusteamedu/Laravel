@@ -10,6 +10,7 @@ use App\Services\Team\TeamsViewService;
 use App\Services\Team\TeamUpdateService;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
@@ -24,9 +25,6 @@ class TeamController extends Controller
         TeamsViewService $teamsViewService,
     ): View
     {
-        Log::error('проверка', [
-            'telegram' => 'ok',
-        ]);
         $data['teams'] = $teamsViewService->fetchAll();
         return view('teams.index', $data);
     }
