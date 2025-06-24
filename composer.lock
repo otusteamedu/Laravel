@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "cc6c12cab53f81a33f348cc9bb29569b",
+    "content-hash": "00b22c32a8bcac335aa3fa222fb86d3c",
     "packages": [
         {
             "name": "brick/math",
@@ -669,6 +669,50 @@
                 }
             ],
             "time": "2025-03-06T22:45:56+00:00"
+        },
+        {
+            "name": "elisad5791/cartcount",
+            "version": "v1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/elisad5791/cartcount.git",
+                "reference": "2add6c657838d3e64c4be1f288813797a89381aa"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/elisad5791/cartcount/zipball/2add6c657838d3e64c4be1f288813797a89381aa",
+                "reference": "2add6c657838d3e64c4be1f288813797a89381aa",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/support": "^12.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Elisad5791\\Cartcount\\ServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Elisad5791\\Cartcount\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "authors": [
+                {
+                    "name": "elisad5791",
+                    "email": "elisad5791@mail.ru"
+                }
+            ],
+            "description": "Product counter for cart",
+            "support": {
+                "issues": "https://github.com/elisad5791/cartcount/issues",
+                "source": "https://github.com/elisad5791/cartcount/tree/v1.0.0"
+            },
+            "time": "2025-06-24T20:30:20+00:00"
         },
         {
             "name": "ezyang/htmlpurifier",
@@ -8885,7 +8929,7 @@
         }
     ],
     "aliases": [],
-    "minimum-stability": "stable",
+    "minimum-stability": "dev",
     "stability-flags": {},
     "prefer-stable": true,
     "prefer-lowest": false,

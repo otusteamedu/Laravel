@@ -92,9 +92,10 @@
                     </ul>
 
                     <div>
-                        <a href="{{ route('cart.index') }}" class="me-4">
+                        <a href="{{ route('cart.index') }}">
                             <img src="{{ asset('images/cart.png') }}" alt="" width="30">
                         </a>
+                        @include('cartcount::counter')
                     </div>
                 </div>
             </div>
