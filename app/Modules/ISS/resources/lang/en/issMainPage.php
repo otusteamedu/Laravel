@@ -2,8 +2,7 @@
 
 return [
     'issWelcome' => 'Welcome to Information Stydy System!',
-    'description' => 'This service intended on study users for working with site system.
-                      Log in for continue.',
+    'description' => 'This service intended on study users for working with site system.',
     'loginLabel' => 'Login',
     'loginPlaceholder' => 'Enter your login',
     'passwordLabel' => 'Password',

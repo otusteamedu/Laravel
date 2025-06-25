@@ -6,12 +6,15 @@ use Illuminate\View\View;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Cache;
 use App\Modules\ISS\src\Services\NotifyService\getDataForExamStatusNotify\GetDataForExamStatusNotify;
 use App\Modules\ISS\src\Services\NotifyService\getDataForExamStatusNotify\InputDTO as notifyInputDTO;
 use App\Modules\ISS\src\Services\EducationExam\processTeacherFeedback\ProcessTeacherFeedback;
 use App\Modules\ISS\src\Services\EducationExam\processTeacherFeedback\InputDTO as feedbackDTO;
 use App\Modules\ISS\src\Services\EducationExam\processExamCheck\ProcessExamCheck;
 use App\Modules\ISS\src\Services\EducationExam\processExamCheck\InputDTO as processExamCheckInputDTO;
+use App\Modules\ISS\src\Services\EducationExam\getUserAndPointDataByCheckCode\GetUserAndPointDataByCheckCode;
+use App\Modules\ISS\src\Services\EducationExam\getUserAndPointDataByCheckCode\InputDTO as checkCodeInputDTO;
 
 /**
  * Контроллер для проверки экзаменационных тестов
@@ -40,8 +43,8 @@ class IssCheckExamController extends Controller
     {
         //валидация
         $validationRules= [
-            'issUserId' =>   'required',
-            'realEducationRoutePointId'   =>   'required',
+            'issUserId'                 => 'required',
+            'realEducationRoutePointId' => 'required',
         ];
         $validator = Validator::make($request->input(), $validationRules);
         if ($validator->fails()) {
@@ -95,6 +98,16 @@ class IssCheckExamController extends Controller
         // В бланк письма \ISS\src\Mails\issExamStatusNotify
         // передаю $mainNotifyData-> + $examProcessed->examCheckResult
 
+        //инвалидация кэша
+        Cache::tags(['diagram'])->flush();
+        Cache::tags(['userData', 'userDataRoutes'])->forget(
+            'userDataRoutes_' . $request->input('issUserId')
+        );
+        Cache::tags(['pointData', 'mainPointData'])->forget('mainPointData_' .
+                           $request->input('issUserId') . '_' .
+                           $request->input('realEducationRoutePointId')
+        );
+
         return json_encode(['success' => $examProcessed->examCheckResult]);
         //НА ФРОНТЕ ОБНОВИТЬ страницу чтобы если простой экзамен сдан--блокировать кнопку
     }
@@ -118,67 +131,92 @@ class IssCheckExamController extends Controller
      * Обработать результат проверки экзамена преподавателем (после того как препод заполнил и отправил форму проверки)
      * @param ProcessTeacherFeedback $processTeacherFeedback сервис (обработать данные от преподавателя)
      * @param GetDataForExamStatusNotify $getDataForExamStatusNotify сервис (извлеч данные для бланка уведомления ученику)
+     * @param GetUserAndPointDataByCheckCode $getUserAndPointDataByCheckCode сервис
+     *                                       (найти код польз-я ИОС и точки маршрута по коду проверки преподавателя)
      * @param Request $request
      * @return
      */
     public function setExamManualCheckResult(
         ProcessTeacherFeedback         $processTeacherFeedback,
         GetDataForExamStatusNotify     $getDataForExamStatusNotify,
+        GetUserAndPointDataByCheckCode $getUserAndPointDataByCheckCode,
         Request                        $request
     )
     {
-        //валидация
-        $validationRules= [
-            'examCheckCode' =>   'required|string|starts_with:exam_code_|between:23,40',
-            'examComment'   =>   'string|nullable|max:30',
-            'examCheckResult' => 'required|in:' . config('iss.EXAM_STATUS.failed') . ',' . config('iss.EXAM_STATUS.passed'),
-        ];
+        $teacherLock = Cache::lock('teacher_lock', 60*60*3);
+        if ($teacherLock->get()) {
+            //валидация
+            $validationRules= [
+                'examCheckCode' =>   'required|string|starts_with:exam_code_|between:23,40',
+                'examComment'   =>   'string|nullable|max:30',
+                'examCheckResult' => 'required|in:' . config('iss.EXAM_STATUS.failed') . ',' . config('iss.EXAM_STATUS.passed'),
+            ];
 
-        $errorMessages = [
-            'examCheckCode.required' => __('iss::issExamCheckPage.checkCode'),
-            'examCheckCode.string' => ':attribute ' . __('iss::issExamCheckPage.mustBeString'),
-            'examCheckCode.starts_with' => __('iss::issExamCheckPage.wrongPrefix'),
-            'examCheckCode.between' => __('iss::issExamCheckPage.wrongLength') . ' :between :min <-> :max',
+            $errorMessages = [
+                'examCheckCode.required' => __('iss::issExamCheckPage.checkCode'),
+                'examCheckCode.string' => ':attribute ' . __('iss::issExamCheckPage.mustBeString'),
+                'examCheckCode.starts_with' => __('iss::issExamCheckPage.wrongPrefix'),
+                'examCheckCode.between' => __('iss::issExamCheckPage.wrongLength') . ' :between :min <-> :max',
 
-            'examComment.string' => __('iss::issExamCheckPage.stringComment'),
-            'examComment.max' => __('iss::issExamCheckPage.lengthComment') . ' :max',
+                'examComment.string' => __('iss::issExamCheckPage.stringComment'),
+                'examComment.max' => __('iss::issExamCheckPage.lengthComment') . ' :max',
 
-            'examCheckResult.required' => __('iss::issExamCheckPage.requiredResult'),
-            'examCheckResult.in' => __('iss::issExamCheckPage.resultInArray')
-        ];
-        $validated = $request->validate($validationRules, $errorMessages, ['examCheckCode'=> __('iss::examCheckCode')]);
+                'examCheckResult.required' => __('iss::issExamCheckPage.requiredResult'),
+                'examCheckResult.in' => __('iss::issExamCheckPage.resultInArray')
+            ];
+            $validated = $request->validate($validationRules, $errorMessages, ['examCheckCode'=> __('iss::examCheckCode')]);
 
-        //обработка ответа преподавателя
-        try {
-            $examResultForNotify = $processTeacherFeedback(
-                new feedbackDTO(
-                    examCheckCode: $validated['examCheckCode'],
-                    examComment: $validated['examComment'],
-                    examCheckResult: $validated['examCheckResult']
+            //определение кода точки маршрута и кода пользователя (данные используются только для очистки кэша!)
+            $dataForCacheRefresh = $getUserAndPointDataByCheckCode(new checkCodeInputDTO(examCheckCode: $validated['examCheckCode']));
+
+            //обработка ответа преподавателя
+            try {
+                $examResultForNotify = $processTeacherFeedback(
+                    new feedbackDTO(
+                        examCheckCode: $validated['examCheckCode'],
+                        examComment: $validated['examComment'],
+                        examCheckResult: $validated['examCheckResult']
+                    )
+                );
+            } catch (\Exception $exception) {
+                return redirect()->back()->withErrors(['serviceError' => __('iss::issExamCheckPage.serviceError')]);
+            }
+
+            //получение основных данных для бланка уведомления ученику
+            $mainNotifyData = $getDataForExamStatusNotify(
+                new notifyInputDTO(
+                    issUserId: $examResultForNotify->issUserId,
+                    realRoutePointId: $examResultForNotify->realRoutePointId
                 )
             );
-        } catch (\Exception $exception) {
-            return redirect()->back()->withErrors(['serviceError' => __('iss::issExamCheckPage.serviceError')]);
+            if (is_null($mainNotifyData)) {
+                return redirect()->back()->withErrors(['serviceError' => __('iss::issExamCheckPage.serviceError')]);
+            }
+
+            /** @TODO доделать контроллер отправкой письма в очередь */
+            //отправка уведомления по email через очередь
+            //Mail::send....
+            // В бланк письма \ISS\src\Mails\issExamStatusNotify
+            // передаю $mainNotifyData-> + $examResultForNotify->examResult
+
+            //инвалидация кэша
+            Cache::tags(['diagram'])->flush();
+            Cache::tags(['userData', 'userDataRoutes'])->forget(
+                'userDataRoutes_' . $dataForCacheRefresh->issUserId
+            );
+            Cache::tags(['pointData', 'mainPointData'])
+                ->forget('mainPointData_' .
+                    $dataForCacheRefresh->issUserId . '_' .
+                    $dataForCacheRefresh->realRoutePointId
+                );
+
+            Session::flash('examChecked', __('iss::issExamCheckPage.examChecked'));
+
+            $teacherLock->release();
+        } else {
+            Session::flash('examChecked', __('iss::issExamCheckPage.locked'));
         }
 
-        //получение основных данных для бланка уведомления ученику
-        $mainNotifyData = $getDataForExamStatusNotify(
-            new notifyInputDTO(
-                issUserId: $examResultForNotify->issUserId,
-                realRoutePointId: $examResultForNotify->realRoutePointId
-            )
-        );
-        if (is_null($mainNotifyData)) {
-            return redirect()->back()->withErrors(['serviceError' => __('iss::issExamCheckPage.serviceError')]);
-        }
-
-        /** @TODO доделать контроллер отправкой письма в очередь */
-        //отправка уведомления по email через очередь
-        //Mail::send....
-        // В бланк письма \ISS\src\Mails\issExamStatusNotify
-        // передаю $mainNotifyData-> + $examResultForNotify->examResult
-
-        Session::flash('examChecked', __('iss::issExamCheckPage.examChecked'));
         return redirect()->back();
     }
 }

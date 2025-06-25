@@ -71,9 +71,13 @@
                    //стили для компонентов
                    'app/Modules/ISS/public/css/components/iss-messages-Style.css',
 
-
 НАПОМИНАНИЯ
-1) Дописать\переписать тесты для сервисов (CheckSimpleExam, ProcessExamCheck, IsExamCanBePassed)
-2) Дописать тесты на контроллеры и логироваание ошибок в cервисах
+1) Дописать\переписать тесты для сервисов (CheckSimpleExam, ProcessExamCheck, IsExamCanBePassed, getAllManagers)
+2) Дописать тесты на контроллеры
+3) в сервисах где написано "//запись в лог" вместо этого в этих местах выбрасывать исключения и ловить их в контроллерах
+   а уже в контроллерах писать в лог
+5) в IssStartPageController.php в сервисе getUserData УБРАТЬ из INPUTDTO названия полей user_id и т.д.,
+   вместо этого из модели доставать scope (фильтрующие по нужным полям)
+   иначе нарушается принцип изолированности сервиса
 
 

@@ -5,6 +5,7 @@ namespace App\Modules\ISS\src\Http\Controllers;
 use App\Modules\ISS\src\Services\issUser\loadUserDataFromMainApp\ContactDTO;
 use Illuminate\View\View;
 use Illuminate\Auth\AuthManager;
+use Illuminate\Support\Facades\Cache;
 use App\Modules\ISS\src\Services\issUser\IssUser;
 use App\Modules\ISS\src\Services\issUser\getUserData\GetUserData;
 use App\Modules\ISS\src\Services\issUser\getUserData\InputDTO as userDataIssDTO;
@@ -140,6 +141,8 @@ class IssStartPageController extends Controller
 
 
            }
+
+           Cache::tags(['userData'])->flush();
        }
        //авторизован в ИОС (никаких действий не требуется)
 
@@ -153,6 +156,7 @@ class IssStartPageController extends Controller
        }
 
        session()->remove('issUser');
+       Cache::tags(['userData'])->flush();
 
        return redirect()->route('main');
    }

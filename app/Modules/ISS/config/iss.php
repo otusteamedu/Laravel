@@ -3,6 +3,11 @@
 return [
     'layout' => 'layouts.mainViewTemplate',                         //ссылка на главный шаблон приложения
 
+    'ISS_ROUTE_PREFIX' =>                                           //префикс маршрутов модуля
+        env("ISS_ROUTE_PREFIX",'/iss'),
+    'ISS_ADMIN_ROUTE_PREFIX' =>                                    //префикс маршрутов модуля (административный интерфейс)
+        env("ISS_ADMIN_ROUTE_PREFIX", '/admin'),
+
     'ALLOWED_EDUCATION_MATERIAL_TYPES' => [                         //разрашенные типы обучающих материалов
         'mp4', 'avi', 'pdf', 'txt', 'docx'
     ],

@@ -17,6 +17,7 @@ use App\Modules\ISS\src\Repositories\EducationRouteRepo;
 use App\Modules\ISS\src\Services\NotifyService\NotifyServiceRepoInterface;
 use App\Modules\ISS\src\Repositories\NotifyServiceRepo;
 use App\Modules\ISS\src\View\Components\IssMessages;
+use App\Modules\ISS\src\Console\startISSCache;
 
 
 class IssServiceProvider extends ServiceProvider
@@ -36,6 +37,8 @@ class IssServiceProvider extends ServiceProvider
         $this->loadRoutesFrom(__DIR__.'/routes/web.php');
         //подключаем миграции
         $this->loadMigrationsFrom(__DIR__.'/database/migrations');
+        //добавляем команды
+        //$this->commands([/*$CommandKlass*/]);
 
         //связь интерфейсов для сервисов с их реализацией в классах репозиториев
         $this->app->bind(IssUserRepoInterface::class, IssUserRepo::class);
@@ -43,6 +46,20 @@ class IssServiceProvider extends ServiceProvider
         $this->app->bind(EducationRoutePointRepoInterface::class, EducationRoutePointRepo::class);
         $this->app->bind(EducationRouteRepoInterface::class, EducationRouteRepo::class);
         $this->app->bind(NotifyServiceRepoInterface::class, NotifyServiceRepo::class);
+
+
+        //регистрация команд
+        if ($this->app->runningInConsole()) {
+            $this->commands([
+                startISSCache::class, //имя класса моей команды в пакете-модуле
+            ]);
+            //те для которых будет чиститься кэш при вызове optimize:clear
+            /*$this->optimizes(
+                optimize: 'package:optimize',
+                clear: 'package:clear-optimizations',
+            );*/
+        }
+
     }
 
     /**
@@ -60,28 +77,22 @@ class IssServiceProvider extends ServiceProvider
         //публикация стилей
         $this->publishes(
             [
-                __DIR__.'/resources/css/issMainPageStyle.css' => base_path('resources/css/issMainPageStyle.css'),
-                __DIR__.'/resources/css/issUserPageStyle.css' => base_path('resources/css/issUserPageStyle.css'),
-                __DIR__.'/resources/css/issNodePageStyle.css' => base_path('resources/css/issNodePageStyle.css'),
+                __DIR__.'/public/css/issMainPageStyle.css' => base_path('resources/css/iss/issMainPageStyle.css'),
+                __DIR__.'/public/css/issUserPageStyle.css' => base_path('resources/css/iss/issUserPageStyle.css'),
+                __DIR__.'/public/css/issNodePageStyle.css' => base_path('resources/css/iss/issNodePageStyle.css'),
+                __DIR__.'/public/css/issSharedPageStyle.css' => base_path('resources/css/iss/issSharedPageStyle.css'),
+                __DIR__.'/public/css/issExamCheckPageStyle.css' => base_path('resources/css/iss/issExamCheckPageStyle.css'),
+                __DIR__.'/public/css/components/iss-messages-Style.css' => base_path('resources/css/iss/iss-messages-Style.css'),
             ],
             'style'
         );
         //публикация статических файлов
         $this->publishes(
-            [__DIR__.'/public/images/' => public_path('images/iss')],
+            [__DIR__.'/public/images' => public_path('images/iss')],
             'public'
         );
 
         AboutCommand::add('пакет ИОС', fn () => ['Версия' => '1.0.0']);
-        //Blade::component('package-alert', AlertComponent::class);
-        // или Blade::componentNamespace('Nightshade\\Views\\Components', 'nightshade');
-
-        //загрузить команды
-        /*if ($this->app->runningInConsole()) {
-            $this->commands([
-                InstallCommand::class, //имя класса моей команды в пакете-модуле
-                NetworkCommand::class, //имя класса моей команды в пакете-модуле
-            ]);*/
 
         //создание директив шаблонизатора
         Blade::directive(
@@ -98,5 +109,6 @@ class IssServiceProvider extends ServiceProvider
 
         //регистрация компонентов (обязательно скинуть кэш artisan optimize:clear)
         Blade::component('iss-messages', IssMessages::class);
+        // или Blade::componentNamespace(IssMessages::class, 'iss-messages');
     }
 }

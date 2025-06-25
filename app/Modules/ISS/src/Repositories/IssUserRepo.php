@@ -21,6 +21,23 @@ class IssUserRepo implements IssUserRepoInterface
     }
 
     /**
+     * Запрос БД получить данные всех пользователей ИОС, имеющих роль менеджер
+     * @param array $inputData
+     *                 массив имен полей, которые хотим получить
+     *                     $inputData['returned_fields']
+     * @return array
+     */
+    public function getAllManagersData(array $inputData): array
+    {
+        return UserData::where(
+            'role_id',
+            function ($q) {
+                $q->select('id')->from('user_roles')->where('name', '=', config('iss.ROLE_MANAGER'));
+            }
+        )->get($inputData['returned_fields'])->toArray();
+    }
+
+    /**
      * Запрос БД получить данные нескольких пользователей ИОС по заданному значению из выбранного поля
      * @param array $inputData
      *                 название поля
