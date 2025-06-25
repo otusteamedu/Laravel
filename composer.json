@@ -8,7 +8,8 @@
     "require": {
         "php": "^8.2",
         "laravel/framework": "^12.0",
-        "laravel/tinker": "^2.10.1"
+        "laravel/tinker": "^2.10.1",
+        "amedvedev/laravel-settings-lite": "0.2.0"
     },
     "require-dev": {
         "fakerphp/faker": "^1.23",
@@ -72,5 +73,12 @@
         }
     },
     "minimum-stability": "stable",
-    "prefer-stable": true
+    "prefer-stable": true,
+
+    "repositories": [
+        {
+            "type": "git",
+            "url": "https://github.com/Alex150Rus/Laravel-settings-lite.git"
+        }
+    ]
 }

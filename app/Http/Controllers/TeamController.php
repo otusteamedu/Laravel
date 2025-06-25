@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Amedvedev\LaravelSettingsLite\SettingsManager;
 use App\Http\Requests\TeamRequest;
 use App\Services\Team\TeamCreateService;
 use App\Services\Team\TeamData;
@@ -22,11 +23,11 @@ class TeamController extends Controller
      */
     public function index(
         TeamsViewService $teamsViewService,
+        SettingsManager $settingsManager,
     ): View
     {
-        Log::error('проверка', [
-            'telegram' => 'ok',
-        ]);
+        $settingsManager->set('canManageTeams', true);
+        dd($settingsManager->all());
         $data['teams'] = $teamsViewService->fetchAll();
         return view('teams.index', $data);
     }
