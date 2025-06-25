@@ -37,6 +37,9 @@ class WarmUpCacheCommand extends Command
         } else {
             $this->info('Прогревам кэш статусов задач для проектов');
 
+            $bar = $this->output->createProgressBar(count($projects));
+            $bar->start();
+
             foreach ($projects as $project) {
                 Cache::remember(
                     "project_{$project->projectId}_todo_statuses",
@@ -45,8 +48,12 @@ class WarmUpCacheCommand extends Command
                         return  $repository->fetchTodoStatuses($project->projectId);
                     }
                 );
+
+                $bar->advance();
             }
 
+            $bar->finish();
+            $this->line(PHP_EOL);
             $this->info('Прогрели кэш статусов задач для проектов');
         }
 
