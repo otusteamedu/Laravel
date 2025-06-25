@@ -2,12 +2,20 @@
 
 namespace App\Services\Repositories;
 
+use App\Services\Repositories\Common\FetchOptions;
 use App\Services\Repositories\DTOs\UserDTO;
 use App\Services\Repositories\DTOs\UserCreateDTO;
 use App\Services\Repositories\DTOs\UserProfileDTO;
 
 interface UserRepositoryInterface
 {
+    /**
+     * Получить пользователей
+     * @param FetchOptions $options
+     * @return UserDTO[]|null
+     */
+    public function fetch(FetchOptions $options): ?array;
+
     /**
      * Получить пользователя по id
      * @param int $id

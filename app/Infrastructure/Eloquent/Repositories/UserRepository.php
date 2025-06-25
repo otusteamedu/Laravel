@@ -4,6 +4,7 @@ namespace App\Infrastructure\Eloquent\Repositories;
 
 use App\Models\User;
 use App\Models\UserProfile;
+use App\Services\Repositories\Common\FetchOptions;
 use Illuminate\Support\Facades\Hash;
 use App\Services\Repositories\DTOs\UserDTO;
 use App\Services\Repositories\DTOs\UserCreateDTO;
@@ -12,6 +13,42 @@ use App\Services\Repositories\UserRepositoryInterface;
 
 class UserRepository implements UserRepositoryInterface
 {
+    /**
+     * Получить пользователей
+     * @param FetchOptions $options
+     * @return UserDTO[]|null
+     */
+    public function fetch(FetchOptions $options): ?array
+    {
+        $query = User::query();
+
+        if (!empty($options->ids)) {
+            $query->whereIn('id', $options->ids);
+        }
+
+        if (!empty($options->perPage)) {
+            $query->limit($options->perPage);
+        }
+
+        if (!empty($options->page) && !empty($options->perPage)) {
+            $query->offset(($options->page - 1) * $options->perPage);
+        }
+
+        $dbUsers = $query->get();
+
+        if ($dbUsers === null) {
+            return null;
+        }
+
+        return array_map(function ($dbUser) {
+            return new UserDTO(
+                userId: $dbUser['id'],
+                name: $dbUser['name'],
+                email: $dbUser['email'],
+            );
+        }, $dbUsers->toArray());
+    }
+
     /**
      * Получить пользователя по id
      * @param int $id
