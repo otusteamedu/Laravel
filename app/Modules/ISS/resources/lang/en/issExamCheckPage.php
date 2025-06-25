@@ -24,4 +24,5 @@ return [
     'lengthComment' => 'Comment length must be lower then',
     'serviceError' => 'Service error',
     'examChecked' => 'Exam check result accepted',
+    'locked' => 'Locked',
 ];

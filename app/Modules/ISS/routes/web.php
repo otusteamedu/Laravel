@@ -9,7 +9,8 @@ use App\Modules\ISS\src\Http\Controllers\IssRoutePointController;
 use App\Modules\ISS\src\Http\Controllers\AjaxEducationMaterialController;
 use App\Modules\ISS\src\Http\Controllers\IssCheckExamController;
 
-Route::prefix('/iss')
+//Route::prefix('/iss')
+Route::prefix(config('iss.ISS_ROUTE_PREFIX'))
     ->middleware(['web', 'auth'])
     ->group(function () {
 
@@ -36,7 +37,7 @@ Route::prefix('/iss')
     });
 
     //административный интерфейс
-    Route::prefix('/admin')
+    Route::prefix(config('iss.ISS_ADMIN_ROUTE_PREFIX'))
         ->middleware('issAuthAdmin')->group(function () {
         //страница администратора
         Route::get('/', [IssAdminController::class, 'adminPanel'])->name('issAdmin');
@@ -109,7 +110,7 @@ Route::prefix('/iss')
 });
 
 //проверка экзамена преподавателем (по защищенной ссылке из письма)
-Route::prefix('/iss')
+Route::prefix(config('iss.ISS_ROUTE_PREFIX'))
     ->middleware(['web',/*'signed'*/])
     ->group(function () {
 //форма проверки экзамена для преподавателя

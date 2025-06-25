@@ -14,12 +14,8 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        /*User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
-        ]);*/
+        //User::factory()->create(['name' => 'Test User', 'email' => 'test@example.com']);
 
-        //User::factory(2)->create();
         $userData = [
             ['name' => 't1', 'email' => 't1@mail.ru', 'password' => 't1@mail.ru', 'organization' => 'org1', 'second_name' => 't1', 'last_name' => 't1', 'user_role' => 'emp'],
             ['name' => 't2', 'email' => 't2@mail.ru', 'password' => 't2@mail.ru', 'organization' => 'org1', 'second_name' => 't2', 'last_name' => 't2', 'user_role' => 'emp'],
@@ -45,6 +41,5 @@ class DatabaseSeeder extends Seeder
         }
 
         $this->call(BaseISSSeeder::class);
-
     }
 }

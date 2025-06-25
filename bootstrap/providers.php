@@ -2,5 +2,5 @@
 
 return [
     App\Providers\AppServiceProvider::class,
-    App\Modules\ISS\IssServiceProvider::class,
+    App\Modules\ISS\IssServiceProvider::class
 ];
