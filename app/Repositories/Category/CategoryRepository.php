@@ -84,4 +84,21 @@ class CategoryRepository implements CategoryRepositoryInterface
     {
         return Category::query()->whereIn('id', $ids)->get()->keyBy('id')->all();
     }
+
+
+    /**
+     * Упростим задачу. Определяем популярность категории по количеству новостей
+     *
+     * @param int $limit
+     *
+     * @return array
+     */
+    public function getPopular(int $limit = 10): array {
+        return Category::query()
+                       ->withCount('publishedNews as news_count')
+                       ->orderByDesc('news_count')
+                       ->limit($limit)
+                       ->get()
+                       ->all();
+    }
 }

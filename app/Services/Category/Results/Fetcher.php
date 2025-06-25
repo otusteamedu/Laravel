@@ -34,6 +34,7 @@ class Fetcher
             name: $category->name,
             slug: $category->slug,
             sort: $category->sort,
+            newsCount: $category->news_count ?? null,
         );
     }
 }

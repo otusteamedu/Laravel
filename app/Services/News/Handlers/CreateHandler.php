@@ -35,7 +35,8 @@ class CreateHandler
 
         $res = $this->newsRepository->save($news);
 
-        Cache::forget('latest_news_list');
+        Cache::tags('news')->flush(); // Очистить все кэши с тегом 'news'
+        Cache::tags('news_count')->flush();
 
         return $res;
     }

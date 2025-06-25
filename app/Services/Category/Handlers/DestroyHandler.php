@@ -5,6 +5,7 @@ namespace App\Services\Category\Handlers;
 
 use App\Services\Category\Exceptions\CategoryNotFoundException;
 use App\Services\Category\Repositories\CategoryRepositoryInterface;
+use Illuminate\Support\Facades\Cache;
 
 class DestroyHandler
 {
@@ -25,6 +26,10 @@ class DestroyHandler
             throw new CategoryNotFoundException('Category not found');
         }
 
-        return $this->categoryRepository->delete($category);
+        $res = $this->categoryRepository->delete($category);
+
+        Cache::tags('categories')->flush(); // Очистить все кэши с тегом 'categories'
+
+        return $res;
     }
 }

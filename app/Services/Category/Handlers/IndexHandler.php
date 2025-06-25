@@ -15,7 +15,6 @@ class IndexHandler
 
     public function __invoke() {
 
-
         $categoriesCollection = $this->categoryRepository->fetchAll();
 
         return $this->fetcher->fetch($categoriesCollection);
