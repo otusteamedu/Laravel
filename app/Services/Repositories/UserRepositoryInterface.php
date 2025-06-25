@@ -43,4 +43,12 @@ interface UserRepositoryInterface
      * @return int
      */
     public function saveProfile(UserProfileDTO $userProfile): int;
+
+    /**
+     * Обновить пароль пользователя
+     * @param int $userId
+     * @param string $password
+     * @return bool
+     */
+    public function passwordUpdate(int $userId, string $password): bool;
 }

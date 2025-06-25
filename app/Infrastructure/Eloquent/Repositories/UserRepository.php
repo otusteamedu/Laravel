@@ -112,4 +112,19 @@ class UserRepository implements UserRepositoryInterface
 
         return $profile->refresh()->id;
     }
+
+    /**
+     * Обновить пароль пользователя
+     * @param int $userIs
+     * @param string $password
+     * @return bool
+     */
+    public function passwordUpdate(int $userId, string $password): bool
+    {
+        return User::query()
+            ->where('id', $userId)
+            ->update([
+                'password'  => Hash::make($password),
+            ]);
+    }
 }
