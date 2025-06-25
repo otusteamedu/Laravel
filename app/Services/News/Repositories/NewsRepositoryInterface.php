@@ -47,4 +47,11 @@ interface NewsRepositoryInterface
      * @return bool|null
      */
     public function delete(News $news): ?bool;
+
+    /**
+     * @param int $limit
+     *
+     * @return array
+     */
+    public function getLatest(int $limit = 10): array;
 }

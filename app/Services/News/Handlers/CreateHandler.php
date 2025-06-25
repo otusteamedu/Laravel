@@ -5,6 +5,7 @@ namespace App\Services\News\Handlers;
 
 use App\Services\News\Commands\CommandDTO;
 use App\Services\News\Repositories\NewsRepositoryInterface;
+use Illuminate\Support\Facades\Cache;
 
 class CreateHandler
 {
@@ -32,6 +33,10 @@ class CreateHandler
         //$news->category_id = $commandDTO->categoryId;
         //$news->user_id = $commandDTO->userId;
 
-        return $this->newsRepository->save($news);
+        $res = $this->newsRepository->save($news);
+
+        Cache::forget('latest_news_list');
+
+        return $res;
     }
 }

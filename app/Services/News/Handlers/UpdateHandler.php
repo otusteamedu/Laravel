@@ -8,6 +8,7 @@ use App\Services\News\Exceptions\NewsNotFoundException;
 use App\Services\News\Results\Fetcher;
 use App\Services\News\Results\NewsDTO;
 use App\Services\News\Repositories\NewsRepositoryInterface;
+use Illuminate\Support\Facades\Cache;
 
 class UpdateHandler
 {
@@ -41,6 +42,9 @@ class UpdateHandler
         }
 
         $this->newsRepository->save($news);
+
+        // Инвалидация кэша после изменения
+        Cache::forget('latest_news_list');
 
         return $this->fetcher->fetch($news);
     }
