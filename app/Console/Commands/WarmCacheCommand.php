@@ -2,8 +2,8 @@
 
 namespace App\Console\Commands;
 
-use App\Services\Category\Handlers\GetPopularHandler;
-use App\Services\News\Handlers\GetLatestHandler;
+use App\Services\News\Handlers\GetLatestHandler as GetLatestNewsHandler;
+use App\Services\Category\Handlers\GetPopularHandler as GetPopularCategoryHandler;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Cache;
 
@@ -27,7 +27,7 @@ class WarmCacheCommand extends Command
     protected $description = 'Warms up the cache for the main entities or application pages';
 
 
-    public function __construct(protected GetLatestHandler $latestNewsUseCase, protected GetPopularHandler $popularCategoriesHandler)
+    public function __construct(protected GetLatestNewsHandler $latestNewsUseCase, protected GetPopularCategoryHandler $popularCategoriesHandler)
     {
         parent::__construct();
     }
