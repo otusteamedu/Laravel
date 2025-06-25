@@ -4,7 +4,6 @@ namespace App\Console\Commands;
 
 use App\Services\News\Handlers\GetLatestHandler;
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\Cache;
 
 class WarmCacheNews extends Command
 {
@@ -28,11 +27,7 @@ class WarmCacheNews extends Command
     public function handle(GetLatestHandler $getLatestNewsUseCase): void
     {
         $this->info('Начинаем прогрев кэша новостей...');
-
-        $latestNews = $getLatestNewsUseCase();
-
-        Cache::put('latest_news_list', $latestNews, env('LATEST_NEWS_CACHE_TIME', 600));
-
+        $getLatestNewsUseCase();
         $this->info('Кэш новостей успешно прогрет.');
     }
 }
