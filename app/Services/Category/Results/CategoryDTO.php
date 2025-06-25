@@ -10,6 +10,7 @@ final readonly class CategoryDTO
         public string $name,
         public string $slug,
         public int $sort,
+        public ?int $newsCount = null,
     )
     {
     }

@@ -5,6 +5,7 @@ namespace App\Services\Category\Handlers;
 
 use App\Services\Category\Commands\CommandDTO;
 use App\Services\Category\Repositories\CategoryRepositoryInterface;
+use Illuminate\Support\Facades\Cache;
 
 class CreateHandler
 {
@@ -24,6 +25,10 @@ class CreateHandler
         $category->name = $commandDTO->name;
         $category->sort = $commandDTO->sort;
 
-        return $this->categoryRepository->save($category);
+        $res =  $this->categoryRepository->save($category);
+
+        Cache::tags('categories')->flush(); // Очистить все кэши с тегом 'categories'
+
+        return $res;
     }
 }

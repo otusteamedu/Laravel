@@ -29,6 +29,8 @@ class UpdateHandler
             throw new NewsNotFoundException('News not found');
         }
 
+        $isChangedActivityCount = $news->is_draft !== $commandDTO->isDraft;
+
         $news->title = $commandDTO->title;
         $news->content = $commandDTO->content;
         $news->published_at = $commandDTO->publishedAt;
@@ -43,8 +45,11 @@ class UpdateHandler
 
         $this->newsRepository->save($news);
 
-        // Инвалидация кэша после изменения
-        Cache::forget('latest_news_list');
+        Cache::tags('news')->flush(); // Очистить все кэши с тегом 'news'
+
+        if ($isChangedActivityCount) {
+            Cache::tags('news_count')->flush();
+        }
 
         return $this->fetcher->fetch($news);
     }

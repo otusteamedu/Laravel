@@ -8,6 +8,12 @@
      */
 @endphp
 
+@php
+    /**
+     * @var App\Services\Category\Results\CategoriesDTO[] $categories
+     */
+@endphp
+
 @section('content')
     <div class="row">
         <div class="col-lg-8 col-md-7">
@@ -47,6 +53,24 @@
                     Пока нет новостей. Заходите позже!
                 </div>
             @endif
+        </div>
+
+        <div class="col-lg-4 col-md-5 mt-4 mt-md-0">
+            <div class="card shadow-sm mb-4">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="card-title mb-0">Популярные категории</h5>
+                </div>
+                <div class="card-body">
+                    <ul class="list-group list-group-flush">
+                        @foreach($popularCategories as $category)
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <a href="#" class="text-decoration-none">{{ $category->name }}</a>
+                                <span class="badge bg-primary rounded-pill">{{ $category->newsCount ?:0 }}</span>
+                            </li>
+                        @endforeach
+                    </ul>
+                </div>
+            </div>
         </div>
     </div>
 @endsection

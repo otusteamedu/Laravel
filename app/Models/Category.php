@@ -39,4 +39,12 @@ class Category extends Model
     {
         return $this->hasMany(News::class);
     }
+
+    /**
+     * @return HasMany
+     */
+    public function publishedNews(): HasMany
+    {
+        return $this->news()->where('is_draft', false);
+    }
 }

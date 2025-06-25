@@ -8,6 +8,7 @@ use App\Services\Category\Exceptions\CategoryNotFoundException;
 use App\Services\Category\Results\CategoryDTO;
 use App\Services\Category\Repositories\CategoryRepositoryInterface;
 use App\Services\Category\Results\Fetcher;
+use Illuminate\Support\Facades\Cache;
 
 class UpdateHandler
 {
@@ -32,6 +33,8 @@ class UpdateHandler
         $category->sort = $commandDTO->sort;
 
         $this->categoryRepository->save($category);
+
+        Cache::tags('categories')->flush(); // Очистить все кэши с тегом 'categories'
 
         return $this->fetcher->fetch($category);
     }

@@ -62,4 +62,11 @@ interface CategoryRepositoryInterface
      * @return array
      */
     public function findByIds(array $ids): array;
+
+    /**
+     * @param int $limit
+     *
+     * @return array
+     */
+    public function getPopular(int $limit = 10): array;
 }
