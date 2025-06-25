@@ -3,6 +3,7 @@
 namespace App\Services\UseCases\Commands\TodoStatus\Create;
 
 use Exception;
+use Illuminate\Support\Facades\Cache;
 use App\Services\Repositories\DTOs\TodoStatusDTO;
 use App\Services\Repositories\ProjectRepositoryInterface;
 use App\Services\Repositories\Exceptions\CreateModelFailedException;
@@ -33,6 +34,8 @@ class Handler
             );
 
             $id = $this->projectRepository->addTodoStatus($modelDTO);
+
+            Cache::forget("project_{$command->projectId}_todo_statuses");
 
             return new Result($id);
         } catch (Exception) {
