@@ -1,0 +1,23 @@
+{
+    "name": "my/package-with-packages",
+    "description": "only for traning",
+    "type": "library",
+    "autoload": {
+        "psr-4": {
+            "My\\PackageWithPackages\\": "src/",
+            "My\\Database\\Seeders\\": "database/seeders",
+            "My\\Database\\Factories\\": "database/factories/"
+        }
+    },
+    "require": {
+        "illuminate/support": "^12.0",
+        "illuminate/database": "^12.0"
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "My\\PackageWithPackages\\MyPackServiceProvider"
+            ]
+        }
+    }
+}
