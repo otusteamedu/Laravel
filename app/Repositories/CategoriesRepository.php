@@ -80,6 +80,13 @@ class CategoriesRepository
         return $category;
     }
 
+    /**
+     * @return int
+     */
+    public function count(): int{
+        return Category::count();
+    }
+
     public function save(UpdateDto $updateDto): void
     {
         $category = Category::find($updateDto->id);

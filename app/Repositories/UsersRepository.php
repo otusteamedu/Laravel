@@ -84,6 +84,13 @@ class UsersRepository
         return $user;
     }
 
+    /**
+     * @return int
+     */
+    public function count(): int{
+        return User::count();
+    }
+
     public function add(StoreDto $storeDto): void
     {
         $user = new User();

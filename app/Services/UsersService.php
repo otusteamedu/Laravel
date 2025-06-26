@@ -40,6 +40,14 @@ class UsersService
         return $this->repository->find($userId);
     }
 
+    /**
+     * @return int
+     */
+    public function getCount(): int
+    {
+        return $this->repository->count();
+    }
+
     public function delete($userId): void
     {
         $this->repository->delete($userId);

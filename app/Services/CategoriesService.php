@@ -37,6 +37,14 @@ class CategoriesService
         return $this->repository->find($categoryId);
     }
 
+    /**
+     * @return int
+     */
+    public function getCount(): int
+    {
+        return $this->repository->count();
+    }
+
     public function update(UpdateDto $updateDto): void
     {
         $this->repository->save($updateDto);
