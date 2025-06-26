@@ -66,6 +66,18 @@ class OrdersRepository
     }
 
     /**
+     * @return Collection<array-key, Order>
+     */
+    public function fetchByUserEmail(string $email): Collection
+    {
+        $orders = Order::with(['products'])->whereHas('user', function($query) use ($email) {
+            $query->where('email', $email);
+        })->get();
+
+        return $orders;
+    }
+
+    /**
      * @return Order
      */
     public function find(int $orderId, bool $warmup = false): Order
@@ -90,6 +102,13 @@ class OrdersRepository
         }
 
         return $order;
+    }
+
+    /**
+     * @return int
+     */
+    public function count(): int{
+        return Order::count();
     }
 
     /**

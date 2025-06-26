@@ -33,6 +33,14 @@ class OrdersService
     }
 
     /**
+     * @return Collection<array-key, Order>
+     */
+    public function getByUserEmail(string $email): Collection
+    {
+        return $this->repository->fetchByUserEmail($email);
+    }
+
+    /**
      * @return Order
      */
     public function getById($orderId): Order
@@ -40,6 +48,14 @@ class OrdersService
         return $this->repository->find($orderId);
     }
 
+    /**
+     * @return int
+     */
+    public function getCount(): int
+    {
+        return $this->repository->count();
+    }
+    
     public function add(StoreDto $storeDto, array $product_ids, array $counts): void
     {
         $order = $this->repository->add($storeDto);

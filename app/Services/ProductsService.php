@@ -48,11 +48,27 @@ class ProductsService
     }
 
     /**
+     * @return Collection<array-key, Product>
+     */
+    public function getByCategoryTitle(string $categoryTitle): Collection
+    {
+        return $this->repository->fetchByCategoryTitle($categoryTitle);
+    }
+
+    /**
      * @return Product
      */
     public function getById($productId): Product
     {
         return $this->repository->find($productId);
+    }
+
+    /**
+     * @return int
+     */
+    public function getCount(): int
+    {
+        return $this->repository->count();
     }
 
     public function add(StoreDto $storeDto, ?array $assets = null): void

@@ -82,6 +82,17 @@ class ProductsRepository
     }
 
     /**
+     * @return Collection<array-key, Product>
+     */
+    public function fetchByCategoryTitle(string $categoryTitle): Collection
+    {
+        $products = Product::whereHas('category', function($query) use ($categoryTitle) {
+            $query->where('title', $categoryTitle);
+        })->get();
+        return $products;
+    }
+
+    /**
      * @return LengthAwarePaginator<array-key, Product>
      */
     public function fetchList(string $sort, string $direction, int $page, bool $warmup = false): LengthAwarePaginator
@@ -185,6 +196,13 @@ class ProductsRepository
         });
 
         return $products;
+    }
+
+    /**
+     * @return int
+     */
+    public function count(): int{
+        return Product::count();
     }
 
     /**
