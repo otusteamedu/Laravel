@@ -72,10 +72,20 @@
                    'app/Modules/ISS/public/css/components/iss-messages-Style.css',
 
 НАПОМИНАНИЯ
-1) Дописать\переписать тесты для сервисов (CheckSimpleExam, ProcessExamCheck, IsExamCanBePassed, getAllManagers)
+1) Дописать\переписать тесты для сервисов (CheckSimpleExam, ProcessExamCheck, IsExamCanBePassed, getAllManagers, fillExamBlank)
 2) Дописать тесты на контроллеры
 3) в сервисах где написано "//запись в лог" вместо этого в этих местах выбрасывать исключения и ловить их в контроллерах
    а уже в контроллерах писать в лог
+4) Вынести модуль в папук Modules В КОРНЕ ПРОЕКТА, чтобы привести в порядок psr-4 namespace
+       - скопировать модуль в папку в корне проекта
+       - добавить namespace для модуля в composer.json проекта
+         (
+           src/   database/seeders   database/migrations   tests/
+         ), выполнить composer dump-autoload (этого достаточно)
+       - изменить namespace в файлах модуля
+       - создать головной сидер модуля в модуле, скопировать головной сибер в папку database\seeders проекта
+       - создать команду для развертывания модуля после его ручного копирования в проект
+       - проверить что провайдер модуля подключен в bootstrap\providers.php
 5) в IssStartPageController.php в сервисе getUserData УБРАТЬ из INPUTDTO названия полей user_id и т.д.,
    вместо этого из модели доставать scope (фильтрующие по нужным полям)
    иначе нарушается принцип изолированности сервиса

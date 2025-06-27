@@ -111,11 +111,17 @@ Route::prefix(config('iss.ISS_ROUTE_PREFIX'))
 
 //проверка экзамена преподавателем (по защищенной ссылке из письма)
 Route::prefix(config('iss.ISS_ROUTE_PREFIX'))
-    ->middleware(['web',/*'signed'*/])
+    ->middleware(['web','signed'])
     ->group(function () {
 //форма проверки экзамена для преподавателя
-Route::get('/checkExam/showCheckForm', [IssCheckExamController::class, 'showCheckExamForm']);
+Route::get('/checkExam/showCheckForm', [IssCheckExamController::class, 'showCheckExamForm'])
+    ->name('showCheckForm');
 //обработка результатов проверки преподавателем
 Route::post('/checkExam/examCheckResult', [IssCheckExamController::class, 'setExamManualCheckResult'])
     ->name('examCheckResult');
+});
+
+Route::get('/sendmail', function () {
+    \Illuminate\Support\Facades\Mail::to(' alekseev.a@v2grp.ru')
+        ->send(new App\Modules\ISS\src\Mails\IssExamStatusNotify());
 });

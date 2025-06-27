@@ -15,6 +15,9 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->alias(
             [
+
+                'packHeaders' => My\PackageWithPackages\Http\Middleware\PackHeaders::class,
+
                 'issAuthAdmin' => \App\Modules\ISS\src\Http\Middleware\IssAuthAdmin::class,
                 'issAuthUser' => \App\Modules\ISS\src\Http\Middleware\IssAuthUser::class
             ]
@@ -27,5 +30,5 @@ return Application::configure(basePath: dirname(__DIR__))
         //
     })
     ->withCommands([
-        __DIR__.'/../app/Modules/ISS/src/Console',
+       // __DIR__.'/../app/Modules/ISS/src/Console',
     ])->create();

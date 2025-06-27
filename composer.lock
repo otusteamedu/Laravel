@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "29246a4907459c8218527c57e19cf089",
+    "content-hash": "c195f132af81e8a1aeea311e9d02f8e4",
     "packages": [
         {
             "name": "brick/math",
@@ -2108,6 +2108,38 @@
                 }
             ],
             "time": "2025-03-24T10:02:05+00:00"
+        },
+        {
+            "name": "my/package-with-packages",
+            "version": "dev-main",
+            "dist": {
+                "type": "path",
+                "url": "Packages/packageWithPackages",
+                "reference": "3f0f32e7027ea2d2cc46ba9066a7b47edc59e743"
+            },
+            "require": {
+                "illuminate/database": "^12.0",
+                "illuminate/support": "^12.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "My\\PackageWithPackages\\MyPackServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "My\\PackageWithPackages\\": "src/",
+                    "My\\Database\\Seeders\\": "database/seeders",
+                    "My\\Database\\Factories\\": "database/factories/"
+                }
+            },
+            "description": "only for traning",
+            "transport-options": {
+                "relative": true
+            }
         },
         {
             "name": "nesbot/carbon",
@@ -8136,7 +8168,9 @@
     ],
     "aliases": [],
     "minimum-stability": "dev",
-    "stability-flags": {},
+    "stability-flags": {
+        "my/package-with-packages": 20
+    },
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {

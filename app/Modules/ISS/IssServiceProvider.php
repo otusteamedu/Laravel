@@ -17,7 +17,7 @@ use App\Modules\ISS\src\Repositories\EducationRouteRepo;
 use App\Modules\ISS\src\Services\NotifyService\NotifyServiceRepoInterface;
 use App\Modules\ISS\src\Repositories\NotifyServiceRepo;
 use App\Modules\ISS\src\View\Components\IssMessages;
-use App\Modules\ISS\src\Console\startISSCache;
+use App\Modules\ISS\src\Console\IssCache;
 
 
 class IssServiceProvider extends ServiceProvider
@@ -51,7 +51,7 @@ class IssServiceProvider extends ServiceProvider
         //регистрация команд
         if ($this->app->runningInConsole()) {
             $this->commands([
-                startISSCache::class, //имя класса моей команды в пакете-модуле
+                statrIssCache::class, //имя класса моей команды в пакете-модуле
             ]);
             //те для которых будет чиститься кэш при вызове optimize:clear
             /*$this->optimizes(

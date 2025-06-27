@@ -47,7 +47,7 @@ class GetDataForExamStatusNotify
                 userEmail: $userData->email,
                 routeName: $examMainData->routeName,
                 pointName: $examMainData->pointName,
-                examData: $examMainData->examDate,
+                examData: date('Y-m-d', strtotime($examMainData->examDate)),
             );
         } else {
             return null;
