@@ -10,6 +10,7 @@ namespace App\Modules\ISS\src\Services\EducationExam\checkSimpleExam;
  *      [
  *         ['questionId'=> 3245, 'answerId' => 2345],
  *         ['questionId'=> 35, 'answerId' => 323],
+ *         ['questionId'=> 35, 'answerId' => 'tfygjh qwsrdtfh wasercthgj'], //для сложного вопроса
  *         ...
  *      ]
  */

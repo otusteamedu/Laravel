@@ -23,6 +23,8 @@ use App\Modules\ISS\src\Services\EducationExam\chooseExamCheckTeacher\ChooseExam
 use App\Modules\ISS\src\Services\EducationExam\chooseExamCheckTeacher\InputDTO as chooseTeacherInputDTO;
 use App\Modules\ISS\src\Services\EducationExam\makeCheckCode\MakeCheckCode;
 use App\Modules\ISS\src\Services\EducationExam\makeCheckCode\InputDTO as makeCheckCodeInputDTO;
+use App\Modules\ISS\src\Services\EducationExam\fillExamBlank\FillExamBlank;
+use App\Modules\ISS\src\Services\EducationExam\fillExamBlank\InputDTO as fillExamBlankInputDTO;
 
 class ProcessExamCheck
 {
@@ -47,6 +49,9 @@ class ProcessExamCheck
     /** @var MakeCheckCode $makeCheckCode сервис (создать одноразовый код проверки экзамена для преподавателя) */
     private MakeCheckCode                      $makeCheckCode;
 
+    /** @var FillExamBlank $fillExamBlank сервис (заполняет бланк экзамена для отправки преподавателю на проверку) */
+    private FillExamBlank                      $fillExamBlank;
+
     public function __construct(
         GetCheckCodeByUserIdAndRealPointId $getCheckCodeByUserId,
         IsExamCanBePassed                  $isExamCanBePassed,
@@ -55,6 +60,7 @@ class ProcessExamCheck
         MarkExamPassedForUser              $markExamPassedForUser,
         ChooseExamCheckTeacher             $chooseExamCheckTeacher,
         MakeCheckCode                      $makeCheckCode,
+        FillExamBlank                      $fillExamBlank,
     )
     {
         $this->getCheckCodeByUserIdAndRealPointId = $getCheckCodeByUserId;
@@ -64,6 +70,7 @@ class ProcessExamCheck
         $this->markExamPassedForUser = $markExamPassedForUser;
         $this->chooseExamCheckTeacher = $chooseExamCheckTeacher;
         $this->makeCheckCode = $makeCheckCode;
+        $this->fillExamBlank = $fillExamBlank;
     }
 
 
@@ -137,10 +144,15 @@ class ProcessExamCheck
 
              //сформировать данные для бланка преподавателя
             if (!empty($checkedQuestions) && !is_null($mail) && !is_null($examCheckCode)) {
+                //добавить тексты вопросов и ответов в бланк экзамена
+                $checkedQuestionsWithText = ($this->fillExamBlank)(
+                    new fillExamBlankInputDTO($checkedQuestions)
+                );
+
                 $teacherBlankDTO = new TeacherBlankDTO(
                     email: $mail,
                     examCheckCode: $examCheckCode,
-                    checkedQuestions: $checkedQuestions
+                    checkedQuestions: $checkedQuestionsWithText->examBlank
                 );
                 $examCheckResult = __('iss::issNotify.examSentToTeacher');
             } else {

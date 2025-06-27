@@ -19,7 +19,7 @@
 @section('content')
 <div id="examCheck">
     <h2>{{__('iss::issExamCheckPage.header')}}</h2>
-    <form id="examCheckForm" action="{{route('examCheckResult')}}" method="POST">
+    <form id="examCheckForm" action="{{$signedRoute}}" method="POST">
         @csrf
         <div class="mb-3 correctInput">
             <label class="form-label" for="checkCode">{{__('iss::issExamCheckPage.checkCode')}}</label>

@@ -11,6 +11,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 use App\Models\User;
 
+use Modules\MyTestModule\Tmp;
+
 Route::get('/', [MainAppStartPageController::class, 'index'])->name('main');
 
 Route::middleware('auth')->group(function () {
@@ -34,6 +36,11 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+});
+
+Route::get('/ttt', function () { //проверка работы модуля в корне проекта (не пакет а модуль)
+    $tmp = new tmp();
+    return $tmp->say();
 });
 
 require __DIR__.'/auth.php';

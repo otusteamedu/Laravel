@@ -185,4 +185,30 @@ interface EducationExamRepoInterface
      * @return array ['id' => ]
      */
     public function getNextExamPoint(array $inputData): array;
+
+    /**
+     * Запрос БД получить тексты ответов на экзаменационные вопросы по переданному массиву их id
+     * @param array $inputData
+     *        ['id1', 'id2', 'id3', ....]
+     * @return array [
+     *                 ['id' => , 'answer' => ],
+     *                 ['id' => , 'answer' => ],
+     *                 ['id' => , 'answer' => ],
+     *                 ...
+     *                ]
+     */
+    public function getAnswersText(array $inputData): array;
+
+    /**
+     * Запрос БД получить тексты экзаменационных вопросов по переданному массиву их id
+     * @param array $inputData
+     *        ['id1', 'id2', 'id3', ....]
+     * @return array [
+     *                 ['id' => , 'question' => ],
+     *                 ['id' => , 'question' => ],
+     *                 ['id' => , 'question' => ],
+     *                 ...
+     *                ]
+     */
+    public function getQuestionsText(array $inputData): array;
 }

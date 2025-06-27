@@ -7,17 +7,33 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Mail\Mailables\Address;
 
-class issExamStatusNotify extends Mailable
+/**
+ * @var string $examDate дата экзамена по расписанию
+ * @var string $pointName название точки обучающего маршрута (из справочника)
+ * @var string $routeName название обучающего маршрута (из справочника)
+ * @var string $examCheckResult результат проверки экзамена
+ */
+
+class IssExamStatusNotify extends Mailable
 {
     use Queueable, SerializesModels;
+
+    private string $examDate;
+    private string $pointName;
+    private string $routeName;
+    private string $examCheckResult;
 
     /**
      * Create a new message instance.
      */
-    public function __construct()
+    public function __construct(string $examDate, string $pointName, string $routeName, string $examCheckResult)
     {
-        //
+        $this->examDate = $examDate;
+        $this->pointName = $pointName;
+        $this->routeName = $routeName;
+        $this->examCheckResult = $examCheckResult;
     }
 
     /**
@@ -26,7 +42,8 @@ class issExamStatusNotify extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Iss Exam Status Notify',
+            from: new Address(config('iss.ISS_MAIL_FROM_ADDRESS'), __('iss::issNotify.studentMail.fromName')),
+            subject: __('iss::issNotify.examStatusNotify.mailHeader'),
         );
     }
 
@@ -36,7 +53,13 @@ class issExamStatusNotify extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'view.name',
+            view: 'iss::mail.examStatusNotify',
+            with: [
+                'examDate' => $this->examDate,
+                'pointName' => $this->pointName,
+                'routeName' => $this->routeName,
+                'examCheckResult' => $this->examCheckResult,
+            ]
         );
     }
 

@@ -16,3 +16,4 @@ App\Modules\ISS\src\Services\EducationExam\processExamCheck =>
                                          => EducationExam\markExamPassedForUser
                                          => EducationExam\chooseExamCheckTeacher
                                          => EducationExam\makeCheckCode
+                                         => EducationExam\fillExamBlank
