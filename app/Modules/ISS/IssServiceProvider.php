@@ -51,7 +51,7 @@ class IssServiceProvider extends ServiceProvider
         //регистрация команд
         if ($this->app->runningInConsole()) {
             $this->commands([
-                statrIssCache::class, //имя класса моей команды в пакете-модуле
+                IssCache::class, //имя класса моей команды в пакете-модуле
             ]);
             //те для которых будет чиститься кэш при вызове optimize:clear
             /*$this->optimizes(

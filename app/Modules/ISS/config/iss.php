@@ -8,6 +8,16 @@ return [
     'ISS_ADMIN_ROUTE_PREFIX' =>                                    //префикс маршрутов модуля (административный интерфейс)
         env("ISS_ADMIN_ROUTE_PREFIX", '/admin'),
 
+    'ISS_MAIL_FROM_ADDRESS' => 'ivanovTesting8823@yandex.ru',      //адрес почты отправки писем ИОС
+
+    'ISS_COMMANDS' => [                                            //команды ИОС
+        'cache' => [                                                   //
+            'actionHotStart' => 'start',                               //прогрев кэша
+            'actionClear' => 'clear',                                  //очистка кэша
+        ],
+    ],
+
+
     'ALLOWED_EDUCATION_MATERIAL_TYPES' => [                         //разрашенные типы обучающих материалов
         'mp4', 'avi', 'pdf', 'txt', 'docx'
     ],
