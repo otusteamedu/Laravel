@@ -15,7 +15,7 @@ use App\Modules\ISS\src\Services\issUser\getUserData\InputDTO as userDataDTO;
 use App\Modules\ISS\src\Services\EducationRoute\getAllEducationRoutesOfUserWithPoints\GetAllEducationRoutesOfUserWithPoints;
 use App\Modules\ISS\src\Services\EducationRoute\getAllEducationRoutesOfUserWithPoints\InputDTO as userRouteDTO;
 
-class startISSCache extends Command
+class IssCache extends Command
 {
     /**
      * The name and signature of the console command.
@@ -61,7 +61,9 @@ class startISSCache extends Command
         GetAllEducationRoutesOfUserWithPoints $getAllEducationRoutesOfUserWithPoints,
     )
     {
-        $this->signature = 'iss:cache ' . '{start : ' . __('iss::issCommands.cache.startCommand') . '}';
+        $this->signature = 'iss:cache '
+           . '{--' . config('iss.ISS_COMMANDS.cache.actionHotStart') . ' : ' . __('iss::issCommands.cache.startCommand') . '} '
+           . '{--' . config('iss.ISS_COMMANDS.cache.actionClear') . ' : ' . __('iss::issCommands.cache.clearCommand') . '}';
         parent::__construct();
         $this->description = __('iss::issCommands.cache.description');
 
@@ -76,6 +78,26 @@ class startISSCache extends Command
      * Execute the console command.
      */
     public function handle()
+    {
+        $action = 0;
+        if ($this->option(config('iss.ISS_COMMANDS.cache.actionHotStart'))) {
+            $this->hotStartIssCache();
+            $action = 1;
+        }
+        if ($this->option(config('iss.ISS_COMMANDS.cache.actionClear'))) {
+            $this->clearIssCache();
+            $action = 1;
+        }
+
+        if ($action === 0) {
+            $this->warn(__('iss::issCommands.cache.noOptionsSet'));
+        }
+    }
+
+    /**
+     * Прогреть кэш для модуля ИОС
+     */
+    private function hotStartIssCache()
     {
         $diagramDataService = $this->getRouteReadyPercentForUsersOfFirm;
 
@@ -131,5 +153,37 @@ class startISSCache extends Command
         }
 
         $this->info('Cache hot started!');
+    }
+
+    public function clearIssCache()
+    {
+        $action = $this->choice(
+            __('iss::issCommands.cache.choiceCacheClearMode'),
+            [
+                __('iss::issCommands.cache.clearAll'),
+                __('iss::issCommands.cache.clearUserData'),
+                __('iss::issCommands.cache.clearEducationPointData'),
+                __('iss::issCommands.cache.clearDiagramsData'),
+            ]
+        );
+
+        switch ($action) {
+            case __('iss::issCommands.cache.clearAll'):
+                    Cache::tags(['userData'])->flush();
+                    Cache::tags(['diagram'])->flush();
+                    Cache::tags(['pointData'])->flush();
+                    break;
+            case __('iss::issCommands.cache.clearUserData'):
+                    Cache::tags(['userData'])->flush();
+                    break;
+            case __('iss::issCommands.cache.clearEducationPointData'):
+                    Cache::tags(['pointData'])->flush();
+                    break;
+            case __('iss::issCommands.cache.clearDiagramsData'):
+                    Cache::tags(['diagram'])->flush();
+                    break;
+            default: break;
+        }
+        $this->line($action . ': ok');
     }
 }
