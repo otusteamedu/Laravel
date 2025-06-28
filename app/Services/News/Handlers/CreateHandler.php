@@ -15,10 +15,11 @@ class CreateHandler
 
     /**
      * @param CommandDTO $commandDTO
+     * @param bool       $isAdmin
      *
-     * @return void
+     * @return int|false
      */
-    public function __invoke(CommandDTO $commandDTO, bool $isAdmin = false): bool {
+    public function __invoke(CommandDTO $commandDTO, bool $isAdmin = false): int|false {
 
         $news = $this->newsRepository->create();
 
@@ -33,11 +34,13 @@ class CreateHandler
         //$news->category_id = $commandDTO->categoryId;
         //$news->user_id = $commandDTO->userId;
 
-        $res = $this->newsRepository->save($news);
+        if ($this->newsRepository->save($news)) {
+            Cache::tags('news')->flush(); // Очистить все кэши с тегом 'news'
+            Cache::tags('news_count')->flush();
 
-        Cache::tags('news')->flush(); // Очистить все кэши с тегом 'news'
-        Cache::tags('news_count')->flush();
+            return $news->id;
+        }
 
-        return $res;
+        return false;
     }
 }

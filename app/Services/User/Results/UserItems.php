@@ -3,12 +3,12 @@ declare(strict_types=1);
 
 namespace App\Services\User\Results;
 
-use App\Services\User\Results\UserDTO;
+use App\Services\User\Results\User;
 
-final readonly class UsersDTO
+final readonly class UserItems
 {
     /**
-     * @param UserDTO[] $results
+     * @param User[] $results
      */
     public function __construct(
         public array $results

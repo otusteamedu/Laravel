@@ -54,4 +54,9 @@ interface UserRepositoryInterface
      * @return array
      */
     public function findByIds(array $ids): array;
+
+    /**
+     * @return array
+     */
+    public function findSubscribedNews(): array;
 }

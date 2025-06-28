@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\CreateNewsRequest;
 use App\Services\Category\Repositories\CategoryRepositoryInterface;
 use App\Services\Category\Results\Fetcher as CategoryFetcher;
+use App\Services\News\Exceptions\NewsNotFoundException;
+use App\Services\News\Handlers\ShowHandler;
 use App\Services\User\Results\Fetcher as UserFetcher;
 use App\Services\News\Handlers\CreateHandler;
 use App\Services\News\Commands\CommandDTO;
@@ -13,6 +15,8 @@ use App\Services\User\Repositories\UserRepositoryInterface;
 use Illuminate\Auth\AuthManager;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
+use App\Events\NewsPublished;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class CreateController extends Controller
 {
@@ -38,7 +42,7 @@ class CreateController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(CreateNewsRequest $request, CreateHandler $createNewsUseCase, AuthManager $authManager): RedirectResponse
+    public function store(CreateNewsRequest $request, CreateHandler $createNewsUseCase, ShowHandler $showNewsUseCase, AuthManager $authManager): RedirectResponse
     {
         $request->validated();
 
@@ -46,7 +50,19 @@ class CreateController extends Controller
         $isAdmin = $user->hasRole('admin');
         $userId = $request->get('user_id', $user->id);
 
-        $createNewsUseCase(new CommandDTO($request->get('title'), $request->get('content'), $userId, $request->get('category_id'), $request->get('published_at'), $request->get('is_draft', false)), $isAdmin);
+        try {
+            $newsId = $createNewsUseCase(new CommandDTO($request->get('title'), $request->get('content'), $userId, $request->get('category_id'), $request->get('published_at'), $request->get('is_draft', false)), $isAdmin);
+
+            if ($newsId) {
+                $newsDto = $showNewsUseCase($newsId);
+
+                if (!$newsDto->isDraft) {
+                    NewsPublished::dispatch($newsDto);
+                }
+            }
+        } catch (NewsNotFoundException) {
+            throw new NotFoundHttpException('News not found');
+        }
 
         return redirect()->route('admin.news.index');
     }

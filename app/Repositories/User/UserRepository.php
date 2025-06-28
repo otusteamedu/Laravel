@@ -72,4 +72,12 @@ class UserRepository implements UserRepositoryInterface
     {
         return User::query()->whereIn('id', $ids)->get()->keyBy('id')->all();
     }
+
+    /**
+     * @return array
+     */
+    public function findSubscribedNews(): array
+    {
+        return User::query()->where('subscribed_news', true)->get()->all();
+    }
 }

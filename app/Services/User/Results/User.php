@@ -5,12 +5,13 @@ namespace App\Services\User\Results;
 
 use Carbon\Carbon;
 
-final readonly class UserDTO
+final readonly class User
 {
     public function __construct(
         public int $id,
         public string $name,
         public string $email,
+        public bool $subscribedNews,
     )
     {
     }
