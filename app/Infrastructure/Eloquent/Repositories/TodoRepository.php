@@ -121,7 +121,7 @@ class TodoRepository implements TodoRepositoryInterface
      * @param int|null $userId
      * @return TodoFetchDTO[]
      */
-    public function fetchForProject(int $projectId, int $userId = null): array
+    public function fetchForProject(int $projectId, ?int $userId = null): array
     {
         $query = Todo::query()
             ->with('author')
