@@ -31,12 +31,7 @@ class Helper extends Command
      */
     public function handle()
     {
-        // $product = MeasureProductRecipe::whereId(3)->first()->product->toArray();
-        $recipe = Recipe::whereid(6)->first();
-        $products = $recipe->measureProductRecipe->map(function ($item) {
-            return $item->product->toArray();
-        })->toArray();
-        dump($products);
+        
         die;
     }
 }
