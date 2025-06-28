@@ -10,7 +10,6 @@ use App\Services\UseCases\Commands\Auth\Password\Reset\Handler;
 use \App\Services\UseCases\Commands\Auth\Password\Reset\Command as PasswordReset;
 use Illuminate\Support\Facades\Password;
 
-use function Symfony\Component\String\s;
 
 class ResetUserPassword extends Command
 {
@@ -46,14 +45,64 @@ class ResetUserPassword extends Command
     protected $description = 'Массовый сброс паролей пользователей';
 
     /**
-     * Execute the console command.
+     * Summary of __construct
+     * @param UserRepositoryInterface $userRepository
+     * @param Handler $handler
      */
-    public function handle(Handler $handler, UserRepositoryInterface $userRepository)
+    public function __construct(
+        private UserRepositoryInterface $userRepository,
+        private Handler $handler,
+    ) {
+        parent::__construct();
+    }
+
+    /**
+     * Execute the console command.
+     * @return int
+     * @throws \Throwable
+     */
+    public function handle(): int
     {
+        if (!$users = $this->getUsers()) {
+            $users = $this->requestUsers();
+        }
+        $this->info('Начинаем процесс сброса паролей');
+
         $this->trap([SIGTERM, SIGQUIT], fn() => $this->shouldKeepRunning = false);
 
+        $this->withProgressBar($users, function (UserDTO $user) {
+            if (!$this->shouldKeepRunning) {
+                $this->fail('Получен сигнал на завершение работы');
+            }
+
+            $this->resetPassword($user);
+        });
+
+        $this->line(PHP_EOL);
+        $this->info('Сброс паролей завершен');
+
+        if ($this->fails > 0) {
+            $this->error(
+                sprintf(
+                    ' Не удалсь сбросить <options=bold><bg=red>%d</></> паролей из <options=bold><bg=red>%d</></> ',
+                    $this->fails,
+                    count($users)
+                )
+            );
+        }
+
+        return self::SUCCESS;
+    }
+
+    /**
+     * Получение массива данных пользователей, которым нужно сбросить пароли
+     *
+     * @return UserDTO[]|null
+     */
+    private function getUsers(): array|null
+    {
         if ($this->option('all')) {
-            $users = $userRepository->fetch(new FetchOptions);
+            $users = $this->userRepository->fetch(new FetchOptions());
 
             if (!$users) {
                 $this->fail('Не удалось найти ни одного пользователя');
@@ -69,68 +118,74 @@ class ResetUserPassword extends Command
             );
 
             if (!empty($userId)) {
-                $users = $userRepository->fetch(new FetchOptions(ids: $userIds));
+                $users = $this->userRepository->fetch(new FetchOptions(ids: $userIds));
             }
         }
 
-        if (empty($users)) {
-            $this->warn('Вы не указали ни оного пользователя или указали недопустимые для Id значения');
-            $choise = $this->choice(
-                'Ввести Id пользователей?',
-                ['Да', 'Нет, сбросить для всех'],
-                0
+        return $users ?? null;
+    }
+
+    /**
+     * Получение массива данных пользователей в интерактивном режиме
+     *
+     * @return UserDTO[]
+     * @throws \Throwable
+     */
+    private function requestUsers(): array
+    {
+        $this->warn('Вы не указали ни оного пользователя или указали недопустимые для Id значения');
+
+        $choise = $this->choice(
+            'Ввести Id пользователей?',
+            ['Да', 'Нет, сбросить для всех'],
+            0
+        );
+
+        if ($choise === 'Да') {
+            $input = $this->ask('Введите Id пользователей через пробел');
+
+            $userIds = array_map(
+                fn($userId) => intval($userId),
+                explode(" ", $input)
             );
 
-            if ($choise === 'Да') {
-                $input = $this->ask('Введите Id пользователей через пробел');
+            $userIds = array_filter(
+                array_unique($userIds)
+            );
 
-                $userIds = array_map(
-                    fn($userId) => intval($userId),
-                    explode(" ", $input)
-                );
-
-                $userIds = array_filter(
-                    array_unique($userIds)
-                );
-            }
 
             if (empty($userIds)) {
                 $this->fail('Введены недопустимые для Id значения');
             }
 
-            $users = $userRepository->fetch(new FetchOptions(ids: $userIds));
+            $users = $this->userRepository->fetch(new FetchOptions(ids: $userIds));
+        } else {
+            $users = $this->userRepository->fetch(new FetchOptions());
         }
 
-        $this->info('Начинаем процесс сброса паролей');
-        $this->withProgressBar($users, function (UserDTO $user) use ($handler) {
+        return $users;
+    }
 
-            if (!$this->shouldKeepRunning) {
-                $this->fail('Получен сигнал на завершение работы');
-            }
+    /**
+     * Сброс паролья пользователю
+     * 
+     * @param UserDTO $user
+     * @return void
+     */
+    private function resetPassword(UserDTO $user): void
+    {
+        $status = $this->handler->handle(new PasswordReset(
+            email: $user->email,
+            sendResetLink: $this->option('send-email') ?? true,
+            forceReset: $this->option('force-reset') ?? false
+        ));
 
-            $status = $handler->handle(new PasswordReset(
-                email: $user->email,
-                sendResetLink: $this->option('send-email') ?? true,
-                forceReset: $this->option('force-reset') ?? false
-            ));
-
-            if (
-                $status->routeName !== Password::RESET_LINK_SENT
-                && $status->routeName !== Password::PASSWORD_RESET
-            ) {
-                $this->error(' Не смогли сбросить пароль для пользователя ' . $user->email . ': ' . $status->routeName . ' ');
-                $this->fails++;
-            }
-        });
-
-        $this->line(PHP_EOL);
-
-        $this->info('Сброс паролей завершен');
-
-        if ($this->fails > 0) {
-            $this->error(sprintf(' Не удалсь сбросить <options=bold><bg=red>%d</></> паролей из <options=bold><bg=red>%d</></> ', $this->fails, count($users)));
+        if (
+            $status->routeName !== Password::RESET_LINK_SENT
+            && $status->routeName !== Password::PASSWORD_RESET
+        ) {
+            $this->error(' Не смогли сбросить пароль для пользователя ' . $user->email . ': ' . $status->routeName . ' ');
+            $this->fails++;
         }
-
-        return self::SUCCESS;
     }
 }
