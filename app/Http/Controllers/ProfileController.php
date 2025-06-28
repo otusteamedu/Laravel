@@ -50,6 +50,7 @@ class ProfileController extends Controller
         $userProfileDTO = new UserProfileDTO(
             userId: $user->id,
             biography: $validated['profile']['biography'] ?? '',
+            telegram_id: $validated['profile']['telegram_id'] ?? null,
         );
 
         $this->userRepository->saveProfile($userProfileDTO);

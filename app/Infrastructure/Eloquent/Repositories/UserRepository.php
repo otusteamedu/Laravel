@@ -52,9 +52,10 @@ class UserRepository implements UserRepositoryInterface
     /**
      * Получить пользователя по id
      * @param int $id
+     * @param bool|null $withProfile
      * @return UserDTO|null
      */
-    public function find(int $id): ?UserDTO
+    public function find(int $id, $withProfile = false): ?UserDTO
     {
         $dbUser = User::query()
             ->where('id', $id)
@@ -63,11 +64,21 @@ class UserRepository implements UserRepositoryInterface
         if ($dbUser === null) {
             return null;
         }
+        dump($dbUser->load('profile'));
+
+        if ($withProfile === true) {
+            $profile = new UserProfileDTO(
+                userId: $dbUser->id,
+                biography: $dbUser->profile->biography,
+                telegram_id: $dbUser->profile->telegram_id,
+            );
+        }
 
         return new UserDTO(
             userId: $dbUser->id,
             name: $dbUser->name,
             email: $dbUser->email,
+            profile: $profile ?? null
         );
     }
 
@@ -144,6 +155,7 @@ class UserRepository implements UserRepositoryInterface
             ],
             [
                 'biography' => $userProfile->biography,
+                'telegram_id' => $userProfile->telegram_id,
             ]
         );
 

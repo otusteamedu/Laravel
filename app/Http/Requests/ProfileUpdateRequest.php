@@ -35,6 +35,11 @@ class ProfileUpdateRequest extends FormRequest
                 'nullable',
                 'string'
             ],
+            'profile.telegram_id' => [
+                'nullable',
+                'integer',
+                'min:1'
+            ],
         ];
     }
 }

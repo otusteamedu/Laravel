@@ -39,6 +39,20 @@
                         <x-invalid-feedback :errors="$errors->get('email')"/>
                     </div>
                 </div>
+                <div class="col-md-6">
+                    <label class="form-label">Telegram ID</label>
+                    <div class="mb-3 input-group">
+                        <span class="input-group-text"><i class="fa-brands fa-telegram"></i></span>
+                        <input name="profile[telegram_id]" type="number"
+                            value="{{ old('profile[telegram_id]', $user->profile->telegram_id) }}"
+                            @class([
+                                'form-control',
+                                'is-invalid' => !empty($errors->get('profile.telegram_id'))
+                            ]) 
+                            placeholder="Telegram ID" autocomplete="off">
+                        <x-invalid-feedback :errors="$errors->get('profile.telegram_id')"/>
+                    </div>
+                </div>
                 <div class="col-12">
                     <label class="form-label">О себе</label>
                     <textarea name="profile[biography]"class="form-control" rows="4">{{ $user->profile->biography }}</textarea>

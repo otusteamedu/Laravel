@@ -19,9 +19,10 @@ interface UserRepositoryInterface
     /**
      * Получить пользователя по id
      * @param int $id
+     * @param bool|null $withProfile
      * @return UserDTO|null
      */
-    public function find(int $id): ?UserDTO;
+    public function find(int $id, bool $withProfile = false): ?UserDTO;
 
     /**
      * Добавить пользователя
