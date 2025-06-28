@@ -64,7 +64,6 @@ class UserRepository implements UserRepositoryInterface
         if ($dbUser === null) {
             return null;
         }
-        dump($dbUser->load('profile'));
 
         if ($withProfile === true) {
             $profile = new UserProfileDTO(
