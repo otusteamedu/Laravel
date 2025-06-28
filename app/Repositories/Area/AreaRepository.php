@@ -6,6 +6,9 @@ use App\Models\Area;
 
 class AreaRepository implements AreaRepositoryInterface
 {
+    /**
+     * @return array <int, AreaDTO>
+     */
     public function getAll(): array
     {
         $areas = Area::all()->sortBy('id');
@@ -30,9 +33,7 @@ class AreaRepository implements AreaRepositoryInterface
     public function update(AreaDTO $areaDTO): void
     {
         $area = Area::findOrFail($areaDTO->id);
-        $area->update([
-            'name_' . config('app.locale') => $areaDTO->name,
-        ]);
+        $area->update($areaDTO->toArray());
     }
 
     public function delete(int $id): void

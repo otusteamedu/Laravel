@@ -21,7 +21,7 @@ class AreaDTO
     {
         return [
             'id' => $this->id,
-            'name' => $this->name,
+            'name_' . config('app.locale') => $this->name,
             'created_at' => $this->created_at
         ];
     }
