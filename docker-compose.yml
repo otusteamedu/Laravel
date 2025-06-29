@@ -17,7 +17,7 @@ services:
     networks:
       - sail
 
-  app:
+  app: &app
     container_name: ${APP_NAME}-${APP_ENV}-app
     build:
       context: .docker
@@ -35,6 +35,12 @@ services:
       XDEBUG_MODE: debug
     networks:
       - sail
+  queue:
+    <<: *app
+    container_name: ${APP_NAME}-${APP_ENV}-queue
+    command: sudo -u www-data php /var/www/html/artisan queue:work -v --timeout=300 --memory=1024
+    restart: always
+
   db:
     image: mariadb:latest
     hostname: mariadb

@@ -3,6 +3,7 @@
 namespace App\Services\UseCases\Commands\Todo\UserRole;
 
 use App\Models\TodoRoleEnum;
+use App\Events\Todo\UserAssignTodoRoleEvent;
 use App\Services\Repositories\Todo\TodoRepositoryInterface;
 
 class Handler
@@ -38,6 +39,13 @@ class Handler
         }
 
         $result = $this->repository->saveUser($command->todoId, $command->userId, $command->role);
+
+        UserAssignTodoRoleEvent::dispatch(
+            $command->userId,
+            $command->projectId,
+            $command->todoId,
+            $command->role
+        );
 
         return $result;
     }
