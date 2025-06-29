@@ -8,12 +8,12 @@ use App\Services\Telegram\Common\ParseModeEnum;
 final readonly class Send
 {
     /**
-     * @param array $recipients
+     * @param int $recipient
      * @param string $message
      * @param ?ParseModeEnum $parseMode
      */
     public function __construct(
-        public array $recipients,
+        public int $recipient,
         public string $message,
         public ?ParseModeEnum $parseMode = ParseModeEnum::HTML
     ) {}

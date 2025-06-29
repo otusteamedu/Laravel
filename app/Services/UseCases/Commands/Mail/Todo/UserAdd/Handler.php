@@ -35,6 +35,8 @@ class Handler
         $project = $this->projectRepository->find($command->projectId);
         $todo = $this->todoRepository->find($command->todoId, $command->projectId);
 
+        return null;
+        /*
         return Mail::mailer('smtp')
             ->to($user->email)
             ->queue(new AssignToTodoMail(
@@ -43,5 +45,6 @@ class Handler
                 todo: $todo,
                 role: $command->role
             ));
+*/
     }
 }
