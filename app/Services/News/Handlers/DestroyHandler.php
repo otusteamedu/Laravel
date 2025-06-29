@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace App\Services\News\Handlers;
 
-use App\Services\News\Exceptions\NewsNotFoundException;
+use App\Services\News\Exceptions\UserNotFoundException;
 use App\Services\News\Repositories\NewsRepositoryInterface;
 use Illuminate\Support\Facades\Cache;
 
@@ -17,13 +17,13 @@ class DestroyHandler
      * @param int $newsId
      *
      * @return bool|null
-     * @throws NewsNotFoundException
+     * @throws UserNotFoundException
      */
     public function __invoke(int $newsId): ?bool {
         $news = $this->newsRepository->find($newsId);
 
         if (!$news) {
-            throw new NewsNotFoundException('News not found');
+            throw new UserNotFoundException('News not found');
         }
 
         $res = $this->newsRepository->delete($news);

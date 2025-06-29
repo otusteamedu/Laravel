@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Admin\News;
 
 use App\Http\Controllers\Controller;
-use App\Services\News\Exceptions\NewsNotFoundException;
+use App\Services\News\Exceptions\UserNotFoundException;
 use App\Services\News\Handlers\ShowHandler;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Illuminate\View\Factory as ViewFactory;
@@ -25,7 +25,7 @@ class ShowController extends Controller
     {
         try {
             $news = $showNewsUseCase((int)$newsId);
-        } catch (NewsNotFoundException) {
+        } catch (UserNotFoundException) {
             throw new NotFoundHttpException('News not found');
         }
 

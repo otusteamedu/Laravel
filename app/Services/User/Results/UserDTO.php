@@ -5,7 +5,7 @@ namespace App\Services\User\Results;
 
 use Carbon\Carbon;
 
-final readonly class User
+final readonly class UserDTO
 {
     public function __construct(
         public int $id,

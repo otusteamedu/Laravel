@@ -3,7 +3,7 @@
 namespace App\Listeners;
 
 use App\Events\NewsPublished;
-use App\Services\User\Handlers\GetSubscribedNewsHandler;
+use App\Services\User\Fetchers\GetSubscribedNewsHandler;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Support\Facades\Mail;
@@ -29,7 +29,7 @@ class SendEmailNotification implements ShouldQueue
         $subscribers = $this->getSubscribedNewsHandler->__invoke()->results;
 
         foreach ($subscribers as $user) {
-            Mail::to($user->email)->queue(new NewsPublishedMail($event->news));
+            Mail::to($user->email)->queue(new NewsPublishedMail($event->id, $event->title, $event->content));
         }
     }
 }

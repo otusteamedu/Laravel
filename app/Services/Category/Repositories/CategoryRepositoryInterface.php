@@ -59,14 +59,14 @@ interface CategoryRepositoryInterface
     /**
      * @param array $ids
      *
-     * @return array
+     * @return Category[]
      */
     public function findByIds(array $ids): array;
 
     /**
      * @param int $limit
      *
-     * @return array
+     * @return Category[]
      */
     public function getPopular(int $limit = 10): array;
 }

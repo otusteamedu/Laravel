@@ -8,7 +8,7 @@ use App\Services\Category\Repositories\CategoryRepositoryInterface;
 use App\Services\Category\Results\Fetcher as CategoryFetcher;
 use App\Services\User\Results\Fetcher as UserFetcher;
 use App\Services\News\Commands\CommandDTO;
-use App\Services\News\Exceptions\NewsNotFoundException;
+use App\Services\News\Exceptions\UserNotFoundException;
 use App\Services\News\Handlers\EditHandler;
 use App\Services\News\Handlers\UpdateHandler;
 use App\Services\News\Results\NewsDTO;
@@ -44,7 +44,7 @@ class UpdateController extends Controller
             $users = $isAdmin ? $this->userFetcher->fetch($this->userRepository->fetchAll())->results : [];
 
 
-        } catch (NewsNotFoundException) {
+        } catch (UserNotFoundException) {
             throw new NotFoundHttpException('News not found');
         }
 

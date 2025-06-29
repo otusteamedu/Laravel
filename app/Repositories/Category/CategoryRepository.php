@@ -11,7 +11,7 @@ use App\Services\Category\Repositories\CategoryRepositoryInterface;
 class CategoryRepository implements CategoryRepositoryInterface
 {
     /**
-     * @return array
+     * @return Category[]
      */
     public function fetchAll(): array {
         return Category::all()->all();
@@ -78,7 +78,7 @@ class CategoryRepository implements CategoryRepositoryInterface
     /**
      * @param array $ids
      *
-     * @return array
+     * @return Category[]
      */
     public function findByIds(array $ids): array
     {
@@ -91,7 +91,7 @@ class CategoryRepository implements CategoryRepositoryInterface
      *
      * @param int $limit
      *
-     * @return array
+     * @return Category[]
      */
     public function getPopular(int $limit = 10): array {
         return Category::query()

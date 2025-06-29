@@ -51,12 +51,12 @@ interface UserRepositoryInterface
     /**
      * @param array $ids
      *
-     * @return array
+     * @return User[]
      */
     public function findByIds(array $ids): array;
 
     /**
-     * @return array
+     * @return User[]
      */
     public function findSubscribedNews(): array;
 }

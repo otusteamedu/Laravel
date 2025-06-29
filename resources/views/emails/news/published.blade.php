@@ -1,9 +1,9 @@
 @component('mail::message')
-    # Новая новость: {{ $news->title }}
+    # Новая новость: {{ $title }}
 
-    {{ $news->content }}
+    {{ $content }}
 
-    @component('mail::button', ['url' => url("/news/{$news->id}")])
+    @component('mail::button', ['url' => url("/news/{$id}")])
         Читать новость
     @endcomponent
 

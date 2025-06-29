@@ -25,13 +25,13 @@ class SendTelegramNotification implements ShouldQueue
      */
     public function handle(NewsPublished $event): void
     {
-        $message = "Новая новость опубликована: " . $event->news->title;
+        $message = "Новая новость опубликована: " . $event->title;
 
         $sent = $this->telegramService->sendMessage($message);
 
         if (!$sent) {
             // Логируем ошибку или предпринимаем повторную попытку
-            Log::error("Не удалось отправить Telegram сообщение для новости ID {$event->news->id}");
+            Log::error("Не удалось отправить Telegram сообщение для новости ID {$event->id}");
         }
     }
 }

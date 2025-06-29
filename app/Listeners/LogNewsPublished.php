@@ -24,6 +24,6 @@ class LogNewsPublished implements ShouldQueue
      */
     public function handle(NewsPublished $event)
     {
-        Log::info("Новость опубликована: ID {$event->news->id}, Заголовок: {$event->news->title}");
+        Log::info("Новость опубликована: ID {$event->id}, Заголовок: {$event->title}");
     }
 }

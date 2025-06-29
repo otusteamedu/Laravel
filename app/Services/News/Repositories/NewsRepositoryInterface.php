@@ -51,7 +51,7 @@ interface NewsRepositoryInterface
     /**
      * @param int $limit
      *
-     * @return array
+     * @return News[]
      */
     public function getLatest(int $limit = 10): array;
 }

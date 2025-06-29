@@ -11,7 +11,7 @@ use Illuminate\Pagination\LengthAwarePaginator;
 class UserRepository implements UserRepositoryInterface
 {
     /**
-     * @return array
+     * @return User[]
      */
     public function fetchAll(): array {
         return User::all()->all();
@@ -66,7 +66,7 @@ class UserRepository implements UserRepositoryInterface
     /**
      * @param array $ids
      *
-     * @return array
+     * @return User[]
      */
     public function findByIds(array $ids): array
     {
@@ -74,7 +74,7 @@ class UserRepository implements UserRepositoryInterface
     }
 
     /**
-     * @return array
+     * @return User[]
      */
     public function findSubscribedNews(): array
     {

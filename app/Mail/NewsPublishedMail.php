@@ -17,7 +17,7 @@ class NewsPublishedMail extends Mailable
     /**
      * Create a new message instance.
      */
-    public function __construct(private NewsDTO $news)
+    public function __construct(private int $id, private string $title, private string $content)
     {
     }
 
@@ -38,7 +38,11 @@ class NewsPublishedMail extends Mailable
     {
         return new Content(
             markdown: 'emails.news.published',
-            with: ['news' => $this->news], // передача данных в шаблон
+            with: [
+                'id' => $this->id,
+                'title' => $this->title,
+                'content' => $this->content,
+            ], // передача данных в шаблон
         );
     }
 

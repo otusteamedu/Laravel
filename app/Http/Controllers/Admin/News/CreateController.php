@@ -6,8 +6,9 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\CreateNewsRequest;
 use App\Services\Category\Repositories\CategoryRepositoryInterface;
 use App\Services\Category\Results\Fetcher as CategoryFetcher;
-use App\Services\News\Exceptions\NewsNotFoundException;
+use App\Services\News\Exceptions\UserNotFoundException;
 use App\Services\News\Handlers\ShowHandler;
+use App\Services\News\Results\NewsDTO;
 use App\Services\User\Results\Fetcher as UserFetcher;
 use App\Services\News\Handlers\CreateHandler;
 use App\Services\News\Commands\CommandDTO;
@@ -51,16 +52,30 @@ class CreateController extends Controller
         $userId = $request->get('user_id', $user->id);
 
         try {
-            $newsId = $createNewsUseCase(new CommandDTO($request->get('title'), $request->get('content'), $userId, $request->get('category_id'), $request->get('published_at'), $request->get('is_draft', false)), $isAdmin);
+            $newsId = $createNewsUseCase(
+                new CommandDTO(
+                    $request->get('title'),
+                    $request->get('content'),
+                    $userId,
+                    $request->get('category_id'),
+                    $request->get('published_at'),
+                    $request->get('is_draft',
+                                  false
+                    )
+                ),
+                $isAdmin
+            );
 
             if ($newsId) {
+
+                /** @var NewsDTO $newsDto */
                 $newsDto = $showNewsUseCase($newsId);
 
                 if (!$newsDto->isDraft) {
-                    NewsPublished::dispatch($newsDto);
+                    NewsPublished::dispatch($newsDto->id, $newsDto->title, $newsDto->content);
                 }
             }
-        } catch (NewsNotFoundException) {
+        } catch (UserNotFoundException) {
             throw new NotFoundHttpException('News not found');
         }
 

@@ -11,7 +11,7 @@ use App\Services\News\Repositories\NewsRepositoryInterface;
 class NewsRepository implements NewsRepositoryInterface
 {
     /**
-     * @return array
+     * @return News[]
      */
     public function fetchAll(): array {
         return News::all()->all();
@@ -65,7 +65,7 @@ class NewsRepository implements NewsRepositoryInterface
     /**
      * @param int $limit
      *
-     * @return array
+     * @return News[]
      */
     public function getLatest(int $limit = 10): array {
         return News::query()->where('is_draft', false)

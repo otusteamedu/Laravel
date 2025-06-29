@@ -2,7 +2,6 @@
 
 namespace App\Events;
 
-use App\Services\News\Results\NewsDTO;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PresenceChannel;
@@ -15,14 +14,11 @@ class NewsPublished
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public NewsDTO $news;
-
     /**
      * Create a new event instance.
      */
-    public function __construct(NewsDTO $news)
+    public function __construct(public int $id, public string $title, public string $content)
     {
-        $this->news = $news;
     }
 
     /**

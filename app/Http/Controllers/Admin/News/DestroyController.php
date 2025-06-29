@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Admin\News;
 
 use App\Http\Controllers\Controller;
 use App\Services\News\Handlers\DestroyHandler;
-use App\Services\News\Exceptions\NewsNotFoundException;
+use App\Services\News\Exceptions\UserNotFoundException;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Gate;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -20,7 +20,7 @@ class DestroyController extends Controller
 
         try {
             $destroyNewsUseCase((int)$newsId);
-        } catch (NewsNotFoundException) {
+        } catch (UserNotFoundException) {
             throw new NotFoundHttpException('News not found');
         }
 
