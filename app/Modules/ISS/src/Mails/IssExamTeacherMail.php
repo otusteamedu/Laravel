@@ -8,6 +8,7 @@ use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Mail\Mailables\Address;
+use App\Modules\ISS\src\Services\EducationExam\fillExamBlank\QuestionWithAnswersWithTextDTO;
 
 /**
  * @var string $signedUrl ссылка для преподавателя, по которой надо перейти чтобы отправить результат проверки

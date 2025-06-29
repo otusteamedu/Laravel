@@ -69,6 +69,52 @@ services:
             - '${FORWARD_REDIS_PORT:-11211}:11211'
         networks:
             - sail
+    #laravel queue worker1, add for main queue starting
+    jobs_consumer:
+#        profiles:
+#            - queues
+        build:
+            context: ./vendor/laravel/sail/runtimes/8.4
+            dockerfile: Dockerfile
+            args:
+                WWWGROUP: '${WWWGROUP}'
+        image: sail-8.4/app
+        restart: unless-stopped
+        command: ['php', '/var/www/html/artisan', 'queue:listen', 'database', '--queue=default']
+        environment:
+            WWWUSER: '${WWWUSER}'
+            LARAVEL_SAIL: 1
+        volumes:
+            - '.:/var/www/html'
+        networks:
+            - sail
+        depends_on:
+            - mysql
+            - redis
+            - laravel.test
+    #laravel queue worker2, add for ISS nodule queue starting
+    jobs_consumer_iss:
+        #        profiles:
+        #            - queues
+        build:
+            context: ./vendor/laravel/sail/runtimes/8.4
+            dockerfile: Dockerfile
+            args:
+                WWWGROUP: '${WWWGROUP}'
+        image: sail-8.4/app
+        restart: unless-stopped
+        command: [ 'php', '/var/www/html/artisan', 'queue:listen', 'database', '--queue=iss' ]
+        environment:
+            WWWUSER: '${WWWUSER}'
+            LARAVEL_SAIL: 1
+        volumes:
+            - '.:/var/www/html'
+        networks:
+            - sail
+        depends_on:
+            - mysql
+            - redis
+            - laravel.test
 networks:
     sail:
         driver: bridge
