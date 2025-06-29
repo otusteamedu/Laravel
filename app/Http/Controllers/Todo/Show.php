@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers\Todo;
 
-use App\Http\Controllers\Controller;
 use Illuminate\Contracts\View\View;
+use App\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
-use App\Services\UseCases\Queries\Todo\Fetch\Query;
-use App\Services\UseCases\Queries\Todo\Fetch\Fetcher;
+use App\Services\UseCases\Commands\Todo\Show\Command;
+use App\Services\UseCases\Commands\Todo\Show\Handler;
 use App\Services\Repositories\Exceptions\ModelNotFoundException;
 
 class Show extends Controller
@@ -14,11 +14,19 @@ class Show extends Controller
     /**
      * View todo
      */
-    public function __invoke(int $projectId, int $todoId, Fetcher $fetcher): View|RedirectResponse
+    public function __invoke(int $projectId, int $todoId, Handler $handler): View|RedirectResponse
     {
         try {
-            $result = $fetcher->fetch(new Query($projectId, $todoId));
-            return view('todos.show', ['project' => $result->projectDTO, 'todo' => $result->todoDTO]);
+            $result = $handler->handle(new Command($projectId, $todoId));
+            debugbar()->info($result);
+            return view('todos.show', [
+                'project' => $result->projectDTO,
+                'todo' => $result->todoDTO,
+                'projectUsers' => $result->projectUsers,
+                'responsibles' => $result->responsibles,
+                'performers' => $result->performers,
+                'watchers' => $result->watchers
+            ]);
         } catch (ModelNotFoundException $exception) {
             return redirect()->back()->with('error', $exception->getMessage());
         }

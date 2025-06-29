@@ -96,6 +96,8 @@ Route::middleware('auth')
             ->name('update');
         Route::delete('/{todoId}', Todo\Delete::class)
             ->name('destroy');
+        Route::post('/{todoId}/user-role', Todo\UserRole::class)
+            ->name('user-role');
     });
 
 require __DIR__ . '/auth.php';

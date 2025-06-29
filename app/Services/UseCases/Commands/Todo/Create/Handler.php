@@ -2,6 +2,7 @@
 
 namespace App\Services\UseCases\Commands\Todo\Create;
 
+use App\Models\TodoRoleEnum;
 use Exception;
 use App\Services\Repositories\Todo\TodoDTO;
 use App\Services\Repositories\Todo\TodoRepositoryInterface;
@@ -36,9 +37,11 @@ class Handler
 
             $id = $this->repository->add($modelDTO);
 
+            $this->repository->saveUser($id, $command->authorId, TodoRoleEnum::PERFORMER);
+
             return new Result($id);
         } catch (Exception) {
-            throw new CreateModelFailedException('Не удалось добавить новый статус');
+            throw new CreateModelFailedException('Не удалось добавить новую задачу');
         }
     }
 }

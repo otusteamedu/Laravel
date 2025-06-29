@@ -24,7 +24,7 @@ class Handler
         $modelDTO = $this->repository->find($command->todoId, $command->projectId);
 
         if ($modelDTO) {
-            $result = $this->repository->destroy($modelDTO->todoId, $modelDTO->projectId);
+            $result = $this->repository->destroy($modelDTO->todoId, $command->projectId);
         }
 
         return $result;

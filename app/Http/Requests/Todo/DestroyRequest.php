@@ -28,7 +28,7 @@ class DestroyRequest extends FormRequest
     {
         return [
             'project_id' => ['required', 'exists:projects,id'],
-            'todo_id'  => ['required', 'exists:todo,id,project_id,' . $this->projectId],
+            'todo_id'  => ['required', 'exists:todos,id,project_id,' . $this->projectId],
         ];
     }
 

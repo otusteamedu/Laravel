@@ -82,6 +82,14 @@ interface TodoRepositoryInterface
     public function fetchUsers(int $todoId): array;
 
     /**
+     * Получить список участников задачи с определенной ролью
+     * @param int $todoId
+     * @param TodoRoleEnum $role
+     * @return TodoUserDTO[]
+     */
+    public function fetchUsersByRole(int $todoId, TodoRoleEnum $role): array;
+
+    /**
      * Проверить наличие роли у уастника
      * @param int $todoId
      * @param int $userId

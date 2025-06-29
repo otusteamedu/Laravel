@@ -1,44 +1,72 @@
 <?php
 
-namespace App\Services\UseCases\Commands\Todo\Update;
+namespace App\Services\UseCases\Commands\Todo\Show;
 
-use App\Services\Repositories\Todo\TodoDTO;
+use App\Models\TodoRoleEnum;
+use Vhar\EmbedVideo\Facades\EmbedVideo;
+use App\Services\Repositories\Todo\TodoFetchDTO;
+use App\Services\Repositories\ProjectRepositoryInterface;
 use App\Services\Repositories\Todo\TodoRepositoryInterface;
+use App\Services\Repositories\Exceptions\ModelNotFoundException;
 
 class Handler
 {
     public function __construct(
-        private TodoRepositoryInterface $repository,
-    ) {
-        //
-    }
+        private ProjectRepositoryInterface $projectRepository,
+        private TodoRepositoryInterface $todoRepository,
+    ) {}
 
     /**
-     * Обновляем данные статуса задач для проекта
+     * Возвращает данные для страницы проекта
      * @param Command $command
-     * @return bool
+     * @return Result
      */
-    public function handle(Command $command): bool
+    public function handle(Command $command): Result
     {
-        $result = false;
+        $projectDTO = $this->projectRepository->find($command->projectId);
 
-        $modelDTO = $this->repository->find($command->todoId, $command->projectId);
-        dd($command);
-        if ($modelDTO) {
-            $updatedDTO = new TodoDTO(
-                todoId: $command->todoId,
-                title: $command->title,
-                authorId: $command->authorId,
-                projectId: $command->projectId,
-                statusId: $command->statusId,
-                description: $command->description,
-                deadline: $command->deadline,
-                options: $command->options,
-            );
-
-            $result = $this->repository->save($updatedDTO);
+        if ($projectDTO === null) {
+            throw new ModelNotFoundException('Проект не найден');
         }
 
-        return $result;
+        $todoDTO = $this->todoRepository->find($command->todoId, $command->projectId);
+
+        if ($todoDTO === null) {
+            throw new ModelNotFoundException('Задача не найдена');
+        }
+
+        $todo = $todoDTO;
+
+        if (!empty($todo->options['video'])) {
+            $options = $todo->options;
+
+            $options['embed'] = EmbedVideo::handle($options['video']);
+
+            $todo = new TodoFetchDTO(
+                todoId: $todo->todoId,
+                title: $todo->title,
+                author: $todo->author,
+                status: $todo->status,
+                description: $todo->description,
+                deadline: $todo->deadline,
+                created: $todo->created,
+                updated: $todo->updated,
+                options: $options,
+            );
+        }
+
+        $projectUsers = $this->projectRepository->fetchUsers($command->projectId);
+        $responsibles = $this->todoRepository->fetchUsersByRole($command->todoId, TodoRoleEnum::RESPONSIBLE);
+        $performers = $this->todoRepository->fetchUsersByRole($command->todoId, TodoRoleEnum::PERFORMER);
+        $watchers = $this->todoRepository->fetchUsersByRole($command->todoId, TodoRoleEnum::WATCHER);
+
+        return new Result(
+            projectDTO: $projectDTO,
+            todoDTO: $todo,
+            responsibles: $responsibles,
+            performers: $performers,
+            watchers: $watchers,
+            projectUsers: $projectUsers,
+        );
     }
 }

@@ -262,6 +262,38 @@ class TodoRepository implements TodoRepositoryInterface
     }
 
     /**
+     * Получить список участников задачи с определенной ролью
+     * @param int $todoId
+     * @param TodoRoleEnum $role
+     * @return TodoUserDTO[]
+     */
+    public function fetchUsersByRole(int $todoId, TodoRoleEnum $role): array
+    {
+        $dbData = TodoUser::query()
+            ->where('todo_id', $todoId)
+            ->where('role',  $role)
+            ->join('users', 'users.id', 'todo_user.user_id')
+            ->select(
+                'users.id as user_id',
+                'users.name',
+                'users.email',
+                'todo_user.id',
+                'todo_user.role',
+            )
+            ->orderBy('users.name')
+            ->get();
+
+        return array_map(fn($user) => new TodoUserDTO(
+            id: $user['id'],
+            userId: $user['user_id'],
+            name: $user['name'],
+            email: $user['email'],
+            role: TodoRoleEnum::from($user['role'])
+        ), $dbData->toArray());
+    }
+
+
+    /**
      * Проверить наличие роли у уастника
      * @param int $todoId
      * @param int $userId

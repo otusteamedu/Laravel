@@ -12,6 +12,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('title', 'ToDo: список дел для организации работы и жизни')</title>
     <meta name="description" content="@yield('description', 'Таск-менеджер и приложение для ведения списка дел. Обретите сосредоточенность, организованность и спокойствие.')">
+    <meta name="csrf-token" content="{{ csrf_token() }}" />
 
     @yield('head')
     @yield('head-bottom')
