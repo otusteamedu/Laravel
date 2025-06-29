@@ -1,11 +1,9 @@
-<!-- resources/views/components/header.blade.php -->
-
 <header class="bg-gray-800 text-white shadow">
     <div class="max-w-7xl mx-auto px-4 flex items-center justify-between h-16">
         <!-- Левая часть: меню -->
         <nav class="flex space-x-4">
             <a href="{{ route('dashboard') }}" class="hover:bg-gray-700 px-3 py-2 rounded">{{ __('account.dashboard') }}</a>
-            <a href="{{ route('fibonachi') }}" class="hover:bg-gray-700 px-3 py-2 rounded">{{ __('account.fibonachi') }}</a>
+            <a href="{{ route('fibonachi.index') }}" class="hover:bg-gray-700 px-3 py-2 rounded">{{ __('account.fibonachi') }}</a>
             <a href="{{ route('area.index') }}" class="hover:bg-gray-700 px-3 py-2 rounded">{{ __('account.area') }}</a>
             <!-- добавьте свои разделы -->
         </nav>

@@ -8,6 +8,7 @@ export default defineConfig({
                 'resources/css/app.css',
                 'resources/js/app.js',
                 'resources/views/area/index/js/index.js',
+                'resources/js/fibonachi/index.js'
             ],
             refresh: true,
         }),

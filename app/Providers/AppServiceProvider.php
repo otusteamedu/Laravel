@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Models\User;
+use App\Policies\Fibonachi\FibonachiPolicy;
 use App\Repositories\Area\AreaRepository;
 use App\Repositories\Area\AreaRepositoryInterface;
 use App\Repositories\Measure\MeasureRepository;
@@ -11,6 +13,7 @@ use App\Services\Area\AreaServiceInterface;
 use App\Services\Measure\MeasureService;
 use App\Services\Measure\MeasureServiceInterface;
 use Illuminate\Database\Eloquent\Relations\Relation;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -48,5 +51,7 @@ class AppServiceProvider extends ServiceProvider
             'recipe' => \App\Models\Recipe::class,
             'product' => \App\Models\Product::class,
         ]);
+
+        Gate::policy(User::class, FibonachiPolicy::class);
     }
 }

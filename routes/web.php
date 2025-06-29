@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AreaController;
+use App\Http\Controllers\FibonachiController;
 use App\Http\Controllers\MeasureController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
@@ -26,6 +27,10 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::get('/fibonachi', function () {
-        return view('fibonachi');
-    })->name('fibonachi');
+Route::prefix('fibonachi')
+    ->middleware(['auth'])
+    ->group(function () {
+        Route::get('/',  [FibonachiController::class, 'index'])->name('fibonachi.index');
+        Route::get('/calculate/{number}',  [FibonachiController::class, 'calculate'])
+            ->name('fibonachi.calculate');
+    });
