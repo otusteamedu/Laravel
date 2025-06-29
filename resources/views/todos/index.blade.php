@@ -41,11 +41,6 @@
                                 @endforeach                        
                             </div>
                         </div>
-                        <div class="mb-4">
-                            @include('todos.statuses.form', [
-                                'projectId' => $project->projectId,
-                            ])
-                        </div>
                     </div>
                 </div>
             </div>
