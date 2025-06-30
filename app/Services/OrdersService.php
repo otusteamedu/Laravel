@@ -56,7 +56,7 @@ class OrdersService
         return $this->repository->count();
     }
     
-    public function add(StoreDto $storeDto, array $product_ids, array $counts): void
+    public function add(StoreDto $storeDto, array $product_ids, array $counts): Order
     {
         $order = $this->repository->add($storeDto);
         $products = $this->productsRepository->findByIds($product_ids);
@@ -65,10 +65,17 @@ class OrdersService
         $items = [];
         foreach ($products as $product) {
             $id = $product->getId();
-            $items[$id] = ['count' => $countsByProductId[$id], 'paid_price' => $product->getPrice()];
+            $items[$id] = [
+                'count' => $countsByProductId[$id], 
+                'paid_price' => $product->getPrice(),
+                'created_at' => now(),
+                'updated_at' => now(),
+            ];
         }
 
         $order->products()->sync($items);
+
+        return $order;
     }
 
     public function update(UpdateDto $updateDto, array $product_ids, array $counts): void

@@ -9,4 +9,5 @@ return [
     'productsDirections' => ['asc', 'desc'], 
     'usersSorts' => ['id', 'name', 'email', 'created_at'],
     'usersDirections' => ['asc', 'desc'], 
+    'adminEmail' => 'elisad5791@yandex.ru',
 ];

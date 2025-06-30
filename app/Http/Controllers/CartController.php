@@ -2,18 +2,22 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\OrderConfirmed;
 use App\Exceptions\StockIsEmptyException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Cart\DeliveryRequest;
 use App\Services\CartService;
+use App\Services\OrdersService;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
+use App\Dto\Admin\Order\StoreDto;
 
 class CartController extends Controller
 {
     public function __construct(
-        private CartService $service
+        private CartService $service,
+        private OrdersService $ordersService
     ) {}
 
     public function index(): View
@@ -86,5 +90,28 @@ class CartController extends Controller
         $totalPrice = $total + $deliveryPrice;
         
         return view('cabinet.order', compact('cart', 'total', 'address', 'deliveryPrice', 'totalPrice'));
+    }
+
+    public function confirm(): RedirectResponse
+    {
+        if (!auth()->check()) {
+            return redirect()->route('login');
+        }
+
+        $userId = auth()->id();
+        $dto = new StoreDto($userId);
+        $cart = $this->service->getCart();
+        $productIds = [];
+        $counts = [];
+        foreach ($cart as $productId => $item) {
+            $productIds[] = $productId;
+            $counts[] = $item['quantity'];
+        }
+
+        $order = $this->ordersService->add($dto, $productIds, $counts);
+        OrderConfirmed::dispatch($order);
+        $this->service->clearCart();
+
+        return redirect()->route('profile.history', $userId);
     }
 }
