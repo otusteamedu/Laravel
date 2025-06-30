@@ -1,70 +1,126 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
+use App\Models\Comment;
 use App\Models\Todolist;
 use App\Models\User;
-use App\Queries\UserQueries;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-
+use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
 });
 
-
 Route::group(['prefix' => '/e'], function () {
 
+    // Работа с задачами Todolist
+
+    // Выведем конкретную таску с комментариями к ней
+    Route::get('/todolist/{id}', function ($id) {
+        $todolist = Todolist::find($id);
+
+        if (is_null($todolist)) {
+            echo 'There-s no such task. May be it has been deleted or not created ';
+        } else {
+            echo 'Title: '.$todolist->title.'<br>';
+            echo 'Text: '.$todolist->text.'<br>';
+            echo 'Deadline: '.$todolist->dedline.'<br>';
+            echo 'Author: '.User::find($todolist->author_id)->name.'<br>';
+            echo '<br><br><br>';
+            $comments = Comment::where('todolist_id', $id)->get();
+            if (! is_null($comments)) {
+                foreach ($comments as $comment) {
+                    echo $comment->text;
+                    echo '<br>';
+                    echo User::find($comment->author_id)->name.', '.$comment->created_at->format('d-m-Y');
+                    echo '<br><br>';
+
+                }
+            }
+        }
+
+        return '';
+    });
+
+    // Сгенерируем группу задач
+    Route::get('/create-group10', function () {
+        for ($i = 0; $i < 10; $i++) {
+            dump(Todolist::create([
+                'title' => fake()->text(10),
+                'text' => fake()->sentence(50),
+                'dedline' => fake()->dateTimeBetween('0 days', '+12 months')->format('d-m-Y'),
+                'author_id' => random_int(1, 5),
+            ]));
+        }
+
+        return '';
+    });
+
+    // Создание задачи
     Route::get('/create', function () {
-        $todolist = new Todolist();
-
-        $todolist->title = "123";
-        $todolist->text = "456";
-        $todolist->dedline = "02.06.2025";
-        $todolist->author_id = 2;
-
-        $todolist->save();
-
-        dump($todolist->save());
-        dump($todolist);
-
-        echo PHP_EOL . " ===================================  " . PHP_EOL;
-
         dump(Todolist::create([
-            "title" => fake()->name,
-            "text" => fake()->sentence,
-            "dedline" => fake()->date(),
-            "author_id" => random_int(1,10),
+            'title' => fake()->text(10),
+            'text' => fake()->sentence(50),
+            'dedline' => fake()->dateTimeBetween('0 days', '+12 months')->format('d-m-Y'),
+            'author_id' => random_int(1, 5),
         ]));
 
-        return "";
+        return '';
     });
 
-    Route::get("/update", function () {
-        $todolist = Todolist::find(1);
-        $todolist->title = "123updated title";
+    // Редактирование задачи
+    Route::get('/update/{id}', function ($id) {
+        $todolist = Todolist::find($id);
+        if (is_null($todolist)) {
+            echo 'There-s no such task. May be it has been deleted or not created ';
+        } else {
+            $todolist->title = 'Title updated at '.date('d-m-Y');
+            $todolist->save();
+            dump($todolist);
+        }
 
-        dump($todolist->save());
-
-        return "";
+        return '';
     });
 
-    Route::get("/delete", function () {
-        $todolist = Todolist::find(2);
-        //dump($todolist->trashed());
-        dump($todolist->delete());
+    Route::get('/delete/{id}', function ($id) {
+        $todolist = Todolist::find($id);
+        if (is_null($todolist)) {
+            echo 'There-s no such task. May be it has been deleted or not created ';
+        } else {
+            dump($todolist->delete());
 
-        return "";
+        }
+
+        return '';
     });
 
+    // Сгенерируем тестовые данные пользователей
+    Route::get('/users', function () {
 
-    Route::get("/users", function () {
-        $user = User::find(1);
-        //dump($todolist->trashed());
-        dump($user);
+        for ($i = 0; $i < 5; $i++) {
+            dump(User::create([
+                'name' => fake()->name(10),
+                'email' => fake()->text(10).'@mail.ru',
+                'password' => Str::random(10),
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]));
+        }
 
-        return "";
+        return '';
+    });
+
+    // Сгенерируем комментарии к разным таскам
+    Route::get('/comments', function () {
+        for ($i = 0; $i < 10; $i++) {
+            dump(Comment::create([
+                'todolist_id' => mt_rand(1, 5),
+                'author_id' => mt_rand(1, 5),
+                'text' => fake()->sentence(30),
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]));
+        }
+
+        return '';
     });
 
 });
-

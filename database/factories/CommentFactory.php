@@ -2,13 +2,14 @@
 
 namespace Database\Factories;
 
+use App\Models\Todolist;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Todolist>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Comment>
  */
-class TodolistFactory extends Factory
+class CommentFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -18,10 +19,10 @@ class TodolistFactory extends Factory
     public function definition(): array
     {
         return [
-            'title' => fake()->sentence,
-            'text' => fake()->paragraph,
-            'dedline' => fake()->date(),
+            'todolist_id' => Todolist::factory(),
             'author_id' => User::factory(),
+            'text' => fake()->sentence,
+
         ];
     }
 }

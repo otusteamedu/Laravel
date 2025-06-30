@@ -6,20 +6,17 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * @property string $title
- * @property string $text
- * @property string $dedline
+ * @property int $todolist_id
  * @property int $author_id
+ * @property string $text
  */
-class Todolist extends Model
+class Comment extends Model
 {
-    /** @use HasFactory<\Database\Factories\TodolistFactory> */
     use HasFactory;
 
     protected $fillable = [
-        'title',
-        'text',
-        'dedline',
+        'todolist_id',
         'author_id',
+        'text',
     ];
 }
