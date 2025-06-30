@@ -1,0 +1,1 @@
+<span class="text-primary me-4">({{  Elisad5791\Cartcount\Facades\CartCount::getCount() }})</span>

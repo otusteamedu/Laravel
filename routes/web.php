@@ -23,6 +23,7 @@ Route::post('/cart/clear', [CartController::class, 'clear'])->name('cart.clear')
 Route::post('/cart/delivery', [CartController::class, 'delivery'])->name('cart.delivery');
 Route::post('/cart/pickup', [CartController::class, 'pickup'])->name('cart.pickup');
 Route::get('/cart/order', [CartController::class, 'order'])->name('cart.order')->middleware('cart.check');
+Route::get('/cart/confirm', [CartController::class, 'confirm'])->name('cart.confirm')->middleware('cart.check');
 
 Route::view('/admin', 'admin.index')->name('admin.index')->middleware('can:employee-access');
 

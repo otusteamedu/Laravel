@@ -49,7 +49,7 @@
             <p class="fw-bold fs-5">Полная стоимость заказа: {{ Illuminate\Support\Number::format($totalPrice, locale: 'ru') }} руб.</p>
 
             <div class="d-flex align-items-start">
-                <a href="#" class="btn btn-success">Оплатить</a>
+                <a href="{{ route('cart.confirm') }}" class="btn btn-success">Подтвердить заказ</a>
                 <a href="{{ route('cart.index') }}" class="btn btn-secondary ms-1">Вернуться в корзину</a>
             </div>
         </div>
