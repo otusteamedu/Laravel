@@ -118,6 +118,7 @@ class OrdersRepository
     {
         $order = new Order();
         $order->user_id = $storeDto->user_id;
+        $order->status = 1;
         $order->save();
 
         Cache::tags('order-list')->flush();

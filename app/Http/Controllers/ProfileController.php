@@ -79,11 +79,8 @@ class ProfileController extends Controller
         } catch (UserNotFoundException $e) {
             throw new NotFoundHttpException($e->getMessage());
         }
-
-        $data = [
-            'orders' => $user->orders,
-        ];
-
-        return view('cabinet.history', $data);
+        
+        $orders = $user->orders;
+        return view('cabinet.history', compact('orders'));
     }
 }

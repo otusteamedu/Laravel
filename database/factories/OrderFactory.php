@@ -18,6 +18,7 @@ class OrderFactory extends Factory
     {
         return [
             'user_id' => 1,
+            'status' => 5,
             'created_at' => $this->faker->dateTimeBetween('-1 year', 'now'),
         ];
     }

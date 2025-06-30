@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  *
  * @property int $id Order ID
  * @property int $user_id ID of the user who placed the order
+ * @property int $status status of order
  * @property \Illuminate\Support\Carbon $created_at Creation date
  * @property \Illuminate\Support\Carbon $updated_at Last update date
  *
@@ -22,6 +23,14 @@ class Order extends Model
 {
     /** @use HasFactory<\Database\Factories\OrderFactory> */
     use HasFactory;
+
+    const ORDER_STATUS_NAMES = [
+        1 => 'Новый',
+        2 => 'Ожидается подтверждение оплаты',
+        3 => 'Оплачен',
+        4 => 'Неудачная оплата',
+        5 => 'Выдан',
+    ];
 
     protected $guarded = [];
     protected $table = 'orders';
@@ -34,6 +43,11 @@ class Order extends Model
     public function getUserId(): int
     {
         return $this->user_id;
+    }
+
+    public function getStatus(): int
+    {
+        return $this->status;
     }
 
     public function getCreatedAt(): \Illuminate\Support\Carbon
@@ -64,6 +78,10 @@ class Order extends Model
             $total += $product->pivot->paid_price * $product->pivot->count;
         }
         return $total;
+    }
+
+    public function getStatusName(): string{
+        return self::ORDER_STATUS_NAMES[$this->status];
     }
 
     public function products(): BelongsToMany
