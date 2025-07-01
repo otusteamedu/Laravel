@@ -67,14 +67,26 @@ Route::prefix('admin')
     });
 });
 
+// Локализованные роуты для dashboard
+Route::prefix('{locale}')
+    ->where(['locale' => 'ru|en'])
+    ->middleware(['auth', 'locale'])
+    ->group(function () {
+        Route::get('/dashboard', function () {
+            // Получаем статистику задач пользователя
+            $user = auth()->user();
+            $tasksTotal = $user->tasks()->count();
+            $tasksNew = $user->tasks()->where('status', 'new')->count();
+            $tasksInProgress = $user->tasks()->where('status', 'in_progress')->count();
+            $tasksDone = $user->tasks()->where('status', 'done')->count();
+            return view('dashboard', compact('tasksTotal', 'tasksNew', 'tasksInProgress', 'tasksDone'));
+        })->name('localized.dashboard');
+    });
+
+// Обычный роут для dashboard (редирект на локализованную версию)
 Route::middleware(['auth'])->get('/dashboard', function () {
-    // Здесь можно получить статистику задач пользователя
-    $user = auth()->user();
-    $tasksTotal = $user->tasks()->count();
-    $tasksNew = $user->tasks()->where('status', 'new')->count();
-    $tasksInProgress = $user->tasks()->where('status', 'in_progress')->count();
-    $tasksDone = $user->tasks()->where('status', 'done')->count();
-    return view('dashboard', compact('tasksTotal', 'tasksNew', 'tasksInProgress', 'tasksDone'));
+    $defaultLocale = config('localization.default', 'en');
+    return redirect()->route('localized.dashboard', ['locale' => $defaultLocale]);
 })->name('dashboard');
 
 // Тестовые маршруты для Telegram логирования
