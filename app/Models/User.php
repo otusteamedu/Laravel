@@ -45,4 +45,20 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    /**
+     * Пользователь может иметь много ролей.
+     */
+    public function roles()
+    {
+        return $this->belongsToMany(Role::class);
+    }
+
+    /**
+     * Пользователь может иметь много задач.
+     */
+    public function tasks()
+    {
+        return $this->hasMany(Task::class);
+    }
 }
