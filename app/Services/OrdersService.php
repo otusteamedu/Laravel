@@ -8,6 +8,7 @@ use App\Repositories\OrdersRepository;
 use App\Repositories\ProductsRepository;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
+use App\Events\OrderConfirmed;
 
 class OrdersService
 {
@@ -74,6 +75,8 @@ class OrdersService
         }
 
         $order->products()->sync($items);
+        
+        OrderConfirmed::dispatch($order->getId());
 
         return $order;
     }
