@@ -1,12 +1,11 @@
 <?php
-
 declare(strict_types=1);
 
 namespace App\Services\Telegram;
 
 use Illuminate\Support\Facades\Http;
 
-class TelegramService
+class TelegramService implements TelegramServiceInterface
 {
     protected string $botToken;
     protected string $chatId;

@@ -2,10 +2,12 @@
 
 namespace App\Console\Commands;
 
-use App\Services\News\Handlers\GetLatestHandler as GetLatestNewsHandler;
-use App\Services\Category\Handlers\GetPopularHandler as GetPopularCategoryHandler;
+use App\Infrastructure\Cache\CacheInterface;
+use App\Services\Queries\FetchLatestNews\Fetcher as LatestNewsFetcher;
+use App\Services\Queries\FetchLatestNews\Query as LatestNewsFetcherQuery;
+use App\Services\Queries\FetchPopularCategories\Fetcher as PopularCategoriesFetcher;
+use App\Services\Queries\FetchPopularCategories\Query as PopularCategoriesFetcherQuery;
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\Cache;
 
 class WarmCacheCommand extends Command
 {
@@ -14,7 +16,7 @@ class WarmCacheCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'cache:warm-news
+    protected $signature = 'cache:warm
                             {entity? : Entry name (Example: categories, news)}
                             {--f|force : force warm cache}
                             ';
@@ -27,7 +29,12 @@ class WarmCacheCommand extends Command
     protected $description = 'Warms up the cache for the main entities or application pages';
 
 
-    public function __construct(protected GetLatestNewsHandler $latestNewsUseCase, protected GetPopularCategoryHandler $popularCategoriesHandler)
+    /**
+     * @param CacheInterface           $cache
+     * @param LatestNewsFetcher        $latestNewsFetcher
+     * @param PopularCategoriesFetcher $popularCategoriesFetcher
+     */
+    public function __construct(protected CacheInterface $cache, protected LatestNewsFetcher $latestNewsFetcher, protected PopularCategoriesFetcher $popularCategoriesFetcher)
     {
         parent::__construct();
     }
@@ -52,6 +59,12 @@ class WarmCacheCommand extends Command
     }
 
 
+    /**
+     * @param string $entity
+     * @param bool   $force
+     *
+     * @return void
+     */
     protected function warmEntityCache(string $entity, bool $force): void
     {
         switch ($entity) {
@@ -67,37 +80,56 @@ class WarmCacheCommand extends Command
         }
     }
 
+    /**
+     * @param bool $force
+     *
+     * @return void
+     */
     protected function warmAllCaches(bool $force): void
     {
         $this->warmPopularCategoriesCache($force);
         $this->warmLatestNewsCache($force);
     }
 
+    /**
+     * @param bool $force
+     *
+     * @return void
+     */
     protected function warmPopularCategoriesCache(bool $force): void
     {
         $cacheKey = 'popular_categories_list';
 
-        if (!$force && Cache::tags(['categories', 'news_count'])->has($cacheKey)) {
+        if (!$force && $this->cache->hasWithTags(['categories', 'news_count'], $cacheKey)) {
             $this->info('Кэш популярных категорий уже существует, пропускаем.');
             return;
         }
 
         $this->info('Начинаем прогрев кэша популярных категорий...');
-        $this->popularCategoriesHandler->__invoke();
+
+        $this->popularCategoriesFetcher->fetch(new PopularCategoriesFetcherQuery());
+
         $this->info('Кэш популярных категорий успешно прогрет.');
     }
 
+    /**
+     * @param bool $force
+     *
+     * @return void
+     */
     protected function warmLatestNewsCache(bool $force): void
     {
         $cacheKey = 'latest_news_list';
 
-        if (!$force && Cache::tags(['news'])->has($cacheKey)) {
+        if (!$force && $this->cache->hasTagged('news', $cacheKey)) {
             $this->info('Кэш последних новостей уже существует, пропускаем.');
             return;
         }
 
         $this->info('Начинаем прогрев кэша последних новостей...');
-        $this->latestNewsUseCase->__invoke();
+
+        $this->latestNewsFetcher->fetch(new LatestNewsFetcherQuery());
+
         $this->info('Кэш последних новостей успешно прогрет.');
     }
 }

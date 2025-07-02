@@ -4,15 +4,16 @@
 
 @php
     /**
-     * @var App\Services\News\Results\NewsDTO $news
+     * @var \App\Services\DTO\News\NewsDTO $news
      */
 
     /**
-     * @var App\Services\Category\Results\CategoryDTO[] $categories
+     * @var \App\Services\DTO\Categories\CategoryDTO $category
      */
 @endphp
 
 @section('content')
+
 <div class="container">
     <div class="row mb-4">
         <div class="col-md-6">
@@ -48,7 +49,6 @@
                         <select class="form-select @error('category_id') is-invalid @enderror" id="category_id" name="category_id" required>
                             <option value="">Выберите категорию</option>
                             @foreach($categories as $category)
-
                                 <option value="{{ $category->id }}" {{ old('category_id', $news->category->id) == $category->id ? 'selected' : '' }}>
                                     {{ $category->name }}
                                 </option>

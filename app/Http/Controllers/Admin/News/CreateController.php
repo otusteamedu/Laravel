@@ -2,40 +2,32 @@
 
 namespace App\Http\Controllers\Admin\News;
 
+use App\Events\NewsPublished;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CreateNewsRequest;
-use App\Services\Category\Repositories\CategoryRepositoryInterface;
-use App\Services\Category\Results\Fetcher as CategoryFetcher;
-use App\Services\News\Exceptions\UserNotFoundException;
-use App\Services\News\Handlers\ShowHandler;
-use App\Services\News\Results\NewsDTO;
-use App\Services\User\Results\Fetcher as UserFetcher;
-use App\Services\News\Handlers\CreateHandler;
-use App\Services\News\Commands\CommandDTO;
-use App\Services\User\Repositories\UserRepositoryInterface;
+use App\Services\Commands\CreateNews\Command;
+use App\Services\Queries\FetchAllCategories\Fetcher as CategoriesFetcher;
+use App\Services\Queries\FetchAllUsers\Fetcher as UsersFetcher;
 use Illuminate\Auth\AuthManager;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
-use App\Events\NewsPublished;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use App\Services\Exceptions\News\NewsNotFoundException;
+use App\Services\Commands\CreateNews\Handler as CreateHandler;
 
 class CreateController extends Controller
 {
-    public function __construct(private CategoryRepositoryInterface $categoryRepository, private UserRepositoryInterface $userRepository, private CategoryFetcher $categoryFetcher, private UserFetcher $userFetcher)
-    {
-    }
     /**
      * Show the form for creating a new resource.
      *
      * @return View
      */
-    public function create(AuthManager $authManager): View
+    public function create(AuthManager $authManager, CategoriesFetcher $categoriesFetcher, UsersFetcher $usersFetcher): View
     {
-        $categories = $this->categoryFetcher->fetch($this->categoryRepository->fetchAll())->results;
-
         $isAdmin = $authManager->user()->hasRole('admin');
 
-        $users = $isAdmin ? $this->userFetcher->fetch($this->userRepository->fetchAll())->results : [];
+        $categories = $categoriesFetcher->fetch()->results;
+        $users = $isAdmin ? $usersFetcher->fetch()->results : [];
 
         return view('admin.news.create', compact('categories', 'users', 'isAdmin'));
     }
@@ -43,39 +35,30 @@ class CreateController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(CreateNewsRequest $request, CreateHandler $createNewsUseCase, ShowHandler $showNewsUseCase, AuthManager $authManager): RedirectResponse
+    public function store(CreateNewsRequest $request, CreateHandler $createNewsUseCase, AuthManager $authManager): RedirectResponse
     {
         $request->validated();
 
-        $user = $authManager->user();
-        $isAdmin = $user->hasRole('admin');
-        $userId = $request->get('user_id', $user->id);
-
         try {
-            $newsId = $createNewsUseCase(
-                new CommandDTO(
-                    $request->get('title'),
-                    $request->get('content'),
-                    $userId,
-                    $request->get('category_id'),
-                    $request->get('published_at'),
-                    $request->get('is_draft',
-                                  false
-                    )
-                ),
-                $isAdmin
+            $user = $authManager->user();
+            $userId = $request->get('user_id', $user->id);
+
+            $command = new Command(
+                title: $request->get('title'),
+                content: $request->get('content'),
+                userId: $userId,
+                categoryId: $request->get('category_id'),
+                publishedAt: $request->get('published_at'),
+                isDraft: $request->get('is_draft', false),
             );
 
-            if ($newsId) {
+            $news = $createNewsUseCase->handle($command);
 
-                /** @var NewsDTO $newsDto */
-                $newsDto = $showNewsUseCase($newsId);
-
-                if (!$newsDto->isDraft) {
-                    NewsPublished::dispatch($newsDto->id, $newsDto->title, $newsDto->content);
-                }
+            if (!$news->isDraft) {
+                NewsPublished::dispatch($news->id, $news->title, $news->content);
             }
-        } catch (UserNotFoundException) {
+
+        } catch (NewsNotFoundException) {
             throw new NotFoundHttpException('News not found');
         }
 

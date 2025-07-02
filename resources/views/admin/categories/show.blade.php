@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 @php
     /**
-     * @var App\Services\Category\Results\CategoryDTO $category
+     * @var \App\Services\DTO\Categories\CategoryDTO $category
      */
 @endphp
 

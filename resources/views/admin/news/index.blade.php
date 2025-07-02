@@ -4,10 +4,14 @@
 
 @php
     /**
-     * @var App\Services\News\Results\NewsItemsDTO[] $news
+     * @var Illuminate\Pagination\LengthAwarePaginator $news
+     */
+
+    /**
+     * @var \App\Services\DTO\News\NewsDTO $newsItem
      */
 @endphp
-{{--@dd($news)--}}
+
 @section('content')
     <div class="container-fluid px-0">
         <div class="row mb-4">
@@ -38,34 +42,34 @@
                             </tr>
                             </thead>
                             <tbody>
-                            @foreach($news as $item)
+                            @foreach($news as $newsItem)
                                 <tr>
-                                    <td>{{ $item->id }}</td>
+                                    <td>{{ $newsItem->id }}</td>
                                     <td>
-                                        <a href="{{ route('admin.news.edit', $item->id) }}"
+                                        <a href="{{ route('admin.news.edit', $newsItem->id) }}"
                                            class="text-decoration-none fw-bold">
-                                            {{ Str::limit($item->title, 50) }}
+                                            {{ Str::limit($newsItem->title, 50) }}
                                         </a>
                                         {{-- <div class="d-md-none mt-1">
                                              <small class="text-muted">{{ $item->category->name }}</small>
                                          </div>--}}
                                     </td>
-                                    <td class="d-none d-md-table-cell">{{ $item->category->name }}</td>
-                                    <td class="d-none d-lg-table-cell">{{ $item->author->name }}</td>
+                                    <td class="d-none d-md-table-cell">{{ $newsItem->category->name }}</td>
+                                    <td class="d-none d-lg-table-cell">{{ $newsItem->author->name }}</td>
 
-                                    <td class="d-none d-md-table-cell">{{ $item->isDraft ? 'Да' : 'Нет' }}</td>
-                                    <td class="d-none d-md-table-cell">{{ $item->publishedAt->format('d.m.Y H:i') }}</td>
+                                    <td class="d-none d-md-table-cell">{{ $newsItem->isDraft ? 'Да' : 'Нет' }}</td>
+                                    <td class="d-none d-md-table-cell">{{ $newsItem->publishedAt->format('d.m.Y H:i') }}</td>
                                     <td>
                                         <div class="btn-group btn-group-sm">
-                                            <a href="{{ route('admin.news.show', $item->id) }}"
+                                            <a href="{{ route('admin.news.show', $newsItem->id) }}"
                                                class="btn btn-outline-primary" target="_blank" title="Просмотр">
                                                 <i class="fas fa-eye"></i>
                                             </a>
-                                            <a href="{{ route('admin.news.edit', $item->id) }}"
+                                            <a href="{{ route('admin.news.edit', $newsItem->id) }}"
                                                class="btn btn-outline-secondary" title="Редактировать">
                                                 <i class="fas fa-edit"></i>
                                             </a>
-                                            <form action="{{ route('admin.news.destroy', $item->id) }}" method="POST"
+                                            <form action="{{ route('admin.news.destroy', $newsItem->id) }}" method="POST"
                                                   class="d-inline"
                                                   onsubmit="return confirm('Вы уверены? Это действие нельзя отменить.')">
                                                 @csrf
@@ -82,11 +86,9 @@
                         </table>
                     </div>
 
-                    {{--<div class="d-flex justify-content-center mt-4">
-                        <nav>
-                            {{ $news->appends(request()->query())->links() }}
-                        </nav>
-                    </div>--}}
+                    <nav>
+                        {{ $news->links() }}
+                    </nav>
                 @else
                     <div class="alert alert-info">
                         <i class="fas fa-info-circle me-2"></i>Новости не найдены. Создайте первую новость.

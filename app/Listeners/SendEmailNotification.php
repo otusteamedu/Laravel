@@ -3,11 +3,13 @@
 namespace App\Listeners;
 
 use App\Events\NewsPublished;
-use App\Services\User\Fetchers\GetSubscribedNewsHandler;
+use App\Services\Queries\FetchUsersSubscribedNews\Fetcher;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\NewsPublishedMail;
+use Throwable;
+use RuntimeException;
 
 class SendEmailNotification implements ShouldQueue
 {
@@ -16,7 +18,7 @@ class SendEmailNotification implements ShouldQueue
     /**
      * Create the event listener.
      */
-    public function __construct(private GetSubscribedNewsHandler $getSubscribedNewsHandler)
+    public function __construct(private Fetcher $fetcher)
     {
         //
     }
@@ -26,10 +28,14 @@ class SendEmailNotification implements ShouldQueue
      */
     public function handle(NewsPublished $event): void
     {
-        $subscribers = $this->getSubscribedNewsHandler->__invoke()->results;
+       // try {
+            $subscribers = $this->fetcher->fetch()->results;
 
-        foreach ($subscribers as $user) {
-            Mail::to($user->email)->queue(new NewsPublishedMail($event->id, $event->title, $event->content));
-        }
+            foreach ($subscribers as $user) {
+                Mail::to($user->email)->queue(new NewsPublishedMail($event->id, $event->title, $event->content));
+            }
+//        } catch (Throwable $exception) {
+//            throw new RuntimeException('Failed to send email notifications', 0, $exception);
+//        }
     }
 }

@@ -4,6 +4,7 @@ use Monolog\Handler\NullHandler;
 use Monolog\Handler\StreamHandler;
 use Monolog\Handler\SyslogUdpHandler;
 use Monolog\Processor\PsrLogMessageProcessor;
+use Monolog\Handler\TelegramBotHandler;
 
 return [
 
@@ -126,7 +127,18 @@ return [
         'emergency' => [
             'path' => storage_path('logs/laravel.log'),
         ],
-
+        'telegram' => [
+            'driver' => 'monolog',
+            'level' => env('LOG_TELEGRAM_LEVEL', 'error'),
+            // 'handler' => TelegramBotHandler::class,
+            'handler' => App\Logging\TelegramRateLimitedHandler::class,
+            'with' => [
+                'bubble' => true,
+                'apiKey' => env('LOG_TELEGRAM_BOT_TOKEN'),
+                'channel' => env('LOG_TELEGRAM_CHAT_ID'),
+                'fallbackChannel' => 'single',
+            ],
+        ],
     ],
 
 ];

@@ -4,7 +4,11 @@
 
 @php
     /**
-     * @var App\Services\Category\Results\CategoriesDTO[] $categories
+     * @var \Illuminate\Contracts\Pagination\LengthAwarePaginator $categories
+     */
+
+    /**
+     * @var \App\Services\DTO\Categories\CategoryDTO $category
      */
 @endphp
 
@@ -71,12 +75,11 @@
                             </tbody>
                         </table>
                     </div>
-
-                    {{-- <div class="d-flex justify-content-center mt-4">
-                         <nav>
-                             {{ $categories->appends(request()->query())->links() }}
-                         </nav>
-                     </div>--}}
+                    <div class="d-flex justify-content-center mt-4">
+                        <nav>
+                            {{ $categories->links() }}
+                        </nav>
+                    </div>
                 @else
                     <div class="alert alert-info">
                         <i class="fas fa-info-circle me-2"></i>Категории не найдены. Создайте первую категорию.

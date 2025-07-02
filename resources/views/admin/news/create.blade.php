@@ -3,13 +3,14 @@
 @section('title', 'Добавление новости')
 
 @php
-    /**
-     * @var App\Services\News\Results\NewsDTO $news
-     */
+        /**
 
-    /**
-     * @var App\Services\Category\Results\CategoryDTO[] $categories
-     */
+       * @var $categories
+       */
+
+       /**
+       * @var $categories
+       */
 @endphp
 
 @section('content')

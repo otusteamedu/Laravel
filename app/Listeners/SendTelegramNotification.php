@@ -3,9 +3,9 @@
 namespace App\Listeners;
 
 use App\Events\NewsPublished;
+use App\Services\Telegram\TelegramServiceInterface;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
-use App\Services\Telegram\TelegramService;
 use Illuminate\Support\Facades\Log;
 
 class SendTelegramNotification implements ShouldQueue
@@ -15,7 +15,7 @@ class SendTelegramNotification implements ShouldQueue
     /**
      * Create the event listener.
      */
-    public function __construct(private TelegramService $telegramService)
+    public function __construct(private TelegramServiceInterface $telegramService)
     {
         //
     }
@@ -28,7 +28,6 @@ class SendTelegramNotification implements ShouldQueue
         $message = "Новая новость опубликована: " . $event->title;
 
         $sent = $this->telegramService->sendMessage($message);
-
         if (!$sent) {
             // Логируем ошибку или предпринимаем повторную попытку
             Log::error("Не удалось отправить Telegram сообщение для новости ID {$event->id}");
