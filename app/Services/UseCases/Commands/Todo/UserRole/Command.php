@@ -2,7 +2,7 @@
 
 namespace App\Services\UseCases\Commands\Todo\UserRole;
 
-use App\Models\TodoRoleEnum;
+use App\Services\Repositories\Todo\TodoRoleEnum;
 
 
 final readonly class Command

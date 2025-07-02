@@ -126,7 +126,7 @@
 
                 axios.post(url, {
                     userId: user,
-                    role: "{{ \App\Models\TodoRoleEnum::PERFORMER }}"
+                    role: "{{ \App\Services\Repositories\Todo\TodoRoleEnum::PERFORMER }}"
                 })
                 .then((response) => {
                     if (response.data.success === true) {

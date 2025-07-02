@@ -2,11 +2,8 @@
 
 namespace Database\Factories;
 
-use App\Models\Todo;
-use App\Models\TodoUser;
 use App\Models\TodoStatus;
 use App\Models\ProjectUser;
-use App\Models\TodoRoleEnum;
 use Illuminate\Support\Carbon;
 use App\Models\ProjectRoleEnum;
 use Illuminate\Database\Eloquent\Factories\Factory;

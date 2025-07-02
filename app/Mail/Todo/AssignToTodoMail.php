@@ -2,7 +2,6 @@
 
 namespace App\Mail\Todo;
 
-use App\Models\TodoRoleEnum;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Address;
@@ -25,13 +24,13 @@ class AssignToTodoMail extends Mailable
      * @param UserDTO $user
      * @param ProjectDTO $project
      * @param TodoFetchDTO $todo
-     * @param TodoRoleEnum|null $role
+     * @param string $role
      */
     public function __construct(
         public UserDTO $user,
         public ProjectDTO $project,
         public TodoFetchDTO $todo,
-        public ?TodoRoleEnum $role = null,
+        public string $role,
     ) {}
 
     /**
@@ -43,7 +42,7 @@ class AssignToTodoMail extends Mailable
 
         return new Envelope(
             from: new Address($from['address'], $from['name']),
-            subject: "Вас назначили на роль {$this->role->value} в задаче {$this->todo->title}",
+            subject: "Вас назначили на роль {$this->role} в задаче {$this->todo->title}",
         );
     }
 

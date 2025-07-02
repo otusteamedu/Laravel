@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Services\Telegram;
+namespace App\Infrastructure\Telegram;
 
+use App\Services\Telegram\TelegramServiceInterface;
 use Illuminate\Support\Facades\Http;
 use App\Services\Telegram\Common\Send;
 use Illuminate\Support\Facades\Config;
@@ -9,7 +10,7 @@ use App\Services\Telegram\Common\SendResult;
 use App\Services\Telegram\Exceptions\SendTelergamMessageException;
 
 
-class TelegramService
+class TelegramService implements TelegramServiceInterface
 {
     /**
      * Метод отправки сообщения получателям.

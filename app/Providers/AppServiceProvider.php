@@ -18,6 +18,8 @@ use App\Infrastructure\Eloquent\Repositories\UserRepository;
 use App\Infrastructure\Eloquent\Repositories\ProjectRepository;
 use App\Services\Repositories\UserSocialiteRepositoryInterface;
 use App\Infrastructure\Eloquent\Repositories\UserSocialiteRepository;
+use App\Infrastructure\Telegram\TelegramService;
+use App\Services\Telegram\TelegramServiceInterface;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -30,6 +32,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(UserRepositoryInterface::class, UserRepository::class);
         $this->app->bind(UserSocialiteRepositoryInterface::class, UserSocialiteRepository::class);
         $this->app->bind(TodoRepositoryInterface::class, TodoRepository::class);
+        $this->app->bind(TelegramServiceInterface::class, TelegramService::class);
     }
 
     /**

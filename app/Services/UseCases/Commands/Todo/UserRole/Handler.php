@@ -2,8 +2,8 @@
 
 namespace App\Services\UseCases\Commands\Todo\UserRole;
 
-use App\Models\TodoRoleEnum;
 use App\Events\Todo\UserAssignTodoRoleEvent;
+use App\Services\Repositories\Todo\TodoRoleEnum;
 use App\Services\Repositories\Todo\TodoRepositoryInterface;
 
 class Handler
@@ -44,7 +44,7 @@ class Handler
             $command->userId,
             $command->projectId,
             $command->todoId,
-            $command->role
+            $command->role->value
         );
 
         return $result;

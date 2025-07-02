@@ -2,9 +2,9 @@
 
 namespace App\Services\UseCases\Commands\Todo\Show;
 
-use App\Models\TodoRoleEnum;
 use Vhar\EmbedVideo\Facades\EmbedVideo;
 use App\Services\Repositories\Todo\TodoFetchDTO;
+use App\Services\Repositories\Todo\TodoRoleEnum;
 use App\Services\Repositories\ProjectRepositoryInterface;
 use App\Services\Repositories\Todo\TodoRepositoryInterface;
 use App\Services\Repositories\Exceptions\ModelNotFoundException;

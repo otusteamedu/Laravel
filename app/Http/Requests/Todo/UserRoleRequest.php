@@ -2,12 +2,12 @@
 
 namespace App\Http\Requests\Todo;
 
-use App\Models\TodoRoleEnum;
 use Illuminate\Validation\Rule;
 use Illuminate\Auth\AuthManager;
 use App\Rules\Project\IsProjectMember;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Contracts\Validation\Validator;
+use App\Services\Repositories\Todo\TodoRoleEnum;
 use Illuminate\Http\Exceptions\HttpResponseException;
 
 

@@ -34,7 +34,7 @@ class UserAssignTodoRoleMailNotofy implements ShouldQueue
                 role: $event->role
             ));
         } catch (Exception $exception) {
-            Log::error("Ошибка отправки email о назначении на роль {$event->role->value} в задаче {$event->todoId} пользователю {$event->userId}. {$exception->getMessage()}");
+            Log::error("Ошибка отправки email о назначении на роль {$event->role} в задаче {$event->todoId} пользователю {$event->userId}. {$exception->getMessage()}");
         }
     }
 }

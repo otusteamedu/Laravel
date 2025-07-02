@@ -3,12 +3,12 @@
 namespace App\Http\Controllers\Todo;
 
 use Exception;
+use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Todo\UserRoleRequest;
-use App\Models\TodoRoleEnum;
+use App\Services\Repositories\Todo\TodoRoleEnum;
 use App\Services\UseCases\Commands\Todo\UserRole\Command;
 use App\Services\UseCases\Commands\Todo\UserRole\Handler;
-use Illuminate\Http\JsonResponse;
 
 class UserRole extends Controller
 {

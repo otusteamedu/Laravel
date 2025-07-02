@@ -4,8 +4,8 @@ namespace Database\Factories;
 
 use App\Models\Todo;
 use App\Models\User;
-use App\Models\TodoRoleEnum;
 use App\Models\ProjectRoleEnum;
+use App\Services\Repositories\Todo\TodoRoleEnum;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**

@@ -2,9 +2,9 @@
 
 namespace App\Services\UseCases\Commands\Todo\Create;
 
-use App\Models\TodoRoleEnum;
 use Exception;
 use App\Services\Repositories\Todo\TodoDTO;
+use App\Services\Repositories\Todo\TodoRoleEnum;
 use App\Services\Repositories\Todo\TodoRepositoryInterface;
 use App\Services\Repositories\Exceptions\CreateModelFailedException;
 

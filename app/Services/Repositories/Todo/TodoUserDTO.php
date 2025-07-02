@@ -2,7 +2,7 @@
 
 namespace App\Services\Repositories\Todo;
 
-use App\Models\TodoRoleEnum;
+use App\Services\Repositories\Todo\TodoRoleEnum;
 
 final readonly class TodoUserDTO
 {

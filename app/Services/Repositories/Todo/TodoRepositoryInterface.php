@@ -2,10 +2,10 @@
 
 namespace App\Services\Repositories\Todo;
 
-use App\Models\TodoRoleEnum;
 use App\Services\Repositories\Todo\TodoDTO;
 use App\Services\Repositories\Todo\TodoUserDTO;
 use App\Services\Repositories\Todo\TodoFetchDTO;
+use App\Services\Repositories\Todo\TodoRoleEnum;
 use App\Services\Repositories\Todo\TodoCommentDTO;
 
 interface TodoRepositoryInterface
