@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Events\OrderConfirmed;
 use App\Exceptions\StockIsEmptyException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Cart\DeliveryRequest;
@@ -108,8 +107,7 @@ class CartController extends Controller
             $counts[] = $item['quantity'];
         }
 
-        $order = $this->ordersService->add($dto, $productIds, $counts);
-        OrderConfirmed::dispatch($order);
+        $this->ordersService->add($dto, $productIds, $counts);
         $this->service->clearCart();
 
         return redirect()->route('profile.history', $userId);
