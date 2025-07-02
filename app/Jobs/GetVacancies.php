@@ -15,8 +15,13 @@ class GetVacancies implements ShouldQueue
      */
     public function __construct(
         private int $pageNumber,
-    ) {
+    ) {}
 
+    /**
+     * Execute the job.
+     */
+    public function handle(): void
+    {
         $url = 'https://api.hh.ru/employers/'.$this->pageNumber;
 
         $options = [
@@ -38,15 +43,10 @@ class GetVacancies implements ShouldQueue
         if ($response) {
             $res = json_decode($response, true);
 
-            if (empty($res['errors']) && $res['open_vacancies'] > 500) {
+            if (empty($res['errors']) && $res['open_vacancies'] > 300) {
                 Storage::append('companies.txt', 'Задача №'.$this->pageNumber.', '.$res['name'].' '.$res['open_vacancies'].PHP_EOL, FILE_APPEND);
             }
         }
 
     }
-
-    /**
-     * Execute the job.
-     */
-    public function handle(): void {}
 }
