@@ -5,9 +5,9 @@ namespace App\Http\Controllers\Projects;
 use Illuminate\Contracts\View\View;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Project\StoreRequest;
-use App\Services\UseCases\Commands\Project\Create\Command;
-use App\Services\UseCases\Commands\Project\Create\Handler;
-use App\Services\Repositories\Exceptions\CreateModelFailedException;
+use App\Application\UseCases\Commands\Project\Create\Command;
+use App\Application\UseCases\Commands\Project\Create\Handler;
+use App\Domain\Repositories\Exceptions\CreateModelFailedException;
 
 class Create extends Controller
 {

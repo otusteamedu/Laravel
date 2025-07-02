@@ -5,9 +5,9 @@ namespace App\Http\Controllers\Projects;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
 use App\Http\Requests\Project\UpdateRequest;
-use App\Services\UseCases\Commands\Project\Update\Command;
-use App\Services\UseCases\Commands\Project\Update\Handler;
-use App\Services\Repositories\Exceptions\ModelNotFoundException;
+use App\Application\UseCases\Commands\Project\Update\Command;
+use App\Application\UseCases\Commands\Project\Update\Handler;
+use App\Domain\Repositories\Exceptions\ModelNotFoundException;
 
 class Update extends Controller
 {

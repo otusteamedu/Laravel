@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers\ProjectUsers;
 
-use App\Models\ProjectRoleEnum;
+use App\Domain\Repositories\Project\ValueObject\ProjectRoleEnum;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
 use App\Http\Requests\ProjectUser\InviteRequest;
-use App\Services\UseCases\Commands\ProjectUser\Invite\Command;
-use App\Services\UseCases\Commands\ProjectUser\Invite\Handler;
-use App\Services\Repositories\Exceptions\CreateModelFailedException;
+use App\Application\UseCases\Commands\ProjectUser\Invite\Command;
+use App\Application\UseCases\Commands\ProjectUser\Invite\Handler;
+use App\Domain\Repositories\Exceptions\CreateModelFailedException;
 
 class Invite extends Controller
 {

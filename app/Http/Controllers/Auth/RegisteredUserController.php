@@ -4,8 +4,8 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
-use App\Services\UseCases\Commands\Auth\Register\Command;
-use App\Services\UseCases\Commands\Auth\Register\Handler;
+use App\Application\UseCases\Commands\Auth\Register\Command;
+use App\Application\UseCases\Commands\Auth\Register\Handler;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;

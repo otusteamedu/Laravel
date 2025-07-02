@@ -4,9 +4,9 @@ namespace App\Http\Controllers\TodoStatuses;
 
 use Illuminate\Contracts\View\View;
 use App\Http\Controllers\Controller;
-use App\Services\Repositories\Exceptions\ModelNotFoundException;
-use App\Services\UseCases\Queries\TodoStatus\FetchForProject\Query;
-use App\Services\UseCases\Queries\TodoStatus\FetchForProject\Fetcher;
+use App\Domain\Repositories\Exceptions\ModelNotFoundException;
+use App\Application\UseCases\Queries\TodoStatus\FetchForProject\Query;
+use App\Application\UseCases\Queries\TodoStatus\FetchForProject\Fetcher;
 
 class Index extends Controller
 {

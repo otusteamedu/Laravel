@@ -9,8 +9,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Redirect;
 use App\Http\Requests\ProfileUpdateRequest;
-use App\Services\Repositories\DTOs\UserProfileDTO;
-use App\Services\Repositories\UserRepositoryInterface;
+use App\Domain\Repositories\User\DTO\UserProfileDTO;
+use App\Domain\Repositories\User\Contracts\UserRepositoryInterface;
 
 class ProfileController extends Controller
 {

@@ -6,9 +6,9 @@ use Exception;
 use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Todo\UserRoleRequest;
-use App\Services\Repositories\Todo\TodoRoleEnum;
-use App\Services\UseCases\Commands\Todo\UserRole\Command;
-use App\Services\UseCases\Commands\Todo\UserRole\Handler;
+use App\Domain\Repositories\Todo\ValueObject\TodoRoleEnum;
+use App\Application\UseCases\Commands\Todo\UserRole\Command;
+use App\Application\UseCases\Commands\Todo\UserRole\Handler;
 
 class UserRole extends Controller
 {

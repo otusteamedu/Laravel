@@ -1,6 +1,6 @@
 @php
 /**
- * @var \App\Services\UseCases\Queries\Project\FetchForUser\Result $result
+ * @var \App\Application\UseCases\Queries\Project\FetchForUser\Result $result
 */
 @endphp
 @extends('layouts.main')

@@ -4,8 +4,8 @@ namespace App\Http\Controllers\Projects;
 
 use Illuminate\Contracts\View\View;
 use App\Http\Controllers\Controller;
-use App\Services\UseCases\Queries\Project\FetchForUser\Query;
-use App\Services\UseCases\Queries\Project\FetchForUser\Fetcher;
+use App\Application\UseCases\Queries\Project\FetchForUser\Query;
+use App\Application\UseCases\Queries\Project\FetchForUser\Fetcher;
 use Illuminate\Auth\AuthManager;
 use Illuminate\Http\RedirectResponse;
 

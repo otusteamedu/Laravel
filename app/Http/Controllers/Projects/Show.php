@@ -5,9 +5,9 @@ namespace App\Http\Controllers\Projects;
 use Illuminate\Contracts\View\View;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Gate;
-use App\Services\UseCases\Queries\Project\Fetch\Query;
-use App\Services\UseCases\Queries\Project\Fetch\Fetcher;
-use App\Services\Repositories\Exceptions\ModelNotFoundException;
+use App\Application\UseCases\Queries\Project\Fetch\Query;
+use App\Application\UseCases\Queries\Project\Fetch\Fetcher;
+use App\Domain\Repositories\Exceptions\ModelNotFoundException;
 
 class Show extends Controller
 {

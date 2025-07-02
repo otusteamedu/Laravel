@@ -7,8 +7,8 @@ use Illuminate\Auth\AuthManager;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Http\Exceptions\HttpResponseException;
-use App\Services\Repositories\UserRepositoryInterface;
-use App\Services\Repositories\ProjectRepositoryInterface;
+use App\Domain\Repositories\User\Contracts\UserRepositoryInterface;
+use App\Domain\Repositories\Project\Contracts\ProjectRepositoryInterface;
 
 class InviteRequest extends FormRequest
 {

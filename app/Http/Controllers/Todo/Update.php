@@ -6,9 +6,9 @@ use Illuminate\Support\Carbon;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
 use App\Http\Requests\Todo\UpdateRequest;
-use App\Services\UseCases\Commands\Todo\Update\Command;
-use App\Services\UseCases\Commands\Todo\Update\Handler;
-use App\Services\Repositories\Exceptions\ModelNotFoundException;
+use App\Application\UseCases\Commands\Todo\Update\Command;
+use App\Application\UseCases\Commands\Todo\Update\Handler;
+use App\Domain\Repositories\Exceptions\ModelNotFoundException;
 
 class Update extends Controller
 {

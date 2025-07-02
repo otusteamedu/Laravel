@@ -1,6 +1,6 @@
 @php
 /**
- * @var \App\Services\Repositories\DTOs\ProjectDTO $project
+ * @var \App\Domain\Repositories\Project\DTO\ProjectDTO $project
 */
 @endphp
 @extends('layouts.main')

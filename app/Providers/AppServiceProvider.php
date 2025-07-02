@@ -10,16 +10,14 @@ use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\ServiceProvider;
-use App\Services\Repositories\UserRepositoryInterface;
-use App\Services\Repositories\ProjectRepositoryInterface;
-use App\Services\Repositories\Todo\TodoRepositoryInterface;
-use App\Infrastructure\Eloquent\Repositories\TodoRepository;
-use App\Infrastructure\Eloquent\Repositories\UserRepository;
-use App\Infrastructure\Eloquent\Repositories\ProjectRepository;
-use App\Services\Repositories\UserSocialiteRepositoryInterface;
-use App\Infrastructure\Eloquent\Repositories\UserSocialiteRepository;
-use App\Infrastructure\Telegram\TelegramService;
-use App\Services\Telegram\TelegramServiceInterface;
+use App\Domain\Repositories\User\Contracts\UserRepositoryInterface;
+use App\Domain\Repositories\Project\Contracts\ProjectRepositoryInterface;
+use App\Domain\Repositories\Todo\Contracts\TodoRepositoryInterface;
+use App\Infrastructure\Repositories\Eloquent\TodoRepository;
+use App\Infrastructure\Repositories\Eloquent\UserRepository;
+use App\Infrastructure\Repositories\Eloquent\ProjectRepository;
+use App\Infrastructure\Services\Telegram\TelegramService;
+use App\Domain\Services\Telegram\Contracts\TelegramServiceInterface;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -30,7 +28,6 @@ class AppServiceProvider extends ServiceProvider
     {
         $this->app->bind(ProjectRepositoryInterface::class, ProjectRepository::class);
         $this->app->bind(UserRepositoryInterface::class, UserRepository::class);
-        $this->app->bind(UserSocialiteRepositoryInterface::class, UserSocialiteRepository::class);
         $this->app->bind(TodoRepositoryInterface::class, TodoRepository::class);
         $this->app->bind(TelegramServiceInterface::class, TelegramService::class);
     }

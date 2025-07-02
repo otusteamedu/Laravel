@@ -5,9 +5,9 @@ namespace App\Http\Controllers\Todo;
 use Illuminate\Contracts\View\View;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
-use App\Services\UseCases\Commands\Todo\Show\Command;
-use App\Services\UseCases\Commands\Todo\Show\Handler;
-use App\Services\Repositories\Exceptions\ModelNotFoundException;
+use App\Application\UseCases\Commands\Todo\Show\Command;
+use App\Application\UseCases\Commands\Todo\Show\Handler;
+use App\Domain\Repositories\Exceptions\ModelNotFoundException;
 
 class Show extends Controller
 {

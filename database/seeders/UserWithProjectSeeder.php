@@ -6,7 +6,7 @@ use App\Models\User;
 use App\Models\Project;
 use App\Models\ProjectUser;
 use App\Models\UserProfile;
-use App\Models\ProjectRoleEnum;
+use App\Domain\Repositories\Project\ValueObject\ProjectRoleEnum;
 use Illuminate\Database\Seeder;
 
 class UserWithProjectSeeder extends Seeder

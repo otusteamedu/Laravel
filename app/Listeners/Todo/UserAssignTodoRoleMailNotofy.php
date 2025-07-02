@@ -7,8 +7,8 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use App\Events\Todo\UserAssignTodoRoleEvent;
-use App\Services\UseCases\Commands\Mail\Todo\UserAdd\Command;
-use App\Services\UseCases\Commands\Mail\Todo\UserAdd\Handler;
+use App\Application\UseCases\Commands\Mail\Todo\UserAdd\Command;
+use App\Application\UseCases\Commands\Mail\Todo\UserAdd\Handler;
 
 class UserAssignTodoRoleMailNotofy implements ShouldQueue
 {

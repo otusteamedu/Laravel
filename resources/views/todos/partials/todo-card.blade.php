@@ -1,7 +1,7 @@
 @php
 /**
- * @var \App\Services\Repositories\DTOs\ProjectDTO $project
- * @var \App\Services\Repositories\Todo\TodoFetchDTO $todo
+ * @var \App\Domain\Repositories\Project\DTO\ProjectDTO $project
+ * @var \App\Domain\Repositories\Todo\DTO\TodoFetchDTO $todo
  */
 @endphp
 <div class="col-12 card mb-3" style="border-color: {{ $todo->status->color }}">

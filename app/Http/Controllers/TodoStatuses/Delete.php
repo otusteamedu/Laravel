@@ -4,9 +4,9 @@ namespace App\Http\Controllers\TodoStatuses;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\TodoStatus\DestroyRequest;
-use App\Services\UseCases\Commands\TodoStatus\Delete\Command;
-use App\Services\UseCases\Commands\TodoStatus\Delete\Handler;
-use App\Services\Repositories\Exceptions\ModelNotFoundException;
+use App\Application\UseCases\Commands\TodoStatus\Delete\Command;
+use App\Application\UseCases\Commands\TodoStatus\Delete\Handler;
+use App\Domain\Repositories\Exceptions\ModelNotFoundException;
 
 class Delete extends Controller
 {

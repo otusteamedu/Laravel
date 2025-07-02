@@ -3,10 +3,10 @@
 namespace App\Rules\Project;
 
 use Closure;
-use App\Models\ProjectRoleEnum;
+use App\Domain\Repositories\Project\ValueObject\ProjectRoleEnum;
 use Illuminate\Contracts\Validation\DataAwareRule;
 use Illuminate\Contracts\Validation\ValidationRule;
-use App\Infrastructure\Eloquent\Repositories\ProjectRepository;
+use App\Infrastructure\Repositories\Eloquent\ProjectRepository;
 
 
 class IsProjectMember implements DataAwareRule, ValidationRule

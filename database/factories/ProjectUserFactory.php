@@ -5,7 +5,7 @@ namespace Database\Factories;
 use App\Models\User;
 use App\Models\Project;
 use App\Models\ProjectUser;
-use App\Models\ProjectRoleEnum;
+use App\Domain\Repositories\Project\ValueObject\ProjectRoleEnum;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Factories\Factory;
 

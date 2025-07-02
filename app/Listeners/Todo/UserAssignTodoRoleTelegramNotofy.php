@@ -7,9 +7,9 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use App\Events\Todo\UserAssignTodoRoleEvent;
-use App\Services\UseCases\Commands\Telegram\Todo\UserAdd\Command;
-use App\Services\UseCases\Commands\Telegram\Todo\UserAdd\Handler;
-use App\Services\UseCases\Commands\Telegram\Exceptoins\NotHasTelegramIdException;
+use App\Application\UseCases\Commands\Telegram\Todo\UserAdd\Command;
+use App\Application\UseCases\Commands\Telegram\Todo\UserAdd\Handler;
+use App\Application\UseCases\Commands\Telegram\Exceptoins\NotHasTelegramIdException;
 
 class UserAssignTodoRoleTelegramNotofy implements ShouldQueue
 {
