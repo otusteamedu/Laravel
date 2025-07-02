@@ -26,10 +26,11 @@ return [
     |
     | Drivers: "sync", "database", "beanstalkd", "sqs", "redis", "null"
     |
+    | Connections != Queues
+    | Each connection can have multiple queues.
     */
 
     'connections' => [
-
         'sync' => [
             'driver' => 'sync',
         ],
