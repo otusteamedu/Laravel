@@ -3,17 +3,17 @@
 namespace App\Http\Controllers\Admin\Categories;
 
 use App\Http\Controllers\Controller;
-use App\Infrastructure\Cache\CacheInterface;
-use App\Services\Commands\UpdateCategory\Command;
-use App\Services\Commands\UpdateCategory\Handler;
-use App\Services\Queries\FetchCategoryById\Query;
-use App\Services\Queries\FetchCategoryById\Fetcher;
 use App\Http\Requests\UpdateCategoryRequest;
+use App\Infrastructure\Cache\CacheInterface;
+use App\Services\Exceptions\Categories\CategoryAlreadyExistsException;
+use App\Services\Exceptions\Categories\CategoryNotFoundException;
+use App\Services\UseCases\Commands\UpdateCategory\Command;
+use App\Services\UseCases\Commands\UpdateCategory\Handler;
+use App\Services\UseCases\Queries\FetchCategoryById\Fetcher;
+use App\Services\UseCases\Queries\FetchCategoryById\Query;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\View\View;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use App\Services\Exceptions\Categories\CategoryNotFoundException;
-use Illuminate\Support\Facades\Gate;
-use App\Services\Exceptions\Categories\CategoryAlreadyExistsException;
 
 class UpdateController extends Controller
 {
@@ -54,8 +54,8 @@ class UpdateController extends Controller
             $command = new Command(
                 id: (int)$categoryId,
                 name: $request->get('name'),
-                sort: $request->get('sort'),
-
+                isActive: $request->get('is_active', false),
+                sort: $request->get('sort', 1),
             );
 
             $category = $handler->handle($command);

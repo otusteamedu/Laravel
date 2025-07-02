@@ -5,15 +5,15 @@ namespace App\Http\Controllers\Admin\News;
 use App\Events\NewsPublished;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CreateNewsRequest;
-use App\Services\Commands\CreateNews\Command;
-use App\Services\Queries\FetchAllCategories\Fetcher as CategoriesFetcher;
-use App\Services\Queries\FetchAllUsers\Fetcher as UsersFetcher;
+use App\Services\Exceptions\News\NewsNotFoundException;
+use App\Services\UseCases\Commands\CreateNews\Command;
+use App\Services\UseCases\Commands\CreateNews\Handler as CreateHandler;
+use App\Services\UseCases\Queries\FetchAllCategories\Fetcher as CategoriesFetcher;
+use App\Services\UseCases\Queries\FetchAllUsers\Fetcher as UsersFetcher;
 use Illuminate\Auth\AuthManager;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use App\Services\Exceptions\News\NewsNotFoundException;
-use App\Services\Commands\CreateNews\Handler as CreateHandler;
 
 class CreateController extends Controller
 {

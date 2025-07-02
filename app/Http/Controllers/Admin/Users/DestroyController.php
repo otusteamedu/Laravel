@@ -3,9 +3,9 @@
 namespace App\Http\Controllers\Admin\Users;
 
 use App\Http\Controllers\Controller;
-use App\Services\Commands\DeleteUser\Command;
-use App\Services\Commands\DeleteUser\Handler;
 use App\Services\Exceptions\Users\UserNotFoundException;
+use App\Services\UseCases\Commands\DeleteUser\Command;
+use App\Services\UseCases\Commands\DeleteUser\Handler;
 use Illuminate\Http\RedirectResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 

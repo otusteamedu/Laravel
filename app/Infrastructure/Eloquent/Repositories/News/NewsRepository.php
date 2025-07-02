@@ -74,7 +74,7 @@ class NewsRepository implements NewsRepositoryInterface
      * @return News[]
      */
     public function getLatest(int $limit): array {
-        return News::query()->where('is_draft', false)
+        return News::query()->published()
            ->orderBy('published_at', 'desc')
            ->limit($limit)
            ->get()

@@ -20,6 +20,15 @@
             <form action="{{ route('admin.categories.store') }}" method="POST">
                 @csrf
 
+                <div class="mb-4">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="active" name="is_active" value="1" {{ old('is_active', '1') == '1' ? 'checked' : '' }}>
+                        <label class="form-check-label" for="active">
+                            Активна
+                        </label>
+                    </div>
+                </div>
+
                 <div class="mb-3">
                     <label for="name" class="form-label">Название <span class="text-danger">*</span></label>
                     <input type="text" class="form-control @error('name') is-invalid @enderror" id="name" name="name" value="{{ old('name') }}" required>

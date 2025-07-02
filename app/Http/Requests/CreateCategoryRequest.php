@@ -22,8 +22,9 @@ class CreateCategoryRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => ['required', 'string', 'max:255'],
-            'sort' => ['integer', 'gte:0'],
+            'name'      => ['required', 'string', 'max:255'],
+            'is_active' => ['boolean'],
+            'sort'      => ['integer', 'gte:0'],
         ];
     }
 
@@ -36,7 +37,7 @@ class CreateCategoryRequest extends FormRequest
     {
         return [
             'name.required' => 'Название категории обязательно для заполнения',
-            'name.max' => 'Название категории не должно превышать 255 символов',
+            'name.max'      => 'Название категории не должно превышать 255 символов',
         ];
     }
 }

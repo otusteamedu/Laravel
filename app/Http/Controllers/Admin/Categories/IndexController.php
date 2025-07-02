@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Admin\Categories;
 
 use App\Http\Controllers\Controller;
-use App\Services\Queries\FetchAllCategoriesPagination\Query;
-use App\Services\Queries\FetchAllCategoriesPagination\Fetcher;
+use App\Services\UseCases\Queries\FetchAllCategoriesPagination\Fetcher;
+use App\Services\UseCases\Queries\FetchAllCategoriesPagination\Query;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\View\View;

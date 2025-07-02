@@ -30,6 +30,7 @@
                     <p class="mb-1"><strong>ID:</strong> {{ $category->id }}</p>
                     <p class="mb-1"><strong>Название:</strong> {{ $category->name }}</p>
                     <p class="mb-1"><strong>Слаг:</strong> {{ $category->slug }}</p>
+                    <p class="mb-1"><strong>Активность:</strong> {{ $category->isActive ? 'Активна' : 'Неактивна' }}</p>
                     <p class="mb-1"><strong>Сортировка:</strong> {{ $category->sort }}</p>
                 </div>
             </div>

@@ -3,10 +3,10 @@
 namespace App\Http\Controllers\Public;
 
 use App\Http\Controllers\Controller;
-use App\Services\Queries\FetchLatestNews\Fetcher as LatestNewsFetcher;
-use App\Services\Queries\FetchLatestNews\Query as LatestNewsFetcherQuery;
-use App\Services\Queries\FetchPopularCategories\Fetcher as PopularCategoriesFetcher;
-use App\Services\Queries\FetchPopularCategories\Query as PopularCategoriesFetcherQuery;
+use App\Services\UseCases\Queries\FetchLatestNews\Fetcher as LatestNewsFetcher;
+use App\Services\UseCases\Queries\FetchLatestNews\Query as LatestNewsFetcherQuery;
+use App\Services\UseCases\Queries\FetchPopularCategories\Fetcher as PopularCategoriesFetcher;
+use App\Services\UseCases\Queries\FetchPopularCategories\Query as PopularCategoriesFetcherQuery;
 use Illuminate\View\View;
 
 

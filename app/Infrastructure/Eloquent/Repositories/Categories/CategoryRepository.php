@@ -108,6 +108,7 @@ class CategoryRepository implements CategoryRepositoryInterface
      */
     public function getPopular(int $limit): array {
         return Category::query()
+                       ->active()
                        ->withCount('publishedNews as news_count')
                        ->orderByDesc('news_count')
                        ->limit($limit)

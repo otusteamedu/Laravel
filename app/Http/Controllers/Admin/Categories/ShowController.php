@@ -3,11 +3,11 @@
 namespace App\Http\Controllers\Admin\Categories;
 
 use App\Http\Controllers\Controller;
-use App\Services\Queries\FetchCategoryById\Query;
-use App\Services\Queries\FetchCategoryById\Fetcher;
+use App\Services\Exceptions\Categories\CategoryNotFoundException;
+use App\Services\UseCases\Queries\FetchCategoryById\Fetcher;
+use App\Services\UseCases\Queries\FetchCategoryById\Query;
 use Illuminate\View\View;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use App\Services\Exceptions\Categories\CategoryNotFoundException;
 
 class ShowController extends Controller
 {

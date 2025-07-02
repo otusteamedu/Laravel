@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Admin\Users;
 
 use App\Http\Controllers\Controller;
-use App\Services\Queries\FetchAllUsersPagination\Query;
-use App\Services\Queries\FetchAllUsersPagination\Fetcher;
+use App\Services\UseCases\Queries\FetchAllUsersPagination\Fetcher;
+use App\Services\UseCases\Queries\FetchAllUsersPagination\Query;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\View\View;

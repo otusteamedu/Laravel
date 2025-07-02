@@ -4,8 +4,8 @@ namespace App\Http\Controllers\Admin\Users;
 
 use App\Http\Controllers\Controller;
 use App\Services\Exceptions\Users\UserNotFoundException;
-use App\Services\Queries\FetchUserById\Query;
-use App\Services\Queries\FetchUserById\Fetcher;
+use App\Services\UseCases\Queries\FetchUserById\Fetcher;
+use App\Services\UseCases\Queries\FetchUserById\Query;
 use Illuminate\View\View;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 

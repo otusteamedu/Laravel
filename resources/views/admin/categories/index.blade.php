@@ -35,6 +35,7 @@
                                 <th>ID</th>
                                 <th>Название</th>
                                 <th class="d-none d-md-table-cell">Слаг</th>
+                                <th>Активность</th>
                                 <th>Действия</th>
                             </tr>
                             </thead>
@@ -49,6 +50,13 @@
                                         </a>
                                     </td>
                                     <td class="d-none d-md-table-cell">{{ $category->slug }}</td>
+                                    <td>
+                                        @if($category->isActive)
+                                            <span class="badge bg-success">Активна</span>
+                                        @else
+                                            <span class="badge bg-secondary">Неактивна</span>
+                                        @endif
+                                    </td>
                                     <td>
                                         <div class="btn-group btn-group-sm">
                                             <a href="{{ route('admin.categories.show', $category->id) }}"

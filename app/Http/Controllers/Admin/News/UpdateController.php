@@ -5,17 +5,17 @@ namespace App\Http\Controllers\Admin\News;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\UpdateNewsRequest;
 use App\Services\Exceptions\News\NewsNotFoundException;
+use App\Services\UseCases\Commands\UpdateNews\Command;
+use App\Services\UseCases\Commands\UpdateNews\Handler as UpdateHandler;
+use App\Services\UseCases\Queries\FetchAllCategories\Fetcher as CategoriesFetcher;
+use App\Services\UseCases\Queries\FetchAllUsers\Fetcher as UsersFetcher;
+use App\Services\UseCases\Queries\FetchNewsById\Fetcher as NewsFetcher;
+use App\Services\UseCases\Queries\FetchNewsById\Query as NewsQuery;
 use Illuminate\Auth\AuthManager;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\View\View;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use App\Services\Commands\UpdateNews\Command;
-use App\Services\Commands\UpdateNews\Handler as UpdateHandler;
-use App\Services\Queries\FetchNewsById\Query as NewsQuery;
-use App\Services\Queries\FetchNewsById\Fetcher as NewsFetcher;
-use App\Services\Queries\FetchAllCategories\Fetcher as CategoriesFetcher;
-use App\Services\Queries\FetchAllUsers\Fetcher as UsersFetcher;
 
 class UpdateController extends Controller
 {

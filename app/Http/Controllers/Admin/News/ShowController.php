@@ -4,8 +4,8 @@ namespace App\Http\Controllers\Admin\News;
 
 use App\Http\Controllers\Controller;
 use App\Services\Exceptions\News\NewsNotFoundException;
-use App\Services\Queries\FetchNewsById\Query;
-use App\Services\Queries\FetchNewsById\Fetcher;
+use App\Services\UseCases\Queries\FetchNewsById\Fetcher;
+use App\Services\UseCases\Queries\FetchNewsById\Query;
 use Illuminate\View\View;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 

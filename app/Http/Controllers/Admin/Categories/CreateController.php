@@ -3,14 +3,14 @@
 namespace App\Http\Controllers\Admin\Categories;
 
 use App\Http\Controllers\Controller;
-use App\Infrastructure\Cache\CacheInterface;
-use App\Services\Commands\CreateCategory\Command;
-use App\Services\Commands\CreateCategory\Handler;
 use App\Http\Requests\CreateCategoryRequest;
-use Illuminate\Support\Facades\Gate;
-use Exception;
+use App\Infrastructure\Cache\CacheInterface;
 use App\Services\Exceptions\Categories\CategoryAlreadyExistsException;
 use App\Services\Exceptions\Categories\CategorySaveException;
+use App\Services\UseCases\Commands\CreateCategory\Command;
+use App\Services\UseCases\Commands\CreateCategory\Handler;
+use Exception;
+use Illuminate\Support\Facades\Gate;
 
 
 class CreateController extends Controller
@@ -43,7 +43,9 @@ class CreateController extends Controller
 
         try {
             $command = new Command(
-                name: $request->get('name'), sort: $request->get('sort'),
+                name: $request->get('name'),
+                sort: $request->get('sort'),
+                isActive: $request->get('is_active', false),
             );
 
             $handler->handle($command);

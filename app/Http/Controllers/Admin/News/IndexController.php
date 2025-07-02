@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Admin\News;
 
 use App\Http\Controllers\Controller;
-use App\Services\Queries\FetchAllNewsPagination\Query;
-use App\Services\Queries\FetchAllNewsPagination\Fetcher;
+use App\Services\UseCases\Queries\FetchAllNewsPagination\Fetcher;
+use App\Services\UseCases\Queries\FetchAllNewsPagination\Query;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\View\View;
