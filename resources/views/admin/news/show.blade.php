@@ -4,7 +4,7 @@
 
 @php
     /**
-     * @var App\Services\News\Results\NewsDTO $news
+     * @var \App\Services\DTO\News\NewsDTO $news
      */
 @endphp
 

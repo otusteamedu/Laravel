@@ -3,8 +3,9 @@
 namespace App\Http\Controllers\Admin\News;
 
 use App\Http\Controllers\Controller;
-use App\Services\News\Handlers\DestroyHandler;
-use App\Services\News\Exceptions\NewsNotFoundException;
+use App\Services\Exceptions\News\NewsNotFoundException;
+use App\Services\UseCases\Commands\DeleteNews\Command;
+use App\Services\UseCases\Commands\DeleteNews\Handler;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Gate;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -12,18 +13,19 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 class DestroyController extends Controller
 {
     /**
-     * Remove the specified resource from storage.
+     * Удалить новость
      */
-    public function __invoke(DestroyHandler $destroyNewsUseCase, string $newsId): RedirectResponse
+    public function __invoke(Handler $handler, string $newsId): RedirectResponse
     {
         Gate::authorize('news.delete', $newsId);
 
         try {
-            $destroyNewsUseCase((int)$newsId);
+            $command = new Command((int)$newsId);
+            $handler->handle($command);
         } catch (NewsNotFoundException) {
-            throw new NotFoundHttpException('News not found');
+            throw new NotFoundHttpException('Новость не найдена');
         }
 
-        return redirect()->route('admin.news.index')->with('success', 'News has been deleted');
+        return redirect()->route('admin.news.index')->with('success', 'Новость успешно удалена');
     }
 }

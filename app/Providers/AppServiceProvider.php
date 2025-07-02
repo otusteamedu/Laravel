@@ -2,18 +2,22 @@
 
 namespace App\Providers;
 
-//use Illuminate\Pagination\Paginator;
-use App\Models\Category;
-use Illuminate\Support\ServiceProvider;
-use App\Services\Category\Repositories\CategoryRepositoryInterface;
-use App\Services\News\Repositories\NewsRepositoryInterface;
-use App\Services\User\Repositories\UserRepositoryInterface;
-use App\Repositories\Category\CategoryRepository;
-use App\Repositories\News\NewsRepository;
-use App\Repositories\User\UserRepository;
-use Illuminate\Support\Facades\Gate;
-use App\Policies\NewsPolicy;
+use App\Infrastructure\Cache\CacheInterface;
+use App\Infrastructure\Cache\LaravelCache;
+use App\Infrastructure\Eloquent\Repositories\Categories\CategoryRepository;
+use App\Infrastructure\Eloquent\Repositories\News\NewsRepository;
+use App\Infrastructure\Eloquent\Repositories\Users\UserRepository;
+use App\Infrastructure\PasswordHasher\LaravelPasswordHasher;
+use App\Infrastructure\PasswordHasher\PasswordHasherInterface;
 use App\Policies\CategoryPolicy;
+use App\Policies\NewsPolicy;
+use App\Services\Repositories\CategoryRepositoryInterface;
+use App\Services\Repositories\NewsRepositoryInterface;
+use App\Services\Repositories\UserRepositoryInterface;
+use App\Services\Telegram\TelegramService;
+use App\Services\Telegram\TelegramServiceInterface;
+use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -36,6 +40,21 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(
             NewsRepositoryInterface::class,
             NewsRepository::class
+        );
+
+        $this->app->bind(
+            PasswordHasherInterface::class,
+            LaravelPasswordHasher::class
+        );
+
+        $this->app->bind(
+            CacheInterface::class,
+            LaravelCache::class
+        );
+
+        $this->app->bind(
+            TelegramServiceInterface::class,
+            TelegramService::class
         );
     }
 

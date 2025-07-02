@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Carbon;
 
 class News extends Model
 {
@@ -79,5 +81,60 @@ class News extends Model
         $this->category()->associate($category);
 
         return $this;
+    }
+
+    /**
+     * @param Builder $query
+     *
+     * @return Builder
+     */
+    public function scopePublished(Builder $query): Builder
+    {
+        return $query->where('is_draft', false);
+    }
+
+    /**
+     * @param Builder $query
+     * @param int     $categoryId
+     *
+     * @return Builder
+     */
+    public function scopeOfCategory(Builder $query, int $categoryId): Builder
+    {
+        return $query->where('category_id', $categoryId);
+    }
+
+    /**
+     * @param Builder $query
+     * @param int     $userId
+     *
+     * @return Builder
+     */
+    public function scopeOfUser(Builder $query, int $userId): Builder
+    {
+        return $query->where('user_id', $userId);
+    }
+
+    /**
+     * @param Builder $query
+     * @param Carbon  $from
+     * @param Carbon  $to
+     *
+     * @return Builder
+     */
+    public function scopeBetweenDates(Builder $query, Carbon $from, Carbon $to): Builder
+    {
+        return $query->whereBetween('created_at', [$from, $to]);
+    }
+
+    /**
+     * @param Builder $query
+     * @param string  $term
+     *
+     * @return Builder
+     */
+    public function scopeSearchByTitle(Builder $query, string $term): Builder
+    {
+        return $query->where('title', 'like', '%' . $term . '%');
     }
 }

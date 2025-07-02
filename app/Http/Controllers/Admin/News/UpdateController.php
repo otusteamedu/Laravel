@@ -4,51 +4,44 @@ namespace App\Http\Controllers\Admin\News;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\UpdateNewsRequest;
-use App\Services\Category\Repositories\CategoryRepositoryInterface;
-use App\Services\Category\Results\Fetcher as CategoryFetcher;
-use App\Services\User\Results\Fetcher as UserFetcher;
-use App\Services\News\Commands\CommandDTO;
-use App\Services\News\Exceptions\NewsNotFoundException;
-use App\Services\News\Handlers\EditHandler;
-use App\Services\News\Handlers\UpdateHandler;
-use App\Services\News\Results\NewsDTO;
-use App\Services\User\Repositories\UserRepositoryInterface;
+use App\Services\Exceptions\News\NewsNotFoundException;
+use App\Services\UseCases\Commands\UpdateNews\Command;
+use App\Services\UseCases\Commands\UpdateNews\Handler as UpdateHandler;
+use App\Services\UseCases\Queries\FetchAllCategories\Fetcher as CategoriesFetcher;
+use App\Services\UseCases\Queries\FetchAllUsers\Fetcher as UsersFetcher;
+use App\Services\UseCases\Queries\FetchNewsById\Fetcher as NewsFetcher;
+use App\Services\UseCases\Queries\FetchNewsById\Query as NewsQuery;
 use Illuminate\Auth\AuthManager;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Gate;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Illuminate\View\View;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class UpdateController extends Controller
 {
-    public function __construct(private CategoryRepositoryInterface $categoryRepository, private UserRepositoryInterface $userRepository, private CategoryFetcher $categoryFetcher, private UserFetcher $userFetcher)
-    {
-    }
-
     /**
      * Show the form for editing the specified resource.
      *
      * @return View
      */
-    public function edit(EditHandler $editNewsUseCase, AuthManager $authManager, string $newsId): View
+    public function edit(NewsFetcher $newsFetcher, AuthManager $authManager, CategoriesFetcher $categoriesFetcher, UsersFetcher $usersFetcher, string $newsId): View
     {
         Gate::authorize('news.update', $newsId);
 
         try {
-            $news = $editNewsUseCase((int)$newsId);
-
-            $categories = $this->categoryFetcher->fetch($this->categoryRepository->fetchAll())->results;
+            $query = new NewsQuery((int)$newsId);
+            $news = $newsFetcher->fetch($query);
 
             $isAdmin = $authManager->user()->hasRole('admin');
 
-            $users = $isAdmin ? $this->userFetcher->fetch($this->userRepository->fetchAll())->results : [];
+            $categories = $categoriesFetcher->fetch()->results;
+            $users = $isAdmin ? $usersFetcher->fetch()->results : [];
 
+            return view('admin.news.edit', compact('news', 'categories', 'users', 'isAdmin'));
 
         } catch (NewsNotFoundException) {
-            throw new NotFoundHttpException('News not found');
+            throw new NotFoundHttpException('Новость не найдена');
         }
-
-        return view('admin.news.edit', compact('news', 'categories', 'users', 'isAdmin'));
     }
 
 
@@ -61,11 +54,25 @@ class UpdateController extends Controller
 
         $request->validated();
 
-        $isAdmin = $authManager->user()->hasRole('admin');
+        try {
+            $isAdmin = $authManager->user()->hasRole('admin');
 
-        /** @var  NewsDTO */
-        $newsDTO = $updateNewsUseCase(new CommandDTO($request->get('title'), $request->get('content'), $request->get('user_id'), $request->get('category_id'), $request->get('published_at'), $request->get('is_draft', false), (int)$newsId), $isAdmin);
+            $command = new Command(
+                id: (int)$newsId,
+                title: $request->get('title'),
+                content: $request->get('content'),
+                userId: $request->get('user_id'),
+                categoryId: $request->get('category_id'),
+                publishedAt: $request->get('published_at'),
+                isDraft: $request->get('is_draft', false),
+            );
 
-        return redirect()->route('admin.news.show', $newsDTO->id);
+            $news = $updateNewsUseCase->handle($command, $isAdmin);
+
+        } catch (NewsNotFoundException) {
+            throw new NotFoundHttpException('Новость не найдена');
+        }
+
+        return redirect()->route('admin.news.show', $news->id);
     }
 }

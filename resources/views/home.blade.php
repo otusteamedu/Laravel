@@ -4,13 +4,13 @@
 
 @php
     /**
-     * @var App\Services\News\Results\NewsItemsDTO[] $latestNews
+     * @var \App\Services\DTO\News\NewsDTO $news
      */
 @endphp
 
 @php
     /**
-     * @var App\Services\Category\Results\CategoriesDTO[] $categories
+     * @var \App\Services\DTO\Categories\CategoryDTO $category
      */
 @endphp
 
@@ -20,6 +20,7 @@
             <h2 class="mb-4">Последние новости</h2>
             @if(count($latestNews) > 0)
                 @foreach($latestNews as $news)
+
                     <div class="card mb-4 news-card shadow-sm">
                         <div class="row g-0">
                             <div class="col-md-4">
@@ -30,9 +31,9 @@
                                     <h5 class="card-title">{{ $news->title }}</h5>
                                     <p class="card-text text-muted">
                                         <small>
-                                            <span><i class="fas fa-folder me-1"></i> <a href="#" class="text-decoration-none">{{ $news->category->name }}</a></span>
+                                            <span><i class="fas fa-folder me-1"></i> <a href="#" class="text-decoration-none">{{ $news?->category?->name }}</a></span>
                                             <span><i class="fas fa-calendar me-1"></i> {{ $news->publishedAt->format('d.m.Y') }}</span>
-                                            <span><i class="fas fa-user me-1"></i> {{ $news->author->name }}</span>
+                                            <span><i class="fas fa-user me-1"></i> {{ $news?->author?->name }}</span>
                                         </small>
                                     </p>
                                     <p class="card-text">{{ $news->content }}</p>

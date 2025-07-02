@@ -3,32 +3,24 @@
 namespace App\Http\Controllers\Admin\News;
 
 use App\Http\Controllers\Controller;
-use App\Services\News\Exceptions\NewsNotFoundException;
-use App\Services\News\Handlers\ShowHandler;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Illuminate\View\Factory as ViewFactory;
+use App\Services\Exceptions\News\NewsNotFoundException;
+use App\Services\UseCases\Queries\FetchNewsById\Fetcher;
+use App\Services\UseCases\Queries\FetchNewsById\Query;
 use Illuminate\View\View;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class ShowController extends Controller
 {
-
-    /**
-     * Display the specified resource.
-     *
-     * @param ShowHandler $showNewsUseCase
-     * @param ViewFactory $view
-     * @param int         $newsId
-     *
-     * @return View
-     */
-    public function __invoke(ShowHandler $showNewsUseCase, ViewFactory $view, string $newsId): View
+    public function __invoke(Fetcher $fetcher, string $newsId): View
     {
         try {
-            $news = $showNewsUseCase((int)$newsId);
+            $query = new Query((int)$newsId);
+            $news = $fetcher->fetch($query);
+
         } catch (NewsNotFoundException) {
-            throw new NotFoundHttpException('News not found');
+            throw new NotFoundHttpException('Новость не найдена');
         }
 
-        return $view->make('admin.news.show', compact('news'));
+        return view('admin.news.show', compact('news'));
     }
 }

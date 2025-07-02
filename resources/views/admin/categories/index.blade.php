@@ -4,7 +4,11 @@
 
 @php
     /**
-     * @var App\Services\Category\Results\CategoriesDTO[] $categories
+     * @var \Illuminate\Contracts\Pagination\LengthAwarePaginator $categories
+     */
+
+    /**
+     * @var \App\Services\DTO\Categories\CategoryDTO $category
      */
 @endphp
 
@@ -31,6 +35,7 @@
                                 <th>ID</th>
                                 <th>Название</th>
                                 <th class="d-none d-md-table-cell">Слаг</th>
+                                <th>Активность</th>
                                 <th>Действия</th>
                             </tr>
                             </thead>
@@ -45,6 +50,13 @@
                                         </a>
                                     </td>
                                     <td class="d-none d-md-table-cell">{{ $category->slug }}</td>
+                                    <td>
+                                        @if($category->isActive)
+                                            <span class="badge bg-success">Активна</span>
+                                        @else
+                                            <span class="badge bg-secondary">Неактивна</span>
+                                        @endif
+                                    </td>
                                     <td>
                                         <div class="btn-group btn-group-sm">
                                             <a href="{{ route('admin.categories.show', $category->id) }}"
@@ -71,12 +83,11 @@
                             </tbody>
                         </table>
                     </div>
-
-                    {{-- <div class="d-flex justify-content-center mt-4">
-                         <nav>
-                             {{ $categories->appends(request()->query())->links() }}
-                         </nav>
-                     </div>--}}
+                    <div class="d-flex justify-content-center mt-4">
+                        <nav>
+                            {{ $categories->links() }}
+                        </nav>
+                    </div>
                 @else
                     <div class="alert alert-info">
                         <i class="fas fa-info-circle me-2"></i>Категории не найдены. Создайте первую категорию.

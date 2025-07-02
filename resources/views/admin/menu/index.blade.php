@@ -19,16 +19,16 @@
                     Категории
                 </a>
             </li>
-           {{-- <li class="nav-item">
-                <a class="nav-link {{ request()->routeIs('admin.comments.*') ? 'active' : '' }}" href="{{ route('admin.comments.index') }}">
-                    <span class="nav-icon"><i class="fas fa-comment"></i></span>
-                    Комментарии
-                </a>
-            </li>
             <li class="nav-item">
                 <a class="nav-link {{ request()->routeIs('admin.users.*') ? 'active' : '' }}" href="{{ route('admin.users.index') }}">
                     <span class="nav-icon"><i class="fas fa-users"></i></span>
                     Пользователи
+                </a>
+            </li>
+           {{-- <li class="nav-item">
+                <a class="nav-link {{ request()->routeIs('admin.comments.*') ? 'active' : '' }}" href="{{ route('admin.comments.index') }}">
+                    <span class="nav-icon"><i class="fas fa-comment"></i></span>
+                    Комментарии
                 </a>
             </li>--}}
 

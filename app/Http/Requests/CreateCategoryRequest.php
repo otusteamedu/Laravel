@@ -19,11 +19,25 @@ class CreateCategoryRequest extends FormRequest
      *
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      */
-    public function rules(): array
+    public function rules()
     {
         return [
-            'name' => ['required', 'string', 'min:2', 'max:255'],
-            'sort' => ['integer', 'gte:0'],
+            'name'      => ['required', 'string', 'max:255'],
+            'is_active' => ['boolean'],
+            'sort'      => ['integer', 'gte:0'],
+        ];
+    }
+
+    /**
+     * Get custom error messages for validator
+     *
+     * @return array
+     */
+    public function messages()
+    {
+        return [
+            'name.required' => 'Название категории обязательно для заполнения',
+            'name.max'      => 'Название категории не должно превышать 255 символов',
         ];
     }
 }
