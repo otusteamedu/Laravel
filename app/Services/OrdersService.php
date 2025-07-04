@@ -3,9 +3,11 @@ namespace App\Services;
 
 use App\Dto\Admin\Order\StoreDto;
 use App\Dto\Admin\Order\UpdateDto;
+use App\Dto\User\PaymentDto;
 use App\Models\Order;
 use App\Repositories\OrdersRepository;
 use App\Repositories\ProductsRepository;
+use App\Repositories\PaymentsRepository;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
 use YooKassa\Client;
@@ -16,6 +18,7 @@ class OrdersService
     public function __construct(
         private OrdersRepository $repository,
         private ProductsRepository $productsRepository,
+        private PaymentsRepository $paymentsRepository,
     ) {}
 
     /**
@@ -130,7 +133,16 @@ class OrdersService
             'capture' => true,
         ];
         $response = $client->createPayment($data, uniqid('', true));
+
+        $uid = $response->getId();
         $confirmationUrl = $response->getConfirmation()->getConfirmationUrl();
+
+        $dto = new PaymentDto($uid, $orderId, 'pending', $amount);
+        $this->paymentsRepository->add($dto);
+
+        $dto = new UpdateDto($orderId, $order->getUser()->id);
+        $status = 2;
+        $this->repository->save($dto, $status);
 
         return $confirmationUrl;
     }

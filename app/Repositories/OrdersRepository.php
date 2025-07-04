@@ -129,7 +129,7 @@ class OrdersRepository
     /**
      * @return Order
      */
-    public function save(UpdateDto $updateDto): Order
+    public function save(UpdateDto $updateDto, ?int $status = null): Order
     {
         $order = Order::find($updateDto->id);
 
@@ -138,6 +138,9 @@ class OrdersRepository
         }
 
         $order->user_id = $updateDto->user_id;
+        if (!empty($status)) {
+            $order->status = $status;
+        }
         $order->save();
 
         Cache::forget('order.' . $updateDto->id);
