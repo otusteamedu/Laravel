@@ -38,4 +38,15 @@ class PaymentsRepository
         }
         $payment->save();
     }
+
+    public function findByUid(string $uid): Payment
+    {
+        $payment = Payment::where(['uid' => $uid])->first();
+
+        if (!$payment) {
+            throw new PaymentNotFoundException();
+        }
+
+        return $payment;
+    }
 }

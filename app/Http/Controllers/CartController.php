@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Dto\Order\StatusDto;
 use App\Dto\Payment\UpdateDto;
 use App\Events\OrderConfirmed;
 use App\Events\PaymentConfirmed;
@@ -135,6 +136,11 @@ class CartController extends Controller
 
         $dto = new UpdateDto($paymentUid, $paymentStatus, $paymentAmount);
         $this->paymentsService->update($dto);
+
+        $payment = $this->paymentsService->getByUid($paymentUid);
+        $orderId = $payment->getOrderId();
+        $statusDto = new StatusDto($orderId, $paymentStatus);
+        $this->ordersService->updateStatus($statusDto);
 
         PaymentConfirmed::dispatch($resp);
         return response('', 200);

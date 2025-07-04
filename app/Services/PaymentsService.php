@@ -2,6 +2,7 @@
 namespace App\Services;
 
 use App\Dto\Payment\UpdateDto;
+use App\Models\Payment;
 use App\Repositories\PaymentsRepository;
 
 class PaymentsService
@@ -13,5 +14,10 @@ class PaymentsService
     public function update(UpdateDto $updateDto): void
     {
         $this->repository->save($updateDto);
+    }
+
+    public function getByUid(string $uid): Payment
+    {
+        return $this->repository->findByUid($uid);
     }
 }

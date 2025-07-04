@@ -3,6 +3,7 @@ namespace App\Services;
 
 use App\Dto\Admin\Order\StoreDto;
 use App\Dto\Admin\Order\UpdateDto;
+use App\Dto\Order\StatusDto;
 use App\Dto\Payment\StoreDto as PaymentDto;
 use App\Models\Order;
 use App\Repositories\OrdersRepository;
@@ -145,5 +146,11 @@ class OrdersService
         $this->repository->save($dto, $status);
 
         return $confirmationUrl;
+    }
+
+    public function updateStatus(StatusDto $dto): void
+    {
+        $status = $dto->status == 'succeeded' ? 3 : 4;
+        $this->repository->saveStatus($dto->id, $status);
     }
 }

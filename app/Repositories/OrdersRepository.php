@@ -186,4 +186,21 @@ class OrdersRepository
             $this->find($orderId, true);
         }
     }
+
+    public function saveStatus(int $id, int $status): Order
+    {
+        $order = Order::find($id);
+
+        if (!$order) {
+            throw new OrderNotFoundException();
+        }
+
+        $order->status = $status;
+        $order->save();
+
+        Cache::forget('order.' . $id);
+        Cache::tags('order-list')->flush();
+
+        return $order;
+    }
 }
