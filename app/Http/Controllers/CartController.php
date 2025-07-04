@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Events\OrderConfirmed;
+use App\Events\PaymentConfirmed;
 use App\Exceptions\StockIsEmptyException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Cart\DeliveryRequest;
@@ -113,5 +114,12 @@ class CartController extends Controller
         $this->service->clearCart();
 
         return redirect()->route('profile.history', $userId);
+    }
+
+    public function processNotification()
+    {
+        $resp = file_get_contents('php://input');
+        PaymentConfirmed::dispatch($resp);
+        return response('', 200);
     }
 }

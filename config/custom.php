@@ -10,4 +10,6 @@ return [
     'usersSorts' => ['id', 'name', 'email', 'created_at'],
     'usersDirections' => ['asc', 'desc'], 
     'adminEmail' => 'elisad5791@yandex.ru',
+    'yookassaId' => env('YOOKASSA_ID'),
+    'yookassaSecret' => env('YOOKASSA_SECRET'),
 ];

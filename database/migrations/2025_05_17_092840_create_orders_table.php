@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained();
-            $table->unsignedTinyInteger('status');
+            $table->unsignedTinyInteger('status')->default(1);
             $table->timestamps();
         });
     }

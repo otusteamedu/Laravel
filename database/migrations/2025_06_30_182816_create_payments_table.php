@@ -14,9 +14,10 @@ return new class extends Migration
         Schema::create('payments', function (Blueprint $table) {
             $table->id();
             $table->string('uid');
+            $table->foreignId('order_id')->constrained();
             $table->string('status');
             $table->integer('amount');
-            $table->dateTime('confirmed_at');
+            $table->dateTime('confirmed_at')->nullable();
             $table->timestamps();
         });
     }

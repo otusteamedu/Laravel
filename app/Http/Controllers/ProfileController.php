@@ -8,16 +8,20 @@ use App\Exceptions\UserNotFoundException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\User\PasswordRequest;
 use App\Http\Requests\User\UpdateRequest;
+use App\Services\OrdersService;
 use App\Services\UsersService;
 use Illuminate\Contracts\View\View;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Illuminate\Http\RedirectResponse;
 use Hash;
+use Exception;
+use Illuminate\Support\Facades\Log;
 
 class ProfileController extends Controller
 {
     public function __construct(
-        private UsersService $service
+        private UsersService $service,
+        private OrdersService $ordersService
     ) {}
 
     public function edit(int $userId): View
@@ -82,5 +86,16 @@ class ProfileController extends Controller
         
         $orders = $user->orders;
         return view('cabinet.history', compact('orders'));
+    }
+
+    public function pay(int $orderId): RedirectResponse
+    {
+        try {
+            $confirmationUrl = $this->ordersService->pay($orderId);
+            return redirect($confirmationUrl);
+        } catch (Exception $e) {
+            Log::error($e->getMessage());
+            return redirect()->back();
+        }
     }
 }

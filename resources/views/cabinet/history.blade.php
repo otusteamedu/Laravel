@@ -39,7 +39,7 @@
                     </td>
                     <td>
                         @if($order->getStatus() == 1 || $order->getStatus() == 4)
-                        <a href="#" class="btn btn-success">Оплатить</a>
+                        <a href="{{ route('profile.pay', $order->getId()) }}" class="btn btn-success">Оплатить</a>
                         @endif
                     </td>
                 </tr>

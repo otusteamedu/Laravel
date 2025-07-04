@@ -8,6 +8,8 @@ use App\Repositories\OrdersRepository;
 use App\Repositories\ProductsRepository;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
+use YooKassa\Client;
+use Illuminate\Support\Facades\Log;
 
 class OrdersService
 {
@@ -43,7 +45,7 @@ class OrdersService
     /**
      * @return Order
      */
-    public function getById($orderId): Order
+    public function getById(int $orderId): Order
     {
         return $this->repository->find($orderId);
     }
@@ -96,7 +98,7 @@ class OrdersService
         $order->products()->sync($items);
     }
 
-    public function delete($orderId): void
+    public function delete(int $orderId): void
     {
         $order = $this->repository->find($orderId);
         $products = $order->getProducts();
@@ -107,5 +109,29 @@ class OrdersService
 
         $order->products()->detach();
         $this->repository->delete($orderId);
+    }
+
+    public function pay(int $orderId): string
+    {
+        $order = $this->getById($orderId);
+        $amount = $order->getTotal();
+        $userId = auth()->id();
+
+        $appUrl = config('app.url');
+        $yooId = (string) config('custom.yookassaId');
+        $yooSecret = (string) config('custom.yookassaSecret');
+
+        $client = new Client();
+        $client->setAuth($yooId, $yooSecret);
+        $url = $appUrl . "/history/$userId";
+        $data = [
+            'amount' => ['value' => $amount, 'currency' => 'RUB'],
+            'confirmation' => ['type' => 'redirect', 'return_url' => $url],
+            'capture' => true,
+        ];
+        $response = $client->createPayment($data, uniqid('', true));
+        $confirmationUrl = $response->getConfirmation()->getConfirmationUrl();
+
+        return $confirmationUrl;
     }
 }
