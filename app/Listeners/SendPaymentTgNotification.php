@@ -16,7 +16,12 @@ class SendPaymentTgNotification implements ShouldQueue
 
     public function handle(PaymentConfirmed $event): void
     {
-        $notification = /*$event->notification;*/'Получено уведомление о платеже';
-        Notification::send(null, new PaymentTelegramNotification($notification));
+        $notification = $event->notification;
+        $arr = json_decode($notification, true);
+        $uid = $arr['object']['id'] ?? '';
+        $event = $arr['event'] ?? '';
+        $amount = (int) ($arr['object']['amount']['value'] ?? 0);
+
+        Notification::send(null, new PaymentTelegramNotification($uid, $event, $amount));
     }
 }

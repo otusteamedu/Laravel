@@ -12,7 +12,7 @@ class PaymentEmail extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public function __construct(public string $notification)
+    public function __construct(public string $uid, public string $event, public int $amount)
     {}
 
     public function envelope(): Envelope
