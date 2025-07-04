@@ -25,6 +25,19 @@ class Product extends BaseModel
     /** @use HasFactory<\Database\Factories\ProductFactory> */
     use HasFactory;
 
+
+    protected $fillable = [
+        'title',
+        'alias',
+        'text',
+        'image',
+        'images',
+        'is_sale',
+        'published',
+        'order',
+        'price',
+    ];
+
     public function categories(){
         return $this->belongsToMany(Category::class);
     }

@@ -22,6 +22,13 @@ class Category extends BaseModel
     /** @use HasFactory<\Database\Factories\CategoryFactory> */
     use HasFactory;
 
+    protected $fillable = [
+        'title',
+        'alias',
+        'text',
+        'published'
+    ];
+
     public function products()
     {
         return $this->hasMany(Product::class);
