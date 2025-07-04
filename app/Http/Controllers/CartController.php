@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Dto\Payment\UpdateDto;
 use App\Events\OrderConfirmed;
 use App\Events\PaymentConfirmed;
 use App\Exceptions\StockIsEmptyException;
@@ -9,6 +10,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Cart\DeliveryRequest;
 use App\Services\CartService;
 use App\Services\OrdersService;
+use App\Services\PaymentsService;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
@@ -18,7 +20,8 @@ class CartController extends Controller
 {
     public function __construct(
         private CartService $service,
-        private OrdersService $ordersService
+        private OrdersService $ordersService,
+        private PaymentsService $paymentsService
     ) {}
 
     public function index(): View
@@ -119,6 +122,20 @@ class CartController extends Controller
     public function processNotification()
     {
         $resp = file_get_contents('php://input');
+        $response = json_decode($resp, true);
+
+        $paymentUid = $response['object']['id'] ?? '';
+        $paymentEvent = $response['event'] ?? '';
+        $paymentStatus = explode('.', $paymentEvent)[1] ?? '';
+        $paymentAmount = (int) ($response['object']['amount']['value'] ?? 0);
+
+        if (empty($paymentUid) || empty($paymentStatus) || empty($paymentAmount)) {
+            return response('', 400);
+        }
+
+        $dto = new UpdateDto($paymentUid, $paymentStatus, $paymentAmount);
+        $this->paymentsService->update($dto);
+
         PaymentConfirmed::dispatch($resp);
         return response('', 200);
     }

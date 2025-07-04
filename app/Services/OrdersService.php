@@ -3,7 +3,7 @@ namespace App\Services;
 
 use App\Dto\Admin\Order\StoreDto;
 use App\Dto\Admin\Order\UpdateDto;
-use App\Dto\User\PaymentDto;
+use App\Dto\Payment\StoreDto as PaymentDto;
 use App\Models\Order;
 use App\Repositories\OrdersRepository;
 use App\Repositories\ProductsRepository;

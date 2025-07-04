@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Dto\User;
+namespace App\Dto\Payment;
 
-class PaymentDto
+class StoreDto
 {
     public function __construct(
         public string $uid,
         public int $orderId,
         public string $status,
-        public string $amount
+        public int $amount
     ) 
     {}
 }
