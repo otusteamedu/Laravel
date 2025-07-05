@@ -5,6 +5,7 @@ use App\Dto\Admin\Order\StoreDto;
 use App\Dto\Admin\Order\UpdateDto;
 use App\Dto\Order\StatusDto;
 use App\Dto\Payment\StoreDto as PaymentDto;
+use App\Events\OrderConfirmed;
 use App\Models\Order;
 use App\Repositories\OrdersRepository;
 use App\Repositories\ProductsRepository;
@@ -12,7 +13,6 @@ use App\Repositories\PaymentsRepository;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
 use YooKassa\Client;
-use Illuminate\Support\Facades\Log;
 
 class OrdersService
 {
@@ -80,6 +80,8 @@ class OrdersService
         }
 
         $order->products()->sync($items);
+
+        OrderConfirmed::dispatch($order->getId());
 
         return $order;
     }
