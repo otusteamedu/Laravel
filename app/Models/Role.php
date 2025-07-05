@@ -28,4 +28,20 @@ class Role extends BaseModel
         return $this->belongsToMany(User::class);
     }
 
+    /**
+     * Роль может иметь много разрешений.
+     */
+    public function permissions()
+    {
+        return $this->belongsToMany(Permission::class);
+    }
+
+    /**
+     * Проверяет, имеет ли роль данное разрешение.
+     */
+    public function hasPermissionTo($permissionName)
+    {
+        return $this->permissions->contains('name', $permissionName);
+    }
+
 }

@@ -5,15 +5,21 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Category;
 use Illuminate\Http\Request;
+use App\Models\User;
 use App\Repositories\Contracts\CategoryRepositoryInterface;
+use Illuminate\Support\Facades\Gate;
 
 class CategoryController extends Controller
 {
     protected CategoryRepositoryInterface $categoryRepository;
 
-    public function __construct(CategoryRepositoryInterface $categoryRepository)
+
+    public function __construct(
+        CategoryRepositoryInterface $categoryRepository,
+    )
     {
         $this->categoryRepository = $categoryRepository;
+
     }
 
     /**
@@ -21,6 +27,7 @@ class CategoryController extends Controller
      */
     public function index()
     {
+        Gate::authorize('viewAny', Category::class);
         $categories = $this->categoryRepository->getAllPaginated(10);
         return view('admin.categories.index', compact('categories'));
     }
@@ -30,14 +37,17 @@ class CategoryController extends Controller
      */
     public function create()
     {
+        Gate::authorize('create', Category::class);
         return view('admin.categories.create');
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(Request $request, User $user)
     {
+        Gate::authorize('create', Category::class);
+
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'alias' => 'required|string|max:255|unique:categories,alias',
@@ -45,6 +55,8 @@ class CategoryController extends Controller
             'published' => 'boolean',
             'order' => 'required|integer|min:0',
         ]);
+
+        $validated['user_id'] = $user->id;
 
         $this->categoryRepository->create($validated);
 
@@ -56,6 +68,7 @@ class CategoryController extends Controller
      */
     public function edit(Category $category) // Category model still resolved by route model binding
     {
+        Gate::authorize('update', $category);
         return view('admin.categories.edit', compact('category'));
     }
 
@@ -64,6 +77,7 @@ class CategoryController extends Controller
      */
     public function update(Request $request, Category $category) // Category model still resolved by route model binding
     {
+        Gate::authorize('update', $category);
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'alias' => 'required|string|max:255|unique:categories,alias,' . $category->id,
@@ -82,6 +96,8 @@ class CategoryController extends Controller
      */
     public function destroy(Category $category) // Category model still resolved by route model binding
     {
+        Gate::authorize('delete', $category);
+
         $this->categoryRepository->delete($category);
 
         return redirect()->route('admin.categories.index')->with('success', 'Category deleted successfully!');
