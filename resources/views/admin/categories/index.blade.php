@@ -5,7 +5,9 @@
 @section('content')
     <div class="flex justify-between items-center mb-6">
         <h1 class="text-3xl font-bold text-gray-800">Categories</h1>
+        @can('create', App\Models\Category::class)
         <a href="{{ route('admin.categories.create') }}" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded shadow">Add New Category</a>
+        @endcan
     </div>
 
     <div class="bg-white shadow-md rounded-lg overflow-hidden">
@@ -39,12 +41,17 @@
                     </td>
                     <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">{{ $category->order }}</td>
                     <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm text-right">
+                        @can('update', $category)
                         <a href="{{ route('admin.categories.edit', $category) }}" class="text-indigo-600 hover:text-indigo-900 mr-3">Edit</a>
+                        @endcan
+
+                        @can('delete', $category)
                         <form action="{{ route('admin.categories.destroy', $category) }}" method="POST" class="inline-block" onsubmit="return confirm('Are you sure you want to delete this category? All associated products will be detached or might be affected depending on your database cascade settings.');">
                             @csrf
                             @method('DELETE')
                             <button type="submit" class="text-red-600 hover:text-red-900">Delete</button>
                         </form>
+                        @endcan
                     </td>
                 </tr>
             @empty

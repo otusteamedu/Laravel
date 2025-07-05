@@ -74,4 +74,26 @@ class User extends Authenticatable
     {
         return $this->hasMany(Task::class);
     }
+
+    /**
+     * Проверяет, имеет ли пользователь данное разрешение через любую из своих ролей.
+     */
+    public function hasPermissionTo($permissionName)
+    {
+        return $this->roles->contains(function ($role) use ($permissionName) {
+            return $role->hasPermissionTo($permissionName);
+        });
+    }
+
+    /**
+     * Проверяет, принадлежит ли пользователь к данной роли.
+     */
+    public function hasRole($roleName)
+    {
+        return $this->roles->contains('name', $roleName);
+    }
+
+    public function isAdmin(): bool{
+       return $this->hasRole('Administrator');
+    }
 }

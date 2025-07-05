@@ -33,6 +33,7 @@ class DatabaseSeeder extends Seeder
             'password' => bcrypt('password')
         ]);
 
+
         $this->call([
             RoleSeeder::class,
             UserRoleSeeder::class,
