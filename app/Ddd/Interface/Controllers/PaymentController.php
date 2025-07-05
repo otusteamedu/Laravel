@@ -3,19 +3,29 @@
 namespace App\Ddd\Interface\Controllers;
 
 use App\Ddd\Application\UseCases\Payments\Commands\Store\Handler as StoreHandler;
+use App\Ddd\Application\UseCases\Payments\Commands\Update\Handler as UpdateHandler;
 use App\Ddd\Application\UseCases\Payments\Queries\FetchAll\Fetcher;
+use App\Ddd\Application\UseCases\Payments\Queries\FetchByUid\Fetcher as UidFetcher;
 use App\Http\Controllers\Controller;
+use App\Services\OrdersService;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\View\View;
 use Illuminate\Http\RedirectResponse;
 use Exception;
 use Illuminate\Support\Facades\Log;
+use App\Dto\Payment\UpdateDto;
+use App\Events\PaymentConfirmed;
+use App\Dto\Order\StatusDto;
 
 class PaymentController extends Controller
 {
     public function __construct(
         private Fetcher $fetcher,
-        private StoreHandler $storeHandler
+        private UidFetcher $uidFetcher,
+        private StoreHandler $storeHandler,
+        private UpdateHandler $updateHandler,
+        private OrdersService $ordersService
     ) {}
 
     public function index(Request $request): View
@@ -33,5 +43,31 @@ class PaymentController extends Controller
             Log::error($e->getMessage());
             return redirect()->back();
         }
+    }
+
+    public function update(): Response
+    {
+        $resp = file_get_contents('php://input');
+        $response = json_decode($resp, true);
+
+        $paymentUid = $response['object']['id'] ?? '';
+        $paymentEvent = $response['event'] ?? '';
+        $paymentStatus = explode('.', $paymentEvent)[1] ?? '';
+        $paymentAmount = (int) ($response['object']['amount']['value'] ?? 0);
+
+        if (empty($paymentUid) || empty($paymentStatus) || empty($paymentAmount)) {
+            return response('', 400);
+        }
+
+        $dto = new UpdateDto($paymentUid, $paymentStatus, $paymentAmount);
+        $this->updateHandler->handle($dto);
+
+        $payment = $this->uidFetcher->fetch($paymentUid);
+        $orderId = $payment->getOrderId();
+        $statusDto = new StatusDto($orderId, $paymentStatus);
+        $this->ordersService->updateStatus($statusDto);
+
+        PaymentConfirmed::dispatch($resp);
+        return response('', 200);
     }
 }

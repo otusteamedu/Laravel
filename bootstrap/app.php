@@ -16,7 +16,7 @@ return Application::configure(basePath: dirname(__DIR__))
             'cart.check' => EnsureCartNotEmpty::class
         ]);
          $middleware->validateCsrfTokens(except: [
-            'cart/notification',
+            'notification',
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
