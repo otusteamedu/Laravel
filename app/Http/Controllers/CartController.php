@@ -7,7 +7,6 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Cart\DeliveryRequest;
 use App\Services\CartService;
 use App\Services\OrdersService;
-use App\Services\PaymentsService;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
@@ -17,8 +16,7 @@ class CartController extends Controller
 {
     public function __construct(
         private CartService $service,
-        private OrdersService $ordersService,
-        private PaymentsService $paymentsService
+        private OrdersService $ordersService
     ) {}
 
     public function index(): View

@@ -8,7 +8,6 @@ use App\Events\OrderConfirmed;
 use App\Models\Order;
 use App\Repositories\OrdersRepository;
 use App\Repositories\ProductsRepository;
-use App\Repositories\PaymentsRepository;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
 
@@ -16,8 +15,7 @@ class OrdersService
 {
     public function __construct(
         private OrdersRepository $repository,
-        private ProductsRepository $productsRepository,
-        private PaymentsRepository $paymentsRepository,
+        private ProductsRepository $productsRepository
     ) {}
 
     /**
