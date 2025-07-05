@@ -8,6 +8,7 @@ use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Validation\ValidationException;
 
 class BlogsController extends Controller
 {
@@ -37,27 +38,20 @@ class BlogsController extends Controller
         \Illuminate\Contracts\Validation\Factory $validationFactory,
         \Illuminate\Contracts\Auth\Factory $auth
     ): RedirectResponse {
-        $validator = $validationFactory->make(request()->all(), [
-            'title' => ['required', 'min:10', 'max: 255'],
-            'preview' => ['min:10'],
-            'text' => ['required', 'min:10'],
-        ]);
 
         try {
-            $validator->validate();
-        } catch (\Illuminate\Validation\ValidationException $e) {
-            return redirect()
-                ->back()
-                ->withInput()
-                ->withErrors($validator);
+            $blog = new Blog;
+            $blog->fillBlog($request->input('title'), $request->input('preview'), $request->input('text'));
+            $blog->save();
+            // } catch (\Exception $e) {
+        } catch (ValidationException $e) {
+            // Обработка ошибок валидации
+            return redirect()->back()->withInput()->withErrors($e->errors());
+        } catch (Exception $e) {
+            // Обработка остальных исключений
+            // В этом случае можно перенаправить на страницу с общей ошибкой или логировать ошибку
+            return redirect()->back()->withInput()->withErrors(['general_error' => 'Произошла непредвиденная ошибка.']);
         }
-
-        $blog = new Blog;
-        $blog->title = $request->input('title');
-        $blog->preview = $request->input('preview');
-        $blog->text = $request->input('text');
-
-        $blog->save();
 
         return redirect()
             ->route('blogs.index')
@@ -91,6 +85,10 @@ class BlogsController extends Controller
      */
     public function update(UpdateBlogRequest $request, Blog $blog)
     {
+
+        dump($request);
+        exit();
+
         $requestData = $request->validated();
 
         $blog->title = $requestData['title'];
