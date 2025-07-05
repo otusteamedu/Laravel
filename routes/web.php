@@ -11,8 +11,6 @@ Route::view('/about', 'about')->name('about');
 Route::get('/profile/{userId}', [ProfileController::class, 'edit'])->name('profile.edit');
 Route::put('/profile/{userId}', [ProfileController::class, 'update'])->name('profile.update');
 Route::put('/profile/password/{userId}', [ProfileController::class, 'updatePassword'])->name('profile.password');
-
-Route::get('/history/pay/{orderId}', [ProfileController::class, 'pay'])->name('profile.pay')->middleware('auth');
 Route::get('/history/{userId}', [ProfileController::class, 'history'])->name('profile.history');
 
 Route::get('/catalog', [CatalogController::class, 'index'])->name('catalog');
@@ -27,6 +25,8 @@ Route::post('/cart/pickup', [CartController::class, 'pickup'])->name('cart.picku
 Route::get('/cart/order', [CartController::class, 'order'])->name('cart.order')->middleware('cart.check');
 Route::get('/cart/confirm', [CartController::class, 'confirm'])->name('cart.confirm')->middleware('cart.check');
 Route::post('/cart/notification', [CartController::class, 'processNotification'])->name('cart.notification');
+
+Route::get('/pay/{orderId}', [App\Ddd\Interface\Controllers\PaymentController::class, 'add'])->name('pay')->middleware('auth');
 
 Route::view('/admin', 'admin.index')->name('admin.index')->middleware('can:employee-access');
 

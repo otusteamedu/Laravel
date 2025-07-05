@@ -7,6 +7,7 @@ use App\Ddd\Domain\Repositories\PaymentsRepositoryInterface;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use  Illuminate\Support\Carbon;
+use App\Dto\Payment\StoreDto;
 
 class PaymentsRepository implements PaymentsRepositoryInterface
 {
@@ -28,5 +29,11 @@ class PaymentsRepository implements PaymentsRepositoryInterface
         }
         $payments = collect($arr);
         return $payments;
+    }
+
+    public function add(StoreDto $dto): void
+    {
+        $params = [$dto->uid, $dto->orderId, $dto->status, $dto->amount, now(), now()];
+        DB::insert('insert into payments(uid, order_id, status, amount, created_at, updated_at) values (?, ?, ?, ?, ?, ?)', $params);
     }
 }

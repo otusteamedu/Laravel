@@ -14,8 +14,6 @@ use Illuminate\Contracts\View\View;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Illuminate\Http\RedirectResponse;
 use Hash;
-use Exception;
-use Illuminate\Support\Facades\Log;
 
 class ProfileController extends Controller
 {
@@ -86,16 +84,5 @@ class ProfileController extends Controller
         
         $orders = $user->orders;
         return view('cabinet.history', compact('orders'));
-    }
-
-    public function pay(int $orderId): RedirectResponse
-    {
-        try {
-            $confirmationUrl = $this->ordersService->pay($orderId);
-            return redirect($confirmationUrl);
-        } catch (Exception $e) {
-            Log::error($e->getMessage());
-            return redirect()->back();
-        }
     }
 }

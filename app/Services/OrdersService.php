@@ -4,7 +4,6 @@ namespace App\Services;
 use App\Dto\Admin\Order\StoreDto;
 use App\Dto\Admin\Order\UpdateDto;
 use App\Dto\Order\StatusDto;
-use App\Dto\Payment\StoreDto as PaymentDto;
 use App\Events\OrderConfirmed;
 use App\Models\Order;
 use App\Repositories\OrdersRepository;
@@ -12,7 +11,6 @@ use App\Repositories\ProductsRepository;
 use App\Repositories\PaymentsRepository;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
-use YooKassa\Client;
 
 class OrdersService
 {
@@ -115,39 +113,6 @@ class OrdersService
 
         $order->products()->detach();
         $this->repository->delete($orderId);
-    }
-
-    public function pay(int $orderId): string
-    {
-        $order = $this->getById($orderId);
-        $amount = $order->getTotal();
-        $userId = auth()->id();
-
-        $appUrl = config('app.url');
-        $yooId = (string) config('custom.yookassaId');
-        $yooSecret = (string) config('custom.yookassaSecret');
-
-        $client = new Client();
-        $client->setAuth($yooId, $yooSecret);
-        $url = $appUrl . "/history/$userId";
-        $data = [
-            'amount' => ['value' => $amount, 'currency' => 'RUB'],
-            'confirmation' => ['type' => 'redirect', 'return_url' => $url],
-            'capture' => true,
-        ];
-        $response = $client->createPayment($data, uniqid('', true));
-
-        $uid = $response->getId();
-        $confirmationUrl = $response->getConfirmation()->getConfirmationUrl();
-
-        $dto = new PaymentDto($uid, $orderId, 'pending', $amount);
-        $this->paymentsRepository->add($dto);
-
-        $dto = new UpdateDto($orderId, $order->getUser()->id);
-        $status = 2;
-        $this->repository->save($dto, $status);
-
-        return $confirmationUrl;
     }
 
     public function updateStatus(StatusDto $dto): void
