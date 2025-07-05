@@ -7,9 +7,19 @@ use App\Dto\Payment\UpdateDto;
 use App\Exceptions\PaymentAmountNotCorrectException;
 use App\Exceptions\PaymentNotFoundException;
 use App\Models\Payment;
+use Illuminate\Database\Eloquent\Collection;
 
 class PaymentsRepository
 {
+    /**
+     * @return Collection<array-key, Payment>
+     */
+    public function fetchAll(): Collection
+    {
+        $payments = Payment::all();
+        return $payments;
+    }
+
     public function add(StoreDto $dto): void
     {
         $payment = new Payment();

@@ -4,6 +4,7 @@ namespace App\Services;
 use App\Dto\Payment\UpdateDto;
 use App\Models\Payment;
 use App\Repositories\PaymentsRepository;
+use Illuminate\Database\Eloquent\Collection;
 
 class PaymentsService
 {
@@ -19,5 +20,13 @@ class PaymentsService
     public function getByUid(string $uid): Payment
     {
         return $this->repository->findByUid($uid);
+    }
+
+    /**
+     * @return Collection<array-key, Payment>
+     */
+    public function getAll(): Collection
+    {
+        return $this->repository->fetchAll();
     }
 }

@@ -13,7 +13,7 @@ use Illuminate\Support\Carbon;
  * @property int $order_id 
  * @property string $status 
  * @property int $amount 
- * @property \Illuminate\Support\Carbon $confirmed_at
+ * @property string $confirmed_at
  * @property \Illuminate\Support\Carbon $created_at
  * @property \Illuminate\Support\Carbon $updated_at
  */
@@ -47,17 +47,17 @@ class Payment extends Model
         return $this->amount;
     }
 
-    public function getConfirmedAt(): Carbon
+    public function getConfirmedAt(): ?string
     {
         return $this->confirmed_at;
     }
 
-    public function getCreatedAt(): Carbon
+    public function getCreatedAt(): ?Carbon
     {
         return $this->created_at;
     }
 
-    public function getUpdatedAt(): Carbon
+    public function getUpdatedAt(): ?Carbon
     {
         return $this->updated_at;
     }

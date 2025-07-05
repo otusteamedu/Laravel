@@ -50,6 +50,8 @@ Route::prefix('admin')
         Route::resource('/products', ProductController::class)->middleware('can:admin-access');
         Route::resource('/orders', OrderController::class);
         Route::resource('/users', UserController::class);
+
+        Route::get('/payments', [App\Http\Controllers\Admin\PaymentController::class, 'index'])->name('payments.index');
     });
 
 Auth::routes();
