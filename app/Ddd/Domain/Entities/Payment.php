@@ -1,8 +1,7 @@
 <?php
 
-namespace App\Models;
+namespace App\Ddd\Domain\Entities;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;
 
 /**
@@ -13,14 +12,22 @@ use Illuminate\Support\Carbon;
  * @property int $order_id 
  * @property string $status 
  * @property int $amount 
- * @property string $confirmed_at
- * @property \Illuminate\Support\Carbon $created_at
- * @property \Illuminate\Support\Carbon $updated_at
+ * @property ?string $confirmed_at
+ * @property ?Carbon $created_at
+ * @property ?Carbon $updated_at
  */
-class Payment extends Model
+class Payment
 {
-    protected $guarded = [];
-    protected $table = 'payments';
+    public function __construct(
+        private int $id, 
+        private string $uid, 
+        private int $order_id, 
+        private string $status,
+        private int $amount,
+        private ?string $confirmed_at,
+        private ?Carbon $created_at,
+        private ?Carbon $updated_at
+    ) {}
 
     public function getId(): int
     {
