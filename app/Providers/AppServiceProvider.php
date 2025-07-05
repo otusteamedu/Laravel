@@ -6,6 +6,8 @@ use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Blade;
+use App\Ddd\Domain\Repositories\PaymentsRepositoryInterface;
+use App\Ddd\Infrastructure\Repositories\PaymentsRepository;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -17,7 +19,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        $this->app->bind(PaymentsRepositoryInterface::class, PaymentsRepository::class);
     }
 
     /**

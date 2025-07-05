@@ -51,7 +51,7 @@ Route::prefix('admin')
         Route::resource('/orders', OrderController::class);
         Route::resource('/users', UserController::class);
 
-        Route::get('/payments', [App\Http\Controllers\Admin\PaymentController::class, 'index'])->name('payments.index');
+        Route::get('/payments', [App\Ddd\Interface\Controllers\PaymentController::class, 'index'])->name('payments.index');
     });
 
 Auth::routes();
