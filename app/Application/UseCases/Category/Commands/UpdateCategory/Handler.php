@@ -5,6 +5,7 @@ namespace App\Application\UseCases\Category\Commands\UpdateCategory;
 use App\Application\UseCases\Category\DTO\CategoryDTO;
 use App\Domain\News\Exceptions\CategoryAlreadyExistsException;
 use App\Domain\News\Exceptions\CategoryNotFoundException;
+use App\Domain\News\Exceptions\CategorySaveException;
 use App\Domain\News\Repositories\CategoryRepositoryInterface;
 
 class Handler
@@ -34,14 +35,18 @@ class Handler
             slug: $command->slug ?? null
         );
 
-        $this->categoryRepository->save($category);
+        try {
+            $domainCategory = $this->categoryRepository->save($category);
+        } catch (\Exception) {
+            throw new CategorySaveException("Не удалось сохранить категорию '{$command->name}'");
+        }
 
         return new CategoryDTO(
-            id: $category->getId(),
-            name: $category->getName(),
-            slug: $category->getSlug(),
-            isActive: $category->isActive(),
-            sort: $category->getSort(),
+            id: $domainCategory->getId(),
+            name: $domainCategory->getName(),
+            slug: $domainCategory->getSlug(),
+            isActive: $domainCategory->isActive(),
+            sort: $domainCategory->getSort(),
         );
     }
 }

@@ -13,7 +13,10 @@ final readonly class UserDTO
         public \DateTimeInterface $createdAt,
         public \DateTimeInterface $updatedAt,
         public ?\DateTimeInterface $emailVerifiedAt,
+        public array $roles = [],
+        //public array $permissions = [],
         public ?bool $subscribedNews = null,
+
     ) {
     }
 }

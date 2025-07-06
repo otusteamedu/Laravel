@@ -33,7 +33,7 @@
                                 <th>ID</th>
                                 <th>Имя</th>
                                 <th>Email</th>
-                                {{--  <th>Статус</th>--}}
+                                <th>Статус</th>
                                 <th class="d-none d-md-table-cell">Регистрация</th>
                                 <th>Действия</th>
                             </tr>
@@ -49,13 +49,13 @@
                                         </a>
                                     </td>
                                     <td class="text-break">{{ $user->email }}</td>
-                                    {{--<td>
-                                        @if($user->isAdmin)
+                                    <td>
+                                        @if(in_array('admin', $user->roles))
                                             <span class="badge bg-danger">Админ</span>
                                         @else
                                             <span class="badge bg-secondary">Пользователь</span>
                                         @endif
-                                    </td>--}}
+                                    </td>
                                     <td class="d-none d-md-table-cell">{{ $user->createdAt->format('d.m.Y H:i') }}</td>
                                     <td>
                                         <div class="btn-group btn-group-sm">

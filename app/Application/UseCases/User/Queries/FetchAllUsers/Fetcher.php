@@ -33,6 +33,8 @@ class Fetcher
                 createdAt: $user->getCreatedAt(),
                 updatedAt: $user->getUpdatedAt(),
                 emailVerifiedAt: $user->getEmailVerifiedAt(),
+                roles: method_exists($user, 'getRoles') ? $user->getRoles()->roles : [],
+                // permissions: method_exists($user, 'getPermissions') ? $user->getPermissions()->permissions : [],
                 subscribedNews: $user->getSubscribedNews(),
             );
         }, $users);

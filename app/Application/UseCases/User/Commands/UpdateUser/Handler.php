@@ -4,6 +4,7 @@ namespace App\Application\UseCases\User\Commands\UpdateUser;
 
 use App\Application\UseCases\User\DTO\UserDTO;
 use App\Domain\User\Exceptions\UserNotFoundException;
+use App\Domain\User\Exceptions\UserSaveException;
 use App\Domain\User\Repositories\UserRepositoryInterface;
 use App\Infrastructure\PasswordHasher\PasswordHasherInterface;
 
@@ -47,15 +48,22 @@ class Handler
             $user->changePassword($this->passwordHasher->hash($command->password));
         }
 
-        $this->userRepository->save($user);
+        try {
+            $domainUser = $this->userRepository->save($user);
+        } catch (\Exception) {
+            throw new UserSaveException("Не удалось сохранить пользователя '{$command->name}'");
+        }
 
         return new UserDTO(
-            id: $user->getId(),
-            name: $user->getName(),
-            email: $user->getEmail(),
-            createdAt: $user->getCreatedAt(),
-            updatedAt: $user->getUpdatedAt(),
-            emailVerifiedAt: $user->getEmailVerifiedAt(),
+            id: $domainUser->getId(),
+            name: $domainUser->getName(),
+            email: $domainUser->getEmail(),
+            createdAt: $domainUser->getCreatedAt(),
+            updatedAt: $domainUser->getUpdatedAt(),
+            emailVerifiedAt: $domainUser->getEmailVerifiedAt(),
+            subscribedNews: $domainUser->getSubscribedNews(),
+            roles: method_exists($domainUser, 'getRoles') ? $domainUser->getRoles()->roles : [],
+           // permissions: method_exists($domainUser, 'getPermissions') ? $domainUser->getPermissions()->permissions : [],
         );
     }
 }

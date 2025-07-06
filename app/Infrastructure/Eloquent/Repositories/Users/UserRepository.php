@@ -60,6 +60,9 @@ class UserRepository implements UserRepositoryInterface
 
         $model->save();
 
+        //$model->roles()->sync($user->getRoles()->roles);
+        //$model->permissions()->sync($user->getPermissions()->permissions);
+
         return UserMapper::toEntity($model);
     }
 

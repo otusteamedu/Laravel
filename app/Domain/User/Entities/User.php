@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace App\Domain\User\Entities;
 
+use App\Domain\User\ValueObjects\Roles;
+use App\Domain\User\ValueObjects\Permissions;
+
 class User
 {
     private ?int $id;
@@ -15,15 +18,20 @@ class User
     private ?\DateTimeImmutable $emailVerifiedAt;
     private bool $subscribedNews;
 
+    private Roles $roles;
+   // private Permissions $permissions;
+
     public function __construct(
         ?int $id,
         string $name,
         string $email,
         string $password,
+        Roles $roles,
+        //Permissions $permissions,
         ?\DateTimeImmutable $createdAt = null,
         ?\DateTimeImmutable $updatedAt = null,
         ?\DateTimeImmutable $emailVerifiedAt = null,
-        bool $subscribedNews = false
+        bool $subscribedNews = false,
     ) {
         $this->id = $id;
         $this->name = $name;
@@ -33,6 +41,9 @@ class User
         $this->updatedAt = $updatedAt;
         $this->emailVerifiedAt = $emailVerifiedAt;
         $this->subscribedNews = $subscribedNews;
+
+        $this->roles = $roles;
+        //$this->permissions = $permissions;
     }
 
     public function getId(): ?int
@@ -75,6 +86,16 @@ class User
         return $this->subscribedNews;
     }
 
+    public function getRoles(): Roles
+    {
+        return $this->roles;
+    }
+
+   /* public function getPermissions(): Permissions
+    {
+        return $this->permissions;
+    }*/
+
     /**
      * Обновить данные пользователя (имя, email, пароль)
      */
@@ -107,6 +128,7 @@ class User
         $this->password = $passwordHash;
         $this->updatedAt = new \DateTimeImmutable();
     }
+
 
     /**
      * Установить дату подтверждения email

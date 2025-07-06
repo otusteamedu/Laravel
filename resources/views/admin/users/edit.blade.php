@@ -30,13 +30,13 @@
                     <div>
                         <h5 class="card-title">{{ $user->name }}</h5>
                     </div>
-                    {{-- <div>
-                         @if($user->isAdmin)
+                     <div>
+                         @if(in_array('admin', $user->roles))
                              <span class="badge bg-danger">Администратор</span>
                          @else
                              <span class="badge bg-secondary">Пользователь</span>
                          @endif
-                     </div>--}}
+                     </div>
                 </div>
             </div>
             <div class="card-body">

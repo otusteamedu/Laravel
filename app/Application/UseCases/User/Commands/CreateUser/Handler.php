@@ -8,6 +8,8 @@ use App\Domain\User\Exceptions\UserEmailAlreadyExistsException;
 use App\Domain\User\Exceptions\UserSaveException;
 use App\Domain\User\Repositories\UserRepositoryInterface;
 use App\Infrastructure\PasswordHasher\PasswordHasherInterface;
+use App\Domain\User\ValueObjects\Roles;
+use App\Domain\User\ValueObjects\Permissions;
 
 class Handler
 {
@@ -28,6 +30,8 @@ class Handler
             name: $command->name,
             email: $command->email,
             password: $this->passwordHasher->hash($command->password),
+            roles: new Roles($command->roles),
+            //permissions: new Permissions($command->permissions),
             createdAt: null,
             updatedAt: null,
             emailVerifiedAt: null,
@@ -43,6 +47,8 @@ class Handler
             id: $domainUser->getId(),
             name: $domainUser->getName(),
             email: $domainUser->getEmail(),
+            roles: $domainUser->getRoles()->roles,
+            //permissions: $domainUser->getPermissions()->permissions,
             createdAt: $domainUser->getCreatedAt(),
             updatedAt: $domainUser->getUpdatedAt(),
             emailVerifiedAt: $domainUser->getEmailVerifiedAt(),

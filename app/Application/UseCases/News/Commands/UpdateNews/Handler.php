@@ -3,6 +3,7 @@
 namespace App\Application\UseCases\News\Commands\UpdateNews;
 
 use App\Domain\News\Exceptions\NewsNotFoundException;
+use App\Domain\News\Exceptions\NewsSaveException;
 use App\Domain\News\Repositories\NewsRepositoryInterface;
 use App\Domain\News\Repositories\CategoryRepositoryInterface;
 use App\Domain\User\Repositories\UserRepositoryInterface;
@@ -63,7 +64,11 @@ class Handler
             }
         }
 
-        $this->newsRepository->save($news);
+        try {
+            $domainNews = $this->newsRepository->save($news);
+        } catch (\Exception) {
+            throw new NewsSaveException("Не удалось сохранить новость '{$command->title}'");
+        }
 
         $this->cache->flushTagged('news');
         if ($isChangedActivityCount) {
@@ -71,14 +76,14 @@ class Handler
         }
 
         return new NewsDTO(
-            id: $news->getId(),
-            title: $news->getTitle(),
-            content: $news->getContent(),
-            isDraft: $news->isDraft(),
-            thumbnail: $news->getThumbnail(),
-            createdAt: $news->getCreatedAt(),
-            updatedAt: $news->getUpdatedAt(),
-            publishedAt: $news->getPublishedAt(),
+            id: $domainNews->getId(),
+            title: $domainNews->getTitle(),
+            content: $domainNews->getContent(),
+            isDraft: $domainNews->isDraft(),
+            thumbnail: $domainNews->getThumbnail(),
+            createdAt: $domainNews->getCreatedAt(),
+            updatedAt: $domainNews->getUpdatedAt(),
+            publishedAt: $domainNews->getPublishedAt(),
         );
     }
 }
