@@ -8,17 +8,6 @@
 
         <div class="row">
             <div class="col-lg-8 mx-auto">
-                <div>
-                    @foreach ($messages as $message)
-                        <div>
-                            <div class="fw-bold">
-                                {{ $message->getUser()->name }}, {{ $message->getCreatedAt()->format('d.m.Y H:i') }}
-                            </div>
-                            <div class="mb-4">{{ $message->getContent() }}</div>
-                        </div>
-                    @endforeach
-                </div>
-
                 @guest
                 <div>
                     <a href="{{ route('login') }}" class="text-decoration-none">
@@ -31,11 +20,22 @@
                 <form action="{{ route('chat.store') }}" method="post">
                     @csrf
                     <div class="mb-3">
-                        <textarea class="form-control" rows="3" placeholder="Текст сообщения" name="content"></textarea>
+                        <textarea class="form-control" rows="2" placeholder="Текст сообщения" name="content"></textarea>
                     </div>
                     <button type="submit" class="btn btn-primary">Отправить сообщение</button>
                 </form>
                 @endauth
+
+                <div id="messages" class="mt-4">
+                    @foreach ($messages as $message)
+                        <div>
+                            <div class="fw-bold">
+                                {{ $message->getUser()->name }}, {{ $message->getCreatedAt()->format('d.m.Y H:i') }}
+                            </div>
+                            <div class="mb-4">{{ $message->getContent() }}</div>
+                        </div>
+                    @endforeach
+                </div>
             </div>
         </div>
     </div>

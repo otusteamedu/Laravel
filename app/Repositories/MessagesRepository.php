@@ -17,11 +17,13 @@ class MessagesRepository
         return $messages;
     }
 
-    public function add(StoreDto $storeDto): void
+    public function add(StoreDto $storeDto): Message
     {
         $message = new Message();
         $message->content = $storeDto->content;
         $message->user_id = $storeDto->user_id;
         $message->save();
+
+        return $message;
     }
 }

@@ -2,6 +2,7 @@
 namespace App\Services;
 
 use App\Dto\Message\StoreDto;
+use App\Events\MessageEvent;
 use App\Repositories\MessagesRepository;
 use Illuminate\Database\Eloquent\Collection;
 use App\Models\Message;
@@ -22,6 +23,8 @@ class MessagesService
 
     public function add(StoreDto $storeDto): void
     {
-        $this->repository->add($storeDto);
+        $message = $this->repository->add($storeDto);
+        $userName = $message->getUser()->name; 
+        MessageEvent::dispatch($storeDto->content, date('d.m.Y H:i'), $userName);
     }
 }
