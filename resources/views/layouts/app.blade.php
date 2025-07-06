@@ -48,7 +48,7 @@
                             <a class="nav-link" href="{{ route('about') }}">О магазине</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route('chat') }}">Чат</a>
+                            <a class="nav-link" href="{{ route('chat.index') }}">Чат</a>
                         </li>
 
                         @can('employee-access')

@@ -11,9 +11,10 @@
                 <div>
                     @foreach ($messages as $message)
                         <div>
-                            <p class="fw-bold">{{ $message->getUser()->name }},
-                                {{ $message->getCreatedAt()->format('d.m.Y H:i') }}</p>
-                            <p>{{ $message->getContent() }}</p>
+                            <div class="fw-bold">
+                                {{ $message->getUser()->name }}, {{ $message->getCreatedAt()->format('d.m.Y H:i') }}
+                            </div>
+                            <div class="mb-4">{{ $message->getContent() }}</div>
                         </div>
                     @endforeach
                 </div>
@@ -27,9 +28,10 @@
                 @endguest
 
                 @auth
-                <form>
+                <form action="{{ route('chat.store') }}" method="post">
+                    @csrf
                     <div class="mb-3">
-                        <textarea class="form-control" rows="3" placeholder="Текст сообщения"></textarea>
+                        <textarea class="form-control" rows="3" placeholder="Текст сообщения" name="content"></textarea>
                     </div>
                     <button type="submit" class="btn btn-primary">Отправить сообщение</button>
                 </form>

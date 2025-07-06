@@ -17,7 +17,8 @@ Route::get('/history/{userId}', [ProfileController::class, 'history'])->name('pr
 Route::get('/catalog', [CatalogController::class, 'index'])->name('catalog');
 Route::get('/category/{categoryId}', [CatalogController::class, 'category'])->name('category');
 
-Route::get('/chat', [MessageController::class, 'index'])->name('chat');
+Route::get('/chat', [MessageController::class, 'index'])->name('chat.index');
+Route::post('/chat', [MessageController::class, 'store'])->name('chat.store')->middleware('auth');
 
 Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
 Route::post('/cart/add/{productId}', [CartController::class, 'add'])->name('cart.add');

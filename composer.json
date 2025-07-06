@@ -13,6 +13,7 @@
         "elisad5791/cartcount": "^1.0",
         "laravel-notification-channels/telegram": "^6.0",
         "laravel/framework": "^12.0",
+        "laravel/reverb": "^1.0",
         "laravel/tinker": "^2.10.1",
         "laravel/ui": "^4.6",
         "maatwebsite/excel": "^3.1",
