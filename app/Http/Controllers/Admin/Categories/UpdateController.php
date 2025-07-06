@@ -2,15 +2,15 @@
 
 namespace App\Http\Controllers\Admin\Categories;
 
+use App\Application\UseCases\Category\Commands\UpdateCategory\Command;
+use App\Application\UseCases\Category\Commands\UpdateCategory\Handler;
+use App\Application\UseCases\Category\Queries\FetchCategoryById\Fetcher;
+use App\Application\UseCases\Category\Queries\FetchCategoryById\Query;
+use App\Domain\News\Exceptions\CategoryAlreadyExistsException;
+use App\Domain\News\Exceptions\CategoryNotFoundException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\UpdateCategoryRequest;
 use App\Infrastructure\Cache\CacheInterface;
-use App\Services\Exceptions\Categories\CategoryAlreadyExistsException;
-use App\Services\Exceptions\Categories\CategoryNotFoundException;
-use App\Services\UseCases\Commands\UpdateCategory\Command;
-use App\Services\UseCases\Commands\UpdateCategory\Handler;
-use App\Services\UseCases\Queries\FetchCategoryById\Fetcher;
-use App\Services\UseCases\Queries\FetchCategoryById\Query;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\View\View;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;

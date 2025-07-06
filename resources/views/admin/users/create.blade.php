@@ -49,16 +49,6 @@
                     <input type="password" class="form-control" id="password_confirmation" name="password_confirmation" required>
                 </div>
 
-                {{--<div class="mb-4">
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" id="is_admin" name="is_admin" value="1" {{ old('is_admin') ? 'checked' : '' }}>
-                        <label class="form-check-label" for="is_admin">
-                            Администратор
-                        </label>
-                        <div id="is_admin_help" class="form-text">Администраторы имеют доступ к панели управления и всем функциям сайта.</div>
-                    </div>
-                </div>--}}
-
                 <div class="d-grid gap-2 d-md-flex justify-content-md-end">
                     <a href="{{ route('admin.users.index') }}" class="btn btn-secondary me-md-2">Отмена</a>
                     <button type="submit" class="btn btn-primary">Сохранить</button>

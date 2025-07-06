@@ -4,32 +4,34 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Eloquent\Repositories\Categories;
 
-use App\Models\Category;
-use App\Services\Repositories\CategoryRepositoryInterface;
-
+use App\Domain\News\Repositories\CategoryRepositoryInterface;
+use App\Domain\News\Entities\Category as DomainCategory;
+use App\Models\Category as EloquentCategory;
 
 class CategoryRepository implements CategoryRepositoryInterface
 {
     /**
-     * @return Category[]
+     * @return DomainCategory[]
      */
-    public function fetchAll(): array {
-        return Category::all()->all();
+    public function fetchAll(): array
+    {
+        $models = EloquentCategory::all();
+        return array_map([CategoryMapper::class, 'toEntity'], $models->all());
     }
 
     /**
      * @param int $limit
      * @param int $offset
-     *
-     * @return array
+     * @return DomainCategory[]
      */
-    public function fetchPaginated(int $limit, int $offset): array {
-        return Category::query()
-                       ->orderBy('id', 'desc')
-                       ->limit($limit)
-                       ->offset($offset)
-                       ->get()
-                       ->all();
+    public function fetchPaginated(int $limit, int $offset): array
+    {
+        $models = EloquentCategory::orderBy('id', 'desc')
+                                  ->limit($limit)
+                                  ->offset($offset)
+                                  ->get();
+
+        return array_map([CategoryMapper::class, 'toEntity'], $models->all());
     }
 
     /**
@@ -37,16 +39,22 @@ class CategoryRepository implements CategoryRepositoryInterface
      */
     public function count(): int
     {
-        return Category::count();
+        return EloquentCategory::count();
     }
 
     /**
      * @param int $id
-     *
-     * @return Category|null
+     * @return DomainCategory|null
      */
-    public function find(int $id): ?Category {
-        return Category::query()->find($id);
+    public function find(int $id): ?DomainCategory
+    {
+        $model = EloquentCategory::find($id);
+        return $model ? CategoryMapper::toEntity($model) : null;
+    }
+
+    public function existsBySlug(string $slug): bool
+    {
+        return EloquentCategory::where('slug', $slug)->exists();
     }
 
     /**
@@ -55,64 +63,65 @@ class CategoryRepository implements CategoryRepositoryInterface
      */
     public function existsByName(string $name): bool
     {
-        return Category::query()->where('name', $name)->exists();
+        return EloquentCategory::where('name', $name)->exists();
     }
 
     /**
-     * @param Category $category
-     *
-     * @return bool
+     * @param DomainCategory $category
+     * @return DomainCategory
      */
-    public function save(Category $category): bool {
-        return $category->save();
+    public function save(DomainCategory $category): DomainCategory
+    {
+        $model = CategoryMapper::toModel($category);
+
+        $model->save();
+
+        return CategoryMapper::toEntity($model);
     }
 
     /**
-     * @param Category $category
-     *
+     * @param DomainCategory $category
      * @return bool|null
      */
-    public function delete(Category $category): ?bool {
-        return $category->delete();
+    public function delete(DomainCategory $category): ?bool
+    {
+        $model = EloquentCategory::find($category->getId());
+        return $model ? $model->delete() : null;
     }
-
 
     /**
      * @param string $slug
-     *
-     * @return Category|null
+     * @return DomainCategory|null
      */
-    public function findBySlug(string $slug): ?Category
+    public function findBySlug(string $slug): ?DomainCategory
     {
-        return Category::query()
-            ->where('slug', $slug)
-            ->first();
+        $model = EloquentCategory::where('slug', $slug)->first();
+        return $model ? CategoryMapper::toEntity($model) : null;
     }
 
     /**
-     * @param Category[] $ids
-     *
-     * @return array
+     * @param int[] $ids
+     * @return DomainCategory[]
      */
     public function findByIds(array $ids): array
     {
-        return Category::query()->whereIn('id', $ids)->get()->keyBy('id')->all();
+        $models = EloquentCategory::whereIn('id', $ids)->get();
+        return array_map([CategoryMapper::class, 'toEntity'], $models->all());
     }
 
     /**
-     * Упростим задачу. Определяем популярность категории по количеству новостей
-     *
+     * Определяем популярность категории по количеству новостей
      * @param int $limit
-     *
-     * @return Category[]
+     * @return EloquentCategory[]
      */
-    public function getPopular(int $limit): array {
-        return Category::query()
-                       ->active()
-                       ->withCount('publishedNews as news_count')
-                       ->orderByDesc('news_count')
-                       ->limit($limit)
-                       ->get()
-                       ->all();
+    public function getPopular(int $limit): array
+    {
+        $models = EloquentCategory::active()
+                                  ->withCount('publishedNews as news_count')
+                                  ->orderByDesc('news_count')
+                                  ->limit($limit)
+                                  ->get();
+
+        return $models->all();
     }
 }

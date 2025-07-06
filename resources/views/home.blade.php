@@ -10,7 +10,7 @@
 
 @php
     /**
-     * @var \App\Services\DTO\Categories\CategoryDTO $category
+     * @var \App\Application\UseCases\Category\DTO\CategoryDTO $category
      */
 @endphp
 
@@ -31,7 +31,8 @@
                                     <h5 class="card-title">{{ $news->title }}</h5>
                                     <p class="card-text text-muted">
                                         <small>
-                                            <span><i class="fas fa-folder me-1"></i> <a href="#" class="text-decoration-none">{{ $news?->category?->name }}</a></span>
+                                            <span><i class="fas fa-folder me-1"></i> <a href="#"
+                                                                                        class="text-decoration-none">{{ $news?->category?->name }}</a></span>
                                             <span><i class="fas fa-calendar me-1"></i> {{ $news->publishedAt->format('d.m.Y') }}</span>
                                             <span><i class="fas fa-user me-1"></i> {{ $news?->author?->name }}</span>
                                         </small>
@@ -44,11 +45,11 @@
                     </div>
                 @endforeach
 
-               {{-- <div class="d-flex justify-content-center mt-4">
-                    <nav>
-                        {{ $latestNews->links() }}
-                    </nav>
-                </div>--}}
+                {{-- <div class="d-flex justify-content-center mt-4">
+                     <nav>
+                         {{ $latestNews->links() }}
+                     </nav>
+                 </div>--}}
             @else
                 <div class="alert alert-info">
                     Пока нет новостей. Заходите позже!

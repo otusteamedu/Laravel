@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\Admin\News;
 
+use App\Application\UseCases\News\Commands\DeleteNews\Command;
+use App\Application\UseCases\News\Commands\DeleteNews\Handler;
+use App\Domain\News\Exceptions\NewsNotFoundException;
 use App\Http\Controllers\Controller;
-use App\Services\Exceptions\News\NewsNotFoundException;
-use App\Services\UseCases\Commands\DeleteNews\Command;
-use App\Services\UseCases\Commands\DeleteNews\Handler;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Gate;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;

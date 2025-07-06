@@ -3,11 +3,10 @@
 namespace App\Models;
 
 use App\Models\Traits\HasSlug;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Builder;
 
-class Category extends Model
+class Category extends BaseModel
 {
     use HasSlug;
 
@@ -20,6 +19,44 @@ class Category extends Model
         'is_active',
         'sort',
     ];
+
+    protected $columnMap = [
+        'id' => 'id',
+        'name' => 'name',
+        'slug' => 'slug',
+        'is_active' => 'is_active',
+        'sort' => 'sort',
+    ];
+
+    public function getColumnName($property)
+    {
+        return $this->columnMap[$property] ?? $property;
+    }
+
+    public function getId(): int
+    {
+        return $this->{$this->getColumnName('id')};
+    }
+
+    public function getName(): string
+    {
+        return $this->{$this->getColumnName('name')};
+    }
+
+    public function getSlug(): string
+    {
+        return $this->{$this->getColumnName('slug')};
+    }
+
+    public function getIsActive(): bool
+    {
+        return $this->{$this->getColumnName('is_active')};
+    }
+
+    public function getSort(): int
+    {
+        return $this->{$this->getColumnName('sort')};
+    }
 
     public static function slugFrom(): string
     {

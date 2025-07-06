@@ -5,7 +5,6 @@ namespace Database\Factories;
 use App\Models\Category;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Facades\DB;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\News>
@@ -20,13 +19,13 @@ class NewsFactory extends Factory
     public function definition(): array
     {
         $user = User::inRandomOrder()->first();
-        $userId = $user->id ?? User::factory()->create()->id;
+        $authorId = $user->id ?? User::factory()->create()->id;
 
         $category = Category::inRandomOrder()->first();
         $categoryId = $category->id ?? Category::factory()->create()->id;
 
         return [
-            'user_id' => $userId,
+            'author_id' => $authorId,
             'category_id' => $categoryId,
             'title' => fake()->sentence,
             'content' => fake()->text,

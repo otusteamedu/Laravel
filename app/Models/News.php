@@ -3,13 +3,12 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Carbon;
 
-class News extends Model
+class News extends BaseModel
 {
     use HasFactory;
 
@@ -23,12 +22,83 @@ class News extends Model
         'published_at',
     ];
 
+
+    protected $columnMap = [
+        'id' => 'id',
+        'title' => 'title',
+        'thumbnail' => 'thumbnail',
+        'content' => 'content',
+        'publishedAt' => 'published_at',
+        'is_draft' => 'is_draft',
+        'author_id' => 'author_id',
+        'category_id' => 'category_id',
+        'created_at' => 'created_at',
+        'updated_at' => 'updated_at',
+    ];
+
+    public function getColumnName($property)
+    {
+        return $this->columnMap[$property] ?? $property;
+    }
+
+    public function getId(): int
+    {
+        return $this->{$this->getColumnName('id')};
+    }
+
+    public function getTitle(): string
+    {
+        return $this->{$this->getColumnName('title')};
+    }
+
+    public function getContent(): string
+    {
+        return $this->{$this->getColumnName('content')};
+    }
+
+
+    public function getThumbnail(): ?string
+    {
+        return $this->{$this->getColumnName('thumbnail')};
+    }
+
+    public function getIsDraft(): bool
+    {
+        return $this->{$this->getColumnName('is_draft')};
+    }
+
+
+    public function getAuthorId(): int
+    {
+        return $this->{$this->getColumnName('author_id')};
+    }
+
+    public function getCategoryId(): int
+    {
+        return $this->{$this->getColumnName('category_id')};
+    }
+
+    public function getPublishedAt(): ?Carbon {
+        return $this->{$this->getColumnName('published_at')};
+    }
+
+
+    public function getCreatedAt(): ?Carbon {
+        return $this->{$this->getColumnName('created_at')};
+    }
+
+
+    public function getUpdatedAt(): ?Carbon {
+        return $this->{$this->getColumnName('updated_at')};
+    }
+
+
     /**
      * @return BelongsTo
      */
-    public function user(): BelongsTo
+    public function author(): BelongsTo
     {
-        return $this->BelongsTo(User::class);
+        return $this->BelongsTo(User::class, 'author_id','id');
     }
 
     /**
@@ -60,13 +130,13 @@ class News extends Model
     }
 
     /**
-     * @param User|int|string $user
+     * @param User|int|string $author
      *
      * @return $this
      */
-    public function attachUser(User|int|string $user): News
+    public function attachAuthor(User|int|string $author): News
     {
-        $this->user()->associate($user);
+        $this->author()->associate($author);
 
         return $this;
     }
@@ -90,7 +160,7 @@ class News extends Model
      */
     public function scopePublished(Builder $query): Builder
     {
-        return $query->where('is_draft', false);
+        return $query->where('is_draft', false)->where('published_at', '<=', Carbon::now());
     }
 
     /**

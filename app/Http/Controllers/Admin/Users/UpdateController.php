@@ -2,15 +2,15 @@
 
 namespace App\Http\Controllers\Admin\Users;
 
+use App\Application\UseCases\User\Commands\UpdateUser\Command;
+use App\Application\UseCases\User\Commands\UpdateUser\Handler;
+use App\Application\UseCases\User\Queries\FetchUserById\Fetcher;
+use App\Application\UseCases\User\Queries\FetchUserById\Query;
+use App\Domain\User\Exceptions\UserEmailAlreadyExistsException;
+use App\Domain\User\Exceptions\UserNotFoundException;
+use App\Domain\User\Exceptions\UserSaveException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\UpdateUserRequest;
-use App\Services\Exceptions\Users\UserEmailAlreadyExistsException;
-use App\Services\Exceptions\Users\UserNotFoundException;
-use App\Services\Exceptions\Users\UserSaveException;
-use App\Services\UseCases\Commands\UpdateUser\Command;
-use App\Services\UseCases\Commands\UpdateUser\Handler;
-use App\Services\UseCases\Queries\FetchUserById\Fetcher;
-use App\Services\UseCases\Queries\FetchUserById\Query;
 use Exception;
 use Illuminate\View\View;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;

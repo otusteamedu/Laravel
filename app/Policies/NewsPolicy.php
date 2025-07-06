@@ -2,10 +2,10 @@
 
 namespace App\Policies;
 
+use App\Domain\News\Repositories\NewsRepositoryInterface;
 use App\Models\News;
 use App\Models\User;
-use App\Services\Repositories\NewsRepositoryInterface;
-
+use App\Domain\News\Entities\News as DomainNews;
 
 class NewsPolicy
 {
@@ -19,9 +19,9 @@ class NewsPolicy
      */
     public function update(User $user, string|News $newsOrId): bool
     {
-        $news = $this->getNewsFromParam($newsOrId);
+        $domainNews = $this->getDomainNews($newsOrId);
 
-        return $this->isAdmin($user) || ($news && ($user->id === $news->user_id));
+        return $this->isAdmin($user) || ($domainNews && ($user->id === $domainNews->getAuthor()->getId()));
     }
 
     /**
@@ -29,9 +29,9 @@ class NewsPolicy
      */
     public function delete(User $user, string|News $newsOrId): bool
     {
-        $news = $this->getNewsFromParam($newsOrId);
+        $domainNews = $this->getDomainNews($newsOrId);
 
-        return $this->isAdmin($user) || ($news && ($user->id === $news->user_id));
+        return $this->isAdmin($user) || ($domainNews && ($user->id === $domainNews->getAuthor()->getId()));
     }
 
     /**
@@ -46,9 +46,9 @@ class NewsPolicy
     /**
      * @param int|string|News $newsOrId
      *
-     * @return News|null
+     * @return DomainNews|null
      */
-    private function getNewsFromParam(int|string|News $newsOrId): ?News {
+    private function getDomainNews(int|string|News $newsOrId): ?DomainNews {
         if (!($newsOrId instanceof News)) {
             return $this->newsRepository->find($newsOrId);
         } else {

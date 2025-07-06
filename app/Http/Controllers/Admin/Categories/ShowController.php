@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\Admin\Categories;
 
+use App\Application\UseCases\Category\Queries\FetchCategoryById\Fetcher;
+use App\Application\UseCases\Category\Queries\FetchCategoryById\Query;
+use App\Domain\News\Exceptions\CategoryNotFoundException;
 use App\Http\Controllers\Controller;
-use App\Services\Exceptions\Categories\CategoryNotFoundException;
-use App\Services\UseCases\Queries\FetchCategoryById\Fetcher;
-use App\Services\UseCases\Queries\FetchCategoryById\Query;
 use Illuminate\View\View;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 

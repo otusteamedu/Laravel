@@ -27,7 +27,7 @@ class UpdateNewsRequest extends FormRequest
             'user_id' => ['integer'],
             'category_id' => ['required', 'integer'],
             'is_draft' => ['boolean'],
-            'published_at' => ['required',  'date', 'after_or_equal:today'],
+            'published_at' => ['date', 'after_or_equal:today'],
         ];
     }
 }
