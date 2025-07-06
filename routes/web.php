@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\MessageController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CatalogController;
@@ -15,6 +16,8 @@ Route::get('/history/{userId}', [ProfileController::class, 'history'])->name('pr
 
 Route::get('/catalog', [CatalogController::class, 'index'])->name('catalog');
 Route::get('/category/{categoryId}', [CatalogController::class, 'category'])->name('category');
+
+Route::get('/chat', [MessageController::class, 'index'])->name('chat');
 
 Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
 Route::post('/cart/add/{productId}', [CartController::class, 'add'])->name('cart.add');

@@ -25,6 +25,7 @@ class Message extends Model
 
     protected $guarded = [];
     protected $table = 'messages';
+    protected $with = ['user'];
 
     public function getId(): int
     {
