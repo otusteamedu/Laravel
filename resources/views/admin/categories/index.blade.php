@@ -8,7 +8,7 @@
      */
 
     /**
-     * @var \App\Services\DTO\Categories\CategoryDTO $category
+     * @var \App\Application\UseCases\Category\DTO\CategoryDTO $category
      */
 @endphp
 

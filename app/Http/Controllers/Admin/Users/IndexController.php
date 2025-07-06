@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers\Admin\Users;
 
+use App\Application\UseCases\User\Queries\FetchAllUsersPagination\Fetcher;
+use App\Application\UseCases\User\Queries\FetchAllUsersPagination\Query;
 use App\Http\Controllers\Controller;
-use App\Services\UseCases\Queries\FetchAllUsersPagination\Fetcher;
-use App\Services\UseCases\Queries\FetchAllUsersPagination\Query;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\View\View;

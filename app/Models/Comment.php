@@ -6,8 +6,9 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Carbon;
 
-class Comment extends Model
+class Comment extends BaseModel
 {
     use HasFactory;
 
@@ -15,6 +16,57 @@ class Comment extends Model
     protected $fillable = [
         'text',
     ];
+
+
+    protected $columnMap = [
+        'id' => 'id',
+        'comment_id' => 'comment_id',
+        'user_id' => 'user_id',
+        'news_id' => 'news_id',
+        'text' => 'text',
+        'created_at' => 'created_at',
+        'updated_at' => 'updated_at',
+    ];
+
+    public function getColumnName($property)
+    {
+        return $this->columnMap[$property] ?? $property;
+    }
+
+
+    public function getId(): int
+    {
+        return $this->{$this->getColumnName('id')};
+    }
+
+    public function getText(): string
+    {
+        return $this->{$this->getColumnName('text')};
+    }
+
+    public function getParentId(): int
+    {
+        return $this->{$this->getColumnName('comment_id')};
+    }
+
+    public function getUserId(): int
+    {
+        return $this->{$this->getColumnName('user_id')};
+    }
+
+    public function getNewsId(): int
+    {
+        return $this->{$this->getColumnName('news_id')};
+    }
+
+    public function getCreatedAt(): ?Carbon {
+        return $this->{$this->getColumnName('created_at')};
+    }
+
+
+    public function getUpdatedAt(): ?Carbon {
+        return $this->{$this->getColumnName('updated_at')};
+    }
 
     /**
      * @return belongsTo

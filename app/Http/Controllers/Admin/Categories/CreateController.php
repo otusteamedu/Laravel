@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers\Admin\Categories;
 
+use App\Application\UseCases\Category\Commands\CreateCategory\Command;
+use App\Application\UseCases\Category\Commands\CreateCategory\Handler;
+use App\Domain\News\Exceptions\CategoryAlreadyExistsException;
+use App\Domain\News\Exceptions\CategorySaveException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CreateCategoryRequest;
 use App\Infrastructure\Cache\CacheInterface;
-use App\Services\Exceptions\Categories\CategoryAlreadyExistsException;
-use App\Services\Exceptions\Categories\CategorySaveException;
-use App\Services\UseCases\Commands\CreateCategory\Command;
-use App\Services\UseCases\Commands\CreateCategory\Handler;
 use Exception;
 use Illuminate\Support\Facades\Gate;
 
@@ -64,6 +64,7 @@ class CreateController extends Controller
                              ->with('error', $e->getMessage());
 
         }  catch (Exception $e) {
+
             return redirect()->back()
                              ->withInput()
                              ->with('error', 'Произошла непредвиденная ошибка при создании категории. Попробуйте позже.');

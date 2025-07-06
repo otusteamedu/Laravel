@@ -8,6 +8,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Carbon;
 
 class User extends Authenticatable
 {
@@ -34,6 +35,55 @@ class User extends Authenticatable
         'password',
         'remember_token',
     ];
+
+    protected $columnMap = [
+        'id' => 'id',
+        'name' => 'name',
+        'email' => 'email',
+        'password' => 'password',
+        'email_verified_at' => 'email_verified_at',
+        'subscribed_news' => 'subscribed_news',
+        'created_at' => 'created_at',
+        'updated_at' => 'updated_at',
+    ];
+
+    public function getColumnName($property)
+    {
+        return $this->columnMap[$property] ?? $property;
+    }
+
+    public function getId(): int
+    {
+        return $this->{$this->getColumnName('id')};
+    }
+
+    public function getName(): string
+    {
+        return $this->{$this->getColumnName('name')};
+    }
+
+    public function getEmail(): string
+    {
+        return $this->{$this->getColumnName('email')};
+    }
+
+    public function getEmailVerifiedAt(): ?Carbon
+    {
+        return $this->{$this->getColumnName('email_verified_at')};
+    }
+
+
+    public function getCreatedAt(): ?Carbon {
+        return $this->{$this->getColumnName('created_at')};
+    }
+
+    public function getUpdatedAt(): ?Carbon {
+        return $this->{$this->getColumnName('updated_at')};
+    }
+
+    public function getSubscribedNews(): bool {
+        return $this->{$this->getColumnName('subscribed_news')};
+    }
 
     /**
      * Get the attributes that should be cast.

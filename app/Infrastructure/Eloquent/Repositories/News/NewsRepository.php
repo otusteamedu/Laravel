@@ -4,17 +4,18 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Eloquent\Repositories\News;
 
-use App\Models\News;
-use App\Services\Repositories\NewsRepositoryInterface;
-
+use App\Domain\News\Repositories\NewsRepositoryInterface;
+use App\Models\News as EloquentNews;
+use App\Domain\News\Entities\News as DomainNews;
 
 class NewsRepository implements NewsRepositoryInterface
 {
     /**
-     * @return News[]
+     * @return DomainNews[]
      */
     public function fetchAll(): array {
-        return News::all()->all();
+        $models = EloquentNews::with(['author', 'category'])->get();
+        return array_map([NewsMapper::class, 'toEntity'], $models->all());
     }
 
     /**
@@ -24,12 +25,13 @@ class NewsRepository implements NewsRepositoryInterface
      * @return array
      */
     public function fetchPaginated(int $limit, int $offset): array {
-        return News::query()
-                       ->orderBy('id', 'desc')
-                       ->limit($limit)
-                       ->offset($offset)
-                       ->get()
-                       ->all();
+        $models = EloquentNews::with(['author', 'category'])
+                              ->orderBy('id', 'desc')
+                              ->limit($limit)
+                              ->offset($offset)
+                              ->get();
+
+        return array_map([NewsMapper::class, 'toEntity'], $models->all());
     }
 
     /**
@@ -37,47 +39,55 @@ class NewsRepository implements NewsRepositoryInterface
      */
     public function count(): int
     {
-        return News::count();
+        return EloquentNews::count();
     }
 
     /**
      * @param int $id
      *
-     * @return News|null
+     * @return DomainNews|null
      */
-    public function find(int $id): ?News {
-        return News::query()->find($id);
+    public function find(int $id): ?DomainNews {
+        $model = EloquentNews::with(['author', 'category'])->find($id);
+        return $model ? NewsMapper::toEntity($model) : null;
     }
 
 
     /**
-     * @param News $news
+     * @param DomainNews $news
      *
-     * @return bool
+     * @return DomainNews
      */
-    public function save(News $news): bool {
-        return $news->save();
+    public function save(DomainNews $news): DomainNews {
+        $model = NewsMapper::toModel($news);
+
+        $model->save();
+
+        return NewsMapper::toEntity($model);
     }
 
     /**
-     * @param News $news
+     * @param DomainNews $news
      *
      * @return bool|null
      */
-    public function delete(News $news): ?bool {
-        return $news->delete();
+    public function delete(DomainNews $news): ?bool {
+        $model = EloquentNews::find($news->getId());
+        return $model ? $model->delete() : null;
     }
 
     /**
      * @param int $limit
      *
-     * @return News[]
+     * @return DomainNews[]
      */
     public function getLatest(int $limit): array {
-        return News::query()->published()
-           ->orderBy('published_at', 'desc')
-           ->limit($limit)
-           ->get()
-           ->all();
+        $models = EloquentNews::with(['author', 'category'])
+                              ->published()
+                              ->orderBy('published_at', 'desc')
+                              ->limit($limit)
+                              ->get();
+
+        return array_map([NewsMapper::class, 'toEntity'], $models->all());
     }
 }

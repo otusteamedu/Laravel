@@ -39,7 +39,7 @@
                 <div class="col-md-6">
                     <p class="mb-1"><strong>Создано:</strong> {{ $news->createdAt->format('d.m.Y H:i') }}</p>
                     <p class="mb-1"><strong>Обновлено:</strong> {{ $news->updatedAt->format('d.m.Y H:i') }}</p>
-                    <p class="mb-1"><strong>Дата публикации:</strong> {{ $news->publishedAt->format('d.m.Y H:i') }}</p>
+                    <p class="mb-1"><strong>Дата публикации:</strong> {{ $news->publishedAt?->format('d.m.Y H:i') }}</p>
                 </div>
             </div>
 

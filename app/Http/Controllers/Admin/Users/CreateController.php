@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers\Admin\Users;
 
+use App\Application\UseCases\User\Commands\CreateUser\Command;
+use App\Application\UseCases\User\Commands\CreateUser\Handler;
+use App\Domain\User\Exceptions\UserEmailAlreadyExistsException;
+use App\Domain\User\Exceptions\UserSaveException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CreateUserRequest;
-use App\Services\Exceptions\Users\UserEmailAlreadyExistsException;
-use App\Services\Exceptions\Users\UserSaveException;
-use App\Services\UseCases\Commands\CreateUser\Command;
-use App\Services\UseCases\Commands\CreateUser\Handler;
 use Exception;
 
 class CreateController extends Controller

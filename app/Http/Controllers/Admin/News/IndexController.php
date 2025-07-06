@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers\Admin\News;
 
+use App\Application\UseCases\News\Queries\FetchAllNewsPagination\Fetcher;
+use App\Application\UseCases\News\Queries\FetchAllNewsPagination\Query;
 use App\Http\Controllers\Controller;
-use App\Services\UseCases\Queries\FetchAllNewsPagination\Fetcher;
-use App\Services\UseCases\Queries\FetchAllNewsPagination\Query;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\View\View;

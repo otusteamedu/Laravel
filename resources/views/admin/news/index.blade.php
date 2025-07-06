@@ -58,7 +58,7 @@
                                     <td class="d-none d-lg-table-cell">{{ $newsItem->author->name }}</td>
 
                                     <td class="d-none d-md-table-cell">{{ $newsItem->isDraft ? 'Да' : 'Нет' }}</td>
-                                    <td class="d-none d-md-table-cell">{{ $newsItem->publishedAt->format('d.m.Y H:i') }}</td>
+                                    <td class="d-none d-md-table-cell">{{ $newsItem->publishedAt?->format('d.m.Y H:i') }}</td>
                                     <td>
                                         <div class="btn-group btn-group-sm">
                                             <a href="{{ route('admin.news.show', $newsItem->id) }}"
@@ -85,10 +85,11 @@
                             </tbody>
                         </table>
                     </div>
-
-                    <nav>
-                        {{ $news->links() }}
-                    </nav>
+                    <div class="d-flex justify-content-center mt-4">
+                        <nav>
+                            {{ $news->links() }}
+                        </nav>
+                    </div>
                 @else
                     <div class="alert alert-info">
                         <i class="fas fa-info-circle me-2"></i>Новости не найдены. Создайте первую новость.

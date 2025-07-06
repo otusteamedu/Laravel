@@ -1,34 +1,35 @@
 <?php
 
-declare(strict_types=1);
-
 namespace App\Infrastructure\Eloquent\Repositories\Users;
 
-use App\Models\User;
-use App\Services\Repositories\UserRepositoryInterface;
+use App\Domain\User\Entities\User as DomainUser;
+use App\Domain\User\Repositories\UserRepositoryInterface;
+use App\Models\User as EloquentUser;
 
 class UserRepository implements UserRepositoryInterface
 {
     /**
-     * @return User[]
+     * @return DomainUser[]
      */
-    public function fetchAll(): array {
-        return User::all()->all();
+    public function fetchAll(): array
+    {
+        $models = EloquentUser::all();
+        return array_map([UserMapper::class, 'toEntity'], $models->all());
     }
 
     /**
      * @param int $limit
      * @param int $offset
-     *
-     * @return array
+     * @return DomainUser[]
      */
-    public function fetchPaginated(int $limit, int $offset): array {
-        return User::query()
-                       ->orderBy('id', 'desc')
-                       ->limit($limit)
-                       ->offset($offset)
-                       ->get()
-                       ->all();
+    public function fetchPaginated(int $limit, int $offset): array
+    {
+        $models = EloquentUser::orderBy('id', 'desc')
+                              ->limit($limit)
+                              ->offset($offset)
+                              ->get();
+
+        return array_map([UserMapper::class, 'toEntity'], $models->all());
     }
 
     /**
@@ -36,35 +37,40 @@ class UserRepository implements UserRepositoryInterface
      */
     public function count(): int
     {
-        return User::count();
+        return EloquentUser::count();
     }
 
     /**
      * @param int $id
-     *
-     * @return User|null
+     * @return DomainUser|null
      */
-    public function find(int $id): ?User {
-        return User::query()->find($id);
-    }
-
-
-    /**
-     * @param User $user
-     *
-     * @return bool
-     */
-    public function save(User $user): bool {
-        return $user->save();
+    public function find(int $id): ?DomainUser
+    {
+        $model = EloquentUser::find($id);
+        return $model ? UserMapper::toEntity($model) : null;
     }
 
     /**
-     * @param User $user
-     *
+     * @param DomainUser $user
+     * @return DomainUser
+     */
+    public function save(DomainUser $user): DomainUser
+    {
+        $model = UserMapper::toModel($user);
+
+        $model->save();
+
+        return UserMapper::toEntity($model);
+    }
+
+    /**
+     * @param DomainUser $user
      * @return bool|null
      */
-    public function delete(User $user): ?bool {
-        return $user->delete();
+    public function delete(DomainUser $user): ?bool
+    {
+        $model = EloquentUser::find($user->getId());
+        return $model ? $model->delete() : null;
     }
 
     /**
@@ -73,24 +79,25 @@ class UserRepository implements UserRepositoryInterface
      */
     public function existsByEmail(string $email): bool
     {
-        return User::query()->where('email', $email)->exists();
+        return EloquentUser::where('email', $email)->exists();
     }
 
     /**
-     * @param User[] $ids
-     *
-     * @return array
+     * @param int[] $ids
+     * @return DomainUser[]
      */
     public function findByIds(array $ids): array
     {
-        return User::query()->whereIn('id', $ids)->get()->keyBy('id')->all();
+        $models = EloquentUser::whereIn('id', $ids)->get();
+        return array_map([UserMapper::class, 'toEntity'], $models->all());
     }
 
     /**
-     * @return User[]
+     * @return DomainUser[]
      */
     public function findSubscribedNews(): array
     {
-        return User::query()->where('subscribed_news', true)->get()->all();
+        $models = EloquentUser::where('subscribed_news', true)->get();
+        return array_map([UserMapper::class, 'toEntity'], $models->all());
     }
 }
