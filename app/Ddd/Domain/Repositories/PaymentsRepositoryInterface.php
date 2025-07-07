@@ -7,6 +7,9 @@ use App\Ddd\Domain\Entities\Payment;
 
 interface PaymentsRepositoryInterface
 {
+    /**
+     * @return Collection<int, Payment>
+     */
     public function fetchAll(): Collection;
     public function fetchByUid(string $uid): Payment;
     public function add(Payment $payment): void;

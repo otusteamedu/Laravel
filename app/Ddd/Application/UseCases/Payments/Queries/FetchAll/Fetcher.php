@@ -9,6 +9,9 @@ class Fetcher
 {
     public function __construct(private PaymentsRepositoryInterface $repository) {}
 
+    /**
+     * @return Collection<int, Dto>
+     */
     public function fetch(): Collection
     {
         $payments = $this->repository->fetchAll();

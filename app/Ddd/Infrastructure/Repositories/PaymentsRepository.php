@@ -16,6 +16,9 @@ use App\Exceptions\PaymentNotFoundException;
 
 class PaymentsRepository implements PaymentsRepositoryInterface
 {
+    /**
+     * @return Collection<int, Payment>
+     */
     public function fetchAll(): Collection
     {
         $result = DB::select('select * from payments order by id desc');
