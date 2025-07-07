@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Dto\Payment;
+namespace App\Ddd\Application\UseCases\Payments\Commands\Update;
 
 class UpdateDto
 {

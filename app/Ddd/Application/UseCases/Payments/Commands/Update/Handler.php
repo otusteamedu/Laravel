@@ -4,8 +4,8 @@ namespace App\Ddd\Application\UseCases\Payments\Commands\Update;
 
 use App\Ddd\Domain\Repositories\PaymentsRepositoryInterface;
 use App\Ddd\Domain\ValueObjects\Status;
-use App\Dto\Payment\UpdateDto;
 use App\Exceptions\PaymentAmountNotCorrectException;
+use App\Ddd\Application\UseCases\Payments\Commands\Update\UpdateDto;
 
 class Handler
 {

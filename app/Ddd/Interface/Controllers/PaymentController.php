@@ -4,6 +4,7 @@ namespace App\Ddd\Interface\Controllers;
 
 use App\Ddd\Application\UseCases\Payments\Commands\Store\Handler as StoreHandler;
 use App\Ddd\Application\UseCases\Payments\Commands\Update\Handler as UpdateHandler;
+use App\Ddd\Application\UseCases\Payments\Commands\Update\UpdateDto;
 use App\Ddd\Application\UseCases\Payments\Queries\FetchAll\Fetcher;
 use App\Ddd\Application\UseCases\Payments\Queries\FetchByUid\Fetcher as UidFetcher;
 use App\Http\Controllers\Controller;
@@ -14,7 +15,6 @@ use Illuminate\View\View;
 use Illuminate\Http\RedirectResponse;
 use Exception;
 use Illuminate\Support\Facades\Log;
-use App\Dto\Payment\UpdateDto;
 use App\Events\PaymentConfirmed;
 use App\Dto\Order\StatusDto;
 
