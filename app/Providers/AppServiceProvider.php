@@ -8,6 +8,9 @@ use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Blade;
 use App\Ddd\Domain\Repositories\PaymentsRepositoryInterface;
 use App\Ddd\Infrastructure\Repositories\PaymentsRepository;
+use App\Ddd\Application\UseCases\Payments\Commands\Store\Handler;
+use App\Repositories\OrdersRepository;
+use YooKassa\Client;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -20,6 +23,21 @@ class AppServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->app->bind(PaymentsRepositoryInterface::class, PaymentsRepository::class);
+
+        $this->app->bind(Client::class, function() {
+            $client = new Client();
+            $client->setAuth(config('custom.yookassaId'), config('custom.yookassaSecret'));
+            return $client;
+        });
+
+        $this->app->bind(Handler::class, function ($app) {
+            return new Handler(
+                $app->make(PaymentsRepositoryInterface::class),
+                $app->make(OrdersRepository::class),
+                $app->make(Client::class),
+                config('app.url')
+            );
+        });
     }
 
     /**

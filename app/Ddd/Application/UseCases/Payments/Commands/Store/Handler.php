@@ -16,7 +16,9 @@ class Handler
 {
     public function __construct(
         private PaymentsRepositoryInterface $repository,
-        private OrdersRepository $ordersRepository
+        private OrdersRepository $ordersRepository,
+        private Client $yooClient,
+        private string $appUrl
     ) {}
 
     public function handle(int $orderId): string
@@ -25,19 +27,13 @@ class Handler
         $amount = $order->getTotal();
         $userId = auth()->id();
 
-        $appUrl = config('app.url');
-        $yooId = (string) config('custom.yookassaId');
-        $yooSecret = (string) config('custom.yookassaSecret');
-
-        $client = new Client();
-        $client->setAuth($yooId, $yooSecret);
-        $url = $appUrl . "/history/$userId";
+        $url = $this->appUrl . "/history/$userId";
         $data = [
             'amount' => ['value' => $amount, 'currency' => 'RUB'],
             'confirmation' => ['type' => 'redirect', 'return_url' => $url],
             'capture' => true,
         ];
-        $response = $client->createPayment($data, uniqid('', true));
+        $response = $this->yooClient->createPayment($data, uniqid('', true));
 
         $uid = $response->getId();
         $confirmationUrl = $response->getConfirmation()->getConfirmationUrl();
