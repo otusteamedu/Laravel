@@ -3,7 +3,9 @@
 namespace App\Ddd\Application\UseCases\Payments\Commands\Update;
 
 use App\Ddd\Domain\Repositories\PaymentsRepositoryInterface;
+use App\Ddd\Domain\ValueObjects\Status;
 use App\Dto\Payment\UpdateDto;
+use App\Exceptions\PaymentAmountNotCorrectException;
 
 class Handler
 {
@@ -11,6 +13,11 @@ class Handler
 
     public function handle(UpdateDto $dto): void
     {
-        $this->repository->save($dto);
+        $payment = $this->repository->fetchByUid($dto->uid);
+        if ($payment->getAmount()->getValue() !== $dto->amount) {
+            throw new PaymentAmountNotCorrectException();
+        }
+        $payment->changeStatus(new Status($dto->status));
+        $this->repository->save($payment);
     }
 }

@@ -63,8 +63,9 @@ class PaymentController extends Controller
         $this->updateHandler->handle($dto);
 
         $payment = $this->uidFetcher->fetch($paymentUid);
-        $orderId = $payment->getOrderId();
+        $orderId = $payment->getOrderId()->getValue();
         $statusDto = new StatusDto($orderId, $paymentStatus);
+        
         $this->ordersService->updateStatus($statusDto);
 
         PaymentConfirmed::dispatch($resp);

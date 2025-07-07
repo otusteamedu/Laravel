@@ -2,8 +2,12 @@
 
 namespace App\Ddd\Application\UseCases\Payments\Commands\Store;
 
+use App\Ddd\Domain\Entities\Payment;
 use App\Ddd\Domain\Repositories\PaymentsRepositoryInterface;
-use App\Dto\Payment\StoreDto as PaymentDto;
+use App\Ddd\Domain\ValueObjects\Amount;
+use App\Ddd\Domain\ValueObjects\Id;
+use App\Ddd\Domain\ValueObjects\Status;
+use App\Ddd\Domain\ValueObjects\Uid;
 use App\Repositories\OrdersRepository;
 use YooKassa\Client;
 use App\Dto\Admin\Order\UpdateDto;
@@ -38,8 +42,8 @@ class Handler
         $uid = $response->getId();
         $confirmationUrl = $response->getConfirmation()->getConfirmationUrl();
 
-        $dto = new PaymentDto($uid, $orderId, 'pending', $amount);
-        $this->repository->add($dto);
+        $payment = new Payment(new Uid($uid), new Id($orderId), new Status('pending'), new Amount($amount));
+        $this->repository->add($payment);
 
         $dto = new UpdateDto($orderId, $order->getUser()->id);
         $status = 2;

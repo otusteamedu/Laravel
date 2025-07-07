@@ -4,12 +4,14 @@ namespace App\Ddd\Infrastructure\Repositories;
 
 use App\Ddd\Domain\Entities\Payment;
 use App\Ddd\Domain\Repositories\PaymentsRepositoryInterface;
-use App\Dto\Payment\UpdateDto;
-use App\Exceptions\PaymentAmountNotCorrectException;
+use App\Ddd\Domain\ValueObjects\Amount;
+use App\Ddd\Domain\ValueObjects\Id;
+use App\Ddd\Domain\ValueObjects\Status;
+use App\Ddd\Domain\ValueObjects\StringDate;
+use App\Ddd\Domain\ValueObjects\Uid;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use  Illuminate\Support\Carbon;
-use App\Dto\Payment\StoreDto;
 use App\Exceptions\PaymentNotFoundException;
 
 class PaymentsRepository implements PaymentsRepositoryInterface
@@ -20,12 +22,12 @@ class PaymentsRepository implements PaymentsRepositoryInterface
         $arr = [];
         foreach ($result as $item) {
             $arr[] = new Payment(
-                $item->id, 
-                $item->uid, 
-                $item->order_id, 
-                $item->status,
-                $item->amount,
-                $item->confirmed_at,
+                new Uid($item->uid), 
+                new Id($item->order_id), 
+                new Status($item->status),
+                new Amount($item->amount),
+                new Id($item->id), 
+                new StringDate($item->confirmed_at),
                 Carbon::parse($item->created_at),
                 Carbon::parse($item->updated_at)
             );
@@ -34,24 +36,27 @@ class PaymentsRepository implements PaymentsRepositoryInterface
         return $payments;
     }
 
-    public function add(StoreDto $dto): void
+    public function add(Payment $payment): void
     {
-        $params = [$dto->uid, $dto->orderId, $dto->status, $dto->amount, now(), now()];
+        $params = [
+            $payment->getUid()->getValue(), 
+            $payment->getOrderId()->getValue(), 
+            $payment->getStatus()->getValue(), 
+            $payment->getAmount()->getValue(), 
+            now(), 
+            now()
+        ];
         DB::insert('insert into payments(uid, order_id, status, amount, created_at, updated_at) values (?, ?, ?, ?, ?, ?)', $params);
     }
 
-    public function save(UpdateDto $dto): void
+    public function save(Payment $payment): void
     {
-        $payment = $this->fetchByUid($dto->uid);
-
-        if ($payment->getAmount() != $dto->amount) {
-            throw new PaymentAmountNotCorrectException();
-        }
-
-        if ($dto->status == 'succeeded') {
-            DB::update('update payments set status = ?, confirmed_at = ? where uid = ?', [$dto->status, now(), $dto->uid]);
+        if ($payment->getStatus() == 'succeeded') {
+            $params = [$payment->getStatus()->getValue(), now(), $payment->getUid()->getValue()];
+            DB::update('update payments set status = ?, confirmed_at = ? where uid = ?', $params);
         } else {
-            DB::update('update payments set status = ? where uid = ?', [$dto->status, $dto->uid]);
+            $params = [$payment->getStatus()->getValue(), $payment->getUid()->getValue()];
+            DB::update('update payments set status = ? where uid = ?', $params);
         }
     }
 
@@ -65,12 +70,12 @@ class PaymentsRepository implements PaymentsRepositoryInterface
         }
 
         $payment = new Payment(
-            $row->id, 
-            $row->uid, 
-            $row->order_id, 
-            $row->status,
-            $row->amount,
-            $row->confirmed_at,
+            new Uid($row->uid), 
+            new Id($row->order_id), 
+            new Status($row->status),
+            new Amount($row->amount),
+            new Id($row->id), 
+            new StringDate($row->confirmed_at),
             Carbon::parse($row->created_at),
             Carbon::parse($row->updated_at)
         );
