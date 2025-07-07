@@ -12,6 +12,19 @@ class Fetcher
     public function fetch(): Collection
     {
         $payments = $this->repository->fetchAll();
-        return $payments;
+        $dto = [];
+        foreach ($payments as $payment) {
+            $dto[] = new Dto(
+                $payment->getId()->getValue(),
+                $payment->getUid()->getValue(),
+                $payment->getOrderId()->getValue(),
+                $payment->getStatus()->getValue(),
+                $payment->getAmount()->getValue(),
+                $payment->getConfirmedAt()->getValue(),
+                $payment->getCreatedAt()->getValue(),
+            );
+        }
+        $coll = collect($dto);
+        return $coll;
     }
 }

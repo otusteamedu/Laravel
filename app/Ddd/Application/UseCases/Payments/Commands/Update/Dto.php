@@ -2,7 +2,7 @@
 
 namespace App\Ddd\Application\UseCases\Payments\Commands\Update;
 
-class UpdateDto
+class Dto
 {
     public function __construct(
         public string $uid,

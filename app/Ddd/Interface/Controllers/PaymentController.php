@@ -4,7 +4,7 @@ namespace App\Ddd\Interface\Controllers;
 
 use App\Ddd\Application\UseCases\Payments\Commands\Store\Handler as StoreHandler;
 use App\Ddd\Application\UseCases\Payments\Commands\Update\Handler as UpdateHandler;
-use App\Ddd\Application\UseCases\Payments\Commands\Update\UpdateDto;
+use App\Ddd\Application\UseCases\Payments\Commands\Update\Dto;
 use App\Ddd\Application\UseCases\Payments\Queries\FetchAll\Fetcher;
 use App\Ddd\Application\UseCases\Payments\Queries\FetchByUid\Fetcher as UidFetcher;
 use App\Http\Controllers\Controller;
@@ -59,11 +59,11 @@ class PaymentController extends Controller
             return response('', 400);
         }
 
-        $dto = new UpdateDto($paymentUid, $paymentStatus, $paymentAmount);
-        $this->updateHandler->handle($dto);
+        $updateDto = new Dto($paymentUid, $paymentStatus, $paymentAmount);
+        $this->updateHandler->handle($updateDto);
 
-        $payment = $this->uidFetcher->fetch($paymentUid);
-        $orderId = $payment->getOrderId()->getValue();
+        $paymentDto = $this->uidFetcher->fetch($paymentUid);
+        $orderId = $paymentDto->order_id;
         $statusDto = new StatusDto($orderId, $paymentStatus);
         
         $this->ordersService->updateStatus($statusDto);

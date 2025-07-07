@@ -33,12 +33,12 @@
         <tbody>
             @foreach($payments as $payment)
                 <tr>
-                    <td>{{ $payment->getId() }}</td>
-                    <td>{{ $payment->getUid() }}</td>
-                    <td>{{ $payment->getOrderId() }}</td>
+                    <td>{{ $payment->id }}</td>
+                    <td>{{ $payment->uid }}</td>
+                    <td>{{ $payment->order_id }}</td>
                     <td>
                         @php
-                            $status = $payment->getStatus();
+                            $status = $payment->status;
                             $statusName = match ($status) {
                                 'succeeded' => 'Выполнен',
                                 'pending' => 'Ожидает подтверждения',
@@ -48,9 +48,9 @@
                         @endphp
                         {{ $statusName }}
                     </td>
-                    <td>{{ $payment->getAmount() }}</td>
-                    <td>{{ $payment->getConfirmedAt() ? date('d.m.Y H:i', strtotime($payment->getConfirmedAt())) : '-' }}</td>
-                    <td>{{ $payment->getCreatedAt()->format('d.m.Y H:i') }}</td>
+                    <td>{{ $payment->amount }}</td>
+                    <td>{{ $payment->confirmed_at ? date('d.m.Y H:i', strtotime($payment->confirmed_at)) : '-' }}</td>
+                    <td>{{ $payment->created_at->format('d.m.Y H:i') }}</td>
                 </tr>
             @endforeach
         </tbody>
