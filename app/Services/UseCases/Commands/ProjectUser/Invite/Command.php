@@ -2,7 +2,7 @@
 
 namespace App\Services\UseCases\Commands\ProjectUser\Invite;
 
-use App\Models\ProjectRoleEnum;
+use App\TodoApp\Domain\ValueObjects\ProjectRoleEnum;
 
 final readonly class Command
 {

@@ -2,8 +2,8 @@
 
 namespace App\Services\UseCases\Queries\TodoStatus\FetchForProject;
 
-use App\Services\Repositories\DTOs\ProjectDTO;
-use App\Services\Repositories\DTOs\TodoStatusDTO;
+use App\TodoApp\Application\DTOs\ProjectDTO;
+use App\TodoApp\Application\DTOs\TodoStatusDTO;
 
 class Result
 {

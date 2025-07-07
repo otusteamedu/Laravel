@@ -9,6 +9,8 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use App\TodoApp\Infrastructure\Eloquent\Models\ProjectUser;
+use App\TodoApp\Infrastructure\Eloquent\Models\UserProfile;
 
 /**
  * @property integer $id

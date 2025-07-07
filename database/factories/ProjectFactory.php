@@ -2,14 +2,12 @@
 
 namespace Database\Factories;
 
-use App\Models\Project;
 use App\Models\TodoStatus;
-use App\Models\ProjectUser;
-use App\Models\ProjectRoleEnum;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use App\TodoApp\Infrastructure\Eloquent\Models\Project;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Project>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<Project>
  */
 class ProjectFactory extends Factory
 {

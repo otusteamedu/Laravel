@@ -3,11 +3,11 @@
 namespace Database\Seeders;
 
 use App\Models\User;
-use App\Models\Project;
-use App\Models\ProjectUser;
 use App\Models\UserProfile;
-use App\Models\ProjectRoleEnum;
 use Illuminate\Database\Seeder;
+use App\TodoApp\Domain\ValueObjects\ProjectRoleEnum;
+use App\TodoApp\Infrastructure\Eloquent\Models\Project;
+use App\TodoApp\Infrastructure\Eloquent\Models\ProjectUser;
 
 class UserWithProjectSeeder extends Seeder
 {

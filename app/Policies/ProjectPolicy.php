@@ -3,8 +3,8 @@
 namespace App\Policies;
 
 use App\Models\User;
-use App\Models\ProjectRoleEnum;
-use App\Services\Repositories\ProjectRepositoryInterface;
+use App\TodoApp\Domain\ValueObjects\ProjectRoleEnum;
+use App\TodoApp\Domain\Repositories\ProjectRepositoryInterface;
 
 class ProjectPolicy
 {

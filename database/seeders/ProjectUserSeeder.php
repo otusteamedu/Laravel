@@ -2,9 +2,9 @@
 
 namespace Database\Seeders;
 
-use App\Models\ProjectUser;
-use App\Models\ProjectRoleEnum;
 use Illuminate\Database\Seeder;
+use App\TodoApp\Domain\ValueObjects\ProjectRoleEnum;
+use App\TodoApp\Infrastructure\Eloquent\Models\ProjectUser;
 
 class ProjectUserSeeder extends Seeder
 {

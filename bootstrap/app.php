@@ -1,9 +1,9 @@
 <?php
 
 use Illuminate\Foundation\Application;
-use App\Http\Middleware\LocalizationMiddleware;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
+use App\TodoApp\Presentation\Http\Middleware\LocalizationMiddleware;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(

@@ -58,8 +58,9 @@ class DestroyRequest extends FormRequest
     protected function failedValidation(Validator $validator)
     {
         throw new HttpResponseException(redirect()
+            ->back()
             ->withInput()
             ->withErrors($validator->errors())
-            ->back()->with('error', 'Ошибка валидации формы'));
+            ->with('error', 'Ошибка валидации формы'));
     }
 }

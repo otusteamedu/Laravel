@@ -6,7 +6,7 @@ use App\Services\Telegram\Common\Send;
 use App\Services\Telegram\Common\SendResult;
 use App\Services\Telegram\TelegramServiceInterface;
 use App\Services\Repositories\UserRepositoryInterface;
-use App\Services\Repositories\ProjectRepositoryInterface;
+use App\TodoApp\Domain\Repositories\ProjectRepositoryInterface;
 use App\Services\Repositories\Todo\TodoRepositoryInterface;
 use App\Services\UseCases\Commands\Telegram\Todo\UserAdd\Command;
 use App\Services\UseCases\Commands\Telegram\Exceptoins\NotHasTelegramIdException;

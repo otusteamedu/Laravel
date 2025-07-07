@@ -9,9 +9,9 @@ use Illuminate\Mail\Mailables\Content;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Mail\Mailables\Envelope;
-use App\Services\Repositories\DTOs\UserDTO;
+use App\TodoApp\Application\DTOs\UserDTO;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use App\Services\Repositories\DTOs\ProjectDTO;
+use App\TodoApp\Application\DTOs\ProjectDTO;
 use App\Services\Repositories\Todo\TodoFetchDTO;
 
 

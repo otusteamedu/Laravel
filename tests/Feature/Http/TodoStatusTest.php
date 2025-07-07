@@ -7,7 +7,7 @@ use App\Models\User;
 use App\Models\Project;
 use App\Models\TodoStatus;
 use App\Models\ProjectUser;
-use App\Models\ProjectRoleEnum;
+use App\TodoApp\Domain\ValueObjects\ProjectRoleEnum;
 use PHPUnit\Framework\Attributes\Group;
 
 #[Group('http')]

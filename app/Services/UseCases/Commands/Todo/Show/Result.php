@@ -2,10 +2,10 @@
 
 namespace App\Services\UseCases\Commands\Todo\Show;
 
-use App\Services\Repositories\DTOs\ProjectDTO;
+use App\TodoApp\Application\DTOs\ProjectDTO;
 use App\Services\Repositories\Todo\TodoUserDTO;
 use App\Services\Repositories\Todo\TodoFetchDTO;
-use App\Services\Repositories\DTOs\ProjectInvitedUserDTO;
+use App\TodoApp\Application\DTOs\ProjectInvitedUserDTO;
 
 
 class Result

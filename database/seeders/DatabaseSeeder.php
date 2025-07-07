@@ -6,7 +6,7 @@ use App\Models\User;
 use App\Models\Project;
 use App\Models\ProjectUser;
 use App\Models\UserProfile;
-use App\Models\ProjectRoleEnum;
+use App\TodoApp\Domain\ValueObjects\ProjectRoleEnum;
 use Illuminate\Database\Seeder;
 use Database\Seeders\TodoSeeder;
 use Database\Seeders\TodoUserSeeder;

@@ -1,0 +1,50 @@
+@php
+/**
+ * @var \App\TodoApp\Application\DTOs\ProjectDTO $project
+ * @var \App\Services\Repositories\Todo\TodoFetchDTO[] $todos
+*/
+@endphp
+@extends('todo-app::layouts.main')
+@section('title', "ToDo: Задачи проекта $project->name")
+@section('content')
+<div class="col-12">
+    <div class="card border-0">
+        <div class="card-body p-0">
+            <div class="row g-0">
+                <nav class="col-lg-3 border-end">
+                    @include('todo-app::projects.partials.nav', [
+                        'active'    => 'todos',
+                        'projectId' => $project->projectId,
+                    ])
+                </nav>
+                <div class="col-lg-9">
+                    <div class="p-4" id="statuses">
+                        <div class="mb-4">
+                            <h4 class="mb-4">Задачи проектa {{ $project->name }}</h4>
+                            @can('todostatuses.manage', $project->projectId)
+                                <div class="col-12 my-3 text-end">
+                                    <button
+                                        type="button" 
+                                        class="btn btn-outline-primary"
+                                        x-data @click="$store.todoStatuses.formShow()"
+                                        >
+                                        Добавить статус
+                                    </button>
+                                </div>
+                            @endcan
+                            <div class="d-flex flex-wrap">
+                                @foreach($todos as $todo)
+                                    @include('todo-app::todos.partials.todo-card', [
+                                        'project' => $project,
+                                        'todo' => $todo,
+                                    ])
+                                @endforeach                        
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@endsection

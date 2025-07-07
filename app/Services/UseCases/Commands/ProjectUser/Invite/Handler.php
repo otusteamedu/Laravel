@@ -3,9 +3,9 @@
 namespace App\Services\UseCases\Commands\ProjectUser\Invite;
 
 use Exception;
-use App\Services\Repositories\DTOs\ProjectUserDTO;
-use App\Services\Repositories\ProjectRepositoryInterface;
-use App\Services\Repositories\Exceptions\CreateModelFailedException;
+use App\TodoApp\Application\DTOs\ProjectUserDTO;
+use App\TodoApp\Domain\Exceptions\CreateModelFailedException;
+use App\TodoApp\Domain\Repositories\ProjectRepositoryInterface;
 
 class Handler
 {

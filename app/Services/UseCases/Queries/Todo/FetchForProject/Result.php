@@ -2,7 +2,7 @@
 
 namespace App\Services\UseCases\Queries\Todo\FetchForProject;
 
-use App\Services\Repositories\DTOs\ProjectDTO;
+use App\TodoApp\Application\DTOs\ProjectDTO;
 use App\Services\Repositories\Todo\TodoFetchDTO;
 
 class Result

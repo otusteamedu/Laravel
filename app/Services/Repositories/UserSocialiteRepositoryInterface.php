@@ -2,8 +2,8 @@
 
 namespace App\Services\Repositories;
 
-use App\Services\Repositories\DTOs\UserDTO;
-use App\Services\Repositories\DTOs\UserSocialiteDTO;
+use App\TodoApp\Application\DTOs\UserDTO;
+use App\TodoApp\Application\DTOs\UserSocialiteDTO;
 
 interface UserSocialiteRepositoryInterface
 {

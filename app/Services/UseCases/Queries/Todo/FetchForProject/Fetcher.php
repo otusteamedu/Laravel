@@ -2,8 +2,9 @@
 
 namespace App\Services\UseCases\Queries\Todo\FetchForProject;
 
-use App\Services\Repositories\ProjectRepositoryInterface;
 use App\Services\Repositories\Todo\TodoRepositoryInterface;
+use App\TodoApp\Application\DTOs\ProjectDTO;
+use App\TodoApp\Domain\Repositories\ProjectRepositoryInterface;
 use App\Services\Repositories\Exceptions\ModelNotFoundException;
 
 class Fetcher
@@ -20,13 +21,20 @@ class Fetcher
      */
     public function fetch(Query $query): Result
     {
-        $projectDTO = $this->projectRepository->find($query->projectId);
+        $project = $this->projectRepository->find($query->projectId);
 
-        if ($projectDTO === null) {
+        if ($project === null) {
             throw new ModelNotFoundException('Проект не найден');
         }
 
         $todoDTOs = $this->todoRepository->fetchForProject($query->projectId, $query->userId);
+
+        $projectDTO = new ProjectDTO(
+            projectId: $project->getId()->getValue(),
+            name: $project->getName()->getValue(),
+            description: $project->getDescription()->getValue(),
+            created: $project->getCreated()
+        );
 
         return new Result(
             projectDTO: $projectDTO,

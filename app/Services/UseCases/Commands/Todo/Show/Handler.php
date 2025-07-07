@@ -5,7 +5,7 @@ namespace App\Services\UseCases\Commands\Todo\Show;
 use Vhar\EmbedVideo\Facades\EmbedVideo;
 use App\Services\Repositories\Todo\TodoFetchDTO;
 use App\Services\Repositories\Todo\TodoRoleEnum;
-use App\Services\Repositories\ProjectRepositoryInterface;
+use App\TodoApp\Domain\Repositories\ProjectRepositoryInterface;
 use App\Services\Repositories\Todo\TodoRepositoryInterface;
 use App\Services\Repositories\Exceptions\ModelNotFoundException;
 

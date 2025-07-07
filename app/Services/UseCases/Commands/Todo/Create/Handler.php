@@ -6,7 +6,7 @@ use Exception;
 use App\Services\Repositories\Todo\TodoDTO;
 use App\Services\Repositories\Todo\TodoRoleEnum;
 use App\Services\Repositories\Todo\TodoRepositoryInterface;
-use App\Services\Repositories\Exceptions\CreateModelFailedException;
+use App\TodoApp\Domain\Exceptions\CreateModelFailedException;
 
 class Handler
 {
