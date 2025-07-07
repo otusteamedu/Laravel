@@ -2,8 +2,11 @@
 
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\TestLogController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\ProductController;
+
+Route::get('/test-logs', TestLogController::class);
 
 Route::get('/', function () {
     return view('welcome');
