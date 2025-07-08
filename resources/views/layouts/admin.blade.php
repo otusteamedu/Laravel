@@ -65,6 +65,9 @@
                     <a href="{{ route('admin.tasks.index') }}" class="@if(request()->routeIs('admin.tasks.*')) active @endif">
                         <i class="fas fa-tasks me-2"></i> Задачи
                     </a>
+                    <a href="{{ route('admin.cache.index') }}" class="@if(request()->routeIs('admin.cache.*')) active @endif">
+                        <i class="fas fa-memory me-2"></i> Кэш
+                    </a>
                 </nav>
             </div>
 

@@ -3,14 +3,26 @@
 namespace App\Repositories\Tasks;
 
 use App\Models\Task;
+use App\Services\Cache\CacheServiceInterface;
 
 class TaskRepository implements TaskRepositoryInterface
 {
+    private const CACHE_TTL = 3600; // 1 час
+    private const CACHE_PREFIX = 'tasks';
+    
+    public function __construct(private CacheServiceInterface $cache)
+    {
+    }
+
     /**
      * @return Task[]
      */
     public function fetchAll(): array {
-        return Task::with(['executor', 'category', 'priority', 'creator'])->get()->all();
+        $key = $this->cache->generateKey(self::CACHE_PREFIX . '_all');
+        
+        return $this->cache->tags(['tasks'])->remember($key, function () {
+            return Task::with(['executor', 'category', 'priority', 'creator'])->get()->all();
+        }, self::CACHE_TTL);
     }
 
     /**
@@ -20,12 +32,16 @@ class TaskRepository implements TaskRepositoryInterface
      */
     public function fetchPaginated(int $limit, int $offset): array
     {
-        return Task::with(['executor', 'category', 'priority', 'creator'])
-            ->orderBy('id', 'desc')
-            ->limit($limit)
-            ->offset($offset)
-            ->get()
-            ->all();
+        $key = $this->cache->generateKey(self::CACHE_PREFIX . '_paginated', compact('limit', 'offset'));
+        
+        return $this->cache->tags(['tasks'])->remember($key, function () use ($limit, $offset) {
+            return Task::with(['executor', 'category', 'priority', 'creator'])
+                ->orderBy('id', 'desc')
+                ->limit($limit)
+                ->offset($offset)
+                ->get()
+                ->all();
+        }, self::CACHE_TTL);
     }
 
     /**
@@ -33,7 +49,11 @@ class TaskRepository implements TaskRepositoryInterface
      */
     public function count(): int
     {
-        return Task::count();
+        $key = $this->cache->generateKey(self::CACHE_PREFIX . '_count');
+        
+        return $this->cache->tags(['tasks'])->remember($key, function () {
+            return Task::count();
+        }, self::CACHE_TTL);
     }
 
     /**
@@ -41,7 +61,11 @@ class TaskRepository implements TaskRepositoryInterface
      * @return Task|null
      */
     public function find(int $id): ?Task {
-        return Task::with(['executor', 'category', 'priority', 'creator'])->find($id);
+        $key = $this->cache->generateKey(self::CACHE_PREFIX . '_by_id', ['id' => $id]);
+        
+        return $this->cache->tags(['tasks'])->remember($key, function () use ($id) {
+            return Task::with(['executor', 'category', 'priority', 'creator'])->find($id);
+        }, self::CACHE_TTL);
     }
 
     /**
@@ -49,7 +73,14 @@ class TaskRepository implements TaskRepositoryInterface
      * @return bool
      */
     public function save(Task $task): bool {
-        return $task->save();
+        $result = $task->save();
+        
+        if ($result) {
+            // Очищаем кэш задач
+            $this->cache->tags(['tasks'])->flush();
+        }
+        
+        return $result;
     }
 
     /**
@@ -57,6 +88,13 @@ class TaskRepository implements TaskRepositoryInterface
      * @return bool|null
      */
     public function delete(Task $task): ?bool {
-        return $task->delete();
+        $result = $task->delete();
+        
+        if ($result) {
+            // Очищаем кэш задач
+            $this->cache->tags(['tasks'])->flush();
+        }
+        
+        return $result;
     }
 }
