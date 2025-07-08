@@ -3,14 +3,12 @@
 namespace App\Http\API\V1\Controllers;
 
 use Exception;
-use OpenApi\Attributes as OAT;
 use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
 use App\Http\API\V1\Requests\ShowRequest;
 use App\Http\API\V1\Requests\StoreRequest;
 use App\Http\API\V1\Requests\UpdateRequest;
 use App\Http\API\V1\Responses\ErrorResponse;
-use OpenApi\Tests\Fixtures\Attributes as OAF;
 use App\Http\API\V1\Responses\SuccessResponse;
 use App\Services\Repositories\Exceptions\ModelNotFoundException;
 use App\Services\UseCases\Queries\TodoStatus\FetchOne\Query as ShowQuery;
