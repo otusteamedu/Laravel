@@ -8,9 +8,18 @@ use App\Http\Controllers\Admin\ProductController;
 
 Route::get('/test-logs', TestLogController::class);
 
-Route::get('/', function () {
-    return view('welcome');
+
+Route::group([
+        'prefix' => '{locale?}',
+        'where' => ['locale' => implode('|', config('app.supported_locales'))]
+    ],
+    function () {
+        Route::get('/', function () {
+            return view('welcome');
+        });
 });
+
+
 
 Route::get('/dashboard', function () {
     return view('dashboard');
