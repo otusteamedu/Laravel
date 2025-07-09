@@ -10,6 +10,7 @@ use App\Domain\User\Entities\User as DomainUser;
 use App\Models\News as EloquentNews;
 use App\Models\Category as EloquentCategory;
 use App\Models\User as EloquentUser;
+use App\Domain\User\ValueObjects\Roles;
 
 class NewsMapper
 {
@@ -49,12 +50,17 @@ class NewsMapper
         $eloquentAuthor = $model->author ?? EloquentUser::find($model->getAuthorId());
         $eloquentCategory = $model->category ?? EloquentCategory::find($model->getCategoryId());
 
+        $roles = $eloquentAuthor->relationLoaded('roles')
+            ? $eloquentAuthor->roles->pluck('slug')->all()
+            : $eloquentAuthor->roles()->pluck('slug')->all();
+
         // Преобразуем их в доменные сущности (передаём все необходимые параметры)
         $author = new DomainUser(
             $eloquentAuthor->id,
             $eloquentAuthor->name,
             $eloquentAuthor->email,
             $eloquentAuthor->password,
+            new Roles($roles),
             $eloquentAuthor->created_at ? $eloquentAuthor->created_at->toDateTimeImmutable() : null,
             $eloquentAuthor->updated_at ? $eloquentAuthor->updated_at->toDateTimeImmutable() : null,
             $eloquentAuthor->email_verified_at ? $eloquentAuthor->email_verified_at->toDateTimeImmutable() : null,
@@ -79,7 +85,6 @@ class NewsMapper
             $model->{$model->getColumnName('thumbnail')},
             $model->{$model->getColumnName('created_at')} ? $model->{$model->getColumnName('created_at')}->toDateTimeImmutable() : null,
             $model->{$model->getColumnName('updated_at')} ? $model->{$model->getColumnName('updated_at')}->toDateTimeImmutable() : null,
-
         );
 
         return $news;

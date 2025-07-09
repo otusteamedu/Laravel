@@ -18,11 +18,15 @@ use App\Infrastructure\Notification\Telegram\TelegramService;
 use App\Infrastructure\Notification\Telegram\TelegramServiceInterface;
 use App\Infrastructure\PasswordHasher\LaravelPasswordHasher;
 use App\Infrastructure\PasswordHasher\PasswordHasherInterface;
+use App\Infrastructure\RefreshTokenHasher\RefreshTokenHasherInterface;
+use App\Infrastructure\RefreshTokenHasher\Sha256RefreshTokenHasher;
 use App\Policies\CategoryPolicy;
 use App\Policies\NewsPolicy;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
+use App\Domain\Auth\Repositories\RefreshTokenRepositoryInterface;
+use App\Infrastructure\Eloquent\Repositories\Auth\RefreshTokenRepository;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -71,6 +75,9 @@ class AppServiceProvider extends ServiceProvider
             CategorySlugGeneratorInterface::class,
             CategorySlugGenerator::class
         );
+
+        $this->app->bind(RefreshTokenRepositoryInterface::class, RefreshTokenRepository::class);
+        $this->app->bind(RefreshTokenHasherInterface::class, Sha256RefreshTokenHasher::class);
     }
 
     /**

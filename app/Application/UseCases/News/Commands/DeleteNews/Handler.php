@@ -35,4 +35,3 @@ final class Handler
         return $result;
     }
 }
-

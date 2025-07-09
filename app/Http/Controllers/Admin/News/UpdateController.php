@@ -65,7 +65,7 @@ class UpdateController extends Controller
                 id: (int)$newsId,
                 title: $request->get('title'),
                 content: $request->get('content'),
-                authorId: $request->get('user_id'),
+                authorId: $request->get('author_id'),
                 categoryId: $request->get('category_id'),
                 publishedAt: $publishedAt,
                 isDraft: $request->get('is_draft', false),

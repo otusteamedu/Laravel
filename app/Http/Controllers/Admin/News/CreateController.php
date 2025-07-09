@@ -46,7 +46,7 @@ class CreateController extends Controller
 
         try {
             $user = $authManager->user();
-            $userId = $data['user_id'] ?? $user->id;
+            $authorId = $data['author_id'] ?? $user->id;
 
             $publishedAt = $request->get('published_at')
                 ? new \DateTimeImmutable($request->get('published_at'))
@@ -55,7 +55,7 @@ class CreateController extends Controller
             $command = new Command(
                 title: $data['title'],
                 content: $data['content'],
-                authorId: $userId,
+                authorId: $authorId,
                 categoryId: $data['category_id'],
                 publishedAt: $publishedAt,
                 isDraft: $data['is_draft'] ?? false,

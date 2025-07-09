@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\V1\AuthController;
 use App\Http\Controllers\Public\HomeController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Log;
@@ -43,5 +44,9 @@ Route::get('/log', function () {
     return ['status' => 'success'];
 });
 
+Route::get('/test', function (AuthController $authController) {
+   // dump($authController->revoke('uQeVAzgC1uhnb8SWLCgri9uErXb5IJdHDhpAfXquqm9S29fO27TXm1EbWMnU5CNO'));
+    return ['status' => 'success'];
+});
 
 Route::fallback(FallbackController::class);
