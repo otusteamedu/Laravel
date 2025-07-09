@@ -2,23 +2,24 @@
 
 namespace App\Modules\ISS\src\Http\Controllers;
 
-use Illuminate\View\View;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\URL;
-use \Illuminate\Support\Facades\Mail;
-use App\Modules\ISS\src\Services\NotifyService\getDataForExamStatusNotify\GetDataForExamStatusNotify;
-use App\Modules\ISS\src\Services\NotifyService\getDataForExamStatusNotify\InputDTO as notifyInputDTO;
-use App\Modules\ISS\src\Services\EducationExam\processTeacherFeedback\ProcessTeacherFeedback;
-use App\Modules\ISS\src\Services\EducationExam\processTeacherFeedback\InputDTO as feedbackDTO;
-use App\Modules\ISS\src\Services\EducationExam\processExamCheck\ProcessExamCheck;
-use App\Modules\ISS\src\Services\EducationExam\processExamCheck\InputDTO as processExamCheckInputDTO;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\View\View;
+use App\Modules\ISS\src\Mails\IssExamStatusNotify;
 use App\Modules\ISS\src\Services\EducationExam\getUserAndPointDataByCheckCode\GetUserAndPointDataByCheckCode;
 use App\Modules\ISS\src\Services\EducationExam\getUserAndPointDataByCheckCode\InputDTO as checkCodeInputDTO;
-use App\Modules\ISS\src\Mails\IssExamStatusNotify;
-use App\Modules\ISS\src\Mails\IssExamTeacherMail;
+use App\Modules\ISS\src\Services\EducationExam\processExamCheck\InputDTO as processExamCheckInputDTO;
+use App\Modules\ISS\src\Services\EducationExam\processExamCheck\ProcessExamCheck;
+use App\Modules\ISS\src\Services\EducationExam\processTeacherFeedback\InputDTO as feedbackDTO;
+use App\Modules\ISS\src\Services\EducationExam\processTeacherFeedback\ProcessTeacherFeedback;
+use App\Modules\ISS\src\Services\NotifyService\getDataForExamStatusNotify\GetDataForExamStatusNotify;
+use App\Modules\ISS\src\Services\NotifyService\getDataForExamStatusNotify\InputDTO as notifyInputDTO;
+use App\Modules\ISS\src\Events\ExamChecked\ExamChecked;
+use App\Modules\ISS\src\Events\ExamChecked\ExamCheckedDTO;
 
 /**
  * Контроллер для проверки экзаменационных тестов
@@ -81,24 +82,10 @@ class IssCheckExamController extends Controller
 
         //если тип проверки экзамена -- преподавателем
         if ($examProcessed->checkType == config('iss.EXAM_CHECK_TYPE.manual')) {
+            $needMailToTeacher = true;
 
             //создание защищенной ссытки для преподавателя
             $teacherUrl = URL::signedRoute('showCheckForm');//echo json_encode(['url'=>$teacherUrl]);exit;
-
-            //отправить бланк экзамена на проверку преподу (поставить задачу в очередь)
-            /** @TODO доделать контроллер отправкой письма в очередь */
-            //отправка уведомления по email через очередь
-            //Mail::send....
-            // В бланк письма \ISS\src\Mails\issExamStatusNotify
-            // передаю $examProcessed->teacherBlankDTO
-            Mail::to($examProcessed->teacherBlankDTO->email)
-                ->send(
-                    new IssExamTeacherMail(
-                        $teacherUrl,
-                        $examProcessed->teacherBlankDTO->examCheckCode,
-                        $examProcessed->teacherBlankDTO->checkedQuestions
-                    )
-                );
         }
 
         //получение основных данных для бланка уведомления ученику
@@ -112,18 +99,19 @@ class IssCheckExamController extends Controller
             return json_encode(['error' => __('iss::issNodePage.canNotMakeNotifyForUser')]);
         }
 
-        /** @TODO доделать контроллер отправкой письма в очередь */
-        //отправить уведомление ученику
-        //отправка уведомления по email через очередь
-        //Mail::send....
-        // В бланк письма \ISS\src\Mails\issExamStatusNotify
-        // передаю $mainNotifyData-> + $examProcessed->examCheckResult
-        Mail::to($mainNotifyData->userEmail)->send(
-            new IssExamStatusNotify(
-                $mainNotifyData->examData,
-                $mainNotifyData->pointName,
-                $mainNotifyData->routeName,
-                $examProcessed->examCheckResult
+        //событие, по которому отправляются уведомления ученику и преподавателю
+        ExamChecked::dispatch(
+            new ExamCheckedDTO(
+                needMailToTeacher: $needMailToTeacher ?? false,
+                teacherEmail: $examProcessed->teacherBlankDTO->email ?? null,
+                teacherURL: $teacherUrl ?? null,
+                examCheckCode: $examProcessed->teacherBlankDTO->examCheckCode ?? null,
+                checkedQuestionsWithText: $examProcessed->teacherBlankDTO->checkedQuestions ?? null,
+                studentEmail: $mainNotifyData->userEmail,
+                scheduledExamDate: $mainNotifyData->examData,
+                pointName: $mainNotifyData->pointName,
+                routeName: $mainNotifyData->routeName,
+                examCheckResult: $examProcessed->examCheckResult
             )
         );
 
@@ -261,14 +249,23 @@ class IssCheckExamController extends Controller
             } else {
                 $examStatus = __('iss::issNotify.examWrongStatus');
             }
-            Mail::to($mainNotifyData->userEmail)->send(
-                new IssExamStatusNotify(
-                    $mainNotifyData->examData,
-                    $mainNotifyData->pointName,
-                    $mainNotifyData->routeName,
-                    $examStatus
+
+            //событие, по которому отправляется уведомление ученику
+            ExamChecked::dispatch(
+                new ExamCheckedDTO(
+                    needMailToTeacher: false,
+                    teacherEmail: null,
+                    teacherURL: null,
+                    examCheckCode: null,
+                    checkedQuestionsWithText: null,
+                    studentEmail: $mainNotifyData->userEmail,
+                    scheduledExamDate: $mainNotifyData->examData,
+                    pointName: $mainNotifyData->pointName,
+                    routeName: $mainNotifyData->routeName,
+                    examCheckResult: $examStatus
                 )
             );
+
 
             //инвалидация кэша
             Cache::tags(['diagram'])->flush();

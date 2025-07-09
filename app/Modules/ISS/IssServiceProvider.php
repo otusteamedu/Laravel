@@ -3,22 +3,25 @@
 
 namespace App\Modules\ISS;
 
-use Illuminate\Support\ServiceProvider;
 use Illuminate\Foundation\Console\AboutCommand;
 use Illuminate\Support\Facades\Blade;
-use App\Modules\ISS\src\Services\issUser\IssUserRepoInterface;
-use App\Modules\ISS\src\Repositories\IssUserRepo;
-use App\Modules\ISS\src\Services\EducationExam\EducationExamRepoInterface;
-use App\Modules\ISS\src\Repositories\EducationExamRepo;
-use App\Modules\ISS\src\Services\EducationRoutePoint\EducationRoutePointRepoInterface;
-use App\Modules\ISS\src\Repositories\EducationRoutePointRepo;
-use App\Modules\ISS\src\Services\EducationRoute\EducationRouteRepoInterface;
-use App\Modules\ISS\src\Repositories\EducationRouteRepo;
-use App\Modules\ISS\src\Services\NotifyService\NotifyServiceRepoInterface;
-use App\Modules\ISS\src\Repositories\NotifyServiceRepo;
-use App\Modules\ISS\src\View\Components\IssMessages;
+use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\Event;
 use App\Modules\ISS\src\Console\IssCache;
-
+use App\Modules\ISS\src\Events\ExamChecked\ExamChecked;
+use App\Modules\ISS\src\Listeners\SendStudentNotifyListener;
+use App\Modules\ISS\src\Listeners\SendTeacherMailListener;
+use App\Modules\ISS\src\Repositories\EducationExamRepo;
+use App\Modules\ISS\src\Repositories\EducationRoutePointRepo;
+use App\Modules\ISS\src\Repositories\EducationRouteRepo;
+use App\Modules\ISS\src\Repositories\IssUserRepo;
+use App\Modules\ISS\src\Repositories\NotifyServiceRepo;
+use App\Modules\ISS\src\Services\EducationExam\EducationExamRepoInterface;
+use App\Modules\ISS\src\Services\EducationRoute\EducationRouteRepoInterface;
+use App\Modules\ISS\src\Services\EducationRoutePoint\EducationRoutePointRepoInterface;
+use App\Modules\ISS\src\Services\issUser\IssUserRepoInterface;
+use App\Modules\ISS\src\Services\NotifyService\NotifyServiceRepoInterface;
+use App\Modules\ISS\src\View\Components\IssMessages;
 
 class IssServiceProvider extends ServiceProvider
 {
@@ -110,5 +113,8 @@ class IssServiceProvider extends ServiceProvider
         //регистрация компонентов (обязательно скинуть кэш artisan optimize:clear)
         Blade::component('iss-messages', IssMessages::class);
         // или Blade::componentNamespace(IssMessages::class, 'iss-messages');
+
+        Event::listen(ExamChecked::class, SendTeacherMailListener::class);
+        Event::listen(ExamChecked::class, SendStudentNotifyListener::class);
     }
 }

@@ -95,7 +95,7 @@ class ProcessExamCheck
                 realRoutePointId: $inputDTO->realRoutePointId
             )
         );
-        if ($checkCodeExists) {
+        if ($checkCodeExists) { //вот эту проверку делегировать в ДОМЕН создать объект сущности Exam вызвать его проверку чек кода?
             throw new ExamAlreadyOnCheckException();
         }
 
