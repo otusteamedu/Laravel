@@ -7,8 +7,11 @@
     "license": "MIT",
     "require": {
         "php": "^8.2",
+        "http-interop/http-factory-guzzle": "^1.2",
         "laravel/framework": "^12.0",
+        "laravel/scout": "^10.16",
         "laravel/tinker": "^2.10.1",
+        "meilisearch/meilisearch-php": "^1.15",
         "opcodesio/log-viewer": "^3.17",
         "vagrant/ascii": "@dev",
         "watson/rememberable": "^7.0"

@@ -110,8 +110,8 @@ Route::group(['prefix' => '/e'], function () {
         // $post->author_id = 2;
 
         dump(Post::create([
-            "title" => "2new post",
-            "text" => "2new text",
+            "title" => "Find me",
+            "text" => "Find me",
             "is_draft" => false,
             "author_id" => 2,
         ]));
@@ -122,8 +122,9 @@ Route::group(['prefix' => '/e'], function () {
     });
 
     Route::get("/update", function () {
-        $post = Post::find(1);
-        $post->title = "12updated title";
+        $post = Post::find(11);
+        $post->title = "Update me";
+        $post->text = "Update me";
 
         dump($post->save());
 
@@ -262,5 +263,13 @@ Route::group(['prefix' => '/cache'], function () {
         return "ok";
     });
 });
+
+Route::get('/q', function (Request $request) {
+    $query = $request->get('q');
+
+    dd(Post::search($query)->where('is_draft', true)->get());
+});
+
+
 
 require __DIR__ . '/auth.php';
