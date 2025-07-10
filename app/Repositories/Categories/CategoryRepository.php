@@ -3,14 +3,26 @@
 namespace App\Repositories\Categories;
 
 use App\Models\Category;
+use App\Services\Cache\CacheServiceInterface;
 
 class CategoryRepository implements CategoryRepositoryInterface
 {
+    private const CACHE_TTL = 3600; // 1 час
+    private const CACHE_PREFIX = 'categories';
+    
+    public function __construct(private CacheServiceInterface $cache)
+    {
+    }
+
     /**
      * @return Category[]
      */
     public function fetchAll(): array {
-        return Category::all()->all();
+        $key = $this->cache->generateKey(self::CACHE_PREFIX . '_all');
+        
+        return $this->cache->tags(['categories'])->remember($key, function () {
+            return Category::all()->all();
+        }, self::CACHE_TTL);
     }
 
     /**
@@ -20,11 +32,15 @@ class CategoryRepository implements CategoryRepositoryInterface
      */
     public function fetchPaginated(int $limit, int $offset): array
     {
-        return Category::orderBy('id', 'desc')
-            ->limit($limit)
-            ->offset($offset)
-            ->get()
-            ->all();
+        $key = $this->cache->generateKey(self::CACHE_PREFIX . '_paginated', compact('limit', 'offset'));
+        
+        return $this->cache->tags(['categories'])->remember($key, function () use ($limit, $offset) {
+            return Category::orderBy('id', 'desc')
+                ->limit($limit)
+                ->offset($offset)
+                ->get()
+                ->all();
+        }, self::CACHE_TTL);
     }
 
     /**
@@ -32,7 +48,11 @@ class CategoryRepository implements CategoryRepositoryInterface
      */
     public function count(): int
     {
-        return Category::count();
+        $key = $this->cache->generateKey(self::CACHE_PREFIX . '_count');
+        
+        return $this->cache->tags(['categories'])->remember($key, function () {
+            return Category::count();
+        }, self::CACHE_TTL);
     }
 
     /**
@@ -41,7 +61,11 @@ class CategoryRepository implements CategoryRepositoryInterface
      */
     public function existsByName(string $name): bool
     {
-        return Category::where('name', $name)->exists();
+        $key = $this->cache->generateKey(self::CACHE_PREFIX . '_exists_by_name', ['name' => $name]);
+        
+        return $this->cache->tags(['categories'])->remember($key, function () use ($name) {
+            return Category::where('name', $name)->exists();
+        }, self::CACHE_TTL);
     }
 
     /**
@@ -49,7 +73,11 @@ class CategoryRepository implements CategoryRepositoryInterface
      * @return Category|null
      */
     public function find(int $id): ?Category {
-        return Category::find($id);
+        $key = $this->cache->generateKey(self::CACHE_PREFIX . '_by_id', ['id' => $id]);
+        
+        return $this->cache->tags(['categories'])->remember($key, function () use ($id) {
+            return Category::find($id);
+        }, self::CACHE_TTL);
     }
 
     /**
@@ -57,7 +85,14 @@ class CategoryRepository implements CategoryRepositoryInterface
      * @return bool
      */
     public function save(Category $category): bool {
-        return $category->save();
+        $result = $category->save();
+        
+        if ($result) {
+            // Очищаем кэш категорий
+            $this->cache->tags(['categories'])->flush();
+        }
+        
+        return $result;
     }
 
     /**
@@ -65,6 +100,13 @@ class CategoryRepository implements CategoryRepositoryInterface
      * @return bool|null
      */
     public function delete(Category $category): ?bool {
-        return $category->delete();
+        $result = $category->delete();
+        
+        if ($result) {
+            // Очищаем кэш категорий
+            $this->cache->tags(['categories'])->flush();
+        }
+        
+        return $result;
     }
 }

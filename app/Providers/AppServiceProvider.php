@@ -6,6 +6,8 @@ use Illuminate\Support\ServiceProvider;
 use Illuminate\Pagination\Paginator;
 use App\Infrastructure\PasswordHasher\PasswordHasherInterface;
 use App\Infrastructure\PasswordHasher\LaravelPasswordHasher;
+use App\Services\Cache\CacheServiceInterface;
+use App\Services\Cache\CacheService;
 use Illuminate\Auth\Middleware\RedirectIfAuthenticated;
 use Illuminate\Support\Facades\Gate;
 
@@ -19,6 +21,7 @@ class AppServiceProvider extends ServiceProvider
         // Регистрируем сервис-провайдер для репозиториев
         $this->app->register(RepositoryServiceProvider::class);
         $this->app->bind(PasswordHasherInterface::class, LaravelPasswordHasher::class);
+        $this->app->bind(CacheServiceInterface::class, CacheService::class);
     }
 
     /**

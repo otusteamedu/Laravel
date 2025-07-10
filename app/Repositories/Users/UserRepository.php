@@ -3,14 +3,26 @@
 namespace App\Repositories\Users;
 
 use App\Models\User;
+use App\Services\Cache\CacheServiceInterface;
 
 class UserRepository implements UserRepositoryInterface
 {
+    private const CACHE_TTL = 3600; // 1 час
+    private const CACHE_PREFIX = 'users';
+    
+    public function __construct(private CacheServiceInterface $cache)
+    {
+    }
+
     /**
      * @return User[]
      */
     public function fetchAll(): array {
-        return User::all()->all();
+        $key = $this->cache->generateKey(self::CACHE_PREFIX . '_all');
+        
+        return $this->cache->tags(['users'])->remember($key, function () {
+            return User::all()->all();
+        }, self::CACHE_TTL);
     }
 
     /**
@@ -20,11 +32,15 @@ class UserRepository implements UserRepositoryInterface
      */
     public function fetchPaginated(int $limit, int $offset): array
     {
-        return User::orderBy('id', 'desc')
-            ->limit($limit)
-            ->offset($offset)
-            ->get()
-            ->all();
+        $key = $this->cache->generateKey(self::CACHE_PREFIX . '_paginated', compact('limit', 'offset'));
+        
+        return $this->cache->tags(['users'])->remember($key, function () use ($limit, $offset) {
+            return User::orderBy('id', 'desc')
+                ->limit($limit)
+                ->offset($offset)
+                ->get()
+                ->all();
+        }, self::CACHE_TTL);
     }
 
     /**
@@ -32,7 +48,11 @@ class UserRepository implements UserRepositoryInterface
      */
     public function count(): int
     {
-        return User::count();
+        $key = $this->cache->generateKey(self::CACHE_PREFIX . '_count');
+        
+        return $this->cache->tags(['users'])->remember($key, function () {
+            return User::count();
+        }, self::CACHE_TTL);
     }
 
     /**
@@ -41,7 +61,11 @@ class UserRepository implements UserRepositoryInterface
      */
     public function existsByEmail(string $email): bool
     {
-        return User::where('email', $email)->exists();
+        $key = $this->cache->generateKey(self::CACHE_PREFIX . '_exists_by_email', ['email' => $email]);
+        
+        return $this->cache->tags(['users'])->remember($key, function () use ($email) {
+            return User::where('email', $email)->exists();
+        }, self::CACHE_TTL);
     }
 
     /**
@@ -49,7 +73,11 @@ class UserRepository implements UserRepositoryInterface
      * @return User|null
      */
     public function find(int $id): ?User {
-        return User::find($id);
+        $key = $this->cache->generateKey(self::CACHE_PREFIX . '_by_id', ['id' => $id]);
+        
+        return $this->cache->tags(['users'])->remember($key, function () use ($id) {
+            return User::find($id);
+        }, self::CACHE_TTL);
     }
 
     /**
@@ -57,7 +85,14 @@ class UserRepository implements UserRepositoryInterface
      * @return bool
      */
     public function save(User $user): bool {
-        return $user->save();
+        $result = $user->save();
+        
+        if ($result) {
+            // Очищаем кэш пользователей
+            $this->cache->tags(['users'])->flush();
+        }
+        
+        return $result;
     }
 
     /**
@@ -65,6 +100,13 @@ class UserRepository implements UserRepositoryInterface
      * @return bool|null
      */
     public function delete(User $user): ?bool {
-        return $user->delete();
+        $result = $user->delete();
+        
+        if ($result) {
+            // Очищаем кэш пользователей
+            $this->cache->tags(['users'])->flush();
+        }
+        
+        return $result;
     }
 } 

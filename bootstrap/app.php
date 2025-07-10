@@ -14,14 +14,20 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->alias([
             'locale' => \App\Http\Middleware\LocaleMiddleware::class,
+            'pagespeed' => \App\Http\Middleware\PageSpeedMiddleware::class,
+        ]);
+        
+        // Добавляем PageSpeedMiddleware ко всем веб-запросам
+        $middleware->web(append: [
+            \App\Http\Middleware\PageSpeedMiddleware::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
         $exceptions->reportable(function (Throwable $e) {
             // Автоматически отправляем все исключения в Telegram
-            if (config('logging.channels.telegram.handler_with.botToken') && 
+            if (config('logging.channels.telegram.handler_with.botToken') &&
                 config('logging.channels.telegram.handler_with.chatId')) {
-                
+
                 Log::channel('telegram')->error('Exception occurred: ' . $e->getMessage(), [
                     'exception' => get_class($e),
                     'file' => $e->getFile(),

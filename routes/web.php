@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\Categories;
 use App\Http\Controllers\Admin\Tasks;
 use App\Http\Controllers\Admin\Users;
+use App\Http\Controllers\Admin\CacheController;
 use App\Http\Controllers\Public\Tasks as PublicTasks;
 use Illuminate\Support\Facades\Log;
 
@@ -64,6 +65,16 @@ Route::prefix('admin')
         Route::get('/{user}/edit', [Users\UpdateController::class, 'edit'])->name('edit');
         Route::put('/{user}', [Users\UpdateController::class, 'update'])->name('update');
         Route::delete('/{user}', [Users\DestroyController::class, 'destroy'])->name('destroy');
+    });
+
+    // Управление кэшем
+    Route::prefix('cache')->name('cache.')->group(function () {
+        Route::get('/', [CacheController::class, 'index'])->name('index');
+        Route::post('/warmup', [CacheController::class, 'warmup'])->name('warmup');
+        Route::post('/clear', [CacheController::class, 'clear'])->name('clear');
+        Route::post('/warmup-tasks', [CacheController::class, 'warmupTasks'])->name('warmup.tasks');
+        Route::post('/warmup-categories', [CacheController::class, 'warmupCategories'])->name('warmup.categories');
+        Route::post('/warmup-users', [CacheController::class, 'warmupUsers'])->name('warmup.users');
     });
 });
 
