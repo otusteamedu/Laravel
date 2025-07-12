@@ -1113,27 +1113,6 @@
             "time": "2021-07-21T13:50:14+00:00"
         },
         {
-            "name": "ilya-nurullin/img2ascii",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/ilya-nurullin/img2ascii.git",
-                "reference": "70a51f142817a6f4171c1dd9ef13bc1f75aa66ad"
-            },
-            "require": {
-                "ext-gd": "*",
-                "php": ">= 5.3"
-            },
-            "default-branch": true,
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Img2Ascii\\": "src/"
-                }
-            },
-            "time": "2021-09-14T14:55:11+00:00"
-        },
-        {
             "name": "laravel/framework",
             "version": "v12.10.2",
             "source": {
@@ -6016,37 +5995,6 @@
             "time": "2024-12-21T16:25:41+00:00"
         },
         {
-            "name": "vagrant/ascii",
-            "version": "dev-otus-2025-04/packages",
-            "dist": {
-                "type": "path",
-                "url": "../ascii",
-                "reference": "aaea3431e9b317b26feae383013110c064a6e19e"
-            },
-            "require": {
-                "illuminate/http": "^12.0",
-                "illuminate/support": "^12.0",
-                "ilya-nurullin/img2ascii": "dev-master"
-            },
-            "type": "library",
-            "extra": {
-                "laravel": {
-                    "providers": [
-                        "Vagrant\\Ascii\\ServiceProvider"
-                    ]
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Vagrant\\Ascii\\": "src/"
-                }
-            },
-            "description": "Image to Ascii generator",
-            "transport-options": {
-                "relative": true
-            }
-        },
-        {
             "name": "vlucas/phpdotenv",
             "version": "v5.6.1",
             "source": {
@@ -8815,9 +8763,6 @@
     ],
     "aliases": [],
     "minimum-stability": "dev",
-    "stability-flags": {
-        "vagrant/ascii": 20
-    },
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {

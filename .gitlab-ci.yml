@@ -1,0 +1,47 @@
+default:
+  image: 192.168.0.194.sslip.io:5000/php-runner:latest
+
+cache:
+  paths:
+    - vendor/
+
+before_script:
+  # SSH setup
+  - mkdir -p ~/.ssh
+  - chmod 700 ~/.ssh
+  - cp "$SSH_KNOWN_HOSTS" ~/.ssh/known_hosts
+  - chmod 644 ~/.ssh/known_hosts
+  - "command -v ssh-agent >/dev/null || ( apt-get update -y && apt-get install openssh-client -y )"
+  - eval $(ssh-agent -s)
+  - chmod 400 "$SSH_PRIVATE_KEY"
+  - ssh-add "$SSH_PRIVATE_KEY"
+
+  # app commands
+  - php /composer.phar install
+  - cp ci.env .env
+  - rm -rf node_modules
+  - /root/.bun/bin/bun install
+  - /root/.bun/bin/bun run build
+  - php artisan key:generate
+  - php artisan migrate
+
+stages:
+  - test
+  - deploy
+
+test-job:
+  stage: test
+  script:
+    - php artisan test
+
+deploy-to-production:
+  stage: deploy
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "prod"'
+      when: on_success
+  when: manual
+  environment:
+    name: production
+    url: http://192.168.0.194.sslip.io
+  script:
+    - ssh deploy@192.168.0.194 -o RemoteCommand="bash /home/deploy/apps/site/scripts/deploy.sh"

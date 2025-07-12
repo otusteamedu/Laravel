@@ -13,7 +13,6 @@
         "laravel/tinker": "^2.10.1",
         "meilisearch/meilisearch-php": "^1.15",
         "opcodesio/log-viewer": "^3.17",
-        "vagrant/ascii": "@dev",
         "watson/rememberable": "^7.0"
     },
     "require-dev": {
@@ -79,18 +78,5 @@
         }
     },
     "minimum-stability": "dev",
-    "prefer-stable": true,
-    "repositories": [
-        {
-            "type": "path",
-            "url": "../ascii",
-            "options": {
-                "simlink": true
-            }
-        },
-        {
-            "type": "git",
-            "url": "https://github.com/ilya-nurullin/img2ascii.git"
-        }
-    ]
+    "prefer-stable": true
 }
