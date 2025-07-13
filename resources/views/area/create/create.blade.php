@@ -1,4 +1,8 @@
-<x-app-layout>
+@extends('layouts.main')
+
+@vite('resources/views/area/create/js/index.js')
+
+@section('content')
     <div class="py-1">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
         @include('components.button.back', ['route' => route('area.index'), 'text' => __('account.back_btn')])
@@ -27,6 +31,4 @@
             </div>
         </div>
     </div>
-</x-app-layout>
-
-@vite('resources/views/area/create/js/index.js')
+@endsection
