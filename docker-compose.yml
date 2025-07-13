@@ -1,0 +1,45 @@
+services:
+  gitlab:
+    image: gitlab/gitlab-ce:latest
+    container_name: gitlab
+      #    restart: always
+    hostname: '192.168.0.194.sslip.io'
+    logging:
+      driver: none
+    attach: false
+    environment:
+      GITLAB_OMNIBUS_CONFIG: |
+        external_url 'http://192.168.0.194.sslip.io:8085'
+        gitlab_rails['gitlab_shell_ssh_port'] = 2424
+    ports:
+      - '8085:8085'
+      - '2424:22'
+    volumes:
+      - './data/config:/etc/gitlab'
+      - './data/logs:/var/log/gitlab'
+      - './data/data:/var/opt/gitlab'
+    networks:
+      - gitlab
+    shm_size: '256m'
+
+  runner:
+    image: gitlab/gitlab-runner:latest
+    container_name: gitlab_runner
+    volumes:
+      - './data/runner:/etc/gitlab-runner'
+      - '/var/run/docker.sock:/var/run/docker.sock'
+    networks:
+      - gitlab
+
+  registry:
+    image: registry:3
+    container_name: registry
+    ports:
+      - 5000:5000
+    environment:
+      REGISTRY_STORAGE_FILESYSTEM_ROOTDIRECTORY: /data
+    volumes:
+      - './data/registry:/data'
+networks:
+  gitlab:
+    driver: bridge
