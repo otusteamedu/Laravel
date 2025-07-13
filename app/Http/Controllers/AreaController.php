@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Exceptions\NotFoundException;
+use App\Http\Requests\Area\StoreAreaRequest;
+use App\Http\Requests\Area\UpdateAreaRequest;
 use App\Response\WebResponse;
 use App\Services\Area\AreaServiceInterface;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -50,7 +52,7 @@ class AreaController extends Controller
         }
     }
 
-    public function store(Request $request): JsonResponse
+    public function store(StoreAreaRequest $request): JsonResponse
     {
         try {
             $this->areaService->store($request->input('name-area'));
@@ -77,7 +79,7 @@ class AreaController extends Controller
             $area = $this->areaService->prepairDataForEdit($id);
             $response = new WebResponse(true, $area, 'Успешно');
         } catch (ModelNotFoundException $e) {
-            $response = new WebResponse(false, null, $e->getMessage(), [], 400);
+            $response = new WebResponse(false, null, 'Запись не найдена для редактирования', [], 400);
             Log::error(__METHOD__ . var_export($response, true));
         } catch (Throwable $e) {
             $response = new WebResponse(false, null, $e->getMessage(), [], 500);
@@ -87,7 +89,7 @@ class AreaController extends Controller
         }
     }
 
-    public function update(Request $request, int $id)
+    public function update(UpdateAreaRequest $request, int $id)
     {
         try {
             $this->areaService->update($id, $request->input('name-area'));
