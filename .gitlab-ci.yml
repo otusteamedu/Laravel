@@ -44,4 +44,4 @@ deploy-to-production:
     name: production
     url: http://192.168.0.194.sslip.io
   script:
-    - ssh deploy@192.168.0.194 -o RemoteCommand="bash /home/deploy/apps/site/scripts/deploy.sh"
+    - php vendor/bin/envoy run deploy
