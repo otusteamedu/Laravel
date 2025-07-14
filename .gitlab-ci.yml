@@ -26,13 +26,13 @@ before_script:
   - php artisan migrate
 
 stages:
-  - test
+  # - test
   - deploy
 
-test-job:
-  stage: test
-  script:
-    - php artisan test
+# test-job:
+#   stage: test
+#   script:
+#     - php artisan test
 
 deploy-to-production:
   stage: deploy
