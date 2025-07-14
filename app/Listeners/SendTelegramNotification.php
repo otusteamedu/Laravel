@@ -2,8 +2,8 @@
 
 namespace App\Listeners;
 
+use App\Application\Contracts\TelegramServiceInterface;
 use App\Events\NewsPublished;
-use App\Infrastructure\Notification\Telegram\TelegramServiceInterface;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Support\Facades\Log;

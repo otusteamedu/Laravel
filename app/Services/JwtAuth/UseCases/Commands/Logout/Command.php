@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\Application\UseCases\Auth\Commands\RefreshToken;
+namespace App\Services\JwtAuth\UseCases\Commands\Logout;
 
-class Command
+final readonly class Command
 {
     public function __construct(
         public string $refreshToken

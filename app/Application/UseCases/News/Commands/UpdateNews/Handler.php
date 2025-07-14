@@ -2,13 +2,15 @@
 
 namespace App\Application\UseCases\News\Commands\UpdateNews;
 
+use App\Application\Contracts\CacheInterface;
+use App\Application\UseCases\News\DTO\NewsDTO;
 use App\Domain\News\Exceptions\NewsNotFoundException;
 use App\Domain\News\Exceptions\NewsSaveException;
-use App\Domain\News\Repositories\NewsRepositoryInterface;
 use App\Domain\News\Repositories\CategoryRepositoryInterface;
+use App\Domain\News\Repositories\NewsRepositoryInterface;
 use App\Domain\User\Repositories\UserRepositoryInterface;
-use App\Infrastructure\Cache\CacheInterface;
-use App\Application\UseCases\News\DTO\NewsDTO;
+use App\Application\UseCases\News\DTO\AuthorDTO;
+use App\Application\UseCases\News\DTO\CategoryDTO;
 
 class Handler
 {
@@ -37,10 +39,21 @@ class Handler
 
         $isChangedActivityCount = $news->isDraft() !== $command->isDraft;
 
-        $category = $this->categoryRepository->find($command->categoryId);
+        $author = $command->authorId
+            ? $this->userRepository->find($command->authorId)
+            : null;
+
+        $category = $command->categoryId
+            ? $this->categoryRepository->find($command->categoryId)
+            : null;
+
+
+        /*if (!$author) {
+            throw new \DomainException('Автор не найден');
+        }
         if (!$category) {
             throw new \DomainException('Категория не найдена');
-        }
+        }*/
 
         $news->update(
             title: $command->title,
@@ -84,6 +97,16 @@ class Handler
             createdAt: $domainNews->getCreatedAt(),
             updatedAt: $domainNews->getUpdatedAt(),
             publishedAt: $domainNews->getPublishedAt(),
+            author: $author ? new AuthorDTO(
+                    id: $author->getId(),
+                    name: $author->getName(),
+                    email: $author->getEmail(),
+                ) : null,
+            category: $category ? new CategoryDTO(
+                    id: $category->getId(),
+                    name: $category->getName(),
+                    slug: method_exists($category, 'getSlug') ? $category->getSlug() : null,
+                ) : null,
         );
     }
 }

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Infrastructure\RefreshTokenHasher;
+namespace App\Services\JwtAuth\Contracts;
 
 interface RefreshTokenHasherInterface
 {

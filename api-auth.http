@@ -1,5 +1,5 @@
 @host=http://localhost
-@token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vbG9jYWxob3N0L2FwaS92MS9yZWZyZXNoIiwiaWF0IjoxNzUyMDYzNTg2LCJleHAiOjE3NTIwNjcxODYsIm5iZiI6MTc1MjA2MzU4NiwianRpIjoiU3dJZ0lobnFhdERPYURKQSIsInN1YiI6IjEiLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3IiwiYWRtaW4iOnRydWUsImVtYWlsIjoiYWRtaW5AZXhhbXBsZS5jb20iLCJuYW1lIjoiYWRtaW4ifQ.MAxPDYcJCGHH3Hc3dfynfuWtiLfy3APDgsES71GWOwM
+@token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vbG9jYWxob3N0L2FwaS92MS9yZWZyZXNoIiwiaWF0IjoxNzUyNTAwNDAyLCJleHAiOjE3NTI1MDEwMDIsIm5iZiI6MTc1MjUwMDQwMiwianRpIjoiNGt4S1I2WnJpNTdvRGptZiIsInN1YiI6IjEiLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3IiwiYWRtaW4iOnRydWUsImVtYWlsIjoiYWRtaW5AZXhhbXBsZS5jb20iLCJuYW1lIjoiYWRtaW4ifQ.7r7OM5YtoRQB57gcj3wE48GU_1g9z7KlZo3dUQFYWfI
 
 POST {{host}}/api/v1/login
 Content-Type: application/json
@@ -17,7 +17,7 @@ Content-Type: application/json
 Accept: application/json
 
 {
-    "refresh_token": "uQeVAzgC1uhnb8SWLCgri9uErXb5IJdHDhpAfXquqm9S29fO27TXm1EbWMnU5CNO"
+    "refresh_token": "uqKPc2a8KvQ2zJZnCB4avLKaRyafEV9fmgFgRS2otyHxqCENBakOAX40x5KqtDPV"
 }
 
 ###
@@ -28,7 +28,7 @@ Accept: application/json
 Authorization: Bearer {{token}}
 
 {
-    "refresh_token": "EF1dq6JHAmsZJ357ZFpWecXQbzBBRoYxSeLjCRbeUWLGG73vakAUrNezn3WFqvzI"
+    "refresh_token": "CM9L9m88nwC4rWiiLhxexTIz8f5btugud5fDtRHlSuZBhksb6BpIJitWfHl2zwU1"
 }
 
 ###

@@ -2,10 +2,10 @@
 
 namespace App\Application\UseCases\Category\Queries\FetchPopularCategories;
 
-use App\Application\UseCases\Category\DTO\ResultDTO;
+use App\Application\Contracts\CacheInterface;
 use App\Application\UseCases\Category\DTO\CategoryDTO;
+use App\Application\UseCases\Category\DTO\ResultDTO;
 use App\Domain\News\Repositories\CategoryRepositoryInterface;
-use App\Infrastructure\Cache\CacheInterface;
 use App\Infrastructure\Eloquent\Repositories\Categories\CategoryMapper;
 
 class Fetcher

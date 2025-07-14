@@ -16,7 +16,6 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->string('token')->unique();
             $table->timestamp('expires_at');
-            $table->boolean('revoked')->default(false);
             $table->timestamps();
         });
     }

@@ -22,32 +22,33 @@ use DomainException;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use App\Http\Requests\CreateNewsRequest;
 use App\Http\Requests\UpdateNewsRequest;
-use App\Http\Resources\NewsDTOResource;
+use App\Http\Resources\NewsResource;
+use App\Http\Resources\Mappers\NewsApiModelMapper;
 
 class NewsController extends Controller
 {
     public function __construct(
-        private FetchAllFetcher $fetchAllFetcher,
-        private FetchByIdFetcher $fetchByIdFetcher,
-        private CreateNewsHandler $createNewsHandler,
-        private UpdateNewsHandler $updateNewsHandler,
-        private DeleteNewsHandler $deleteNewsHandler,
     ) {}
 
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request): JsonResponse
+    public function index(FetchAllFetcher $fetchAllFetcher, Request $request): JsonResponse
     {
         $limit = (int) $request->get('limit', 10);
         $page = (int) $request->get('page', 1);
         $offset = ($page - 1) * $limit;
 
         $query = new FetchAllQuery(limit: $limit, offset: $offset);
-        $paginatedResult = $this->fetchAllFetcher->fetch($query);
+        $paginatedResult = $fetchAllFetcher->fetch($query);
+
+        $apiModels = array_map(
+            fn($newsDTO) => NewsApiModelMapper::map($newsDTO),
+            $paginatedResult->items
+        );
 
         return response()->json([
-                                    'data' => NewsDTOResource::collection($paginatedResult->items),
+                                    'data' => NewsResource::collection($apiModels),
                                     'meta' => [
                                         'total' => $paginatedResult->total,
                                         'limit' => $paginatedResult->limit,
@@ -59,7 +60,7 @@ class NewsController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(CreateNewsRequest $request): JsonResponse
+    public function store(CreateNewsHandler $createNewsHandler, CreateNewsRequest $request): JsonResponse
     {
         $validated = $request->validated();
 
@@ -74,9 +75,10 @@ class NewsController extends Controller
         );
 
         try {
-            $newsDTO = $this->createNewsHandler->handle($command);
+            $newsDTO = $createNewsHandler->handle($command);
+            $apiModel = NewsApiModelMapper::map($newsDTO);
 
-            return response()->json(['data' => $newsDTO], Response::HTTP_CREATED);
+            return response()->json(['data' => $apiModel], Response::HTTP_CREATED);
 
         } catch (DomainException $e) {
             return response()->json(['message' => $e->getMessage()], Response::HTTP_BAD_REQUEST);
@@ -89,15 +91,15 @@ class NewsController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(int $id): JsonResponse
+    public function show(FetchByIdFetcher $fetchByIdFetcher, int $id): JsonResponse
     {
         try {
             $query = new FetchByIdQuery($id);
-            $newsDTO = $this->fetchByIdFetcher->fetch($query);
+            $newsDTO = $fetchByIdFetcher->fetch($query);
 
-            return response()->json([
-                                        'data' => new NewsDTOResource($newsDTO),
-                                    ]);
+            $apiModel = NewsApiModelMapper::map($newsDTO);
+
+            return response()->json(['data' => new NewsResource($apiModel)]);
 
         } catch (NewsNotFoundException $e) {
             return response()->json(['message' => $e->getMessage()], Response::HTTP_NOT_FOUND);
@@ -107,7 +109,7 @@ class NewsController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateNewsRequest $request, int $id): JsonResponse
+    public function update(UpdateNewsHandler $updateNewsHandler, UpdateNewsRequest $request, int $id): JsonResponse
     {
         $validated = $request->validated();
 
@@ -126,9 +128,11 @@ class NewsController extends Controller
             $payload = JWTAuth::parseToken()->getPayload();
             $isAdmin = (bool)$payload->get('admin', false);
 
-            $newsDTO = $this->updateNewsHandler->handle($command, $isAdmin);
+            $newsDTO = $updateNewsHandler->handle($command, $isAdmin);
+            $apiModel = NewsApiModelMapper::map($newsDTO);
 
-            return response()->json(['data' => $newsDTO]);
+            //return new NewsResource($apiModel);
+            return response()->json(['data' => new NewsResource($apiModel)]);
 
         } catch (NewsNotFoundException $e) {
             return response()->json(['message' => $e->getMessage()], Response::HTTP_NOT_FOUND);
@@ -146,10 +150,10 @@ class NewsController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(int $id)
+    public function destroy(DeleteNewsHandler $deleteNewsHandler, int $id)
     {
         try {
-            $this->deleteNewsHandler->handle(new DeleteNewsCommand($id));
+            $deleteNewsHandler->handle(new DeleteNewsCommand($id));
 
             return response()->noContent();
 

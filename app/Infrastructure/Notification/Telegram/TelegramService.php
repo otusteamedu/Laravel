@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Notification\Telegram;
 
+use App\Application\Contracts\TelegramServiceInterface;
 use Illuminate\Support\Facades\Http;
 
 class TelegramService implements TelegramServiceInterface

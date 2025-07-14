@@ -45,7 +45,7 @@ Route::get('/log', function () {
 });
 
 Route::get('/test', function (AuthController $authController) {
-   // dump($authController->revoke('uQeVAzgC1uhnb8SWLCgri9uErXb5IJdHDhpAfXquqm9S29fO27TXm1EbWMnU5CNO'));
+   // dump($authController->revoke('tYIX3C3aUH4tESEiEzco6HWVMkG9LDMrPcpEAVlwlOFys9ciu8HTohxBYUgx2WIe'));
     return ['status' => 'success'];
 });
 

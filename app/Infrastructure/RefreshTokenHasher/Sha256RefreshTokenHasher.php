@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\RefreshTokenHasher;
 
+use App\Services\JwtAuth\Contracts\RefreshTokenHasherInterface;
+
 class Sha256RefreshTokenHasher implements RefreshTokenHasherInterface
 {
     public function hash(string $token): string

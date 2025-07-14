@@ -5,7 +5,8 @@ declare(strict_types=1);
 namespace App\Domain\User\Entities;
 
 use App\Domain\User\ValueObjects\Roles;
-use App\Domain\User\ValueObjects\Permissions;
+
+//use App\Domain\User\ValueObjects\Permissions;
 
 class User
 {

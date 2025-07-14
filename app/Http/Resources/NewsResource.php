@@ -3,10 +3,11 @@
 namespace App\Http\Resources;
 
 use App\Application\UseCases\News\DTO\NewsDTO;
+use App\Http\Resources\Models\NewsApiModel;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class NewsDTOResource extends JsonResource
+class NewsResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -15,18 +16,18 @@ class NewsDTOResource extends JsonResource
      */
     public function toArray($request): array
     {
-        /** @var NewsDTO $newsDto */
+        /** @var NewsApiModel $newsDto */
         $newsDto = $this->resource;
 
         return [
             'id' => $newsDto->id,
             'title' => $newsDto->title,
             'content' => $newsDto->content,
-            'is_draft' => $newsDto->isDraft,
+            'is_draft' => $newsDto->is_draft,
             'thumbnail' => $newsDto->thumbnail,
-            'created_at' => $newsDto->createdAt?->format('Y-m-d H:i:s'),
-            'updated_at' => $newsDto->updatedAt?->format('Y-m-d H:i:s'),
-            'published_at' => $newsDto->publishedAt?->format('Y-m-d H:i:s'),
+            'created_at' => $newsDto->created_at,
+            'updated_at' => $newsDto->updated_at,
+            'published_at' => $newsDto->published_at,
             'author' => $newsDto->author ? [
                 'id' => $newsDto->author->id,
                 'name' => $newsDto->author->name,

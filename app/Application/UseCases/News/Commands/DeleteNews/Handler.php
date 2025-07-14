@@ -2,10 +2,10 @@
 
 namespace App\Application\UseCases\News\Commands\DeleteNews;
 
+use App\Application\Contracts\CacheInterface;
 use App\Domain\News\Exceptions\NewsNotFoundException;
 use App\Domain\News\Exceptions\NewsSaveException;
 use App\Domain\News\Repositories\NewsRepositoryInterface;
-use App\Infrastructure\Cache\CacheInterface;
 
 final class Handler
 {

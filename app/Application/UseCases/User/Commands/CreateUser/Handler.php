@@ -2,14 +2,13 @@
 
 namespace App\Application\UseCases\User\Commands\CreateUser;
 
+use App\Application\Contracts\PasswordHasherInterface;
 use App\Application\UseCases\User\DTO\UserDTO;
 use App\Domain\User\Entities\User as DomainUser;
 use App\Domain\User\Exceptions\UserEmailAlreadyExistsException;
 use App\Domain\User\Exceptions\UserSaveException;
 use App\Domain\User\Repositories\UserRepositoryInterface;
-use App\Infrastructure\PasswordHasher\PasswordHasherInterface;
 use App\Domain\User\ValueObjects\Roles;
-use App\Domain\User\ValueObjects\Permissions;
 
 class Handler
 {

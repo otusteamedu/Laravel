@@ -1,5 +1,5 @@
 @host=http://localhost
-@token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vbG9jYWxob3N0L2FwaS92MS9yZWZyZXNoIiwiaWF0IjoxNzUyMDYzNTg2LCJleHAiOjE3NTIwNjcxODYsIm5iZiI6MTc1MjA2MzU4NiwianRpIjoiU3dJZ0lobnFhdERPYURKQSIsInN1YiI6IjEiLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3IiwiYWRtaW4iOnRydWUsImVtYWlsIjoiYWRtaW5AZXhhbXBsZS5jb20iLCJuYW1lIjoiYWRtaW4ifQ.MAxPDYcJCGHH3Hc3dfynfuWtiLfy3APDgsES71GWOwM
+@token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vbG9jYWxob3N0L2FwaS92MS9yZWZyZXNoIiwiaWF0IjoxNzUyNTAzMDA3LCJleHAiOjE3NTI1MDM2MDcsIm5iZiI6MTc1MjUwMzAwNywianRpIjoiamJHdHhmU3llWWw5TU45dyIsInN1YiI6IjEiLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3IiwiYWRtaW4iOnRydWUsImVtYWlsIjoiYWRtaW5AZXhhbXBsZS5jb20iLCJuYW1lIjoiYWRtaW4ifQ.Eaqdj_1rJ-DJYIQbTc9LMETym_aAvqGks2D2h5T0OSo
 
 GET {{host}}/api/v1/news
 Content-Type: application/json
@@ -22,7 +22,7 @@ Accept: application/json
 Authorization: Bearer {{token}}
 
 {
-    "title": "Заголовок новости 555",
+    "title": "Заголовок новости 8888",
     "content": "Тест новости",
     "author_id": 3,
     "category_id": 2,
@@ -32,13 +32,13 @@ Authorization: Bearer {{token}}
 
 ###
 
-PUT {{host}}/api/v1/news/33
+PUT {{host}}/api/v1/news/35
 Content-Type: application/json
 Accept: application/json
 Authorization: Bearer {{token}}
 
 {
-    "title": "Заголовок новости 5555",
+    "title": "Заголовок новости 11111",
     "content": "Тест новости",
     "author_id": 2,
     "category_id": 2,
@@ -48,7 +48,7 @@ Authorization: Bearer {{token}}
 
 ###
 
-DELETE {{host}}/api/v1/news/32
+DELETE {{host}}/api/v1/news/33
 Content-Type: application/json
 Accept: application/json
 Authorization: Bearer {{token}}

@@ -2,31 +2,36 @@
 
 namespace App\Providers;
 
+use App\Application\Contracts\CacheInterface;
+use App\Application\Contracts\PasswordHasherInterface;
+use App\Application\Contracts\TelegramServiceInterface;
 use App\Domain\News\Repositories\CategoryRepositoryInterface;
 use App\Domain\News\Repositories\CommentRepositoryInterface;
 use App\Domain\News\Repositories\NewsRepositoryInterface;
 use App\Domain\News\Services\CategorySlugGeneratorInterface;
 use App\Domain\User\Repositories\UserRepositoryInterface;
-use App\Infrastructure\Cache\CacheInterface;
 use App\Infrastructure\Cache\LaravelCache;
 use App\Infrastructure\Eloquent\Repositories\Categories\CategoryRepository;
 use App\Infrastructure\Eloquent\Repositories\Categories\CategorySlugGenerator;
 use App\Infrastructure\Eloquent\Repositories\Comments\CommentRepository;
-use App\Infrastructure\Eloquent\Repositories\News\NewsRepository;
 use App\Infrastructure\Eloquent\Repositories\Users\UserRepository;
+use App\Infrastructure\Eloquent\Repositories\News\NewsRepository;
+use App\Infrastructure\Eloquent\Repositories\RefreshToken\RefreshTokenRepository;
 use App\Infrastructure\Notification\Telegram\TelegramService;
-use App\Infrastructure\Notification\Telegram\TelegramServiceInterface;
 use App\Infrastructure\PasswordHasher\LaravelPasswordHasher;
-use App\Infrastructure\PasswordHasher\PasswordHasherInterface;
-use App\Infrastructure\RefreshTokenHasher\RefreshTokenHasherInterface;
 use App\Infrastructure\RefreshTokenHasher\Sha256RefreshTokenHasher;
 use App\Policies\CategoryPolicy;
 use App\Policies\NewsPolicy;
+use App\Services\JwtAuth\AuthService;
+use App\Services\JwtAuth\Contracts\AuthServiceInterface;
+use App\Services\JwtAuth\Contracts\RefreshTokenHasherInterface;
+use App\Services\JwtAuth\Contracts\RefreshTokenRepositoryInterface;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
-use App\Domain\Auth\Repositories\RefreshTokenRepositoryInterface;
-use App\Infrastructure\Eloquent\Repositories\Auth\RefreshTokenRepository;
+use App\Services\JwtAuth\Contracts\UserRepositoryInterface as JwtAuthUserRepositoryInterface;
+use App\Infrastructure\Eloquent\Repositories\JwtAuth\UserRepository as JwtAuthUserRepository;
+
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -35,7 +40,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-
         $this->app->bind(
 	        UserRepositoryInterface::class,
 	        UserRepository::class
@@ -76,8 +80,18 @@ class AppServiceProvider extends ServiceProvider
             CategorySlugGenerator::class
         );
 
-        $this->app->bind(RefreshTokenRepositoryInterface::class, RefreshTokenRepository::class);
+        $this->app->bind(
+            RefreshTokenRepositoryInterface::class,
+            RefreshTokenRepository::class
+        );
+
+        $this->app->bind(
+            JwtAuthUserRepositoryInterface::class,
+            JwtAuthUserRepository::class
+        );
+
         $this->app->bind(RefreshTokenHasherInterface::class, Sha256RefreshTokenHasher::class);
+        $this->app->bind(AuthServiceInterface::class, AuthService::class);
     }
 
     /**
