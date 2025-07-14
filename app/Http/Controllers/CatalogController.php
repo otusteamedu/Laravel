@@ -6,6 +6,9 @@ use App\Services\CategoriesService;
 use App\Services\ProductsService;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Illuminate\Support\Number;
+use App\Exceptions\ProductNotFoundException;
 
 class CatalogController extends Controller
 {
@@ -29,5 +32,28 @@ class CatalogController extends Controller
         $categories = $this->categoriesService->getAll();
         $currentCategory = $this->categoriesService->getById($categoryId);
         return view('catalog.index', compact('products', 'categories', 'currentCategory'));
+    }
+
+    public function show(int $productId): View
+    {
+        try {
+            $product = $this->service->getById($productId);
+        } catch (ProductNotFoundException $e) {
+            throw new NotFoundHttpException($e->getMessage());
+        }
+
+        $data = [
+            'productId' => $product->getId(),
+            'title' => $product->getTitle(),
+            'description' => $product->getDescription(),
+            'price' => Number::format($product->getPrice(), locale: 'ru'),
+            'stock' => $product->getStock(),
+            'categoryTitle' => $product->getCategory()->getTitle(),
+            'assets' => $product->getAssets(),
+            'createdAt' => $product->getCreatedAt()->format('d.m.Y H:i'),
+            'updatedAt' => $product->getUpdatedAt()->format('d.m.Y H:i'),
+        ];
+
+        return view('catalog.show', $data);
     }
 }

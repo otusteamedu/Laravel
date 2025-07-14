@@ -24,13 +24,21 @@
             @foreach ($products as $product)
             <div class="col">
                 <div class="card shadow-sm">
-                    @if ($product->getFirstImage())
-                    <img src="{{ asset('storage/' . $product->getFirstImage()->getAssetUrl()) }}" alt="">
-                    @else
-                    <img src="{{ asset('storage/uploads/placeholder.jpg') }}" alt="">
-                    @endif
+                    <a href="{{ route('product', $product->getId()) }}">
+                        @if ($product->getFirstImage())
+                        <img src="{{ asset('storage/' . $product->getFirstImage()->getAssetUrl()) }}" alt="" class="w-100">
+                        @else
+                        <img src="{{ asset('storage/uploads/placeholder.jpg') }}" alt="" class="w-100">
+                        @endif
+                    </a>
+
                     <div class="card-body">
-                        <p class="card-text fs-5">{{ $product->getTitle() }}</p>
+                        <p class="card-text fs-5">
+                            <a href="{{ route('product', $product->getId()) }}" class="text-decoration-none text-dark">
+                                {{ $product->getTitle() }}
+                            </a>
+                        </p>
+
                         <div class="d-flex justify-content-between align-items-center">
                             <div class="d-flex justify-content-between align-items-center text-body-secondary fs-5">
                                 {{ Illuminate\Support\Number::format($product->getPrice(), locale: 'ru') }} руб.
