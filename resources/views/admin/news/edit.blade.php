@@ -77,13 +77,13 @@
                     @if (isset($isAdmin) && $isAdmin)
                         <div class="row mb-3">
                             <div class="col-12">
-                                <label for="user_id" class="form-label">Автор <span class="text-danger">*</span></label>
-                                <select class="form-select @error('user_id') is-invalid @enderror" id="user_id"
-                                        name="user_id" required>
+                                <label for="author_id" class="form-label">Автор <span class="text-danger">*</span></label>
+                                <select class="form-select @error('author_id') is-invalid @enderror" id="author_id"
+                                        name="author_id" required>
                                     <option value="">Выберите автора</option>
                                     @foreach($users as $user)
                                         <option
-                                            value="{{ $user->id }}" {{ old('user_id', $news->author->id) == $user->id ? 'selected' : '' }}>
+                                            value="{{ $user->id }}" {{ old('author_id', $news->author->id) == $user->id ? 'selected' : '' }}>
                                             {{ $user->name }}
                                         </option>
                                     @endforeach

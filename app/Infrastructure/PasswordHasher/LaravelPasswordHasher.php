@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 namespace App\Infrastructure\PasswordHasher;
+use App\Application\Contracts\PasswordHasherInterface;
 use Illuminate\Support\Facades\Hash;
 
 class LaravelPasswordHasher implements PasswordHasherInterface

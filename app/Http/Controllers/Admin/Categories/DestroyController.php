@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers\Admin\Categories;
 
+use App\Application\Contracts\CacheInterface;
 use App\Application\UseCases\Category\Commands\DeleteCategory\Command;
 use App\Application\UseCases\Category\Commands\DeleteCategory\Handler;
 use App\Domain\News\Exceptions\CategoryNotFoundException;
 use App\Http\Controllers\Controller;
-use App\Infrastructure\Cache\CacheInterface;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Gate;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;

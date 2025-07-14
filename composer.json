@@ -10,7 +10,8 @@
         "irbis45/laravel-user-logo": "0.0.2",
         "laravel/framework": "^12.0",
         "laravel/tinker": "^2.10.1",
-        "laravel/ui": "^4.6"
+        "laravel/ui": "^4.6",
+        "tymon/jwt-auth": "^2.2"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.15",

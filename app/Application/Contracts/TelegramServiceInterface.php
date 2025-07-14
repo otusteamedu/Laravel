@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Infrastructure\Notification\Telegram;
+namespace App\Application\Contracts;
 
 interface TelegramServiceInterface
 {

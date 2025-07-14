@@ -24,7 +24,7 @@ class UpdateNewsRequest extends FormRequest
         return [
             'title' => ['required', 'string', 'min:2', 'max:255'],
             'content' => ['required', 'string', 'min:2'],
-            'user_id' => ['integer'],
+            'author_id' => ['integer'],
             'category_id' => ['required', 'integer'],
             'is_draft' => ['boolean'],
             'published_at' => ['date', 'after_or_equal:today'],

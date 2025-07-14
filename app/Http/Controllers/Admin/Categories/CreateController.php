@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers\Admin\Categories;
 
+use App\Application\Contracts\CacheInterface;
 use App\Application\UseCases\Category\Commands\CreateCategory\Command;
 use App\Application\UseCases\Category\Commands\CreateCategory\Handler;
 use App\Domain\News\Exceptions\CategoryAlreadyExistsException;
 use App\Domain\News\Exceptions\CategorySaveException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CreateCategoryRequest;
-use App\Infrastructure\Cache\CacheInterface;
 use Exception;
 use Illuminate\Support\Facades\Gate;
 

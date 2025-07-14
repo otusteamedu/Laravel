@@ -25,10 +25,6 @@ class Fetcher
         $newsItems = $this->newsRepository->fetchPaginated($query->limit, $query->offset);
         $total = $this->newsRepository->count();
 
-        if (!is_array($newsItems)) {
-            $newsItems = iterator_to_array($newsItems);
-        }
-
         $newsDTOs = array_map(function (News $news) {
             $author = $news->getAuthor();
             $category = $news->getCategory();
@@ -63,4 +59,3 @@ class Fetcher
         );
     }
 }
-

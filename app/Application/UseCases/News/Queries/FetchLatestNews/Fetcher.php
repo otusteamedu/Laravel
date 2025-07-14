@@ -2,13 +2,13 @@
 
 namespace App\Application\UseCases\News\Queries\FetchLatestNews;
 
-use App\Domain\News\Entities\News;
-use App\Domain\News\Repositories\NewsRepositoryInterface;
-use App\Infrastructure\Cache\CacheInterface;
+use App\Application\Contracts\CacheInterface;
 use App\Application\UseCases\News\DTO\AuthorDTO;
 use App\Application\UseCases\News\DTO\CategoryDTO;
 use App\Application\UseCases\News\DTO\NewsDTO;
 use App\Application\UseCases\News\DTO\ResultDTO;
+use App\Domain\News\Entities\News;
+use App\Domain\News\Repositories\NewsRepositoryInterface;
 
 class Fetcher
 {

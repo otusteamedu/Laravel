@@ -2,11 +2,11 @@
 
 namespace App\Application\UseCases\User\Commands\UpdateUser;
 
+use App\Application\Contracts\PasswordHasherInterface;
 use App\Application\UseCases\User\DTO\UserDTO;
 use App\Domain\User\Exceptions\UserNotFoundException;
 use App\Domain\User\Exceptions\UserSaveException;
 use App\Domain\User\Repositories\UserRepositoryInterface;
-use App\Infrastructure\PasswordHasher\PasswordHasherInterface;
 
 class Handler
 {

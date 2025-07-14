@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Cache;
 
+use App\Application\Contracts\CacheInterface;
 use Illuminate\Support\Facades\Cache;
 
 class LaravelCache implements CacheInterface
