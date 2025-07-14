@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Product;
 use App\Services\CategoriesService;
 use App\Services\ProductsService;
 use Illuminate\Http\Request;
@@ -55,5 +56,18 @@ class CatalogController extends Controller
         ];
 
         return view('catalog.show', $data);
+    }
+
+    public function search(Request $request): View
+    {
+        $q = htmlspecialchars($request->query('q', ''));
+
+        if (!empty($q)) {
+            $products = Product::search($q)->get();
+        } else {
+            $products = [];
+        }
+
+        return view('catalog.search', compact('products'));
     }
 }

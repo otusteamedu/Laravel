@@ -20,6 +20,13 @@
             </div>
         </div>
 
+        <div class="row">
+            <form class="d-flex mb-4 mx-auto col-md-8 col-xl-6" action="{{ route('search') }}">
+                <input class="form-control me-2" type="search" name="q"/>
+                <button class="btn btn-success" type="submit">Найти</button>
+            </form>
+        </div>
+
         <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
             @foreach ($products as $product)
             <div class="col">
