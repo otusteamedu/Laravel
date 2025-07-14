@@ -127,6 +127,15 @@ return [
             'path' => storage_path('logs/laravel.log'),
         ],
 
+        'telegram' => [
+            'driver' => 'monolog',
+            'level' => 'error',
+            'handler' => Monolog\Handler\TelegramBotHandler::class,
+            'with' => [
+                'apiKey' => env('TELEGRAM_BOT_TOKEN'),
+                'channel' => env('TELEGRAM_CHAT_ID'),
+            ],
+        ],
     ],
 
 ];

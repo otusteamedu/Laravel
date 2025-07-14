@@ -4,6 +4,7 @@ use App\Http\Controllers\AreaController;
 use App\Http\Controllers\FibonachiController;
 use App\Http\Controllers\MeasureController;
 use App\Http\Controllers\ProfileController;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Route;
 
 require __DIR__.'/auth.php';
@@ -34,3 +35,8 @@ Route::prefix('fibonachi')
         Route::get('/calculate/{number}',  [FibonachiController::class, 'calculate'])
             ->name('fibonachi.calculate');
     });
+
+Route::get('/log', function() {
+    Log::error('Test error for Telegram');
+    dd('Test error for Telegram');
+});
