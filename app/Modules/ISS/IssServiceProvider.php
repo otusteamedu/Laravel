@@ -38,6 +38,7 @@ class IssServiceProvider extends ServiceProvider
         $this->loadTranslationsFrom(__DIR__.'/resources/lang', 'iss');
         //подключаем маршруты
         $this->loadRoutesFrom(__DIR__.'/routes/web.php');
+        $this->loadRoutesFrom(__DIR__.'/routes/api.php');
         //подключаем миграции
         $this->loadMigrationsFrom(__DIR__.'/database/migrations');
         //добавляем команды
