@@ -43,4 +43,6 @@ Route::get('/ttt', function () { //проверка работы модуля в
     return $tmp->say();
 });
 
+Route::get('apiTest', [\App\Http\Controllers\ApiTestController::class, 'apitest']);
+
 require __DIR__.'/auth.php';
