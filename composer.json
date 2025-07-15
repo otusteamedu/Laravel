@@ -9,7 +9,8 @@
         "php": "^8.2",
         "laravel/framework": "^12.0",
         "laravel/tinker": "^2.10.1",
-        "my/package-with-packages": "dev-main"
+        "my/package-with-packages": "dev-main",
+        "php-open-source-saver/jwt-auth": "^2.8"
     },
     "require-dev": {
         "fakerphp/faker": "^1.23",

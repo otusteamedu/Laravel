@@ -70,6 +70,18 @@
 
                    //стили для компонентов
                    'app/Modules/ISS/public/css/components/iss-messages-Style.css',
+8) Для работы модуля нужен пакет JWT open source
+поставить пакет:
+    опустить контейнер выполнить composer require php-open-source-saver/jwt-auth
+    поднять контейнер выполнить php artisan vendor:publish --provider="PHPOpenSourceSaver\JWTAuth\Providers\LaravelServiceProvider"
+    идем в конфиг jwt
+    		в нем смотрим ttl время жизни пакета
+    идем в модель пользователя User и навешиваем на нее интерфейс из пакета JWTSubject
+    идем в config\auth.php добавляем гуард
+    		'jwt' => [
+    			'driver'=>'jwt',
+    			'prowider'=>'users'
+    		]
 
 НАПОМИНАНИЯ
 1) Дописать\переписать тесты для сервисов (CheckSimpleExam, ProcessExamCheck, IsExamCanBePassed, getAllManagers, fillExamBlank)

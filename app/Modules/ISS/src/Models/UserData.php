@@ -12,8 +12,6 @@ use App\Modules\ISS\database\factories\UserDataFactory;
  * @property integer $id -- код данных пользователя
  * @property integer $user_id -- ссылка на код пользователя из основного приложения
  * @property integer $role_id -- ссылка на роль пользователя в ИОС
- * @property string $user_iss_login -- логин пользователя в ИОС
- * @property string $user_iss_password -- пароль пользователя в ИОС
  * @property string $user_iss_avatar_path -- путь к файлу пользователя в ИОС
  * @property string $organization -- название организации, в которой работает сотрудник (загружается из основного приложения)
  * @property string $name -- имя сотрудника (загружается из основного приложения)
