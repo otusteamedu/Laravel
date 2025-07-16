@@ -28,7 +28,7 @@ return [
          *
          * For reference, see https://docs.defstudio.it/telegraph/webhooks/overview
          */
-        'handler' => App\Services\Telegram\TelegraphService::class,
+        'handler' => App\Domain\Services\Telegram\TelegraphService::class,
 
         /*
          * Middleware to be applied to the webhook route

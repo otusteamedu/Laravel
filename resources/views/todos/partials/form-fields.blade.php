@@ -1,6 +1,6 @@
 @php
 /**
- * @var \App\Services\Repositories\Todo\TodoFetchDTO $todo
+ * @var \App\Domain\Repositories\Todo\DTO\TodoFetchDTO $todo
  * @var \Illuminate\Support\ViewErrorBag $errors
  */
 @endphp

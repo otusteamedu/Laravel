@@ -7,7 +7,7 @@ use Illuminate\Auth\AuthManager;
 use App\Rules\Project\IsProjectMember;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Contracts\Validation\Validator;
-use App\Services\Repositories\Todo\TodoRoleEnum;
+use App\Domain\Repositories\Todo\ValueObject\TodoRoleEnum;
 use Illuminate\Http\Exceptions\HttpResponseException;
 
 

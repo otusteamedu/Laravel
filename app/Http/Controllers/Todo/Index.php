@@ -4,12 +4,12 @@ namespace App\Http\Controllers\Todo;
 
 use Illuminate\Contracts\View\View;
 use App\Http\Controllers\Controller;
-use App\Models\ProjectRoleEnum;
+use App\Domain\Repositories\Project\ValueObject\ProjectRoleEnum;
 use Illuminate\Support\Facades\Auth;
-use App\Services\Repositories\ProjectRepositoryInterface;
-use App\Services\UseCases\Queries\Todo\FetchForProject\Query;
-use App\Services\UseCases\Queries\Todo\FetchForProject\Fetcher;
-use App\Services\Repositories\Exceptions\ModelNotFoundException;
+use App\Domain\Repositories\Project\Contracts\ProjectRepositoryInterface;
+use App\Application\UseCases\Queries\Todo\FetchForProject\Query;
+use App\Application\UseCases\Queries\Todo\FetchForProject\Fetcher;
+use App\Domain\Repositories\Exceptions\ModelNotFoundException;
 
 class Index extends Controller
 {

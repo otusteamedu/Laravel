@@ -5,7 +5,7 @@ namespace App\Console\Commands;
 use Illuminate\Support\Carbon;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Cache;
-use App\Services\Repositories\ProjectRepositoryInterface;
+use App\Domain\Repositories\Project\Contracts\ProjectRepositoryInterface;
 
 class WarmUpCacheCommand extends Command
 {

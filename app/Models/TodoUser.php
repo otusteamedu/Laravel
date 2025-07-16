@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Services\Repositories\Todo\TodoRoleEnum;
+use App\Domain\Repositories\Todo\ValueObject\TodoRoleEnum;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 /**

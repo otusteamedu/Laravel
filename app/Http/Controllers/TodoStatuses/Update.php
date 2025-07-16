@@ -5,9 +5,9 @@ namespace App\Http\Controllers\TodoStatuses;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
 use App\Http\Requests\TodoStatus\UpdateRequest;
-use App\Services\UseCases\Commands\TodoStatus\Update\Command;
-use App\Services\UseCases\Commands\TodoStatus\Update\Handler;
-use App\Services\Repositories\Exceptions\ModelNotFoundException;
+use App\Application\UseCases\Commands\TodoStatus\Update\Command;
+use App\Application\UseCases\Commands\TodoStatus\Update\Handler;
+use App\Domain\Repositories\Exceptions\ModelNotFoundException;
 
 class Update extends Controller
 {

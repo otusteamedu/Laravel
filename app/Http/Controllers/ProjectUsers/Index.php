@@ -4,9 +4,9 @@ namespace App\Http\Controllers\ProjectUsers;
 
 use Illuminate\Contracts\View\View;
 use App\Http\Controllers\Controller;
-use App\Services\UseCases\Queries\Project\FetchUsers\Query;
-use App\Services\UseCases\Queries\Project\FetchUsers\Fetcher;
-use App\Services\Repositories\Exceptions\ModelNotFoundException;
+use App\Application\UseCases\Queries\Project\FetchUsers\Query;
+use App\Application\UseCases\Queries\Project\FetchUsers\Fetcher;
+use App\Domain\Repositories\Exceptions\ModelNotFoundException;
 
 class Index extends Controller
 {

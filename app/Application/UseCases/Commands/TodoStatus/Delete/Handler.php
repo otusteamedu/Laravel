@@ -1,0 +1,35 @@
+<?php
+
+namespace App\Application\UseCases\Commands\TodoStatus\Delete;
+
+use Illuminate\Support\Facades\Cache;
+use App\Domain\Repositories\Project\Contracts\ProjectRepositoryInterface;
+
+class Handler
+{
+    public function __construct(
+        private ProjectRepositoryInterface $projectRepository,
+    ) {
+        //
+    }
+
+    /**
+     * Команда удаления статуса задач для проекта
+     * @param Command $command
+     * @return bool
+     */
+    public function handle(Command $command): bool
+    {
+        $result = false;
+
+        $modelDTO = $this->projectRepository->findTodoStatus($command->projectId, $command->statusId);
+
+        if ($modelDTO) {
+            $result = $this->projectRepository->destroyTodoStatus($modelDTO->projectId, $modelDTO->statusId);
+        }
+
+        Cache::forget("project_{$command->projectId}_todo_statuses");
+
+        return $result;
+    }
+}

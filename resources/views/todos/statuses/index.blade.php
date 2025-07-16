@@ -1,7 +1,7 @@
 @php
 /**
- * @var \App\Services\Repositories\DTOs\ProjectDTO $project
- * @var \App\Services\Repositories\DTOs\TodoStatusDTO[] $statuses
+ * @var \App\Domain\Repositories\Project\DTO\ProjectDTO $project
+ * @var \App\Domain\Repositories\Todo\DTO\TodoStatusDTO[] $statuses
 */
 @endphp
 @extends('layouts.main')

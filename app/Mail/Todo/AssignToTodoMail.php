@@ -9,10 +9,10 @@ use Illuminate\Mail\Mailables\Content;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Mail\Mailables\Envelope;
-use App\Services\Repositories\DTOs\UserDTO;
+use App\Domain\Repositories\User\DTO\UserDTO;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use App\Services\Repositories\DTOs\ProjectDTO;
-use App\Services\Repositories\Todo\TodoFetchDTO;
+use App\Domain\Repositories\Project\DTO\ProjectDTO;
+use App\Domain\Repositories\Todo\DTO\TodoFetchDTO;
 
 
 class AssignToTodoMail extends Mailable

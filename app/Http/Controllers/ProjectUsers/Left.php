@@ -4,9 +4,9 @@ namespace App\Http\Controllers\ProjectUsers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
-use App\Services\UseCases\Commands\ProjectUser\Left\Command;
-use App\Services\UseCases\Commands\ProjectUser\Left\Handler;
-use App\Services\UseCases\Commands\ProjectUser\Left\InviteNotFoundException;
+use App\Application\UseCases\Commands\ProjectUser\Left\Command;
+use App\Application\UseCases\Commands\ProjectUser\Left\Handler;
+use App\Application\UseCases\Commands\ProjectUser\Left\InviteNotFoundException;
 
 class Left extends Controller
 {

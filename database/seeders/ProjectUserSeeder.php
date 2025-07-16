@@ -3,7 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\ProjectUser;
-use App\Models\ProjectRoleEnum;
+use App\Domain\Repositories\Project\ValueObject\ProjectRoleEnum;
 use Illuminate\Database\Seeder;
 
 class ProjectUserSeeder extends Seeder

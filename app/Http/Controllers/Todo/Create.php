@@ -4,9 +4,9 @@ namespace App\Http\Controllers\Todo;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Todo\StoreRequest;
-use App\Services\UseCases\Commands\Todo\Create\Command;
-use App\Services\UseCases\Commands\Todo\Create\Handler;
-use App\Services\Repositories\Exceptions\CreateModelFailedException;
+use App\Application\UseCases\Commands\Todo\Create\Command;
+use App\Application\UseCases\Commands\Todo\Create\Handler;
+use App\Domain\Repositories\Exceptions\CreateModelFailedException;
 
 class Create extends Controller
 {

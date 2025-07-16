@@ -1,11 +1,11 @@
 @php
 /**
- * @var \App\Services\Repositories\DTOs\ProjectDTO $project
- * @var \App\Services\Repositories\Todo\TodoFetchDTO $todo
- * @var \App\Services\Repositories\DTOs\ProjectInvitedUserDTO[] $projectUsers
- * @var \App\Services\Repositories\Todo\TodoUserDTO[] $responsibles
- * @var \App\Services\Repositories\Todo\TodoUserDTO[] $performers
- * @var \App\Services\Repositories\Todo\TodoUserDTO[] $watchers
+ * @var \App\Domain\Repositories\Project\DTO\ProjectDTO $project
+ * @var \App\Domain\Repositories\Todo\DTO\TodoFetchDTO $todo
+ * @var \App\Domain\Repositories\Project\DTO\ProjectInvitedUserDTO[] $projectUsers
+ * @var \App\Domain\Repositories\Todo\DTO\TodoUserDTO[] $responsibles
+ * @var \App\Domain\Repositories\Todo\DTO\TodoUserDTO[] $performers
+ * @var \App\Domain\Repositories\Todo\DTO\TodoUserDTO[] $watchers
  */
 @endphp
 @extends('layouts.main')
@@ -126,7 +126,7 @@
 
                 axios.post(url, {
                     userId: user,
-                    role: "{{ \App\Services\Repositories\Todo\TodoRoleEnum::PERFORMER }}"
+                    role: "{{ \App\Domain\Repositories\Todo\ValueObject\TodoRoleEnum::PERFORMER }}"
                 })
                 .then((response) => {
                     if (response.data.success === true) {

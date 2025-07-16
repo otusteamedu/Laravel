@@ -1,9 +1,9 @@
 @php
 /**
  * @var string $role
- * @var App\Services\Repositories\DTOs\UserDTO $user
- * @var App\Services\Repositories\Todo\TodoFetchDTO $todo
- * @var App\Services\Repositories\DTOs\ProjectDTO $project
+ * @var App\Domain\Repositories\User\DTO\UserDTO $user
+ * @var App\Domain\Repositories\Todo\DTO\TodoFetchDTO $todo
+ * @var App\Domain\Repositories\Project\DTO\ProjectDTO $project
  */
 @endphp
 @extends('layouts.mail-main')

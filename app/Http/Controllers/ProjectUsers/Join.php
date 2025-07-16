@@ -4,9 +4,9 @@ namespace App\Http\Controllers\ProjectUsers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
-use App\Services\UseCases\Commands\ProjectUser\Join\Command;
-use App\Services\UseCases\Commands\ProjectUser\Join\Handler;
-use App\Services\UseCases\Commands\ProjectUser\Join\InviteNotFoundException;
+use App\Application\UseCases\Commands\ProjectUser\Join\Command;
+use App\Application\UseCases\Commands\ProjectUser\Join\Handler;
+use App\Application\UseCases\Commands\ProjectUser\Join\InviteNotFoundException;
 
 class Join extends Controller
 {
