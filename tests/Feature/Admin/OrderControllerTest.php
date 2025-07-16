@@ -19,6 +19,7 @@ class OrderControllerTest extends TestCase
 
     protected function setUp(): void
     {
+        parent::setUp();
         $this->setUpTheTestEnvironment();
     }
 

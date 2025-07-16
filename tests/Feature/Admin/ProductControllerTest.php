@@ -17,6 +17,7 @@ class ProductControllerTest extends TestCase
 
     protected function setUp(): void
     {
+        parent::setUp();
         $this->setUpTheTestEnvironment();
     }
 
