@@ -2,7 +2,7 @@
 /**
  * @var string $role
  * @var string $userName
- * @var App\Services\Repositories\DTOs\ProjectDTO $project
+ * @var App\TodoApp\Application\DTOs\ProjectDTO $project
  * @var App\Services\Repositories\Todo\TodoFetchDTO $todo
  */
 @endphp

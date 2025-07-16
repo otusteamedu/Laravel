@@ -2,7 +2,7 @@
 
 namespace App\Services\UseCases\Commands\ProjectUser\Join;
 
-use App\Services\Repositories\ProjectRepositoryInterface;
+use App\TodoApp\Domain\Repositories\ProjectRepositoryInterface;
 use App\Services\UseCases\Commands\ProjectUser\Join\InviteNotFoundException;
 
 class Handler

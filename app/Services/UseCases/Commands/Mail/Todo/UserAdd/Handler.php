@@ -6,7 +6,7 @@ use App\Mail\Todo\AssignToTodoMail;
 use App\Services\Repositories\Exceptions\ModelNotFoundException;
 use Illuminate\Support\Facades\Mail;
 use App\Services\Repositories\UserRepositoryInterface;
-use App\Services\Repositories\ProjectRepositoryInterface;
+use App\TodoApp\Domain\Repositories\ProjectRepositoryInterface;
 use App\Services\Repositories\Todo\TodoRepositoryInterface;
 use App\Services\UseCases\Commands\Mail\Todo\UserAdd\Command;
 

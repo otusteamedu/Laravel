@@ -5,7 +5,7 @@ namespace Database\Factories;
 use App\Models\TodoStatus;
 use App\Models\ProjectUser;
 use Illuminate\Support\Carbon;
-use App\Models\ProjectRoleEnum;
+use App\TodoApp\Domain\ValueObjects\ProjectRoleEnum;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**

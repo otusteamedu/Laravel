@@ -5,7 +5,7 @@ namespace App\Services\UseCases\Commands\Auth\Register;
 use App\Models\User;
 use Illuminate\Auth\AuthManager;
 use Illuminate\Support\Facades\Hash;
-use App\Services\Repositories\DTOs\UserCreateDTO;
+use App\TodoApp\Application\DTOs\UserCreateDTO;
 use App\Services\Repositories\UserRepositoryInterface;
 
 class Handler

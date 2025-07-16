@@ -3,8 +3,8 @@
 namespace App\Services\Repositories\Todo;
 
 use Carbon\Carbon;
-use App\Services\Repositories\DTOs\UserDTO;
-use App\Services\Repositories\DTOs\TodoStatusDTO;
+use App\TodoApp\Application\DTOs\UserDTO;
+use App\TodoApp\Application\DTOs\TodoStatusDTO;
 
 final readonly class TodoFetchDTO
 {

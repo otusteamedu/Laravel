@@ -5,7 +5,7 @@ namespace App\Console\Commands;
 use Illuminate\Support\Carbon;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Cache;
-use App\Services\Repositories\ProjectRepositoryInterface;
+use App\TodoApp\Domain\Repositories\ProjectRepositoryInterface;
 
 class WarmUpCacheCommand extends Command
 {
@@ -38,11 +38,12 @@ class WarmUpCacheCommand extends Command
             $this->info('Прогревам кэш статусов задач для проектов');
 
             foreach ($projects as $project) {
+                $projectId = $project->getId()->getValue();
                 Cache::remember(
-                    "project_{$project->projectId}_todo_statuses",
+                    "project_{$projectId}_todo_statuses",
                     Carbon::now()->addDay(),
-                    function () use ($project, $repository) {
-                        return  $repository->fetchTodoStatuses($project->projectId);
+                    function () use ($projectId, $repository) {
+                        return  $repository->fetchTodoStatuses($projectId);
                     }
                 );
             }

@@ -4,11 +4,11 @@ namespace Tests\Feature\Http;
 
 use Tests\TestCase;
 use App\Models\User;
-use App\Models\Project;
-use App\Models\ProjectUser;
 use App\Models\UserProfile;
-use App\Models\ProjectRoleEnum;
 use PHPUnit\Framework\Attributes\Group;
+use App\TodoApp\Domain\ValueObjects\ProjectRoleEnum;
+use App\TodoApp\Infrastructure\Eloquent\Models\Project;
+use App\TodoApp\Infrastructure\Eloquent\Models\ProjectUser;
 
 #[Group('http')]
 class ProjectTest extends TestCase

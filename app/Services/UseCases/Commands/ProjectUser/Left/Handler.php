@@ -2,7 +2,7 @@
 
 namespace App\Services\UseCases\Commands\ProjectUser\Left;
 
-use App\Services\Repositories\ProjectRepositoryInterface;
+use App\TodoApp\Domain\Repositories\ProjectRepositoryInterface;
 use App\Services\UseCases\Commands\ProjectUser\Left\InviteNotFoundException;
 
 class Handler

@@ -6,8 +6,8 @@ use App\Models\User;
 use Illuminate\Support\Str;
 use Illuminate\Auth\AuthManager;
 use Illuminate\Support\Facades\Hash;
-use App\Services\Repositories\DTOs\UserCreateDTO;
-use App\Services\Repositories\DTOs\UserSocialiteDTO;
+use App\TodoApp\Application\DTOs\UserCreateDTO;
+use App\TodoApp\Application\DTOs\UserSocialiteDTO;
 use App\Services\Repositories\UserRepositoryInterface;
 use App\Services\Repositories\UserSocialiteRepositoryInterface;
 
