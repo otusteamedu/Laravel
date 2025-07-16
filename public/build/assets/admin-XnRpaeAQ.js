@@ -1,0 +1,1 @@
+const o=document.querySelector("#addProductButton");o.addEventListener("click",()=>{const t=document.querySelector("#productContainer"),e=document.querySelector("#productTemplate").content.cloneNode(!0);t.append(e)});

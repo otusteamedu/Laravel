@@ -1,0 +1,40 @@
+{
+  "resources/css/about.css": {
+    "file": "assets/about-DZReu56W.css",
+    "src": "resources/css/about.css",
+    "isEntry": true
+  },
+  "resources/css/carousel.css": {
+    "file": "assets/carousel-WU3uLGsB.css",
+    "src": "resources/css/carousel.css",
+    "isEntry": true
+  },
+  "resources/css/sidebars.css": {
+    "file": "assets/sidebars-4hxUE1I3.css",
+    "src": "resources/css/sidebars.css",
+    "isEntry": true
+  },
+  "resources/js/admin.js": {
+    "file": "assets/admin-XnRpaeAQ.js",
+    "name": "admin",
+    "src": "resources/js/admin.js",
+    "isEntry": true
+  },
+  "resources/js/app.js": {
+    "file": "assets/app-CrWV3l5H.js",
+    "name": "app",
+    "src": "resources/js/app.js",
+    "isEntry": true
+  },
+  "resources/js/site.js": {
+    "file": "assets/site-yK8y6i5X.js",
+    "name": "site",
+    "src": "resources/js/site.js",
+    "isEntry": true
+  },
+  "resources/sass/app.scss": {
+    "file": "assets/app-DZUsWXEA.css",
+    "src": "resources/sass/app.scss",
+    "isEntry": true
+  }
+}
