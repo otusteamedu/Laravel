@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models;
+namespace App\EloquentModels;
 
 class MeasureProductRecipe extends BaseModel
 {
@@ -31,11 +31,6 @@ class MeasureProductRecipe extends BaseModel
     public function measure() 
     {
         return $this->belongsTo(Measure::class, 'measure_id', 'id');
-    }
-
-    public function getId() 
-    {
-        return $this->id;
     }
 
     public function getRecipeId() 

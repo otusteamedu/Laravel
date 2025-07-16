@@ -1,30 +1,30 @@
 <?php
 
-namespace App\Models;
+namespace App\EloquentModels;
 
-class Video extends BaseModel
+class Photo extends BaseModel
 {
     /**
-     * Class Video
+     * Class Photo
      *
      * @property int $id
      * @property text $url
      * @property text $path
      * @property boolean $is_preview
-     * @property string $video_type
-     * @property int $video_id
+     * @property string $photo_type
+     * @property int $photo_id
      * @property \Illuminate\Support\Carbon $created_at
      * @property \Illuminate\Support\Carbon $updated_at
      */
 
-    public function recipe()
+    public function recipe() 
     {
-        return $this->morphTo('video');
+        return $this->morphTo('photo');
     }
 
-    public function getId() 
+    public function product() 
     {
-        return $this->id;
+        return $this->morphTo('photo');
     }
 
     public function getURL() 
@@ -37,12 +37,17 @@ class Video extends BaseModel
         return $this->path;
     }
 
-    public function getVideoType() 
+    public function getIsPreview() 
+    {
+        return $this->is_preview;
+    }
+
+    public function getPhotoType() 
     {
         return $this->photo_type;
     }
 
-    public function getVideoId() 
+    public function getPhotoId() 
     {
         return $this->photo_id;
     }

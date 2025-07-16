@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models;
+namespace App\EloquentModels;
 
 class Product extends BaseModel
 {
@@ -29,11 +29,6 @@ class Product extends BaseModel
     public function measureProductRecipes()
     {
         return $this->hasMany(MeasureProductRecipe::class, 'product_id', 'id');
-    }
-
-    public function getId() 
-    {
-        return $this->id;
     }
 
     public function getNameEn() 

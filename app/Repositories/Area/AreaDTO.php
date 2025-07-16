@@ -2,7 +2,7 @@
 
 namespace App\Repositories\Area;
 
-use App\Models\Area;
+use App\BusinessModels\Area;
 
 class AreaDTO 
 {
@@ -21,7 +21,7 @@ class AreaDTO
     {
         return [
             'id' => $this->id,
-            'name_' . config('app.locale') => $this->name,
+            'name' => $this->name,
             'created_at' => $this->created_at
         ];
     }

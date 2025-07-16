@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models;
+namespace App\EloquentModels;
 
 class Recipe extends BaseModel
 {
@@ -53,11 +53,6 @@ class Recipe extends BaseModel
     public function measureProductRecipes() 
     {
         return $this->hasMany(MeasureProductRecipe::class, 'recipe_id', 'id');
-    }
-
-    public function getId() 
-    {
-        return $this->id;
     }
 
     public function getApiId() 

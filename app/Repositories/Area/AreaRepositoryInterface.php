@@ -2,32 +2,21 @@
 
 namespace App\Repositories\Area;
 
+use App\BusinessModels\Area;
 use App\Repositories\Area\AreaDTO;
 
 interface AreaRepositoryInterface 
 {
     /**
-     * @return array <int, AreaDTO>
+     * @return array <int, Area>
      */
     public function getAll(): array;
 
-    /**
-     * @return void
-     */
-    public function store(string $name): void;
+    public function store(Area $area): void;
 
-    /**
-     * @return AreaDTO
-     */
-    public function findById(int $id): AreaDTO;
+    public function findById(int $id): Area;
     
-    /**
-     * @return void
-     */
-    public function update(AreaDTO $area): void;
+    public function update(Area $area): void;
 
-    /**
-     * @return void
-     */
     public function delete(int $id): void;
 }

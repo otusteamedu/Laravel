@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Models;
+namespace App\EloquentModels;
 
 use Carbon\Carbon;
 
-class Area extends BaseModel
+class Measure extends BaseModel
 {
     /**
-     * Class Area
+     * Class Measure
      *
      * @property int $id
      * @property string $name_en
@@ -15,21 +15,16 @@ class Area extends BaseModel
      * @property \Illuminate\Support\Carbon $created_at
      * @property \Illuminate\Support\Carbon $updated_at
      */
-    
-    public function recipes()
-    {
-        return $this->hasMany(Recipe::class, 'area_id', 'id');
-    }
 
-    public function getId() 
+    public function measureProductRecipes() 
     {
-        return $this->id;
+        return $this->hasMany(MeasureProductRecipe::class, 'measure_id', 'id');
     }
 
     public function getName() 
     {
-        $nameField = 'name_' . config('app.locale');
-        return $this->$nameField;
+        $name = 'name_' . config('app.locale');
+        return $this->$name;
     }
 
     public function getCreatedAt() 
