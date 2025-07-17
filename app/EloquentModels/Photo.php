@@ -61,4 +61,9 @@ class Photo extends BaseModel
     {
         return $this->updated_at;
     }
+    
+    protected static function newFactory()
+    {
+        return \Database\Factories\PhotoFactory::new();
+    }
 }

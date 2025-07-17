@@ -2,16 +2,18 @@
 
 namespace Database\Factories;
 
-use App\Models\Recipe;
-use App\Models\Tag;
+use App\EloquentModels\Recipe;
+use App\EloquentModels\Tag;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Log;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Tag>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\EloquentModels\Tag>
  */
 class TagFactory extends Factory
 {
+    protected $model = Tag::class;
+
     /**
      * Define the model's default state.
      *

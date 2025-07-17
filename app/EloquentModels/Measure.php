@@ -38,4 +38,9 @@ class Measure extends BaseModel
         $data = Carbon::createFromDate($this->updated_at)->format('d.m.Y');
         return $data;
     }
+    
+    protected static function newFactory()
+    {
+        return \Database\Factories\MeasureFactory::new();
+    }
 }

@@ -38,4 +38,9 @@ class Tag extends BaseModel
     {
         return $this->updated_at;
     }
+    
+    protected static function newFactory()
+    {
+        return \Database\Factories\TagFactory::new();
+    }
 }

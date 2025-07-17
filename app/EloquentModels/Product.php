@@ -60,4 +60,9 @@ class Product extends BaseModel
     {
         return $this->updated_at;
     }
+    
+    protected static function newFactory()
+    {
+        return \Database\Factories\ProductFactory::new();
+    }
 }

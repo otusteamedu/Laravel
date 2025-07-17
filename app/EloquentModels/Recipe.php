@@ -104,4 +104,9 @@ class Recipe extends BaseModel
     {
         return $this->updated_at;
     }
+    
+    protected static function newFactory()
+    {
+        return \Database\Factories\RecipeFactory::new();
+    }
 }

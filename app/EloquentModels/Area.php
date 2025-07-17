@@ -48,4 +48,9 @@ class Area extends BaseModel implements EloquentModelsInterface
             name:$this->getName(), 
             created_at:$this->getCreatedAt());
     }
+    
+    protected static function newFactory()
+    {
+        return \Database\Factories\AreaFactory::new();
+    }
 }

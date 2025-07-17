@@ -51,4 +51,9 @@ class Video extends BaseModel
     {
         return $this->updated_at;
     }
+    
+    protected static function newFactory()
+    {
+        return \Database\Factories\VideoFactory::new();
+    }
 }

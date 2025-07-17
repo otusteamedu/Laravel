@@ -2,16 +2,18 @@
 
 namespace Database\Factories;
 
-use App\Models\Area;
-use App\Models\Category;
-use App\Models\Recipe;
+use App\EloquentModels\Area;
+use App\EloquentModels\Category;
+use App\EloquentModels\Recipe;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Recipe>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\EloquentModels\Recipe>
  */
 class RecipeFactory extends Factory
 {
+    protected $model = Recipe::class;
+
     /**
      * Define the model's default state.
      *

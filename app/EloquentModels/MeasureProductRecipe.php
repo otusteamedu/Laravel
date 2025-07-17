@@ -62,4 +62,9 @@ class MeasureProductRecipe extends BaseModel
     {
         return $this->updated_at;
     }
+    
+    protected static function newFactory()
+    {
+        return \Database\Factories\MeasureProductRecipeFactory::new();
+    }
 }

@@ -2,7 +2,7 @@
 
 namespace App\Repositories\Measure;
 
-use App\Models\Measure;
+use App\EloquentModels\Measure;
 
 class MeasureDTO 
 {
