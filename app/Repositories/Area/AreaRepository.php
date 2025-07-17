@@ -14,7 +14,7 @@ class AreaRepository implements AreaRepositoryInterface
     {
         $areas = Area::all()->sortBy('id');
         $areas = $areas->map(function($area) {
-            return (BusinessModelsArea::createFromEloquentModel($area));
+            return ($area->toBusinessModel());
         });
         return $areas->toArray();
     }
@@ -27,7 +27,7 @@ class AreaRepository implements AreaRepositoryInterface
     public function findById(int $id): BusinessModelsArea
     {
         $area = Area::findOrFail($id);
-        return BusinessModelsArea::createFromEloquentModel($area);
+        return $area->toBusinessModel();
     }
 
     public function update(BusinessModelsArea $area): void

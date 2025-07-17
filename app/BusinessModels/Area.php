@@ -2,15 +2,18 @@
 
 namespace App\BusinessModels;
 
-use App\EloquentModels\BaseModel as EloquentBaseModel;
+use App\Helpers\LocaleHelper;
 
 class Area extends BaseModel implements BusinessModelsInterface
 {
     private string $name;
     private ?string $created_at;
 
-    public function __construct(?int $id = null, string $name, ?string $created_at = null)
-    {
+    public function __construct(
+        ?int $id = null, 
+        string $name, 
+        ?string $created_at = null,
+    ) {
         $this->id = $id;
         $this->name = $name;
         $this->created_at = $created_at;
@@ -31,16 +34,11 @@ class Area extends BaseModel implements BusinessModelsInterface
         return $this->created_at;
     }
 
-    public static function createFromEloquentModel(EloquentBaseModel $EloquentModel): self 
-    {
-        return new self(id:$EloquentModel->getId(), name:$EloquentModel->getName(), created_at:$EloquentModel->getCreatedAt());
-    }
-
     public function toArray(): array 
     {
         return [
             'id' => $this->id,
-            'name' . config('app.locale') => $this->name,
+            'name_' . LocaleHelper::getLocale() => $this->name,
             'created_at' => $this->created_at
         ];
     }

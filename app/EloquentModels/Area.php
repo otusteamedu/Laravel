@@ -2,9 +2,11 @@
 
 namespace App\EloquentModels;
 
+use App\BusinessModels\BaseModel as BusinessBaseModel;
+use App\Helpers\LocaleHelper;
 use Carbon\Carbon;
 
-class Area extends BaseModel
+class Area extends BaseModel implements EloquentModelsInterface
 {
     /**
      * Class Area
@@ -23,7 +25,7 @@ class Area extends BaseModel
 
     public function getName() 
     {
-        $nameField = 'name_' . config('app.locale');
+        $nameField = 'name_' . LocaleHelper::getLocale();
         return $this->$nameField;
     }
 
@@ -37,5 +39,13 @@ class Area extends BaseModel
     {
         $data = Carbon::createFromDate($this->updated_at)->format('d.m.Y');
         return $data;
+    }
+
+    public function toBusinessModel(): BusinessBaseModel
+    {
+        return new BusinessBaseModel(
+            id:$this->getId(), 
+            name:$this->getName(), 
+            created_at:$this->getCreatedAt());
     }
 }

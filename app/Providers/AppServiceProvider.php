@@ -28,7 +28,6 @@ class AppServiceProvider extends ServiceProvider
             AreaRepositoryInterface::class,
             AreaRepository::class
         );
-
         $this->app->bind(
             MeasureServiceInterface::class,
             MeasureService::class
@@ -45,8 +44,8 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         Relation::morphMap([
-            'recipe' => \App\Models\Recipe::class,
-            'product' => \App\Models\Product::class,
+            'recipe' => \App\EloquentModels\Recipe::class,
+            'product' => \App\EloquentModels\Product::class,
         ]);
     }
 }
