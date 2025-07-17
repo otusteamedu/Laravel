@@ -46,4 +46,22 @@ return [
     'fibonachi_button' => 'Calculate',
     'fibonachi_danger' => 'Enter a number between 1 and 100.',
     'fibonachi_output' => 'Fibonacci sequence: ',
+
+    'created_at' => 'Creation date',
+    'action' => 'Actions',
+
+    'area' => 'Countries',
+    'list_areas' => 'List of countries',
+    'name_area' => 'Area name',
+    'absence_list_areas' => 'There is no list of territories',
+    'back_btn' => 'Back to list of countries',
+    'label_name_area' => 'Enter the name of the country (territory):',
+    'input_placeholder_name_area' => 'Country (territory)',
+
+    'create_btn' => 'Add',
+    'store_btn' => 'Save',
+    'update_btn' => 'Update',
+    'edit_btn' => 'Edit',
+    'delete_btn' => 'Delete',
+
 ];

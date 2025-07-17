@@ -47,4 +47,22 @@ return [
     'fibonachi_button' => 'Рассчитать',
     'fibonachi_danger' => 'Введите число от 1 до 100.',
     'fibonachi_output' => 'Последовательность Фибоначчи: ',
+
+    'created_at' => 'Дата создания',
+    'action' => 'Действия',
+
+    'area' => 'Страны',
+    'list_areas' => 'Список стран',
+    'name_area' => 'Название страны',
+    'absence_list_areas' => 'Список стран отсутствует',
+    'back_btn' => 'Вернуться к списку стран',
+    'label_name_area' => 'Введите название страны (территории):',
+    'input_placeholder_name_area' => 'Страна (территория)',
+
+    'create_btn' => 'Добавить',
+    'store_btn' => 'Сохранить',
+    'update_btn' => 'Обновить',
+    'edit_btn' => 'Редактировать',
+    'delete_btn' => 'Удалить',
+
 ];

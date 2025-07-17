@@ -1,3 +1,85 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
+h1 {
+  font-size: 36px;
+  font-weight: 600;
+}
+
+h2 {
+  font-size: 30px;
+  font-weight: 600;
+}
+
+h3 {
+  font-size: 24px;
+  font-weight: 600;
+}
+
+h4 {
+  font-size: 20px;
+  font-weight: 600;
+}
+
+h5 {
+  font-size: 16px;
+  font-weight: 600;
+}
+
+h6 {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+p {
+  font-size: 16px;
+  font-weight: normal;
+}
+
+small {
+  font-size: 12px;
+  font-weight: normal;
+}
+
+.btn-edit {
+  padding: 8px 16px; /* Размеры кнопки */
+  background-color: #359138; /* Зеленый цвет */
+  color: #fff; /* Белый текст */
+  border: none; /* Без границы */
+  border-radius: 4px; /* Скругление углов */
+  font-size: 14px; /* Размер шрифта */
+  cursor: pointer; /* Курсор при наведении */
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2); /* Тень */
+  transition: background-color 0.3s, transform 0.2s, box-shadow 0.3s;
+}
+
+.btn-delete {
+  padding: 8px 16px; /* Размеры кнопки */
+  background-color: #9d2b1e; /* Красный цвет */
+  color: #fff; /* Белый текст */
+  border: none; /* Без границы */
+  border-radius: 4px; /* Скругление углов */
+  font-size: 14px; /* Размер шрифта */
+  cursor: pointer; /* Курсор при наведении */
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2); /* Тень */
+  transition: background-color 0.3s, transform 0.2s, box-shadow 0.3s;
+}
+
+.custom-btn {
+    background-color: #ffffff; /* белый фон */
+    color: rgb(107 114 128); /* синий цвет текста (Bootstrap primary) */
+    border: none; /* без рамки или по желанию добавьте границу */
+    padding: 5px 10px;
+    border-radius: .25rem; /* скругление углов */
+    transition: background-color 0.3s, color 0.3s; /* плавный переход */
+    font-size: 14px;
+    display: inline-flex; /* важно! */
+    align-items: center; /* чтобы иконка и текст были по центру */
+}
+
+.custom-btn:hover {
+    background-color: rgb(107 114 128); /* синий фон при наведении */
+    color: #ffffff; /* белый текст при наведении */
+}

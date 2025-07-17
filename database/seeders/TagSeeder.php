@@ -2,8 +2,8 @@
 
 namespace Database\Seeders;
 
-use App\Models\Recipe;
-use App\Models\Tag;
+use App\EloquentModels\Recipe;
+use App\EloquentModels\Tag;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Log;
 

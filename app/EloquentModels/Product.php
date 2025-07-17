@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Models;
+namespace App\EloquentModels;
 
-class Category extends BaseModel
+class Product extends BaseModel
 {
     /**
-     * Class Category
+     * Class Product
      *
      * @property int $id
      * @property string $name_en
@@ -16,14 +16,19 @@ class Category extends BaseModel
      * @property \Illuminate\Support\Carbon $updated_at
      */
 
-    public function recipes() 
+    public function photos()
     {
-        return $this->hasMany(Recipe::class, 'category_id', 'id');
+        return $this->morphMany(Photo::class, 'photo');
     }
 
-    public function getId() 
+    public function recipes()
     {
-        return $this->id;
+        return $this->belongsToMany(Recipe::class, 'product_recipe');
+    }
+
+    public function measureProductRecipes()
+    {
+        return $this->hasMany(MeasureProductRecipe::class, 'product_id', 'id');
     }
 
     public function getNameEn() 
@@ -54,5 +59,10 @@ class Category extends BaseModel
     public function getUpdatedAt() 
     {
         return $this->updated_at;
+    }
+    
+    protected static function newFactory()
+    {
+        return \Database\Factories\ProductFactory::new();
     }
 }

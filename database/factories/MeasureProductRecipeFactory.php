@@ -2,16 +2,19 @@
 
 namespace Database\Factories;
 
-use App\Models\Measure;
-use App\Models\Product;
-use App\Models\Recipe;
+use App\EloquentModels\Measure;
+use App\EloquentModels\MeasureProductRecipe;
+use App\EloquentModels\Product;
+use App\EloquentModels\Recipe;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\MeasureProductRecipe>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\EloquentModels\MeasureProductRecipe>
  */
 class MeasureProductRecipeFactory extends Factory
 {
+    protected $model = MeasureProductRecipe::class;
+
     /**
      * Define the model's default state.
      *
