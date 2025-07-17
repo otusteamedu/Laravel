@@ -1,0 +1,78 @@
+label.form-label {
+  font-family: 'Segoe UI';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 17px;
+  color: #46423E;
+}
+
+.btn-segoe {
+  background-color: #FFFFFF;
+  border: 1px solid #0184C8;
+  border-radius: 22.5px;
+  font-family: 'Segoe UI';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 17px;
+  color: #0184C8;
+  padding: 8px 12px;
+  text-align: center;
+  display: inline-block;
+  width: 150px;
+  transition: background-color 0.3s, color 0.3s;
+  outline: none;
+  /*margin-right: 20px;*/
+  text-decoration: none;
+}
+
+.btn-segoe-primary {
+  background-color: #0184C8;
+  border-radius: 22.5px;
+  font-family: 'Segoe UI';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 17px;
+  color: #FFFFFF;
+  padding: 8px 12px;
+  text-align: center; /* Align the buttons to the center */
+  display: inline-block; /* Make the buttons inline */
+  width: 150px; /* Set a fixed width for the buttons */
+  transition: background-color 0.3s, color 0.3s; /* Add a transition effect */
+  outline: none;
+  /*margin-right: 20px;*/
+  text-decoration: none;
+}
+
+.btn-segoe:hover {
+  background-color: #E7F7FF;
+  color: #0184C8;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.btn-segoe-primary:hover {
+  background: #199EE3;
+  color: #FFFFFF;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.btn-segoe:focus,
+.btn-segoe:active {
+  background-color: #0184C8;
+  color: #FFFFFF;
+  outline: none;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.btn-segoe-primary:focus,
+.btn-segoe-primary:active {
+  background: #0776B0;
+  color: #FFFFFF;
+  text-decoration: none;
+  cursor: pointer;
+}

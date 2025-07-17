@@ -1,0 +1,50 @@
+/*#logo {*/
+/*  background-image: url("../img/header.jpg");*/
+/*  !*text-align: center;*!*/
+/*  position: relative;*/
+/*  height: 148px;*/
+/*  !*margin-bottom: 10px;*!*/
+/*  background-size: cover;*/
+/*  background-position: center center;*/
+/*  padding-top: 20px;*/
+/*}*/
+
+h1.special {
+  font-family: 'Segoe UI';
+  font-style: normal;
+  font-weight: 700;
+  font-size: 40px;
+  line-height: 48px;
+  color: #FFFFFF;
+  margin-bottom: 10px;
+}
+
+/*.rectangle {*/
+/*  !*display: flex;*!*/
+/*  !*justify-content: flex-start;*!*/
+/*  !*position: absolute;*!*/
+/*  !*width: 100%;*!*/
+/*  !*left: 0;*!*/
+
+/*  !*height: 30px;*!*/
+/*  !*top: 108px;*!*/
+/*  background: rgba(89, 0, 168, 0.4);*/
+/*}*/
+
+.my-link {
+    font-family: 'Segoe UI';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 17px;
+    color: #FFFFFF;
+    text-decoration: none;
+    margin: 0 5px;
+    padding-top: 5px;
+}
+
+.my-link:hover {
+    color: #FFFFFF;
+    text-decoration: underline;
+    cursor: pointer;
+}
