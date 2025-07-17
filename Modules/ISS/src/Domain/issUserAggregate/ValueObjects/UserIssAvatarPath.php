@@ -1,24 +1,24 @@
 <?php
 
-namespace Modules\ISS\Domain\issUserAggregate;
+namespace Modules\ISS\Domain\issUserAggregate\ValueObjects;
 
-use \Exception;
+use InvalidArgumentException;
 
 /**
  * @var string $userIssAvatarPath путь к файлу аватарки пользователя
  */
 
-class UserIssAvatarPathVO
+final readonly class UserIssAvatarPath
 {
     private string $userIssAvatarPath;
 
     public function __construct(string $userIssAvatarPath)
     {
         if(!is_string($userIssAvatarPath) && !is_null($userIssAvatarPath)) {
-            throw new Exception("User ISS avatar path must be string or null");
+            throw new InvalidArgumentException("User ISS avatar path must be string or null");
         }
         if(empty($userIssAvatarPath)) {
-            throw new Exception("User ISS avatar path must not be empty string");
+            throw new InvalidArgumentException("User ISS avatar path must not be empty string");
         }
         $this->userIssAvatarPath = $userIssAvatarPath;
     }

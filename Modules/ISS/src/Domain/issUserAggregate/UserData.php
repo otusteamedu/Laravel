@@ -2,46 +2,46 @@
 
 namespace Modules\ISS\Domain\issUserAggregate;
 
-use Modules\ISS\Domain\issUserAggregate\IdVO;
-use Modules\ISS\Domain\issUserAggregate\UserIssAvatarPathVO;
-use Modules\ISS\Domain\issUserAggregate\OrganizationVO;
-use Modules\ISS\Domain\issUserAggregate\PartOfFioVO;
-use Modules\ISS\Domain\issUserAggregate\WebTokenVO;
+use Modules\ISS\Domain\issUserAggregate\ValueObjects\Organization;
+use Modules\ISS\Domain\issUserAggregate\ValueObjects\PartOfFio;
+use Modules\ISS\Domain\issUserAggregate\ValueObjects\UserIssAvatarPath;
+use Modules\ISS\Domain\issUserAggregate\ValueObjects\WebToken;
+use Modules\ISS\Domain\SharedValueObjects\Id;
 
 /**
- * @var IdVO $id код пользователя ИОС
- * @var IdVO $userId код пользователя из основного приложения
- * @var IdVO $roleId код роли пользователя ИОС
- * @var UserIssAvatarPathVO $userIssAvatarPath путь к файлу аватарки пользователя
- * @var OrganizationVO $organization название организации пользователя из основного приложения
- * @var PartOfFioVO $name имя поьлзователя (загружается из основного приложения)
- * @var PartOfFioVO $secondName отчество поьлзователя (загружается из основного приложения)
- * @var PartOfFioVO $lastName фамилия поьлзователя (загружается из основного приложения)
- * @var WebTokenVO $webToken токен авторизации пользователя в модуле ИОС
+ * @var Id $id код пользователя ИОС
+ * @var Id $userId код пользователя из основного приложения
+ * @var Id $roleId код роли пользователя ИОС
+ * @var UserIssAvatarPath $userIssAvatarPath путь к файлу аватарки пользователя
+ * @var Organization $organization название организации пользователя из основного приложения
+ * @var PartOfFio $name имя поьлзователя (загружается из основного приложения)
+ * @var PartOfFio $secondName отчество поьлзователя (загружается из основного приложения)
+ * @var PartOfFio $lastName фамилия поьлзователя (загружается из основного приложения)
+ * @var WebToken $webToken токен авторизации пользователя в модуле ИОС
  */
 
 class UserData
 {
-    private IdVO $id;
-    private IdVO $userId;
-    private IdVO $roleId;
-    private UserIssAvatarPathVO $userIssAvatarPath;
-    private OrganizationVO $organization;
-    private PartOfFioVO $name;
-    private PartOfFioVO $secondName;
-    private PartOfFioVO $lastName;
-    private WebTokenVO $webToken;
+    private Id $id;
+    private Id $userId;
+    private Id $roleId;
+    private UserIssAvatarPath $userIssAvatarPath;
+    private Organization $organization;
+    private PartOfFio $name;
+    private PartOfFio $secondName;
+    private PartOfFio $lastName;
+    private WebToken $webToken;
 
     public function __construct(
-        IdVO                $id,
-        IdVO                $userId,
-        IdVO                $roleId,
-        UserIssAvatarPathVO $userIssAvatarPath,
-        OrganizationVO      $organization,
-        PartOfFioVO         $name,
-        PartOfFioVO         $secondName,
-        PartOfFioVO         $lastName,
-        WebTokenVO          $webToken
+        Id                $id,
+        Id                $userId,
+        Id                $roleId,
+        UserIssAvatarPath $userIssAvatarPath,
+        Organization      $organization,
+        PartOfFio         $name,
+        PartOfFio         $secondName,
+        PartOfFio         $lastName,
+        WebToken          $webToken
     )
     {
         $this->id = $id;
@@ -53,5 +53,61 @@ class UserData
         $this->secondName = $secondName;
         $this->lastName = $lastName;
         $this->webToken = $webToken;
+    }
+
+    public function getId(): Id
+    {
+        return $this->id;
+    }
+
+    public function getUserId(): Id
+    {
+        return $this->userId;
+    }
+
+    public function getRoleId(): Id
+    {
+        return $this->roleId;
+    }
+
+    public function getUserIssAvatarPath(): UserIssAvatarPath
+    {
+        return $this->userIssAvatarPath;
+    }
+
+    public function getOrganization(): Organization
+    {
+        return $this->organization;
+    }
+
+    public function getName(): PartOfFio
+    {
+        return $this->name;
+    }
+
+    public function getSecondName(): PartOfFio
+    {
+        return $this->secondName;
+    }
+
+    public function getLastName(): PartOfFio
+    {
+        return $this->lastName;
+    }
+
+    public function getWebToken(): WebToken
+    {
+        return $this->webToken;
+    }
+
+    //мутаторы
+    public function changeUserRole(int $roleId): void
+    {
+        $this->roleId = new Id($roleId);
+    }
+
+    public function changeOrganization(string $organization): void
+    {
+        $this->organization = new Organization($organization);
     }
 }
