@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Models\Photo;
+use App\EloquentModels\Photo;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
