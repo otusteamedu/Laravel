@@ -18,6 +18,7 @@ Route::get('/', function () {
 Route::view('/page', 'page');
 
 Route::resource('posts', PostController::class)->middleware('auth');
+Route::get('/posts/{post}/comments', [PostController::class, 'showComments'])->name('post.comments');
 
 Route::get('/dashboard', function (Request $request) {
     $locale = mb_substr($request->headers->get('accept-language'), 0, 2);

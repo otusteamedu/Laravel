@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Post;
+use App\Services\CommentsService;
 use Illuminate\Http\Request;
 
 class PostController extends Controller
@@ -42,9 +43,18 @@ class PostController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Post $post)
+    public function show(Post $post, CommentsService $commentsService)
     {
         return view('posts.show', compact('post'));
+    }
+    /**
+     * Display the specified resource.
+     */
+    public function showComments(Post $post, CommentsService $commentsService)
+    {
+        // user -> current page -> handler -> 4 http call to service
+        $comments = $commentsService->loadCommentsFor($post);
+        return view('posts.comments', compact('post', 'comments'));
     }
 
     /**

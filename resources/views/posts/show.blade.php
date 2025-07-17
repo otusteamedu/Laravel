@@ -14,13 +14,7 @@
             </div>
             <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
                 <h3 class="text-lg mb-4">Comments</h3>
-                @forelse($post->comments as $comment)
-                    <p>{{ $comment->author->name }}</p>
-                    <p>{{ $comment->text }}</p>
-                    <hr class="my-4">
-                @empty
-                    <p>Not yet</p>
-                @endforelse
+                <a href="{{ route('post.comments', ['post' => $post]) }}">Show comments</a>
             </div>
         </div>
     </div>
