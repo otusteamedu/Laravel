@@ -1,19 +1,22 @@
 <?php
 
-namespace Modules\ISS\Domain\issUserAggregate;
+namespace Modules\ISS\Domain\issUserAggregate\ValueObjects;
 
-use \Exception;
+use InvalidArgumentException;
 
 /**
  * @var string|null $webToken токен авторизации пользователя в модуле ИОС
  */
 
-class WebTokenVO
+final readonly class WebToken
 {
     private string|null $webToken;
 
     public function __construct(string|null $webToken)
     {
+        if (empty($webToken)) {
+            throw new InvalidArgumentException("Web token cannot be empty");
+        }
         $this->webToken = $webToken;
     }
 }
