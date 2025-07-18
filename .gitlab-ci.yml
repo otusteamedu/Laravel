@@ -1,0 +1,108 @@
+image: docker:stable
+
+services:
+  - docker:dind
+
+variables:
+  # Путь к docker-compose файлу на GitLab Runner
+  DOCKER_COMPOSE_FILE: docker-compose.yml
+  # Имя контейнера приложения (Sail)
+  APP_CONTAINER: laravel.test
+  # Команда вызова sail
+  SAIL_CMD: ./vendor/bin/sail
+  # Путь к проекту на проде
+  PROJECT_PATH: /var/www/html
+
+stages:
+  - test
+  - build
+  - deploy
+  - rollback
+
+before_script:
+  # Устанавливаем необходимые утилиты
+  - apk add --no-cache bash git openssh-client
+  # Запускаем ssh-agent и добавляем приватный ключ из переменной
+  - eval $(ssh-agent -s)
+  - echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add -
+  # Добавляем prod-хост в known_hosts для избежания подтверждений
+  - mkdir -p ~/.ssh
+  - ssh-keyscan -H $DEPLOY_HOST >> ~/.ssh/known_hosts
+  - chmod 600 ~/.ssh/known_hosts
+
+test:
+  stage: test
+  script:
+    # Поднимаем контейнеры Laravel, Postgres, Redis, Memcached
+    - docker-compose -f $DOCKER_COMPOSE_FILE up -d $APP_CONTAINER pgsql redis memcached
+    # Запускаем тесты внутри контейнера laravel.test с использованием env.testing
+    - docker-compose -f $DOCKER_COMPOSE_FILE exec -T $APP_CONTAINER $SAIL_CMD artisan test --env=testing --colors=always
+    # Останавливаем контейнеры после тестов
+    - docker-compose -f $DOCKER_COMPOSE_FILE down
+  tags:
+    - docker
+
+build_frontend:
+  stage: build
+  needs:
+    - test
+  script:
+    # Поднимаем контейнер приложения
+    - docker-compose -f $DOCKER_COMPOSE_FILE up -d $APP_CONTAINER
+    # Устанавливаем зависимости npm и собираем фронтенд
+    - docker-compose -f $DOCKER_COMPOSE_FILE exec -T $APP_CONTAINER npm install
+    - docker-compose -f $DOCKER_COMPOSE_FILE exec -T $APP_CONTAINER npm run build
+    # Останавливаем контейнеры
+    - docker-compose -f $DOCKER_COMPOSE_FILE down
+  tags:
+    - docker
+
+deploy:
+  stage: deploy
+  only:
+    - main  # Выполняется при пуше в ветку main
+  environment:
+    name: production
+    url: https://your.production.domain
+  tags:
+    - docker
+  script:
+    # Подключаемся по ssh и запускаем деплойные команды
+    - |
+      ssh -o StrictHostKeyChecking=no $DEPLOY_USER@$DEPLOY_HOST bash -c "'
+        set -euo pipefail
+
+        cd $PROJECT_PATH || exit 1
+
+        echo \"[DEPLOY] Обновление кода из Git\"
+        git fetch origin main
+        git reset --hard origin/main
+
+        echo \"[DEPLOY] Установка зависимостей Composer с оптимизацией\"
+        $SAIL_CMD composer install --no-dev --optimize-autoloader
+
+        echo \"[DEPLOY] Очистка кеша\"
+        $SAIL_CMD artisan optimize:clear
+
+        echo \"[DEPLOY] Запуск тестов для финальной проверки\"
+        $SAIL_CMD artisan test || exit 1
+
+        echo \"[DEPLOY] Применение миграций\"
+        $SAIL_CMD artisan migrate --force
+
+        echo \"[DEPLOY] Сборка фронтенда\"
+        npm install
+        npm run build
+
+        echo \"[DEPLOY] Оптимизация кеша\"
+        $SAIL_CMD artisan optimize
+
+        echo \"[DEPLOY] Прогрев кеша\"
+        $SAIL_CMD artisan cache:warm --force
+
+        echo \"[DEPLOY] Перезапуск очередей\"
+        $SAIL_CMD artisan queue:restart
+
+        echo \"[DEPLOY] Перезапуск docker-compose сервисов\"
+        docker-compose up -d --remove-orphans
+      '"
