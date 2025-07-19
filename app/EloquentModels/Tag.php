@@ -1,29 +1,22 @@
 <?php
 
-namespace App\Models;
+namespace App\EloquentModels;
 
-class Category extends BaseModel
+class Tag extends BaseModel
 {
     /**
-     * Class Category
+     * Class Tag
      *
      * @property int $id
      * @property string $name_en
      * @property string $name_ru
-     * @property text $description_en
-     * @property text $description_ru
      * @property \Illuminate\Support\Carbon $created_at
      * @property \Illuminate\Support\Carbon $updated_at
      */
 
-    public function recipes() 
+    public function recipes()
     {
-        return $this->hasMany(Recipe::class, 'category_id', 'id');
-    }
-
-    public function getId() 
-    {
-        return $this->id;
+        return $this->belongsToMany(Recipe::class, 'recipe_tag');
     }
 
     public function getNameEn() 
@@ -36,16 +29,6 @@ class Category extends BaseModel
         return $this->name_ru;
     }
 
-    public function getDescriptionEn() 
-    {
-        return $this->description_en;
-    }
-
-    public function getDescriptionRu() 
-    {
-        return $this->description_ru;
-    }
-
     public function getCreatedAt() 
     {
         return $this->created_at;
@@ -54,5 +37,10 @@ class Category extends BaseModel
     public function getUpdatedAt() 
     {
         return $this->updated_at;
+    }
+    
+    protected static function newFactory()
+    {
+        return \Database\Factories\TagFactory::new();
     }
 }

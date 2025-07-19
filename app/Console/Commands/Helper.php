@@ -2,12 +2,12 @@
 
 namespace App\Console\Commands;
 
-use App\Models\Area;
-use App\Models\MeasureProductRecipe;
-use App\Models\Photo;
-use App\Models\Product;
-use App\Models\Recipe;
-use App\Models\Video;
+use App\EloquentModels\Area;
+use App\EloquentModels\MeasureProductRecipe;
+use App\EloquentModels\Photo;
+use App\EloquentModels\Product;
+use App\EloquentModels\Recipe;
+use App\EloquentModels\Video;
 use Illuminate\Console\Command;
 
 class Helper extends Command

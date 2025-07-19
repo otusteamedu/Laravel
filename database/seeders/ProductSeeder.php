@@ -2,8 +2,8 @@
 
 namespace Database\Seeders;
 
-use App\Models\Product;
-use App\Models\Recipe;
+use App\EloquentModels\Product;
+use App\EloquentModels\Recipe;
 use Illuminate\Database\Seeder;
 
 class ProductSeeder extends Seeder
