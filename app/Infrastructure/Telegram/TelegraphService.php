@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\Telegram;
+namespace App\Infrastructure\Telegram;
 
 use Illuminate\Support\Stringable;
 use DefStudio\Telegraph\Keyboard\ReplyButton;
