@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Models\Product;
 use Illuminate\Support\ServiceProvider;
 use App\Repositories\Contracts\ProductRepositoryInterface;
 use App\Repositories\Eloquent\ProductRepository;
@@ -24,6 +25,27 @@ class RepositoryServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        Product::created(function ($product) {
+            $this->warmCache();
+        });
+
+        Product::updated(function ($product) {
+            $this->warmCache();
+        });
+
+        Product::deleted(function ($product) {
+            $this->warmCache();
+        });
+    }
+
+    protected function warmCache(): void
+    {
+        if (app()->runningInConsole()) {
+            return;
+        }
+
+        dispatch(function () {
+            \Artisan::call('cache:warm-products');
+        })->afterResponse();
     }
 }

@@ -16,9 +16,15 @@ class ProductRepository implements ProductRepositoryInterface
         $this->model = $model;
     }
 
-    public function getAllPaginated(int $perPage = 10, string $orderBy = 'order'): LengthAwarePaginator
+    public function getAllPaginated(int $perPage = 10, string $orderBy = 'order', int $page = null): LengthAwarePaginator
     {
-        return $this->model->orderBy($orderBy)->paginate($perPage);
+        $query = $this->model->orderBy($orderBy);
+
+        if ($page) {
+            return $query->paginate($perPage, ['*'], 'page', $page);
+        }
+
+        return $query->paginate($perPage);
     }
 
     public function find(int $id): ?Product

@@ -24,6 +24,7 @@ services:
         depends_on:
             - mysql
             - redis
+            - memcached
     mysql:
         image: 'mysql/mysql-server:8.0'
         ports:
@@ -63,6 +64,17 @@ services:
                 - ping
             retries: 3
             timeout: 5s
+    memcached:
+        image: 'memcached:alpine'
+        ports:
+            - '11211:11211'
+        networks:
+            - sail
+        healthcheck:
+            test: [ "CMD", "nc", "-z", "localhost", "11211" ]
+            interval: 5s
+            timeout: 5s
+            retries: 5
 networks:
     sail:
         driver: bridge
