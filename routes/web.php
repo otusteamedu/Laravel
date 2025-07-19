@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\Route;
 //     return view('welcome');
 // });
 
+// first commit
+
 Route::get('/', function () {
     return redirect('/blogs');
 });
