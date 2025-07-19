@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Product;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Storage;
 use App\Repositories\Contracts\ProductRepositoryInterface;
@@ -29,10 +30,18 @@ class ProductController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
         Gate::authorize('viewAny', Product::class);
-        $products = $this->productRepository->getAllPaginated(10);
+        $page = $request->get('page', 1);
+        $perPage = 10;
+
+        $cacheKey = 'products_admin_page_' . $page . '_per_page_' . $perPage;
+
+        $products = Cache::tags(['products'])->remember($cacheKey, 60, function () use ($perPage) {
+            return $this->productRepository->getAllPaginated($perPage);
+        });
+
         return view('admin.products.index', compact('products'));
     }
 
@@ -84,6 +93,8 @@ class ProductController extends Controller
 
         $product = $this->productRepository->create($data);
         $this->productRepository->syncCategories($product, $request->input('categories', []));
+
+        Cache::tags(['products'])->flush();
 
         return redirect()->route('admin.products.index')->with('success', 'Product created successfully!');
     }
@@ -139,6 +150,8 @@ class ProductController extends Controller
         $this->productRepository->update($product, $data);
         $this->productRepository->syncCategories($product, $request->input('categories', []));
 
+        Cache::tags(['products'])->flush();
+
         return redirect()->route('admin.products.index')->with('success', 'Product updated successfully!');
     }
 
@@ -161,6 +174,8 @@ class ProductController extends Controller
         }
 
         $this->productRepository->delete($product);
+
+        Cache::tags(['products'])->flush();
 
         return redirect()->route('admin.products.index')->with('success', 'Product deleted successfully!');
     }
