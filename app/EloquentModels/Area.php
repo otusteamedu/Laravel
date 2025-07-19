@@ -2,6 +2,7 @@
 
 namespace App\EloquentModels;
 
+use App\BusinessModels\Area as BusinessModelArea;
 use App\BusinessModels\BaseModel as BusinessBaseModel;
 use App\Helpers\LocaleHelper;
 use Carbon\Carbon;
@@ -43,10 +44,11 @@ class Area extends BaseModel implements EloquentModelsInterface
 
     public function toBusinessModel(): BusinessBaseModel
     {
-        return new BusinessBaseModel(
+        return new BusinessModelArea(
             id:$this->getId(), 
             name:$this->getName(), 
-            created_at:$this->getCreatedAt());
+            created_at:$this->getCreatedAt()
+        );
     }
     
     protected static function newFactory()

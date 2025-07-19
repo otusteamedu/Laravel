@@ -1,5 +1,7 @@
 @extends('layouts.main')
 
+@vite('resources/views/area/index/js/index.js')
+
 @php
 
 /**

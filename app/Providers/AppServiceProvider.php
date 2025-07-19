@@ -2,10 +2,10 @@
 
 namespace App\Providers;
 
-use App\Models\User;
+use App\EloquentModels\User;
 use App\Policies\Fibonachi\FibonachiPolicy;
 use App\Repositories\Area\AreaRepository;
-use App\Repositories\Area\AreaRepositoryInterface;
+use App\Services\Area\AreaRepositoryInterface;
 use App\Repositories\Measure\MeasureRepository;
 use App\Repositories\Measure\MeasureRepositoryInterface;
 use App\Services\Area\AreaService;

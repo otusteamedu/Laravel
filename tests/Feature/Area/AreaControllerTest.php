@@ -2,13 +2,9 @@
 
 namespace Tests\Feature\Area;
 
-use App\Models\Area;
-use App\Repositories\Area\AreaDTO;
+use App\Services\Area\AreaDTO;
 use App\Response\WebResponse;
-use App\Services\Area\AreaServiceInterface;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Mockery;
-use Mockery\MockInterface;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\Attributes\TestWith;

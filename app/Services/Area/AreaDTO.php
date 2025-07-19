@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Repositories\Area;
+namespace App\Services\Area;
 
 use App\BusinessModels\Area;
 
