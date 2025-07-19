@@ -6,7 +6,9 @@
 /storage/*.key
 /storage/pail
 /vendor
+/coverage-report
 .env
+.env.testing
 .env.backup
 .env.production
 .phpactor.json

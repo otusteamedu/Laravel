@@ -28,7 +28,7 @@
                                 @if($response->success)
                                     <div class="card">
                                         <div class="card-body">
-                                            <table class="table table-bordered table-hover">
+                                            <table class="table table-bordered table-hover" style="width: 100%">
                                                 <!-- ./card-header -->
                                                 <thead>
                                                     <tr style="vertical-align: middle; text-align: center;">

@@ -8,6 +8,8 @@ services:
     working_dir: /var/www
     volumes:
       - .:/var/www
+    environment:
+      XDEBUG_MODE: coverage
     depends_on:
       - postgres
     networks:
@@ -43,9 +45,25 @@ services:
     networks:
       - mynetwork
 
+  postgres_test:
+    image: postgres:15
+    container_name: otus_postgres_db_test
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${TEST_DB_DATABASE}
+      POSTGRES_USER: ${TEST_DB_USERNAME}
+      POSTGRES_PASSWORD: ${TEST_DB_PASSWORD}
+    ports:
+      - "5435:5432"
+    volumes:
+      - pgdata_test:/var/lib/postgresql/data
+    networks:
+      - mynetwork
+
 networks:
   mynetwork:
     driver: bridge
 
 volumes:
   pgdata:
+  pgdata_test:

@@ -54,7 +54,7 @@ class FibonachiController extends Controller
             $response = new WebResponse(false, null, $e->getMessage(), [], 500);
             Log::error(__METHOD__ . var_export($response, true));
         } finally {
-            return response()->json($response);
+            return response()->json($response , $response->statusCode);
         }
     }
 }

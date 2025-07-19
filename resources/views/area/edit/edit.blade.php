@@ -1,3 +1,5 @@
+@extends('layouts.main')
+
 @php
 
 /**
@@ -7,7 +9,7 @@ $area = $response->data;
 
 @endphp
 
-<x-app-layout>
+@section('content')
     <div class="py-1">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
         @include('components.button.back', ['route' => route('area.index'), 'text' => __('account.back_btn')])
@@ -24,15 +26,17 @@ $area = $response->data;
                                         name="name-area" 
                                         class="form-control" 
                                         placeholder="{{ __('account.input_placeholder_name_area') }}" 
-                                        value="{{ old('name-area', $area->name) }}"
+                                        value="{{ old('name-area', $area->name ?? $response->message) }}"
                                         required>
                                 </div>
                                 <div class="flex items-center justify-end my-3">
-                                    @include('components.button.update', [
-                                        'route' => route('area.update', ['area' => $area->id]), 
-                                        'name' => 'area', 
-                                        'fields' => 'name-area', 
-                                        'redirect_route' => route('area.index')])
+                                    @if($area)
+                                        @include('components.button.update', [
+                                            'route' => route('area.update', ['area' => $area->id]), 
+                                            'name' => 'area', 
+                                            'fields' => 'name-area', 
+                                            'redirect_route' => route('area.index')])
+                                    @endif
                                 </div>
                             </div>
                         </div>
@@ -41,6 +45,4 @@ $area = $response->data;
             </div>
         </div>
     </div>
-</x-app-layout>
-
-@vite('resources/views/area/create/js/index.js')
+@endsection
