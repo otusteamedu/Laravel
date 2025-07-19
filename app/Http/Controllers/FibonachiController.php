@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Exceptions\Fibonachi\FibonachiExaption;
 use App\Exceptions\Fibonachi\NotAdminException;
-use App\Models\User;
+use App\EloquentModels\User;
 use Illuminate\Http\Response;
 use App\Response\WebResponse;
 use Illuminate\Http\JsonResponse;

@@ -2,8 +2,7 @@
 
 namespace Tests\Feature\Feature\Area;
 
-use App\Models\Area;
-use App\Repositories\Area\AreaDTO;
+use App\BusinessModels\Area;
 use App\Repositories\Area\AreaRepository;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
@@ -11,6 +10,7 @@ use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\Attributes\TestWith;
 use Tests\TestCase;
+use App\Helpers\LocaleHelper;
 
 #[Group('feature_area_repository')]
 
@@ -32,8 +32,8 @@ class AreaRepositoryTest extends TestCase
         $areas = $this->repository->getAll();
         $this->assertIsArray($areas);
         $this->assertNotEmpty($areas, 'Ожидается, что база содержит записи');
-        foreach ($areas as $areaDTO) {
-            $this->assertInstanceOf(AreaDTO::class, $areaDTO);
+        foreach ($areas as $area) {
+            $this->assertInstanceOf(Area::class, $area);
         }
     }
 
@@ -42,10 +42,10 @@ class AreaRepositoryTest extends TestCase
     public function store_creates_area_with_current_locale_field(
         string $name,
     ): void {
-        app()->setLocale('ru');
-        $this->repository->store($name);
+        $area = new Area(name: $name);
+        $this->repository->store($area);
         $this->assertDatabaseHas('areas', [
-            'name_ru' => $name,
+            'name_' . LocaleHelper::getLocale() => $name,
         ]);
     }
 
@@ -61,7 +61,7 @@ class AreaRepositoryTest extends TestCase
         }
         $result = $this->repository->findById($id);
         if (!$shouldThrow) {
-            $this->assertInstanceOf(AreaDTO::class, $result);
+            $this->assertInstanceOf(Area::class, $result);
             $this->assertEquals($id, $result->id);
         }
     }
@@ -78,11 +78,11 @@ class AreaRepositoryTest extends TestCase
             $this->expectException(ModelNotFoundException::class);
         }
         $area = $this->repository->findById($id);
-        $area->name = $newName;
+        $area->setName($newName);
         $this->repository->update($area);
         if (!$shouldThrow) {
             $updatedArea = $this->repository->findById($id);
-            $this->assertEquals($newName, $updatedArea->name);
+            $this->assertEquals($newName, $updatedArea->getName());
         }
     }
 

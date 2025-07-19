@@ -2,8 +2,6 @@
 
 namespace App\Services\Area;
 
-use App\Repositories\Area\AreaDTO;
-
 interface AreaServiceInterface 
 {
     /**

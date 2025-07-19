@@ -4,6 +4,7 @@ namespace App\Repositories\Area;
 
 use App\BusinessModels\Area as BusinessModelsArea;
 use App\EloquentModels\Area;
+use App\Services\Area\AreaRepositoryInterface;
 
 class AreaRepository implements AreaRepositoryInterface
 {
@@ -21,7 +22,7 @@ class AreaRepository implements AreaRepositoryInterface
 
     public function store(BusinessModelsArea $area): void
     {
-        Area::create($area->toArray());
+        Area::create($area->toArrayForCreat());
     }
 
     public function findById(int $id): BusinessModelsArea

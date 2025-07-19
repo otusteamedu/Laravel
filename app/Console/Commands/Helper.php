@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\BusinessModels\Area as BusinessModelsArea;
 use App\EloquentModels\Area;
 use App\EloquentModels\MeasureProductRecipe;
 use App\EloquentModels\Photo;
@@ -31,7 +32,8 @@ class Helper extends Command
      */
     public function handle()
     {
-        
+        $area = new BusinessModelsArea(name:'Кирилл');
+        dd($area);
         die;
     }
 }

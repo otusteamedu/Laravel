@@ -2,10 +2,10 @@
 
 namespace Tests\Unit;
 
+use App\BusinessModels\Area;
 use App\Exceptions\NotFoundException;
-use App\Repositories\Area\AreaDTO;
-use App\Repositories\Area\AreaRepository;
-use App\Repositories\Area\AreaRepositoryInterface;
+use App\Services\Area\AreaDTO;
+use App\Services\Area\AreaRepositoryInterface;
 use App\Services\Area\AreaService;
 use Mockery;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
@@ -38,7 +38,13 @@ class AreaServiceTest extends TestCase
         bool $expectException,
         ?string $expectedMessage
     ): void {
-        $data = array_map(fn ($class) => Mockery::mock(AreaDTO::class), $mockedData);
+        $data = array_map(function () {
+            $area = Mockery::mock(Area::class);
+            $area->shouldReceive('getId')->andReturn(1);
+            $area->shouldReceive('getName')->andReturn('Тестовая территория');
+            $area->shouldReceive('getCreatedAt')->andReturn('2000-01-01');
+            return $area;
+        }, $mockedData);
         $this->repository->shouldReceive('getAll')
             ->once()
             ->andReturn($data);
@@ -48,7 +54,8 @@ class AreaServiceTest extends TestCase
         }
         $result = $this->service->prepairDataForIndex();
         if (!$expectException) {
-            $this->assertSame($data, $result);
+            $this->assertIsArray($result);
+            $this->assertContainsOnlyInstancesOf(AreaDTO::class, $result);
         }
     }
 
@@ -58,7 +65,9 @@ class AreaServiceTest extends TestCase
         $name = 'Новая территория';
         $this->repository->shouldReceive('store')
             ->once()
-            ->with($name);
+            ->with(Mockery::on(function ($area) use ($name) {
+                return $area instanceof Area && $area->getName() === $name;
+            }));
         $this->service->store($name);
     }
 
@@ -67,13 +76,13 @@ class AreaServiceTest extends TestCase
     public function prepairDataForEdit_returns_area_dto_from_repository(
         int $id,
     ): void {
-        $areaDtoMock = Mockery::mock(AreaDTO::class);
+        $area = Mockery::mock(Area::class)->shouldIgnoreMissing();
         $this->repository->shouldReceive('findById')
             ->once()
             ->with($id)
-            ->andReturn($areaDtoMock);
+            ->andReturn($area);
         $result = $this->service->prepairDataForEdit($id);
-        $this->assertSame($areaDtoMock, $result);
+        $this->assertInstanceOf(AreaDTO::class, $result);
     }
 
     #[Test]
@@ -82,23 +91,18 @@ class AreaServiceTest extends TestCase
         int $id,
         string $newName,
     ): void {
-        $areaDtoMock = Mockery::mock(AreaDTO::class);
-        $areaDtoMock->shouldReceive('name')
-            ->andReturnUsing(function () use (&$newName) {
-                return $newName;
-            });
-        $areaDtoMock->name = null;
+        $areaMock = Mockery::mock(Area::class);
+        $areaMock->shouldReceive('setName')
+            ->once()
+            ->with($newName);
         $this->repository->shouldReceive('findById')
             ->once()
             ->with($id)
-            ->andReturn($areaDtoMock);
+            ->andReturn($areaMock);
         $this->repository->shouldReceive('update')
             ->once()
-            ->with(Mockery::on(function ($dto) use ($areaDtoMock, $newName) {
-                return $dto === $areaDtoMock && $dto->name === $newName;
-            }));
+            ->with($areaMock);
         $this->service->update($id, $newName);
-        $this->assertSame($newName, $areaDtoMock->name);
     }
 
     #[Test]

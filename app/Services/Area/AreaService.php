@@ -4,8 +4,6 @@ namespace App\Services\Area;
 
 use App\BusinessModels\Area;
 use App\Exceptions\NotFoundException;
-use App\Repositories\Area\AreaDTO;
-use App\Repositories\Area\AreaRepositoryInterface;
 
 final readonly class AreaService implements AreaServiceInterface
 {
@@ -18,7 +16,7 @@ final readonly class AreaService implements AreaServiceInterface
 
     public function prepairDataForIndex(): array 
     {
-        $areas = $this->areaRepository->getAll();  
+        $areas = $this->areaRepository->getAll();
         if (empty($areas)) {
             throw new NotFoundException('Записи отсутствуют.');
         };
