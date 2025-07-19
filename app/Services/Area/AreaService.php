@@ -2,6 +2,7 @@
 
 namespace App\Services\Area;
 
+use App\BusinessModels\Area;
 use App\Exceptions\NotFoundException;
 use App\Repositories\Area\AreaDTO;
 use App\Repositories\Area\AreaRepositoryInterface;
@@ -21,25 +22,29 @@ final readonly class AreaService implements AreaServiceInterface
         if (empty($areas)) {
             throw new NotFoundException('Записи отсутствуют.');
         };
+        $areas = collect($areas)->map(function($area) {
+            return (new AreaDTO($area));
+        })->toArray();
         return $areas;
     }
 
     public function store(string $name): void 
     {
-        $this->areaRepository->store($name);
+        $area = new Area(name:$name);
+        $this->areaRepository->store($area);
     }
 
     public function prepairDataForEdit(int $id): AreaDTO 
     {
         $area = $this->areaRepository->findById($id);
-        return $area;
+        return new AreaDTO($area);
     }
     
     public function update(int $id, string $name): void 
     {
-        $areaDTO = $this->areaRepository->findById($id);
-        $areaDTO->name = $name;
-        $this->areaRepository->update($areaDTO);
+        $area = $this->areaRepository->findById($id);
+        $area->setName($name);
+        $this->areaRepository->update($area);
     }
 
     public function delete(int $id): void 

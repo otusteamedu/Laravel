@@ -1,10 +1,12 @@
 <?php
 
-namespace App\Models;
+namespace App\EloquentModels;
 
+use App\BusinessModels\BaseModel as BusinessBaseModel;
+use App\Helpers\LocaleHelper;
 use Carbon\Carbon;
 
-class Area extends BaseModel
+class Area extends BaseModel implements EloquentModelsInterface
 {
     /**
      * Class Area
@@ -21,26 +23,34 @@ class Area extends BaseModel
         return $this->hasMany(Recipe::class, 'area_id', 'id');
     }
 
-    public function getId() 
-    {
-        return $this->id;
-    }
-
     public function getName() 
     {
-        $nameField = 'name_' . config('app.locale');
+        $nameField = 'name_' . LocaleHelper::getLocale();
         return $this->$nameField;
     }
 
-    public function getCreatedAt() 
+    public function getCreatedAt(): string 
     {
         $data = Carbon::createFromDate($this->created_at)->format('d.m.Y');
         return $data;
     }
 
-    public function getUpdatedAt() 
+    public function getUpdatedAt(): string 
     {
         $data = Carbon::createFromDate($this->updated_at)->format('d.m.Y');
         return $data;
+    }
+
+    public function toBusinessModel(): BusinessBaseModel
+    {
+        return new BusinessBaseModel(
+            id:$this->getId(), 
+            name:$this->getName(), 
+            created_at:$this->getCreatedAt());
+    }
+    
+    protected static function newFactory()
+    {
+        return \Database\Factories\AreaFactory::new();
     }
 }

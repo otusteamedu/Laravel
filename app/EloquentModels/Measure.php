@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models;
+namespace App\EloquentModels;
 
 use Carbon\Carbon;
 
@@ -21,11 +21,6 @@ class Measure extends BaseModel
         return $this->hasMany(MeasureProductRecipe::class, 'measure_id', 'id');
     }
 
-    public function getId() 
-    {
-        return $this->id;
-    }
-
     public function getName() 
     {
         $name = 'name_' . config('app.locale');
@@ -42,5 +37,10 @@ class Measure extends BaseModel
     {
         $data = Carbon::createFromDate($this->updated_at)->format('d.m.Y');
         return $data;
+    }
+    
+    protected static function newFactory()
+    {
+        return \Database\Factories\MeasureFactory::new();
     }
 }

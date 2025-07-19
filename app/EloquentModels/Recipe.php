@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models;
+namespace App\EloquentModels;
 
 class Recipe extends BaseModel
 {
@@ -55,11 +55,6 @@ class Recipe extends BaseModel
         return $this->hasMany(MeasureProductRecipe::class, 'recipe_id', 'id');
     }
 
-    public function getId() 
-    {
-        return $this->id;
-    }
-
     public function getApiId() 
     {
         return $this->api_id;
@@ -108,5 +103,10 @@ class Recipe extends BaseModel
     public function getUpdatedAt() 
     {
         return $this->updated_at;
+    }
+    
+    protected static function newFactory()
+    {
+        return \Database\Factories\RecipeFactory::new();
     }
 }
