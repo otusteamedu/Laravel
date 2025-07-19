@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models;
+namespace App\EloquentModels;
 
 class MeasureProductRecipe extends BaseModel
 {
@@ -33,11 +33,6 @@ class MeasureProductRecipe extends BaseModel
         return $this->belongsTo(Measure::class, 'measure_id', 'id');
     }
 
-    public function getId() 
-    {
-        return $this->id;
-    }
-
     public function getRecipeId() 
     {
         return $this->recipe_id;
@@ -66,5 +61,10 @@ class MeasureProductRecipe extends BaseModel
     public function getUpdatedAt() 
     {
         return $this->updated_at;
+    }
+    
+    protected static function newFactory()
+    {
+        return \Database\Factories\MeasureProductRecipeFactory::new();
     }
 }

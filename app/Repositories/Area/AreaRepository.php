@@ -2,38 +2,38 @@
 
 namespace App\Repositories\Area;
 
-use App\Models\Area;
+use App\BusinessModels\Area as BusinessModelsArea;
+use App\EloquentModels\Area;
 
 class AreaRepository implements AreaRepositoryInterface
 {
     /**
-     * @return array <int, AreaDTO>
+     * @return array <int, BusinessModelsArea>
      */
     public function getAll(): array
     {
         $areas = Area::all()->sortBy('id');
         $areas = $areas->map(function($area) {
-            return (new AreaDTO($area));
+            return ($area->toBusinessModel());
         });
         return $areas->toArray();
     }
 
-    public function store(string $name): void
+    public function store(BusinessModelsArea $area): void
     {
-        Area::create(['name_' . config('app.locale') => $name]);
+        Area::create($area->toArray());
     }
 
-    public function findById(int $id): AreaDTO
+    public function findById(int $id): BusinessModelsArea
     {
         $area = Area::findOrFail($id);
-        $areaDTO = new AreaDTO($area);
-        return $areaDTO;
+        return $area->toBusinessModel();
     }
 
-    public function update(AreaDTO $areaDTO): void
+    public function update(BusinessModelsArea $area): void
     {
-        $area = Area::findOrFail($areaDTO->id);
-        $area->update($areaDTO->toArray());
+        $areaEloquent = Area::findOrFail($area->id);
+        $areaEloquent->update($area->toArray());
     }
 
     public function delete(int $id): void

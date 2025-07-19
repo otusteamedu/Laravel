@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Models\MeasureProductRecipe;
+use App\EloquentModels\MeasureProductRecipe;
 use Illuminate\Database\Seeder;
 
 class MeasureProductRecipeSeeder extends Seeder

@@ -2,13 +2,16 @@
 
 namespace Database\Factories;
 
+use App\EloquentModels\Video;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Video>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\EloquentModels\Video>
  */
 class VideoFactory extends Factory
 {
+    protected $model = Video::class;
+
     /**
      * Define the model's default state.
      *
@@ -16,7 +19,7 @@ class VideoFactory extends Factory
      */
     public function definition(): array
     {
-        $model = 'App\\Models\\' . $this->faker->randomElement(['Recipe']);
+        $model = 'App\\EloquentModels\\' . $this->faker->randomElement(['Recipe']);
         $id = $this->faker->randomElement($model::pluck('id')->toArray());
         return [
             'url' => $this->faker->url(),

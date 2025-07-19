@@ -2,13 +2,16 @@
 
 namespace Database\Factories;
 
+use App\EloquentModels\Photo;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Photo>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\EloquentModels\Photo>
  */
 class PhotoFactory extends Factory
 {
+    protected $model = Photo::class;
+
     /**
      * Define the model's default state.
      *
@@ -17,7 +20,7 @@ class PhotoFactory extends Factory
     public function definition(): array
     {
         $model = $this->faker->randomElement(['recipe', 'product']);
-        $pathModel = 'App\\Models\\' . ucfirst($model);
+        $pathModel = 'App\\EloquentModels\\' . ucfirst($model);
         $id = $this->faker->randomElement($pathModel::pluck('id')->toArray());
         return [
             'url' => $this->faker->url(),
