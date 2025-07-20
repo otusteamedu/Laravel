@@ -29,15 +29,7 @@ class AppServiceProvider extends ServiceProvider
         });
 
         Auth::viaRequest('custom-token', function (Request $request) {
-            $token = $request->bearerToken();
-
-            $token = '12345';
-
-            ob_start();
-            // var_dump($token);
-            var_dump($request->headers);
-            $output = ob_get_clean();
-            file_put_contents('logs123.txt', $output.' ', FILE_APPEND);
+            $token = $request->route()->action['parameters']['token'];
 
             if ($token == null) {
                 return null;
