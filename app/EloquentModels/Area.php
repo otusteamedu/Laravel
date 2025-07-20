@@ -4,8 +4,10 @@ namespace App\EloquentModels;
 
 use App\BusinessModels\Area as BusinessModelArea;
 use App\BusinessModels\BaseModel as BusinessBaseModel;
+use App\Exceptions\NotFoundException;
 use App\Helpers\LocaleHelper;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Log;
 
 class Area extends BaseModel implements EloquentModelsInterface
 {
@@ -42,13 +44,21 @@ class Area extends BaseModel implements EloquentModelsInterface
         return $data;
     }
 
-    public function toBusinessModel(): BusinessBaseModel
+    public function toBusinessModel(): ?BusinessBaseModel
     {
-        return new BusinessModelArea(
-            id:$this->getId(), 
-            name:$this->getName(), 
-            created_at:$this->getCreatedAt()
-        );
+        if (!$this->getName()) {
+            Log::warning(
+                'Отсутствует название у территории с id = ' . $this->getId() . 
+                ' по локали: ' . LocaleHelper::getLocale()
+            );
+            return null;
+        } else {
+            return new BusinessModelArea(
+                id:$this->getId(), 
+                name:$this->getName(), 
+                created_at:$this->getCreatedAt()
+            );
+        }
     }
     
     protected static function newFactory()
