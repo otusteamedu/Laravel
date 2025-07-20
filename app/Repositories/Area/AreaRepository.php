@@ -14,9 +14,10 @@ class AreaRepository implements AreaRepositoryInterface
     public function getAll(): array
     {
         $areas = Area::all()->sortBy('id');
-        $areas = $areas->map(function($area) {
-            return ($area->toBusinessModel());
-        });
+        $areas = $areas
+            ->map(fn($area) => $area->toBusinessModel())
+            ->filter()
+            ->values();
         return $areas->toArray();
     }
 

@@ -6,5 +6,5 @@ use App\BusinessModels\BaseModel as BusinessBaseModel;
 
 interface EloquentModelsInterface 
 {
-    public function toBusinessModel(): BusinessBaseModel;
+    public function toBusinessModel(): ?BusinessBaseModel;
 }
