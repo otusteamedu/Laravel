@@ -60,6 +60,7 @@ services:
       - './releases/green:/var/www/html:delegated'
       - './releases/shared/storage/app:/var/www/html/storage/app'
       - './releases/shared/.env:/var/www/html/.env:ro'
+      - './releases/shared/.env.testing:/var/www/html/.env.testing:ro'
       - './.sail/logs/php:/var/log/php'
     environment:
       XDEBUG_MODE: debug
@@ -75,6 +76,7 @@ services:
       - './releases/blue:/var/www/html:delegated'
       - './releases/shared/storage/app:/var/www/html/storage/app'
       - './releases/shared/.env:/var/www/html/.env:ro'
+      - './releases/shared/.env.testing:/var/www/html/.env.testing:ro'
       - './.sail/logs/php:/var/log/php'
     environment:
       XDEBUG_MODE: debug

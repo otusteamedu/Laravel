@@ -5,9 +5,15 @@
     $dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
     $dotenv->load();
 
-    $branch       = 'VHarinenkov/main';
+    $branch       = 'VHarinenkov/hw-15';
     $app_dir      = '/var/www/otus-app';
     $releases_dir =  $app_dir . '/releases';
+
+    /** для смены прав доступа */
+    $writable = [
+        'storage',
+        'bootstrap'
+    ];
 @endsetup
 
 @macro('deploy',['on'=>'web'])
@@ -19,14 +25,14 @@
 {{-- тесты web, не придумал как их запускать не переключив релиза --}}
 {{-- testing --}}
     migrate
-    optimize-resource
+    clear
     switch-releases
 @endmacro
 
 @macro('rollback',['on'=>'web'])
     set-releases
     rollback-migrate
-    optimize-resource
+    clear
     switch-releases
 @endmacro
 
@@ -70,9 +76,11 @@
 @task('update-permissions')
     export $(grep -v '^#' {{ $app_dir }}/.releases | xargs)
 
-    sudo chmod -R ug+rw {{ $releases_dir }}/${NEXT}/storage
-    sudo chgrp -R www-data {{ $releases_dir }}/${NEXT}/storage
-    echo "Права доступа к {{ $releases_dir }}/${NEXT}/storage установлены"
+    @foreach ($writable as $dir)
+        sudo chmod -R ug+rw {{ $releases_dir }}/${NEXT}/{{ $dir }}
+        sudo chgrp -R www-data {{ $releases_dir }}/${NEXT}/{{ $dir }}
+        echo "Права доступа к {{ $releases_dir }}/${NEXT}/{{ $dir }} установлены"
+    @endforeach
 @endtask
 
 @task('assets-install')
@@ -136,11 +144,10 @@
     fi
 @endtask
 
-@task('optimize-resource')
+@task('clear')
     export $(grep -v '^#' {{ $app_dir }}/.releases | xargs)
 
     sudo docker exec -t otus-app-${NEXT}-app php artisan optimize:clear
-    sudo docker exec -t otus-app-${NEXT}-app php artisan optimize
 
     echo "Ресурсы для релиза ${NEXT} оптимизированы"
 @endtask
