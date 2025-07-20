@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Models\User;
 use Illuminate\Support\Facades\Route;
 
 // Route::get('/', function () {
@@ -24,5 +25,20 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::resource('blogs', \App\Http\Controllers\BlogsController::class)->middleware('auth');
+
+Route::get('/user', function () {
+    $user = new User;
+
+    $user->name = 'olga';
+    $user->email = 'olga123@mail.ru';
+    $user->password = '123123123';
+    $user->api_token = '12345';
+
+    $user->save();
+
+    dump($user->save());
+
+    return '';
+});
 
 require __DIR__.'/auth.php';

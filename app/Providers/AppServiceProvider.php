@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Models\Blog;
 use App\Models\User;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
@@ -29,6 +30,14 @@ class AppServiceProvider extends ServiceProvider
 
         Auth::viaRequest('custom-token', function (Request $request) {
             $token = $request->bearerToken();
+
+            $token = '12345';
+
+            ob_start();
+            // var_dump($token);
+            var_dump($request->headers);
+            $output = ob_get_clean();
+            file_put_contents('logs123.txt', $output.' ', FILE_APPEND);
 
             if ($token == null) {
                 return null;
