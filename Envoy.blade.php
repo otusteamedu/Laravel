@@ -13,14 +13,19 @@
 @macro('deploy',['on'=>'web'])
     set-releases
     fetch-repo
-    build-app
+    run-composer
     update-permissions
+    assets-install
+{{-- тесты web, не придумал как их запускать не переключив релиза --}}
+{{-- testing --}}
+    migrate
     optimize-resource
     switch-releases
 @endmacro
 
 @macro('rollback',['on'=>'web'])
-    rollback-app
+    set-releases
+    rollback-migrate
     optimize-resource
     switch-releases
 @endmacro
@@ -30,86 +35,148 @@
 
     if [ "$CURRENT" == "blue" ]
     then
-        PREVIOUS="green"
+        NEXT="green"
     else
-        PREVIOUS="blue"
+        NEXT="blue"
     fi
 
     cd {{ $app_dir }};
 
     echo "CURRENT=$CURRENT" > .releases
-    echo "PREVIOUS=$PREVIOUS" >> .releases
+    echo "NEXT=$NEXT" >> .releases
 @endtask
 
 @task('fetch-repo')
     export $(grep -v '^#' {{ $app_dir }}/.releases | xargs)
     
-    cd {{ $releases_dir }}/${PREVIOUS};
+    cd {{ $releases_dir }}/${NEXT};
 
     git fetch origin {{ $baseDir }}
     git checkout {{ $branch }}
     git reset --hard origin/{{ $branch }}
 
-    echo "Репозиторий для релиза ${PREVIOUS} обновлен"
+    echo "Репозиторий для релиза ${NEXT} обновлен"
 @endtask
 
-@task('build-app')
+@task('run-composer')
     export $(grep -v '^#' {{ $app_dir }}/.releases | xargs)
 
-    echo "Ставим зависимости composer otus-app-${PREVIOUS}-app"
+    echo "Ставим зависимости composer otus-app-${NEXT}-app"
 
-    sudo docker exec -t otus-app-${PREVIOUS}-app composer install --prefer-dist --no-interaction
-    echo "Зависимости composer для релиза ${PREVIOUS} установлены"
-
-    sudo docker exec -t otus-app-${PREVIOUS}-app php artisan migrate --force --no-interaction
-    echo "Миграции для релиза ${PREVIOUS} применены"
-
-    sudo docker exec -t otus-app-${PREVIOUS}-app npm install
-    echo "Зависимости node для релиза ${PREVIOUS} установлены"
-
-    sudo docker exec -t otus-app-${PREVIOUS}-app npm run build
-    echo "Ассеты для релиза ${PREVIOUS} собраны"
-
-    echo "Сборка проекта для релиза ${PREVIOUS} завершена"
+    sudo docker exec -t otus-app-${NEXT}-app composer install --prefer-dist --no-interaction
+    echo "Зависимости composer для релиза ${NEXT} установлены"
 @endtask
 
 @task('update-permissions')
     export $(grep -v '^#' {{ $app_dir }}/.releases | xargs)
 
-    sudo chmod -R ug+rw {{ $releases_dir }}/${PREVIOUS}/storage
-    sudo chgrp -R www-data {{ $releases_dir }}/${PREVIOUS}/storage
-    echo "Права доступа к {{ $releases_dir }}/${PREVIOUS}/storage установлены"
+    sudo chmod -R ug+rw {{ $releases_dir }}/${NEXT}/storage
+    sudo chgrp -R www-data {{ $releases_dir }}/${NEXT}/storage
+    echo "Права доступа к {{ $releases_dir }}/${NEXT}/storage установлены"
 @endtask
 
-@task('rollback-app')
+@task('assets-install')
     export $(grep -v '^#' {{ $app_dir }}/.releases | xargs)
 
-    docker exec -t otus-app-${PREVIOUS}-app php artisan migrate:rollback --force
-    echo "Миграции для релиза ${CURRENT} отменены"
+    sudo docker exec -t otus-app-${NEXT}-app npm install
+    echo "Зависимости node для релиза ${NEXT} установлены"
 
-    echo "Откат к релизу ${PREVIOUS} завершен"
+    sudo docker exec -t otus-app-${NEXT}-app npm run build
+    echo "Ассеты для релиза ${NEXT} собраны"
+
+    echo "Сборка проекта для релиза ${NEXT} завершена"
+@endtask
+
+@task('migrate')
+    export $(grep -v '^#' {{ $app_dir }}/.releases | xargs)
+
+    cd {{ $app_dir }};
+
+    NEXT_MIGRATION=$(sudo docker exec -t otus-app-${NEXT}-app php artisan migrate:last | grep -oP 'id:\K\d+' | tr -d '\n')
+
+    sudo docker exec -t otus-app-${NEXT}-app php artisan migrate --force --no-interaction
+
+    LAST_MIGRATION=$(sudo docker exec -t otus-app-${NEXT}-app php artisan migrate:last | grep -oP 'id:\K\d+' | tr -d '\n')
+
+    if [ $NEXT_MIGRATION = $LAST_MIGRATION ]
+    then
+        sudo rm -rf .migration
+        echo "Нет миграций для релиза ${NEXT}"
+    else
+        echo "$LAST_MIGRATION" > .migration
+        echo "Миграции для релиза ${NEXT} применены"
+    fi
+@endtask
+
+@task('test')
+    export $(grep -v '^#' {{ $app_dir }}/.releases | xargs)
+
+    cd {{ $app_dir }};
+
+    sudo docker exec -t otus-app-${NEXT}-app php artisan optimize:clear
+    sudo docker exec -t otus-app-${NEXT}-app php artisan migrate --force --no-interaction --env=testing
+    sudo docker exec -t otus-app-${NEXT}-app php artisan test
+
+    echo "Тестирование релиза ${CURRENT} завершено"
+@endtask
+
+@task('rollback-migrate')
+    export $(grep -v '^#' {{ $app_dir }}/.releases | xargs)
+
+    cd {{ $app_dir }};
+
+    if [ -f {{ $app_dir }}/.migration ]
+    then
+        sudo docker exec -t otus-app-${NEXT}-app php artisan migrate:rollback --force
+        sudo rm -rf  {{ $app_dir }}/.mgration
+
+        echo "Миграции для релиза ${CURRENT} отменены"
+    else
+        echo "Нет миграций требующих отката"
+    fi
 @endtask
 
 @task('optimize-resource')
     export $(grep -v '^#' {{ $app_dir }}/.releases | xargs)
 
-    docker exec -t otus-app-${PREVIOUS}-app php artisan optimize:clear
-    docker exec -t otus-app-${PREVIOUS}-app php artisan optimize
+    sudo docker exec -t otus-app-${NEXT}-app php artisan optimize:clear
+    sudo docker exec -t otus-app-${NEXT}-app php artisan optimize
 
-    echo "Ресурсы для релиза ${PREVIOUS} оптимизированы"
+    echo "Ресурсы для релиза ${NEXT} оптимизированы"
 @endtask
 
 @task('switch-releases')
     export $(grep -v '^#' {{ $app_dir }}/.releases | xargs)
 
-    docker exec -t otus-app-balance sh -c "echo \"set server blue_green/${PREVIOUS} state ready\" | socat stdio unix-connect:/sock/admin.sock"
-    echo "Текущий релиза переключен на ${PREVIOUS}"
+    cd {{ $app_dir }};
+
+    sudo docker compose start ${NEXT}_nginx
+    echo "Запущен nginx для релиза ${NEXT}"
+
+    sleep 10
+
+    sudo docker exec -t otus-app-balance sh -c "echo \"set server blue_green/${NEXT} state ready\" | socat stdio unix-connect:/sock/admin.sock"
+    echo "Текущий релиза переключен на ${NEXT}"
     
     sleep 10
     
-    docker exec -t otus-app-balance sh -c "echo \"set server blue_green/${CURRENT} state maint\" | socat stdio unix-connect:/sock/admin.sock"
+    sudo docker exec -t otus-app-balance sh -c "echo \"set server blue_green/${CURRENT} state maint\" | socat stdio unix-connect:/sock/admin.sock"
     echo "Релиз ${CURRENT} переведен в статус MAINTENANCE"
+
+    sleep 10
+
+    sudo docker compose stop ${CURRENT}_nginx
+    echo "Остановлен nginx для релиза ${CURRENT}"
+
 @endtask
+
+@error
+    echo "Деплой завершился ошибкой в задаче $task" . PHP_EOL;
+@enderror
+
+@success
+    echo "Деплой релиза завершен успешно" . PHP_EOL;
+@endsuccess
 
 @finished
     @telegram(env('TELEGRAM_API_KEY'), env('TELEGRAM_CHAT_ID'))
