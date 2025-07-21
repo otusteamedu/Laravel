@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 
 
+
 // Главная страница
 Route::get('/', function () {
     return view('home', ['title' => 'ТСЖ Радуга']);
@@ -46,3 +47,16 @@ Route::get('/login', function () {
 Route::post('/logout', function () {
     return redirect('/');
 })->name('logout');
+
+use App\Http\Controllers\Admin\ApartmentController;
+use App\Http\Controllers\Admin\SettingController;
+
+Route::prefix('admin')->name('admin.')->group(function () {
+    Route::resource('settings', SettingController::class)->only([
+        'index', 'edit', 'update'
+    ]);
+    Route::resource('apartments', ApartmentController::class)->only([
+        'index', 'create', 'store', 'edit', 'update'
+    ]);
+});
+

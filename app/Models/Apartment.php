@@ -9,10 +9,7 @@ class Apartment extends Model
 {
     use HasFactory;
 
-    protected $fillable = [
-        'owner',
-        'serialNumber'
-    ];
+    protected $fillable = ['owner', 'serial_number'];
 
     public function __toString()
     {
