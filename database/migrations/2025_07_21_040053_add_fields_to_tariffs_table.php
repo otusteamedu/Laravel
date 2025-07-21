@@ -25,7 +25,6 @@ return new class extends Migration
                 $table->float('electricity_odn')->nullable()->after('lift');
                 $table->float('multiplying_factor')->nullable()->default(1)->after('capital_repair');
                 
-                // Обновление существующего поля (если нужно изменить дефолтное значение)
                 $table->float('capital_repair')->nullable()->default(0)->change();
             });
         }
