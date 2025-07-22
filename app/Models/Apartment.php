@@ -13,6 +13,6 @@ class Apartment extends Model
 
     public function __toString()
     {
-        return (string) $this->serialNumber;
+        return (string) $this->serial_number;
     }
 }
