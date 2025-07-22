@@ -1,57 +1,42 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-
-
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\Admin\ApartmentController;
+use App\Http\Controllers\Admin\SettingController;
 
 // Главная страница
 Route::get('/', function () {
     return view('home', ['title' => 'ТСЖ Радуга']);
 })->name('index');
 
-//Страница пользователя
-Route::get('/user', function () {
-    return view('user', [
-        'title' => 'Личный кабинет',
-        'showModals' => true
-    ]);
-})->name('user.profile');
-
-//Страница регистрации
-Route::get('/register', function () {
-    return view('auth.register', [
-        'title' => 'Регистрация',
-        'showModals' => false
-    ]);
-})->name('register');
-
-// Страница квартир (наследуется от apartment/base.blade.php)
-Route::get('/apartments', function () {
-    return view('apartments.index', [
-        'title' => 'Квартиры',
-        'apartments' => [] // Пустой массив для примера
-    ]);
-})->name('apartments.index');
-
 // Страница тарифов
 Route::get('/tariffs', function () {
     return view('tariffs', ['title' => 'Тарифы']);
 })->name('tariffs.index');
 
-// Страница входа (заглушка)
-Route::get('/login', function () {
-    return view('auth.login', ['title' => 'Вход']);
-})->name('login');
+// Страница квартир
+Route::get('/apartments', function () {
+    return view('apartments.index', [
+        'title' => 'Квартиры',
+        'apartments' => []
+    ]);
+})->name('apartments.index');
 
-// Выход (заглушка)
-Route::post('/logout', function () {
-    return redirect('/');
-})->name('logout');
+// Страница dashboard — редирект после логина Breeze
+Route::get('/dashboard', function () {
+    return view('dashboard');
+})->middleware(['auth'])->name('dashboard');
 
-use App\Http\Controllers\Admin\ApartmentController;
-use App\Http\Controllers\Admin\SettingController;
+// Маршруты профиля (Breeze их ожидает)
+Route::middleware('auth')->group(function () {
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+});
 
-Route::prefix('admin')->name('admin.')->group(function () {
+// Админская зона
+Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
     Route::resource('settings', SettingController::class)->only([
         'index', 'edit', 'update'
     ]);
@@ -60,3 +45,5 @@ Route::prefix('admin')->name('admin.')->group(function () {
     ]);
 });
 
+// Auth-маршруты Breeze (login, register, logout, reset password и т.д.)
+require __DIR__.'/auth.php';
