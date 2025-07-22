@@ -47,3 +47,8 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
 
 // Auth-маршруты Breeze (login, register, logout, reset password и т.д.)
 require __DIR__.'/auth.php';
+
+
+Route::get('/fail', function () {
+    throw new \Exception("Test error to Telegram");
+});
