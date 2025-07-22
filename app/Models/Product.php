@@ -113,4 +113,14 @@ class Product extends Model
     {
         return $this->hasOne(ProductAsset::class)->where('type', 'image')->orderBy('id');
     }
+
+    public function brand(): BelongsTo
+    {
+        return $this->belongsTo(Brand::class);
+    }
+
+    public function attributes(): BelongsToMany
+    {
+        return $this->belongsToMany(Attribute::class, 'product_attribute_values')->withPivot('value');
+    }
 }
