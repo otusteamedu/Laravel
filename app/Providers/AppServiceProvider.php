@@ -70,5 +70,9 @@ class AppServiceProvider extends ServiceProvider
                 }
             ?>";
         });
+
+        $client = new \Meilisearch\Client (env('MEILISEARCH_HOST'), env('MEILISEARCH_KEY'));
+        $client->index('products')->updateFilterableAttributes(['price', 'brand', 'rating', 'attributes.slug', 'attributes.value']);
+        $client->index('products')->updateSortableAttributes(['price']);
     }
 }

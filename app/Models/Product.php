@@ -17,8 +17,10 @@ use Laravel\Scout\Searchable;
  * @property string $title Product name
  * @property string|null $description Product description
  * @property int $category_id Category ID for product
+ * @property int $brand_id Brand ID for product
  * @property int $stock Quantity of products in stock
  * @property int $price Price of the product
+ * @property numeric $rating Rating of the product
  * @property \Illuminate\Support\Carbon $created_at Creation date
  * @property \Illuminate\Support\Carbon $updated_at Last update date
  *
@@ -64,6 +66,16 @@ class Product extends Model
         return $this->price;
     }
 
+    public function getBrandId(): int
+    {
+        return $this->brand_id;
+    }
+
+    public function getRating(): float
+    {
+        return $this->rating;
+    }
+
     public function getCreatedAt(): \Illuminate\Support\Carbon
     {
         return $this->created_at;
@@ -94,6 +106,11 @@ class Product extends Model
         return $this->first_image;
     }
 
+    public function getBrand(): \App\Models\Brand
+    {
+        return $this->brand;
+    }
+
     public function category(): BelongsTo
     {
         return $this->belongsTo(Category::class);
@@ -122,5 +139,23 @@ class Product extends Model
     public function attributes(): BelongsToMany
     {
         return $this->belongsToMany(Attribute::class, 'product_attribute_values')->withPivot('value');
+    }
+
+    public function toSearchableArray()
+    {
+        return [
+            'id' => $this->id,
+            'title' => $this->title,
+            'description' => $this->description,
+            'price' => $this->price,
+            'brand' => $this->brand->title,
+            'rating' => $this->rating,
+            'attributes' => $this->attributes()->get()->map(function($attr) {
+                return [
+                    'slug' => $attr->slug,
+                    'value' => $attr->pivot->value
+                ];
+            })->toArray(),
+        ];
     }
 }

@@ -10,6 +10,7 @@ use Illuminate\View\View;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Illuminate\Support\Number;
 use App\Exceptions\ProductNotFoundException;
+use Meilisearch\Client;
 
 class CatalogController extends Controller
 {
@@ -60,13 +61,43 @@ class CatalogController extends Controller
 
     public function search(Request $request): View
     {
-        $q = htmlspecialchars($request->query('q', ''));
-
-        if (!empty($q)) {
-            $products = Product::search($q)->get();
-        } else {
-            $products = [];
+        $client = new Client(env('MEILISEARCH_HOST'), env('MEILISEARCH_KEY'));
+        $index = $client->index('products');
+        
+        $filters = [];
+        
+        if ($request->has('min_price')) {
+            $filters[] = "price >= {$request->input('min_price')}";
         }
+        if ($request->has('max_price')) {
+            $filters[] = "price <= {$request->input('max_price')}";
+        }
+        
+        if ($request->has('brands')) {
+            $brands = implode('", "', $request->input('brands'));
+            $filters[] = "brand IN [\"{$brands}\"]";
+        }
+
+        if ($request->has('rating')) {
+            $filters[] = "rating >= {$request->input('rating')}";
+        }
+        
+        if ($request->has('attributes')) {
+            foreach ($request->attributes as $slug => $values) {
+                $values = implode('", "', $values);
+                $filters[] = "attributes.slug = \"{$slug}\" AND attributes.value IN [\"{$values}\"]";
+            }
+        }
+        
+        $results = $index->search($request->input('q', ''), [
+            'filter' => implode(' AND ', $filters),
+            'sort' => ['price:asc'],
+        ]);
+        
+        $productIds = collect($results->getHits())->pluck('id')->toArray();
+        $products = Product::whereIn('id', $productIds)
+            ->orderByRaw("FIELD(id, " . implode(',', $productIds) . ")")
+            ->get();
 
         return view('catalog.search', compact('products'));
     }
