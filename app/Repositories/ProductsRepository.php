@@ -63,6 +63,19 @@ class ProductsRepository
     /**
      * @return Collection<array-key, Product>
      */
+    public function fetchByIdsWithImage(array $productIds): Collection
+    {
+        $products = Product::with('first_image')
+            ->whereIn('id', $productIds)
+            ->orderByRaw("FIELD(id, " . implode(',', $productIds) . ")")
+            ->get();
+        
+        return $products;
+    }
+
+    /**
+     * @return Collection<array-key, Product>
+     */
     public function fetchByCategoryId(int $categoryId, bool $warmup = false): Collection
     {
         $key = 'products.category.' . $categoryId;

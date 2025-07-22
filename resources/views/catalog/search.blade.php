@@ -11,6 +11,10 @@
                 @foreach ($products as $product)
                     <p><a href="{{ route('product', $product->getId()) }}">{{ $product->getTitle() }}</a></p>
                 @endforeach
+
+                <div class="pagination">
+                    {{ $products->appends(request()->query())->links() }}
+                </div>
             </div>
         </div>
     </div>

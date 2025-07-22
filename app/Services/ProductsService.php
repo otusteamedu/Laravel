@@ -42,6 +42,14 @@ class ProductsService
     /**
      * @return Collection<array-key, Product>
      */
+    public function getByIdsWithImage(array $productIds): Collection
+    {
+        return $this->repository->fetchByIdsWithImage($productIds);
+    }
+
+    /**
+     * @return Collection<array-key, Product>
+     */
     public function getByCategoryId(int $categoryId): Collection
     {
         return $this->repository->fetchByCategoryId($categoryId);
