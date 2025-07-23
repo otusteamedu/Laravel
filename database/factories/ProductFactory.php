@@ -24,6 +24,9 @@ class ProductFactory extends Factory
             'price' => $this->faker->numberBetween(10000, 100000),
             'stock' => $this->faker->numberBetween(1, 100),
             'rating' => $this->faker->randomFloat(2, 3.00, 9.95),
+            'ram' => $this->faker->randomElement([2, 4, 6, 8]),
+            'builtin_memory' => $this->faker->randomElement([32, 64, 128]),
+            'screen_size' => $this->faker->randomFloat(1, 5.0, 7.0),
             'created_at' => $this->faker->dateTimeBetween('-1 year', 'now'),
         ];
     }

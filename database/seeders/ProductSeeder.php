@@ -24,27 +24,6 @@ class ProductSeeder extends Seeder
 
             foreach ($products as $product) {
                 ProductAsset::factory(5)->create(['product_id' => $product->id]);
-
-                ProductAttributeValue::factory()->create([
-                    'product_id' => $product->id,
-                    'attribute_id' => 1,
-                    'value' => fake()->randomFloat(1, 5.0, 7.0)
-                ]);
-                ProductAttributeValue::factory()->create([
-                    'product_id' => $product->id,
-                    'attribute_id' => 2,
-                    'value' => fake()->randomElement([2, 4, 6, 8])
-                ]);
-                ProductAttributeValue::factory()->create([
-                    'product_id' => $product->id,
-                    'attribute_id' => 3,
-                    'value' => fake()->randomElement([32, 64, 128])
-                ]);
-                ProductAttributeValue::factory()->create([
-                    'product_id' => $product->id,
-                    'attribute_id' => 4,
-                    'value' => $product->brand_id == 1 ? 'iOS' : 'Android'
-                ]);
             }
         }
     }

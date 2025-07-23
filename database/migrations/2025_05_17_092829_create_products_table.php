@@ -20,6 +20,9 @@ return new class extends Migration
             $table->unsignedInteger('price');
             $table->unsignedInteger('stock');
             $table->decimal('rating');
+            $table->integer('ram');
+            $table->integer('builtin_memory');
+            $table->decimal('screen_size');
             $table->timestamps();
         });
     }

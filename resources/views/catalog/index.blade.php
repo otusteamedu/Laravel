@@ -22,7 +22,7 @@
 
         <div class="row">
             <div class="col-lg-3 mb-4">
-                <form action="{{ route('search') }}" class="row row-cols-1 row-cols-sm-2 row-cols-lg-1 g-3">
+                <form action="{{ route('catalog') }}" class="row row-cols-1 row-cols-sm-2 row-cols-lg-1 g-3">
                     <div>
                         <label class="text-success"></label>
                         <input class="form-control" type="search" name="q" placeholder="Текст"/>
@@ -79,20 +79,6 @@
                         </div>
                     </div>
 
-                    <div class="mt-3">
-                        <label class="text-success">Операционная система</label>
-                        <div>
-                            <label class="me-1">
-                                <input type="checkbox" name="os[]" value="Android">
-                                Android
-                            </label>
-                            <label class="me-1">
-                                <input type="checkbox" name="os[]" value="iOS">
-                                iOS
-                            </label>
-                        </div>
-                    </div>
-
                     <div>
                         <button class="btn btn-success mt-4" type="submit">Найти</button>
                     </div>
@@ -126,11 +112,15 @@
                                     </div>
 
                                     <div>
-                                        @foreach ($product->attributes as $attr)
                                         <div class="d-flex justify-content-between">
-                                            <span>{{ $attr->name }}</span> <span>{{ $attr->pivot->value }}</span>
+                                            <span>Диагональ экрана</span> <span>{{ $product->getScreenSize() }}</span>
                                         </div>
-                                        @endforeach
+                                        <div class="d-flex justify-content-between">
+                                            <span>Оперативная память</span> <span>{{ $product->getRam() }}</span>
+                                        </div>
+                                        <div class="d-flex justify-content-between">
+                                            <span>Встроенная память</span> <span>{{ $product->getBuiltinMemory() }}</span>
+                                        </div>
                                     </div>
 
                                     <div class="d-flex justify-content-between align-items-center mt-2">
@@ -150,7 +140,7 @@
 
                 @unless($currentCategory)
                     <div class="mt-4">
-                        {{ $products->links() }}
+                        {{ $products->appends(request()->query())->links() }}
                     </div>
                 @endunless
             </div>

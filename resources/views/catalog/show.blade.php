@@ -22,9 +22,9 @@
     
     <div class="row">
         <p class="fs-5 mt-4 mx-auto col-xl-8 fw-bold">
-            @foreach ($attributes as $attr)
-                {{ $attr->name }} {{ $attr->pivot->value }}<br>
-            @endforeach
+            Диагональ экрана {{ $screenSize }}<br>
+            Оперативная память {{ $ram }}<br>
+            Встроенная память {{ $builtinMemory }}<br>
         </p>
     </div>
 

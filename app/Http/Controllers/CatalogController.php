@@ -24,12 +24,75 @@ class CatalogController extends Controller
 
     public function index(Request $request): View
     {
-        $page = (int) $request->get('page');
-        $products = $this->service->getAllWithImage($page);
         $categories = $this->categoriesService->getAll();
         $currentCategory = null;
-
         $brands = $this->brandService->getAll();
+
+        $page = $request->input('page', 1);
+        $perPage = $request->input('per_page', 12);
+
+        $client = new Client(env('MEILISEARCH_HOST'), env('MEILISEARCH_KEY'));
+        $index = $client->index('products');
+        
+        $filters = [];
+        
+        if ($request->filled('min_price')) {
+            $filters[] = "price >= {$request->input('min_price')}";
+        }
+        if ($request->filled('max_price')) {
+            $filters[] = "price <= {$request->input('max_price')}";
+        }
+        
+        if ($request->filled('brands')) {
+            $values = implode(',', $request->input('brands'));
+            $filters[] = "brand_id IN [{$values}]";
+        }
+
+        if ($request->filled('rating')) {
+            $filters[] = "rating >= {$request->input('rating')}";
+        }
+
+        if ($request->filled('min_screen')) {
+            $filters[] = "screen_size >= {$request->input('min_screen')}";
+        }
+        if ($request->filled('max_screen')) {
+            $filters[] = "screen_size <= {$request->input('max_screen')}";
+        }
+
+        if ($request->filled('min_ram')) {
+            $filters[] = "ram >= {$request->input('min_ram')}";
+        }
+        if ($request->filled('max_ram')) {
+            $filters[] = "ram <= {$request->input('max_ram')}";
+        }
+
+        if ($request->filled('min_builtin')) {
+            $filters[] = "builtin_memory >= {$request->input('min_builtin')}";
+        }
+        if ($request->filled('max_builtin')) {
+            $filters[] = "builtin_memory <= {$request->input('max_builtin')}";
+        }
+
+        $params = [
+            'filter' => implode(' AND ', $filters),
+            'sort' => ['price:asc'],
+            'limit' => $perPage,
+            'offset' => ($page - 1) * $perPage,
+        ]; 
+        $results = $index->search($request->input('q', ''), $params);
+
+        $productIds = collect($results->getHits())->pluck('id')->toArray();
+        $total = $results->getEstimatedTotalHits();
+
+        $rawProducts = $this->service->getByIdsWithImage($productIds);
+
+        $products = new LengthAwarePaginator(
+            $rawProducts,
+            $total,
+            $perPage,
+            $page,
+            ['path' => LengthAwarePaginator::resolveCurrentPath(), 'query' => $request->query()]
+        );
 
         return view('catalog.index', compact('products', 'categories', 'currentCategory', 'brands'));
     }
@@ -63,84 +126,11 @@ class CatalogController extends Controller
             'updatedAt' => $product->getUpdatedAt()->format('d.m.Y H:i'),
             'rating' => $product->getRating(),
             'brand' => $product->getBrand()->getTitle(),
-            'attributes' => $product->attributes
+            'screenSize' => $product->getScreenSize(),
+            'ram' => $product->getRam(),
+            'builtinMemory' => $product->getBuiltinMemory()
         ];
 
         return view('catalog.show', $data);
-    }
-
-    public function search(Request $request): View
-    {
-        $page = $request->input('page', 1);
-        $perPage = $request->input('per_page', 20);
-
-        $client = new Client(env('MEILISEARCH_HOST'), env('MEILISEARCH_KEY'));
-        $index = $client->index('products');
-        
-        $filters = [];
-        
-        if ($request->filled('min_price')) {
-            $filters[] = "price >= {$request->input('min_price')}";
-        }
-        if ($request->filled('max_price')) {
-            $filters[] = "price <= {$request->input('max_price')}";
-        }
-        
-        if ($request->filled('brands')) {
-            $brands = implode('", "', $request->input('brands'));
-            $filters[] = "brand IN [\"{$brands}\"]";
-        }
-
-        if ($request->filled('rating')) {
-            $filters[] = "rating >= {$request->input('rating')}";
-        }
-
-        if ($request->filled('min_screen')) {
-            $filters[] = "attributes.slug = 'screen_size' AND attributes.value >= {$request->input('min_screen')}";
-        }
-        if ($request->filled('max_screen')) {
-            $filters[] = "attributes.slug = 'screen_size' AND attributes.value <= {$request->input('max_screen')}";
-        }
-
-        if ($request->filled('min_ram')) {
-            $filters[] = "attributes.slug = 'ram' AND attributes.value >= {$request->input('min_ram')}";
-        }
-        if ($request->filled('max_ram')) {
-            $filters[] = "attributes.slug = 'ram' AND attributes.value <= {$request->input('max_ram')}";
-        }
-
-        if ($request->filled('min_builtin')) {
-            $filters[] = "attributes.slug = 'builtin_memory' AND attributes.value >= {$request->input('min_builtin')}";
-        }
-        if ($request->filled('max_builtin')) {
-            $filters[] = "attributes.slug = 'builtin_memory' AND attributes.value <= {$request->input('max_builtin')}";
-        }
-
-        if ($request->filled('os')) {
-            $values = implode('", "', $request->input('os'));
-            $filters[] = "attributes.slug = 'os' AND attributes.value IN [\"{$values}\"]";
-        }
-        
-        $results = $index->search($request->input('q', ''), [
-            'filter' => implode(' AND ', $filters),
-            'sort' => ['price:asc'],
-            'limit' => $perPage,
-            'offset' => ($page - 1) * $perPage,
-        ]);
-
-        $productIds = collect($results->getHits())->pluck('id')->toArray();
-        $total = $results->getEstimatedTotalHits();
-
-        $rawProducts = $this->service->getByIdsWithImage($productIds);
-
-        $products = new LengthAwarePaginator(
-            $rawProducts,
-            $total,
-            $perPage,
-            $page,
-            ['path' => LengthAwarePaginator::resolveCurrentPath(), 'query' => $request->query()]
-        );
-
-        return view('catalog.search', compact('products'));
     }
 }

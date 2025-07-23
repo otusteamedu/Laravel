@@ -65,6 +65,10 @@ class ProductsRepository
      */
     public function fetchByIdsWithImage(array $productIds): Collection
     {
+        if (empty($productIds)) {
+            return new Collection();
+        }
+
         $products = Product::with('first_image')
             ->whereIn('id', $productIds)
             ->orderByRaw("FIELD(id, " . implode(',', $productIds) . ")")

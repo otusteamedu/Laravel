@@ -21,6 +21,9 @@ use Laravel\Scout\Searchable;
  * @property int $stock Quantity of products in stock
  * @property int $price Price of the product
  * @property numeric $rating Rating of the product
+ * @property numeric $screen_size Screen size of the product
+ * @property int $ram Ram of the product
+ * @property int $builtin_memory Builtin memory of the product
  * @property \Illuminate\Support\Carbon $created_at Creation date
  * @property \Illuminate\Support\Carbon $updated_at Last update date
  *
@@ -74,6 +77,21 @@ class Product extends Model
     public function getRating(): float
     {
         return $this->rating;
+    }
+
+    public function getScreenSize(): float
+    {
+        return $this->screen_size;
+    }
+
+    public function getRam(): int
+    {
+        return $this->ram;
+    }
+
+    public function getBuiltinMemory(): float
+    {
+        return $this->builtin_memory;
     }
 
     public function getCreatedAt(): \Illuminate\Support\Carbon
@@ -136,11 +154,6 @@ class Product extends Model
         return $this->belongsTo(Brand::class);
     }
 
-    public function attributes(): BelongsToMany
-    {
-        return $this->belongsToMany(Attribute::class, 'product_attribute_values')->withPivot('value');
-    }
-
     public function toSearchableArray()
     {
         return [
@@ -148,14 +161,11 @@ class Product extends Model
             'title' => $this->title,
             'description' => $this->description,
             'price' => $this->price,
-            'brand' => $this->brand->title,
+            'brand_id' => $this->brand_id,
             'rating' => $this->rating,
-            'attributes' => $this->attributes()->get()->map(function($attr) {
-                return [
-                    'slug' => $attr->slug,
-                    'value' => $attr->pivot->value
-                ];
-            })->toArray(),
+            'screen_size' => $this->screen_size,
+            'ram' => $this->ram,
+            'builtin_memory' => $this->builtin_memory
         ];
     }
 }
