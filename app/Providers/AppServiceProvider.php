@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\CacheDecorator\Area\AreaRepositoryCacheDecorator;
 use App\EloquentModels\User;
 use App\Policies\Fibonachi\FibonachiPolicy;
 use App\Repositories\Area\AreaRepository;
@@ -27,10 +28,10 @@ class AppServiceProvider extends ServiceProvider
             AreaServiceInterface::class,
             AreaService::class
         );
-        $this->app->bind(
-            AreaRepositoryInterface::class,
-            AreaRepository::class
-        );
+        $this->app->singleton(AreaRepositoryInterface::class, function ($app) {
+            $repository = new AreaRepository();
+            return new AreaRepositoryCacheDecorator($repository);
+        });
         $this->app->bind(
             MeasureServiceInterface::class,
             MeasureService::class
