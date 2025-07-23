@@ -11,7 +11,12 @@ class Apartment extends Model
 
     protected $fillable = ['owner', 'serial_number'];
 
-    public function __toString()
+    protected $casts = [
+        'owner' => 'string',
+        'serial_number' => 'integer',
+    ];
+
+    public function __toString(): string
     {
         return (string) $this->serial_number;
     }

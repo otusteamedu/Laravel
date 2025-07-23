@@ -10,8 +10,6 @@ class ApartmentFee extends Model
 {
     use HasFactory;
 
-    // app/Models/ApartmentFee.php
-
     protected $fillable = [
         'maintenance',
         'electricity_odn',
@@ -35,7 +33,33 @@ class ApartmentFee extends Model
         'paid',
         'fine',
         'total',
-        'apartment_id'
+        'apartment_id',
+    ];
+
+    protected $casts = [
+        'maintenance' => 'float',
+        'electricity_odn' => 'float',
+        'lift' => 'float',
+        'maintenance_full' => 'float',
+        'solid_waste' => 'float',
+        'electricity' => 'float',
+        'heating' => 'float',
+        'heating_rub' => 'float',
+        'hot_water' => 'float',
+        'hot_water_odn' => 'float',
+        'cold_water' => 'float',
+        'cold_water_odn' => 'float',
+        'sewage' => 'float',
+        'sewage_odn' => 'float',
+        'maintenance_total' => 'float',
+        'accrued_expenses' => 'float',
+        'recalculation' => 'float',
+        'balance_start' => 'float',
+        'balance_end' => 'float',
+        'paid' => 'float',
+        'fine' => 'float',
+        'total' => 'float',
+        'apartment_id' => 'integer',
     ];
 
     public function apartment(): BelongsTo
