@@ -23,10 +23,21 @@ Route::get('/apartments', function () {
     ]);
 })->name('apartments.index');
 
-// Страница dashboard — редирект после логина Breeze
-Route::get('/dashboard', function () {
+// Страница dashboard с локалью в URL
+Route::get('/{locale}/dashboard', function ($locale) {
+    // Устанавливаем локаль вручную
+    if (in_array($locale, ['ru', 'en'])) {
+        app()->setLocale($locale);
+    } else {
+        abort(404);
+    }
     return view('dashboard');
-})->middleware(['auth'])->name('dashboard');
+})->middleware(['auth'])->name('dashboard.locale');
+
+// Обычный dashboard без локали — редирект на /ru/dashboard
+Route::get('/dashboard', function () {
+    return redirect('/ru/dashboard');
+})->middleware(['auth'])->name('dashboard'); 
 
 // Маршруты профиля (Breeze их ожидает)
 Route::middleware('auth')->group(function () {
