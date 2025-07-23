@@ -4,6 +4,7 @@ use App\Http\Controllers\AreaController;
 use App\Http\Controllers\FibonachiController;
 use App\Http\Controllers\MeasureController;
 use App\Http\Controllers\ProfileController;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Route;
 
@@ -36,7 +37,34 @@ Route::prefix('fibonachi')
             ->name('fibonachi.calculate');
     });
 
+
+
+/**
+ * Для проверки работоспособности функционала:
+ * для логирования ошибок
+ * для кеширования сессии
+ */
+
 Route::get('/log', function() {
     Log::error('Test error for Telegram');
     dd('Test error for Telegram');
+});
+
+Route::prefix('/session')->group(function() {
+    Route::get('/set', function () {
+        session(['key' => 'value']);
+        return 'Session set';
+    });
+    Route::get('/get', function () {
+        return session('key');
+    });
+    Route::get('/id', function () {
+        return 'Session ID: ' . session()->getId();
+    });
+}); 
+
+Route::prefix('/cache')->group(function() {
+    Route::get('/get', function () {
+        return Cache::get('area.getAll');
+    });
 });

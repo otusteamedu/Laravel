@@ -59,6 +59,15 @@ services:
       - pgdata_test:/var/lib/postgresql/data
     networks:
       - mynetwork
+  
+  memcached:
+    image: memcached:latest
+    container_name: otus_memcached
+    ports:
+      - "11211:11211"
+    restart: unless-stopped
+    networks:
+      - mynetwork
 
 networks:
   mynetwork:
