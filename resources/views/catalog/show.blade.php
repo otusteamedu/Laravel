@@ -2,10 +2,10 @@
 
 @section('content')
 <div class="container-lg">
-    <h1 class="display-6 fw-bold text-center mt-4">{{ $title }}</h1>
+    <h1 class="display-6 fw-bold text-center mt-4">{{ $title }} ({{ $brand }})</h1>
 
     <div class="d-flex flex-column flex-md-row justify-content-evenly mt-4">
-        <div class="fw-bold fs-3">{{ ucfirst($categoryTitle) }} ({{ $brand }})</div>
+        <div class="fw-bold fs-3">{{ ucfirst($categoryTitle) }}</div>
         <div class="fw-bold fs-4">{{ $price }} руб.</div>
         <div>
             <a href="{{ route('catalog') }}" class="btn btn-link">Каталог</a>

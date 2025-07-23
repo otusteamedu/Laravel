@@ -161,6 +161,7 @@ class Product extends Model
             'title' => $this->title,
             'description' => $this->description,
             'price' => $this->price,
+            'category_id' => $this->category_id,
             'brand_id' => $this->brand_id,
             'rating' => $this->rating,
             'screen_size' => $this->screen_size,

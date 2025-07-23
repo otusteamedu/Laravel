@@ -14,10 +14,8 @@ Route::put('/profile/{userId}', [ProfileController::class, 'update'])->name('pro
 Route::put('/profile/password/{userId}', [ProfileController::class, 'updatePassword'])->name('profile.password');
 Route::get('/history/{userId}', [ProfileController::class, 'history'])->name('profile.history');
 
-Route::get('/catalog', [CatalogController::class, 'index'])->name('catalog');
-Route::get('/catalog/{productId}', [CatalogController ::class, 'show'])->name('product');
-Route::get('/category/{categoryId}', [CatalogController::class, 'category'])->name('category');
-Route::get('/search', [CatalogController::class, 'search'])->name('search');
+Route::get('/catalog/{categoryId?}', [CatalogController::class, 'index'])->name('catalog');
+Route::get('/catalog/product/{productId}', [CatalogController ::class, 'show'])->name('product');
 
 Route::get('/chat', [MessageController::class, 'index'])->name('chat.index');
 Route::post('/chat', [MessageController::class, 'store'])->name('chat.store')->middleware('auth');

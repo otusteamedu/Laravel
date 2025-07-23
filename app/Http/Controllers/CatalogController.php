@@ -22,11 +22,11 @@ class CatalogController extends Controller
         private BrandsService $brandService
     ) {}
 
-    public function index(Request $request): View
+    public function index(Request $request, int $categoryId = null): View
     {
         $categories = $this->categoriesService->getAll();
-        $currentCategory = null;
         $brands = $this->brandService->getAll();
+        $currentCategory = !empty($categoryId) ? $this->categoriesService->getById($categoryId) : null;
 
         $page = $request->input('page', 1);
         $perPage = $request->input('per_page', 12);
@@ -35,6 +35,10 @@ class CatalogController extends Controller
         $index = $client->index('products');
         
         $filters = [];
+
+        if ($categoryId) {
+            $filters[] = "category_id = $categoryId";
+        }
         
         if ($request->filled('min_price')) {
             $filters[] = "price >= {$request->input('min_price')}";
@@ -94,7 +98,7 @@ class CatalogController extends Controller
             ['path' => LengthAwarePaginator::resolveCurrentPath(), 'query' => $request->query()]
         );
 
-        return view('catalog.index', compact('products', 'categories', 'currentCategory', 'brands'));
+        return view('catalog.index', compact('products', 'categories', 'currentCategory', 'brands', 'categoryId'));
     }
 
     public function category(int $categoryId): View

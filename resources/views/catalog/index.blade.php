@@ -13,7 +13,7 @@
             </div>
             <div class="d-flex flex-wrap mt-3">
                 @foreach ($categories as $category)
-                    <a href="{{ route('category', $category->getId()) }}" class="btn btn-secondary rounded-pill me-3 mb-2">
+                    <a href="{{ route('catalog', $category->getId()) }}" class="btn btn-secondary rounded-pill me-3 mb-2">
                         {{ $category->getTitle() }}
                     </a>
                 @endforeach
@@ -22,7 +22,7 @@
 
         <div class="row">
             <div class="col-lg-3 mb-4">
-                <form action="{{ route('catalog') }}" class="row row-cols-1 row-cols-sm-2 row-cols-lg-1 g-3">
+                <form action="{{ route('catalog', $categoryId) }}" class="row row-cols-1 row-cols-sm-2 row-cols-lg-1 g-3">
                     <div>
                         <label class="text-success"></label>
                         <input class="form-control" type="search" name="q" placeholder="Текст"/>
