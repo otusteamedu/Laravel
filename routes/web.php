@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Admin\ApartmentController;
 use App\Http\Controllers\Admin\SettingController;
+use App\Http\Controllers\ApartmentAreaController;
 
 // Главная страница
 Route::get('/', function () {
@@ -63,3 +64,7 @@ require __DIR__.'/auth.php';
 Route::get('/fail', function () {
     throw new \Exception("Test error to Telegram");
 });
+
+Route::post('/apartment/calculate-area', [ApartmentAreaController::class, 'calculate']);
+Route::post('/apartment/calculate-fees', [ApartmentAreaController::class, 'calculateFees']);
+Route::get('/calculate-fees', [ApartmentAreaController::class, 'calculateFees'])->name('calculate_fees');

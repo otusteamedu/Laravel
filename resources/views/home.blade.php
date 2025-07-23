@@ -15,6 +15,12 @@
                         <li>Важные объявления</li>
                         <li>Ссылки на основные разделы</li>
                     </ul>
+
+                    <!-- Кнопка для вызова перерасчёта -->
+                    <form method="GET" action="{{ route('calculate_fees') }}">
+                        <button type="submit" class="btn btn-primary">Перерасчёт начислений</button>
+                    </form>
+
                 </div>
             </div>
         </div>
