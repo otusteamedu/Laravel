@@ -14,6 +14,14 @@ class Setting extends Model
         'month_to_pay',
         'month_to_date',
         'bill',
-        'pay_up_to'
+        'pay_up_to',
+    ];
+
+    protected $casts = [
+        'month_name' => 'string',
+        'month_to_pay' => 'string',
+        'month_to_date' => 'string',
+        'bill' => 'string',
+        'pay_up_to' => 'string',
     ];
 }

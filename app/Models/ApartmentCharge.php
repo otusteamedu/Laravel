@@ -24,6 +24,20 @@ class ApartmentCharge extends Model
         'apartment_id',
     ];
 
+    protected $casts = [
+        'money_deposited' => 'float',
+        'fine' => 'float',
+        'recalculation_electricity' => 'float',
+        'recalculation_heating_rub' => 'float',
+        'recalculation_hot_water' => 'float',
+        'recalculation_cold_water' => 'float',
+        'recalculation_sewage' => 'float',
+        'recalculation_solid_waste' => 'float',
+        'recalculation_maintenance' => 'float',
+        'balance_start' => 'float',
+        'apartment_id' => 'integer',
+    ];
+
     public function apartment(): BelongsTo
     {
         return $this->belongsTo(Apartment::class);

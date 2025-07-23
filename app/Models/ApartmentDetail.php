@@ -20,13 +20,21 @@ class ApartmentDetail extends Model
         'tariff_id',
     ];
 
-    // Связь с квартирой
+    protected $casts = [
+        'registred_qt' => 'integer',
+        'lived_qt' => 'integer',
+        'total_area' => 'float',
+        'personal_account' => 'string',
+        'account_number' => 'string',
+        'apartment_id' => 'integer',
+        'tariff_id' => 'integer',
+    ];
+
     public function apartment(): BelongsTo
     {
         return $this->belongsTo(Apartment::class);
     }
 
-    // Связь с тарифом (если модель Tariff есть)
     public function tariff(): BelongsTo
     {
         return $this->belongsTo(Tariff::class);
