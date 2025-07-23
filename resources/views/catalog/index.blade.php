@@ -25,14 +25,16 @@
                 <form action="{{ route('catalog', $categoryId) }}" class="row row-cols-1 row-cols-sm-2 row-cols-lg-1 g-3">
                     <div>
                         <label class="text-success"></label>
-                        <input class="form-control" type="search" name="q" placeholder="Текст"/>
+                        <input class="form-control" type="search" name="q" value="{{ $req['q'] }}" placeholder="Текст"/>
                     </div>
                     
                     <div class="mt-3">
                         <label class="text-success">Цена</label>
                         <div class="d-flex">
-                            <input type="number" name="min_price" placeholder="От" min="0" class="col form-control me-2">
-                            <input type="number" name="max_price" placeholder="До" min="0" class="col form-control">
+                            <input type="number" name="min_price" placeholder="От" min="0" 
+                                value="{{ $req['min_price'] }}" class="col form-control me-2">
+                            <input type="number" name="max_price" placeholder="До" min="0" 
+                                value="{{ $req['max_price'] }}" class="col form-control">
                         </div>
                     </div>
 
@@ -41,7 +43,8 @@
                         <div>
                             @foreach($brands as $brand)
                                 <label class="me-1">
-                                    <input type="checkbox" name="brands[]" value="{{ $brand->id }}">
+                                    <input type="checkbox" name="brands[]" value="{{ $brand->id }}" 
+                                        @checked(in_array($brand->id, $req['brands']))>
                                     {{ $brand->title }}
                                 </label>
                             @endforeach
@@ -51,31 +54,38 @@
                     <div class="mt-3">
                         <label class="text-success">Рейтинг</label>
                         <div>
-                            <input type="number" name="rating" placeholder="От" min="0" max="10" step="0.01" class="form-control">
+                            <input type="number" name="rating" placeholder="От" min="0" max="10" step="0.01" 
+                                value="{{ $req['rating'] }}" class="form-control">
                         </div>
                     </div>
 
                     <div class="mt-3">
                         <label class="text-success">Диагональ, дюймы</label>
                         <div class="d-flex">
-                            <input type="number" name="min_screen" placeholder="От" min="5" max="7" step="0.1" class="col form-control me-2">
-                            <input type="number" name="max_screen" placeholder="До" min="5" max="7" step="0.1" class="col form-control">
+                            <input type="number" name="min_screen" placeholder="От" min="5" max="7" step="0.1" 
+                                value="{{ $req['min_screen'] }}" class="col form-control me-2">
+                            <input type="number" name="max_screen" placeholder="До" min="5" max="7" step="0.1" 
+                                value="{{ $req['max_screen'] }}" class="col form-control">
                         </div>
                     </div>
 
                     <div class="mt-3">
                         <label class="text-success">Оперативная память, GB</label>
                         <div class="d-flex">
-                            <input type="number" name="min_ram" placeholder="От" min="2" max="8" step="1" class="col form-control me-2">
-                            <input type="number" name="max_ram" placeholder="До" min="2" max="8" step="1" class="col form-control">
+                            <input type="number" name="min_ram" placeholder="От" min="2" max="8" step="1" 
+                                value="{{ $req['min_ram'] }}" class="col form-control me-2">
+                            <input type="number" name="max_ram" placeholder="До" min="2" max="8" step="1" 
+                                value="{{ $req['max_ram'] }}" class="col form-control">
                         </div>
                     </div>
 
                     <div class="mt-3">
                         <label class="text-success">Встроенная память, GB</label>
                         <div class="d-flex">
-                            <input type="number" name="min_builtin" placeholder="От" min="32" max="128" step="1" class="col form-control me-2">
-                            <input type="number" name="max_builtin" placeholder="До" min="32" max="128" step="1" class="col form-control">
+                            <input type="number" name="min_builtin" placeholder="От" min="32" max="128" step="1" 
+                                value="{{ $req['min_builtin'] }}" class="col form-control me-2">
+                            <input type="number" name="max_builtin" placeholder="До" min="32" max="128" step="1" 
+                                value="{{ $req['max_builtin'] }}" class="col form-control">
                         </div>
                     </div>
 

@@ -33,48 +33,62 @@ class CatalogController extends Controller
 
         $client = new Client(env('MEILISEARCH_HOST'), env('MEILISEARCH_KEY'));
         $index = $client->index('products');
-        
+
+        $req = [
+            'q' => $request->input('q', ''),
+            'min_price' => $request->input('min_price', ''),
+            'max_price' => $request->input('max_price', ''),
+            'brands' => $request->input('brands', []),
+            'rating' => $request->input('rating', ''),
+            'min_screen' => $request->input('min_screen', ''),
+            'max_screen' => $request->input('max_screen', ''),
+            'min_ram' => $request->input('min_ram', ''),
+            'max_ram' => $request->input('max_ram', ''),
+            'min_builtin' => $request->input('min_builtin', ''),
+            'max_builtin' => $request->input('max_builtin', ''),
+        ];
+
         $filters = [];
 
         if ($categoryId) {
             $filters[] = "category_id = $categoryId";
         }
         
-        if ($request->filled('min_price')) {
-            $filters[] = "price >= {$request->input('min_price')}";
+        if ($req['min_price']) {
+            $filters[] = "price >= {$req['min_price']}";
         }
-        if ($request->filled('max_price')) {
-            $filters[] = "price <= {$request->input('max_price')}";
+        if ($req['max_price']) {
+            $filters[] = "price <= {$req['max_price']}";
         }
         
-        if ($request->filled('brands')) {
-            $values = implode(',', $request->input('brands'));
+        if ($req['brands']) {
+            $values = implode(',', $req['brands']);
             $filters[] = "brand_id IN [{$values}]";
         }
 
-        if ($request->filled('rating')) {
-            $filters[] = "rating >= {$request->input('rating')}";
+        if ($req['rating']) {
+            $filters[] = "rating >= {$req['rating']}";
         }
 
-        if ($request->filled('min_screen')) {
-            $filters[] = "screen_size >= {$request->input('min_screen')}";
+        if ($req['min_screen']) {
+            $filters[] = "screen_size >= {$req['min_screen']}";
         }
-        if ($request->filled('max_screen')) {
-            $filters[] = "screen_size <= {$request->input('max_screen')}";
-        }
-
-        if ($request->filled('min_ram')) {
-            $filters[] = "ram >= {$request->input('min_ram')}";
-        }
-        if ($request->filled('max_ram')) {
-            $filters[] = "ram <= {$request->input('max_ram')}";
+        if ($req['max_screen']) {
+            $filters[] = "screen_size <= {$req['max_screen']}";
         }
 
-        if ($request->filled('min_builtin')) {
-            $filters[] = "builtin_memory >= {$request->input('min_builtin')}";
+        if ($req['min_ram']) {
+            $filters[] = "ram >= {$req['min_ram']}";
         }
-        if ($request->filled('max_builtin')) {
-            $filters[] = "builtin_memory <= {$request->input('max_builtin')}";
+        if ($req['max_ram']) {
+            $filters[] = "ram <= {$req['max_ram']}";
+        }
+
+        if ($req['min_builtin']) {
+            $filters[] = "builtin_memory >= {$req['min_builtin']}";
+        }
+        if ($req['max_builtin']) {
+            $filters[] = "builtin_memory <= {$req['max_builtin']}";
         }
 
         $params = [
@@ -83,7 +97,7 @@ class CatalogController extends Controller
             'limit' => $perPage,
             'offset' => ($page - 1) * $perPage,
         ]; 
-        $results = $index->search($request->input('q', ''), $params);
+        $results = $index->search($req['q'], $params);
 
         $productIds = collect($results->getHits())->pluck('id')->toArray();
         $total = $results->getEstimatedTotalHits();
@@ -98,16 +112,7 @@ class CatalogController extends Controller
             ['path' => LengthAwarePaginator::resolveCurrentPath(), 'query' => $request->query()]
         );
 
-        return view('catalog.index', compact('products', 'categories', 'currentCategory', 'brands', 'categoryId'));
-    }
-
-    public function category(int $categoryId): View
-    {
-        $products = $this->service->getByCategoryId($categoryId);
-        $categories = $this->categoriesService->getAll();
-        $currentCategory = $this->categoriesService->getById($categoryId);
-        $brands = $this->brandService->getAll();
-        return view('catalog.index', compact('products', 'categories', 'currentCategory', 'brands'));
+        return view('catalog.index', compact('products', 'categories', 'currentCategory', 'brands', 'categoryId', 'req'));
     }
 
     public function show(int $productId): View
