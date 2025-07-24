@@ -17,6 +17,7 @@
         </div>
         <nav class="flex-1 p-4">
             <a href="{{ route('admin.products.index') }}" class="block py-2 px-4 rounded hover:bg-gray-700 mb-2">Products</a>
+            <a href="{{ route('export_excel_products.settings') }}" class="block py-2 px-4 rounded hover:bg-gray-700 mb-2">Products export</a>
             <a href="{{ route('admin.categories.index') }}" class="block py-2 px-4 rounded hover:bg-gray-700">Categories</a> {{-- Added --}}
             {{-- Add more navigation links here --}}
         </nav>

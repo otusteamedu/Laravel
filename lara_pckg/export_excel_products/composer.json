@@ -1,0 +1,24 @@
+{
+    "name": "ivan/export_excel_products",
+    "description": "allow export to excel products",
+    "type": "library",
+    "autoload": {
+        "psr-4": {
+            "Ivan\\ExportExcelProducts\\": "src/"
+        }
+    },
+    "require": {
+        "illuminate/support": "^12.0",
+        "illuminate/http": "^12.0",
+        "maatwebsite/excel": "^3.1"
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Ivan\\ExportExcelProducts\\ServiceProvider"
+            ]
+        }
+    }
+}
