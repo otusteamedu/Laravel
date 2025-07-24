@@ -15,7 +15,7 @@ class Fetcher
             $payment->getId()->toInt(),
             $payment->getUid()->toString(),
             $payment->getOrderId()->toInt(),
-            $payment->getStatus()->toString(),
+            $payment->getStatus()->value,
             $payment->getAmount()->toInt(),
             $payment->getConfirmedAt(),
             $payment->getCreatedAt()

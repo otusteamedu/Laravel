@@ -6,6 +6,7 @@ use App\Ddd\Domain\ValueObjects\Amount;
 use App\Ddd\Domain\ValueObjects\Id;
 use App\Ddd\Domain\ValueObjects\Status;
 use App\Ddd\Domain\ValueObjects\Uid;
+use App\Exceptions\IllegalStateTransitionException;
 use Illuminate\Support\Carbon;
 
 class Payment
@@ -61,13 +62,20 @@ class Payment
         return $this->updated_at;
     }
 
-    public function changeStatus(Status $status): void
+    public function confirm(Carbon $date): void 
     {
-        $this->status = $status;
+        if (!$this->status = Status::Pending) {
+            throw new IllegalStateTransitionException();
+        }
+        $this->status = Status::Succeeded;
+        $this->confirmed_at = $date;
     }
 
-    public function setConfirmedAt(Carbon $date): void
+    public function cancel(): void 
     {
-        $this->confirmed_at = $date;
+        if (!$this->status = Status::Canceled) {
+            throw new IllegalStateTransitionException();
+        }
+        $this->status = Status::Canceled;
     }
 }

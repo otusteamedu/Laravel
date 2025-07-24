@@ -26,7 +26,7 @@ class PaymentsRepository implements PaymentsRepositoryInterface
             $arr[] = new Payment(
                 new Uid($item->uid), 
                 new Id($item->order_id), 
-                new Status($item->status),
+                Status::from($item->status),
                 new Amount($item->amount),
                 new Id($item->id), 
                 Carbon::parse($item->confirmed_at),
@@ -43,7 +43,7 @@ class PaymentsRepository implements PaymentsRepositoryInterface
         $params = [
             $payment->getUid()->toString(), 
             $payment->getOrderId()->toInt(), 
-            $payment->getStatus()->toString(), 
+            $payment->getStatus()->value, 
             $payment->getAmount()->toInt(), 
             now(), 
             now()
@@ -54,10 +54,10 @@ class PaymentsRepository implements PaymentsRepositoryInterface
     public function save(Payment $payment): void
     {
         if ($payment->getStatus() == 'succeeded') {
-            $params = [$payment->getStatus()->toString(), now(), $payment->getUid()->toString()];
+            $params = [$payment->getStatus()->value, now(), $payment->getUid()->toString()];
             DB::update('update payments set status = ?, confirmed_at = ? where uid = ?', $params);
         } else {
-            $params = [$payment->getStatus()->toString(), $payment->getUid()->toString()];
+            $params = [$payment->getStatus()->value, $payment->getUid()->toString()];
             DB::update('update payments set status = ? where uid = ?', $params);
         }
     }
@@ -74,7 +74,7 @@ class PaymentsRepository implements PaymentsRepositoryInterface
         $payment = new Payment(
             new Uid($row->uid), 
             new Id($row->order_id), 
-            new Status($row->status),
+            Status::from($row->status),
             new Amount($row->amount),
             new Id($row->id), 
             Carbon::parse($row->confirmed_at),

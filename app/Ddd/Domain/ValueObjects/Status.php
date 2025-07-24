@@ -2,28 +2,18 @@
 
 namespace App\Ddd\Domain\ValueObjects;
 
-use InvalidArgumentException;
-
-final readonly class Status
+enum Status: string
 {
-    const POSSIBLE_STATUSES = ['pending', 'succeeded', 'canceled'];
+    case Pending = 'pending';
+    case Succeeded = 'succeeded';
+    case Canceled = 'canceled';
 
-    private string $value;
-    
-    public function __construct(string $value) {
-        $this->assertStatusIsValid($value);
-        $this->value = $value;
-    }
-
-    public function toString(): string
+    public function message(): string
     {
-        return $this->value;
-    }
-
-    public function assertStatusIsValid(string $value)
-    {
-        if (!in_array($value, self::POSSIBLE_STATUSES)) {
-            throw new InvalidArgumentException('Некорректный uid');
-        }
+        return match ($this) {
+            self::Pending => 'Ожидает подтверждения',
+            self::Succeeded => 'Выполнен',
+            self::Canceled => 'Не прошел',
+        };
     }
 }

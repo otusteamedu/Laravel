@@ -16,7 +16,15 @@ class Handler
         if ($payment->getAmount()->toInt() !== $dto->amount) {
             throw new PaymentAmountNotCorrectException();
         }
-        $payment->changeStatus(new Status($dto->status));
+
+        if ($dto->status == Status::Succeeded->value) {
+            $payment->confirm(now());
+        }
+
+        if ($dto->status == Status::Canceled->value) {
+            $payment->cancel();
+        }
+
         $this->repository->save($payment);
     }
 }
