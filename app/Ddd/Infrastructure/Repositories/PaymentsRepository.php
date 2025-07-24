@@ -7,7 +7,6 @@ use App\Ddd\Domain\Repositories\PaymentsRepositoryInterface;
 use App\Ddd\Domain\ValueObjects\Amount;
 use App\Ddd\Domain\ValueObjects\Id;
 use App\Ddd\Domain\ValueObjects\Status;
-use App\Ddd\Domain\ValueObjects\StringDate;
 use App\Ddd\Domain\ValueObjects\Uid;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
@@ -30,7 +29,7 @@ class PaymentsRepository implements PaymentsRepositoryInterface
                 new Status($item->status),
                 new Amount($item->amount),
                 new Id($item->id), 
-                new StringDate($item->confirmed_at),
+                Carbon::parse($item->confirmed_at),
                 Carbon::parse($item->created_at),
                 Carbon::parse($item->updated_at)
             );
@@ -78,7 +77,7 @@ class PaymentsRepository implements PaymentsRepositoryInterface
             new Status($row->status),
             new Amount($row->amount),
             new Id($row->id), 
-            new StringDate($row->confirmed_at),
+            Carbon::parse($row->confirmed_at),
             Carbon::parse($row->created_at),
             Carbon::parse($row->updated_at)
         );

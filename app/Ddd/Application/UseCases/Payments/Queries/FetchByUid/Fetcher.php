@@ -17,7 +17,7 @@ class Fetcher
             $payment->getOrderId()->toInt(),
             $payment->getStatus()->toString(),
             $payment->getAmount()->toInt(),
-            $payment->getConfirmedAt()->toString(),
+            $payment->getConfirmedAt(),
             $payment->getCreatedAt()
         );
         return $dto;

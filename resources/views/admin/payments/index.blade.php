@@ -49,7 +49,7 @@
                         {{ $statusName }}
                     </td>
                     <td>{{ $payment->amount }}</td>
-                    <td>{{ $payment->confirmed_at ? date('d.m.Y H:i', strtotime($payment->confirmed_at)) : '-' }}</td>
+                    <td>{{ $payment->confirmed_at ? $payment->confirmed_at->format('d.m.Y H:i') : '-' }}</td>
                     <td>{{ $payment->created_at->format('d.m.Y H:i') }}</td>
                 </tr>
             @endforeach

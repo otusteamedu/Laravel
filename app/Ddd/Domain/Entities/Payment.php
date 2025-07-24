@@ -5,7 +5,6 @@ namespace App\Ddd\Domain\Entities;
 use App\Ddd\Domain\ValueObjects\Amount;
 use App\Ddd\Domain\ValueObjects\Id;
 use App\Ddd\Domain\ValueObjects\Status;
-use App\Ddd\Domain\ValueObjects\StringDate;
 use App\Ddd\Domain\ValueObjects\Uid;
 use Illuminate\Support\Carbon;
 
@@ -17,7 +16,7 @@ class Payment
         private Status $status,
         private Amount $amount,
         private ?Id $id = null, 
-        private ?StringDate $confirmed_at = null,
+        private ?Carbon $confirmed_at = null,
         private ?Carbon $created_at = null,
         private ?Carbon $updated_at = null
     ) {}
@@ -47,7 +46,7 @@ class Payment
         return $this->amount;
     }
 
-    public function getConfirmedAt(): ?StringDate
+    public function getConfirmedAt(): ?Carbon
     {
         return $this->confirmed_at;
     }
@@ -67,7 +66,7 @@ class Payment
         $this->status = $status;
     }
 
-    public function setConfirmedAt(StringDate $date): void
+    public function setConfirmedAt(Carbon $date): void
     {
         $this->confirmed_at = $date;
     }

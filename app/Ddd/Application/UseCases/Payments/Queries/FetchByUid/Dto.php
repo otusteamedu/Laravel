@@ -12,7 +12,7 @@ class Dto
         public int $order_id,
         public string $status,
         public int $amount,
-        public ?string $confirmed_at,
+        public ?Carbon $confirmed_at,
         public ?Carbon $created_at,
     ) 
     {}
