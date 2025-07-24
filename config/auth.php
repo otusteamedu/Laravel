@@ -40,8 +40,12 @@ return [
             'driver' => 'session',
             'provider' => 'users',
         ],
-        'api' => [
+        'api_v1' => [ // tymon/jwt-auth
             'driver' => 'jwt',
+            'provider' => 'users',
+        ],
+        'api_v2' => [ // passport
+            'driver' => 'passport',
             'provider' => 'users',
         ],
     ],

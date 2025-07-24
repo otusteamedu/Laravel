@@ -22,16 +22,26 @@ use App\Infrastructure\PasswordHasher\LaravelPasswordHasher;
 use App\Infrastructure\RefreshTokenHasher\Sha256RefreshTokenHasher;
 use App\Policies\CategoryPolicy;
 use App\Policies\NewsPolicy;
-use App\Services\JwtAuth\AuthService;
-use App\Services\JwtAuth\Contracts\AuthServiceInterface;
+use App\Services\JwtAuth\AuthService as JwtAuthService;
+use App\Services\JwtAuth\Contracts\AuthServiceInterface as JwtAuthServiceInterface;
+use App\Services\OAuth\AuthService as OAuthAuthService;
+use App\Services\OAuth\Contracts\AuthServiceInterface as OAuthAuthServiceInterface;
 use App\Services\JwtAuth\Contracts\RefreshTokenHasherInterface;
 use App\Services\JwtAuth\Contracts\RefreshTokenRepositoryInterface;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
 use App\Services\JwtAuth\Contracts\UserRepositoryInterface as JwtAuthUserRepositoryInterface;
-use App\Infrastructure\Eloquent\Repositories\JwtAuth\UserRepository as JwtAuthUserRepository;
+use App\Infrastructure\Eloquent\Repositories\JwtAuthUsers\UserRepository as JwtAuthUserRepository;
+use App\Services\OAuth\Contracts\UserRepositoryInterface as OAuthUserRepositoryInterface;
+use App\Infrastructure\Eloquent\Repositories\OAuthUsers\UserRepository as OAuthUserRepository;
 
+use Carbon\CarbonInterval;
+use Laravel\Passport\Passport;
+use App\Services\OAuth\Contracts\OAuthTokenRepositoryInterface;
+use App\Services\OAuth\Contracts\OAuthRefreshTokenRepositoryInterface;
+use App\Infrastructure\Oauth\PassportTokenRepositoryAdapter;
+use App\Infrastructure\Oauth\PassportRefreshTokenRepositoryAdapter;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -90,8 +100,18 @@ class AppServiceProvider extends ServiceProvider
             JwtAuthUserRepository::class
         );
 
+        $this->app->bind(
+            OAuthUserRepositoryInterface::class,
+            OAuthUserRepository::class
+        );
+
         $this->app->bind(RefreshTokenHasherInterface::class, Sha256RefreshTokenHasher::class);
-        $this->app->bind(AuthServiceInterface::class, AuthService::class);
+
+        $this->app->bind(JwtAuthServiceInterface::class, JwtAuthService::class);
+        $this->app->bind(OAuthAuthServiceInterface::class, OAuthAuthService::class);
+
+        $this->app->bind(OAuthTokenRepositoryInterface::class, PassportTokenRepositoryAdapter::class);
+        $this->app->bind(OAuthRefreshTokenRepositoryInterface::class, PassportRefreshTokenRepositoryAdapter::class);
     }
 
     /**
@@ -99,6 +119,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        Passport::tokensExpireIn(CarbonInterval::days(15));
+        Passport::refreshTokensExpireIn(CarbonInterval::days(30));
+        Passport::personalAccessTokensExpireIn(CarbonInterval::months(6));
+
         Paginator::useBootstrap();
 
         Gate::define('category.create', [CategoryPolicy::class, 'create']);
