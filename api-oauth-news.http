@@ -1,0 +1,56 @@
+@host=http://localhost
+@token=eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxIiwianRpIjoiNzYyZTA1YmY5MGRiYWRjNTVkNjVhZjRmOGNlYzVjNGExNDk5ZjZjYjZhNTRlNDVlOWI0YzRiM2NiNjI5ZDM1MzFlMDA5ZmUxY2UyMDBlM2IiLCJpYXQiOjE3NTMzNTAyNDYuNTYxMzU4LCJuYmYiOjE3NTMzNTAyNDYuNTYxMzU5LCJleHAiOjE3NjkyNDc4NDYuNTU4Nzg5LCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.b6vHZx45v0wPVcNKW7ua_IZ1RqLxhHQ3lW9BGYV5urUcTUVLv2WGKQJkArimb_WFE1EhqlNyWXHoE3KWGWEBjV0gXOlpp5PkACOhpay69M6Wm6Td4y_PgtrAwpcb8AYim7ZU301TJe1YddaU4ew7g42njc497DPxOCeyu2Jhb7aAFj4rLVv5W1IPamuuvSCdEGMzKpI9JKTsUOz3Xf5HG--AORwVFp6Oy_5W4-TZZBemKeJwaDz_VQznV6tEzBVVcIpstEBkQQKgagE7P_blB1hhiTyN0A_-Jt2JZrP26SQ-Nlv-RMgq0pjC5_QoA0nNwaTDC_If6_MxEROn8Z2ZgmoDIJCBPYTQwKtAYELfnYKLqrxNRz7IQmOd1xiz5dW_dpWiJCfK59xOCljOauELgijuyibUyA5fJID1dMz-7OHue1bLffgbgpyeiZjDraZ5hrHiGbOEO9nXbo_Flb7tBReMGzCCzBl9JrziSCSTRyacyHaFfRdyVPcwJBcDUU6IAUXtqPigLhDwV1KMv-8RImqOht77wT98x-rTH_crH6Nkl4Rs5u-OduP3bJcWx_GMJ506nhczsXFNVBggMcSPAeNM3N5EPS8Hj_4-80qKzo-BTBsEmFsIATQ_3euIR4wg8MfvNnLrBSQb7SyMDFNCAFsNSN2vuQ_H_say8_nSxmA
+
+GET {{host}}/api/v2/news
+Content-Type: application/json
+Accept: application/json
+Authorization: Bearer {{token}}
+
+
+###
+
+GET {{host}}/api/v2/news/22
+Content-Type: application/json
+Accept: application/json
+Authorization: Bearer {{token}}
+
+###
+
+POST {{host}}/api/v2/news
+Content-Type: application/json
+Accept: application/json
+Authorization: Bearer {{token}}
+
+{
+    "title": "Заголовок новости 8888",
+    "content": "Тест новости",
+    "author_id": 3,
+    "category_id": 2,
+    "published_at": "2025-07-20T14:47",
+    "is_draft":  false
+}
+
+###
+
+PUT {{host}}/api/v2/news/36
+Content-Type: application/json
+Accept: application/json
+Authorization: Bearer {{token}}
+
+{
+    "title": "Заголовок новости 34634634",
+    "content": "Тест новости",
+    "author_id": 2,
+    "category_id": 2,
+    "published_at": "2025-07-25T14:47",
+    "is_draft":  false
+}
+
+###
+
+DELETE {{host}}/api/v2/news/22
+Content-Type: application/json
+Accept: application/json
+Authorization: Bearer {{token}}
+
+###

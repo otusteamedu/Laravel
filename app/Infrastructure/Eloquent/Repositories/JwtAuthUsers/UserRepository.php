@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Infrastructure\Eloquent\Repositories\JwtAuth;
+namespace App\Infrastructure\Eloquent\Repositories\JwtAuthUsers;
 
 use App\Models\User;
 use App\Services\JwtAuth\Contracts\UserRepositoryInterface;
