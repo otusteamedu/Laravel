@@ -2,26 +2,19 @@
 
 namespace App\Ddd\Domain\ValueObjects;
 
-use InvalidArgumentException;
+use Webmozart\Assert\Assert;
 
 final readonly class Uid
 {
     private string $value;
     
     public function __construct(string $value) {
-        $this->assertUidIsValid($value);
+        Assert::regex($value, '/^[a-z0-9-]{36}$/', 'Некорректный uid');
         $this->value = $value;
     }
 
     public function toString(): string
     {
         return $this->value;
-    }
-
-    public function assertUidIsValid(string $value)
-    {
-        if (!preg_match('/^[a-z0-9-]{36}$/', $value)) {
-            throw new InvalidArgumentException('Некорректный uid');
-        }
     }
 }
