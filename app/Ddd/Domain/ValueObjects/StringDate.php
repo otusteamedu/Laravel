@@ -4,7 +4,7 @@ namespace App\Ddd\Domain\ValueObjects;
 
 use InvalidArgumentException;
 
-class StringDate
+final readonly class StringDate
 {
     private ?string $value;
     
@@ -13,7 +13,7 @@ class StringDate
         $this->value = $value;
     }
 
-    public function getValue(): ?string
+    public function toString(): ?string
     {
         return $this->value;
     }

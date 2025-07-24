@@ -4,7 +4,7 @@ namespace App\Ddd\Domain\ValueObjects;
 
 use InvalidArgumentException;
 
-class Amount
+final readonly class Amount
 {
     private int $value;
     
@@ -13,7 +13,7 @@ class Amount
         $this->value = $value;
     }
 
-    public function getValue(): int
+    public function toInt(): int
     {
         return $this->value;
     }

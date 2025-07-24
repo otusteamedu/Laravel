@@ -9,18 +9,6 @@ use App\Ddd\Domain\ValueObjects\StringDate;
 use App\Ddd\Domain\ValueObjects\Uid;
 use Illuminate\Support\Carbon;
 
-/**
- * Payment model.
- *
- * @property Uid $uid
- * @property Id $order_id 
- * @property Status $status 
- * @property Amount $amount 
- * @property ?Id $id
- * @property ?StringDate $confirmed_at
- * @property ?Carbon $created_at
- * @property ?Carbon $updated_at
- */
 class Payment
 {
     public function __construct(

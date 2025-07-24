@@ -4,7 +4,7 @@ namespace App\Ddd\Domain\ValueObjects;
 
 use InvalidArgumentException;
 
-class Status
+final readonly class Status
 {
     const POSSIBLE_STATUSES = ['pending', 'succeeded', 'canceled'];
 
@@ -15,7 +15,7 @@ class Status
         $this->value = $value;
     }
 
-    public function getValue(): string
+    public function toString(): string
     {
         return $this->value;
     }

@@ -18,13 +18,13 @@ class Fetcher
         $dto = [];
         foreach ($payments as $payment) {
             $dto[] = new Dto(
-                $payment->getId()->getValue(),
-                $payment->getUid()->getValue(),
-                $payment->getOrderId()->getValue(),
-                $payment->getStatus()->getValue(),
-                $payment->getAmount()->getValue(),
-                $payment->getConfirmedAt()->getValue(),
-                $payment->getCreatedAt()->getValue(),
+                $payment->getId()->toInt(),
+                $payment->getUid()->toString(),
+                $payment->getOrderId()->toInt(),
+                $payment->getStatus()->toString(),
+                $payment->getAmount()->toInt(),
+                $payment->getConfirmedAt()->toString(),
+                $payment->getCreatedAt()
             );
         }
         $coll = collect($dto);

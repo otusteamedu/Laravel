@@ -13,7 +13,7 @@ class Handler
     public function handle(Dto $dto): void
     {
         $payment = $this->repository->fetchByUid($dto->uid);
-        if ($payment->getAmount()->getValue() !== $dto->amount) {
+        if ($payment->getAmount()->toInt() !== $dto->amount) {
             throw new PaymentAmountNotCorrectException();
         }
         $payment->changeStatus(new Status($dto->status));

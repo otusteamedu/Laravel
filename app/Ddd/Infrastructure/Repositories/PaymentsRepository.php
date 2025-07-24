@@ -42,10 +42,10 @@ class PaymentsRepository implements PaymentsRepositoryInterface
     public function add(Payment $payment): void
     {
         $params = [
-            $payment->getUid()->getValue(), 
-            $payment->getOrderId()->getValue(), 
-            $payment->getStatus()->getValue(), 
-            $payment->getAmount()->getValue(), 
+            $payment->getUid()->toString(), 
+            $payment->getOrderId()->toInt(), 
+            $payment->getStatus()->toString(), 
+            $payment->getAmount()->toInt(), 
             now(), 
             now()
         ];
@@ -55,10 +55,10 @@ class PaymentsRepository implements PaymentsRepositoryInterface
     public function save(Payment $payment): void
     {
         if ($payment->getStatus() == 'succeeded') {
-            $params = [$payment->getStatus()->getValue(), now(), $payment->getUid()->getValue()];
+            $params = [$payment->getStatus()->toString(), now(), $payment->getUid()->toString()];
             DB::update('update payments set status = ?, confirmed_at = ? where uid = ?', $params);
         } else {
-            $params = [$payment->getStatus()->getValue(), $payment->getUid()->getValue()];
+            $params = [$payment->getStatus()->toString(), $payment->getUid()->toString()];
             DB::update('update payments set status = ? where uid = ?', $params);
         }
     }
