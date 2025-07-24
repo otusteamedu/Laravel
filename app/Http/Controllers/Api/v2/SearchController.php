@@ -12,6 +12,9 @@ class SearchController extends Controller
 {
     public function __construct(private ProductsService $service) {}
 
+    /**
+     * Display a listing of found resources.
+     */
     public function __invoke(Request $request)
     {
         $dto = new SearchDto(

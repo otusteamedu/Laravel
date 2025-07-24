@@ -10,6 +10,7 @@
     "license": "MIT",
     "require": {
         "php": "^8.2",
+        "dedoc/scramble": "^0.12.23",
         "elisad5791/cartcount": "^1.0",
         "http-interop/http-factory-guzzle": "^1.2",
         "laravel-notification-channels/telegram": "^6.0",
