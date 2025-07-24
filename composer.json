@@ -7,6 +7,7 @@
     "license": "MIT",
     "require": {
         "php": "^8.2",
+        "ivan/export_excel_products": "dev-IZolotarev/hw11",
         "laravel/framework": "^12.0",
         "laravel/tinker": "^2.10.1"
     },
@@ -72,6 +73,12 @@
             "php-http/discovery": true
         }
     },
-    "minimum-stability": "stable",
-    "prefer-stable": true
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "repositories": [
+        {
+            "type": "path",
+            "url": "./lara_pckg/export_excel_products"
+        }
+    ]
 }
