@@ -3,11 +3,13 @@ namespace App\Services;
 
 use App\Dto\Admin\Product\StoreDto;
 use App\Dto\Admin\Product\UpdateDto;
+use App\Dto\Search\SearchDto;
 use App\Repositories\ProductsRepository;
 use Storage;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
 use App\Models\Product;
+use Meilisearch\Client;
 
 class ProductsService
 {
@@ -130,5 +132,68 @@ class ProductsService
 
         $product->assets()->delete();
         $this->repository->delete($productId);
+    }
+
+    /**
+     * @return Collection<array-key, Product>
+     */
+    public function search(SearchDto $dto): Collection
+    {
+        $client = new Client(env('MEILISEARCH_HOST'), env('MEILISEARCH_KEY'));
+        $index = $client->index('products');
+
+        $filters = [];
+
+        if ($dto->category_id) {
+            $filters[] = "category_id = {$dto->category_id}";
+        }
+        
+        if ($dto->min_price) {
+            $filters[] = "price >= {$dto->min_price}";
+        }
+        if ($dto->max_price) {
+            $filters[] = "price <= {$dto->max_price}";
+        }
+        
+        if ($dto->brands) {
+            $values = implode(',', $dto->brands);
+            $filters[] = "brand_id IN [{$values}]";
+        }
+
+        if ($dto->rating) {
+            $filters[] = "rating >= {$dto->rating}";
+        }
+
+        if ($dto->min_screen) {
+            $filters[] = "screen_size >= {$dto->min_screen}";
+        }
+        if ($dto->max_screen) {
+            $filters[] = "screen_size <= {$dto->max_screen}";
+        }
+
+        if ($dto->min_ram) {
+            $filters[] = "ram >= {$dto->min_ram}";
+        }
+        if ($dto->max_ram) {
+            $filters[] = "ram <= {$dto->max_ram}";
+        }
+
+        if ($dto->min_builtin) {
+            $filters[] = "builtin_memory >= {$dto->min_builtin}";
+        }
+        if ($dto->max_builtin) {
+            $filters[] = "builtin_memory <= {$dto->max_builtin}";
+        }
+
+        $params = [
+            'filter' => implode(' AND ', $filters),
+            'sort' => ['price:asc'],
+        ]; 
+        $results = $index->search($dto->q, $params);
+
+        $productIds = collect($results->getHits())->pluck('id')->toArray();
+        $products = $this->getByIdsWithImage($productIds);
+
+        return $products;
     }
 }
