@@ -25,9 +25,8 @@ class CategoryController extends Controller
      */
     public function store(StoreRequest $request)
     {
-        $abilities = $request->user()->currentAccessToken()->abilities;
-        if (!in_array('products:modify', $abilities)) {
-            return response()->json('Forbidden.', 403);
+        if (!$request->user()->tokenCan('products:modify')) {
+            return response()->json(['message' => 'Forbidden.'], 403);
         }
 
         $data = $request->validated();
@@ -50,9 +49,8 @@ class CategoryController extends Controller
      */
     public function update(UpdateRequest $request, Category $category)
     {
-        $abilities = $request->user()->currentAccessToken()->abilities;
-        if (!in_array('products:modify', $abilities)) {
-            return response()->json('Forbidden.', 403);
+        if (!$request->user()->tokenCan('products:modify')) {
+            return response()->json(['message' => 'Forbidden.'], 403);
         }
 
         $data = $request->validated();
@@ -66,9 +64,8 @@ class CategoryController extends Controller
      */
     public function destroy(Category $category)
     {
-        $abilities = auth()->user()->currentAccessToken()->abilities;
-        if (!in_array('products:modify', $abilities)) {
-            return response()->json('Forbidden.', 403);
+        if (!auth()->user()->tokenCan('products:modify')) {
+            return response()->json(['message' => 'Forbidden.'], 403);
         }
 
         $category->delete();
