@@ -1,12 +1,11 @@
 <?php
 
-namespace App\Dto\Payment;
+namespace App\Ddd\Application\UseCases\Payments\Commands\Cancel;
 
-class UpdateDto
+class Dto
 {
     public function __construct(
         public string $uid,
-        public string $status,
         public int $amount
     ) 
     {}

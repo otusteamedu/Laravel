@@ -3,9 +3,13 @@
 namespace App\Ddd\Interface\Controllers;
 
 use App\Ddd\Application\UseCases\Payments\Commands\Store\Handler as StoreHandler;
-use App\Ddd\Application\UseCases\Payments\Commands\Update\Handler as UpdateHandler;
+use App\Ddd\Application\UseCases\Payments\Commands\Pay\Handler as PayHandler;
+use App\Ddd\Application\UseCases\Payments\Commands\Pay\Dto as PayDto;
+use App\Ddd\Application\UseCases\Payments\Commands\Cancel\Handler as CancelHandler;
+use App\Ddd\Application\UseCases\Payments\Commands\Cancel\Dto as CancelDto;
 use App\Ddd\Application\UseCases\Payments\Queries\FetchAll\Fetcher;
 use App\Ddd\Application\UseCases\Payments\Queries\FetchByUid\Fetcher as UidFetcher;
+use App\Ddd\Domain\ValueObjects\Status;
 use App\Http\Controllers\Controller;
 use App\Services\OrdersService;
 use Illuminate\Http\Request;
@@ -14,7 +18,6 @@ use Illuminate\View\View;
 use Illuminate\Http\RedirectResponse;
 use Exception;
 use Illuminate\Support\Facades\Log;
-use App\Dto\Payment\UpdateDto;
 use App\Events\PaymentConfirmed;
 use App\Dto\Order\StatusDto;
 
@@ -24,7 +27,8 @@ class PaymentController extends Controller
         private Fetcher $fetcher,
         private UidFetcher $uidFetcher,
         private StoreHandler $storeHandler,
-        private UpdateHandler $updateHandler,
+        private PayHandler $payHandler,
+        private CancelHandler $cancelHandler,
         private OrdersService $ordersService
     ) {}
 
@@ -59,12 +63,18 @@ class PaymentController extends Controller
             return response('', 400);
         }
 
-        $dto = new UpdateDto($paymentUid, $paymentStatus, $paymentAmount);
-        $this->updateHandler->handle($dto);
+        if ($paymentStatus == Status::Succeeded->value) {
+            $payDto = new PayDto($paymentUid, $paymentAmount);
+            $this->payHandler ->handle($payDto);
+        } elseif ($paymentStatus == Status::Canceled->value) {
+            $cancelDto = new CancelDto($paymentUid, $paymentAmount);
+            $this->cancelHandler->handle($cancelDto);
+        }
 
-        $payment = $this->uidFetcher->fetch($paymentUid);
-        $orderId = $payment->getOrderId();
+        $paymentDto = $this->uidFetcher->fetch($paymentUid);
+        $orderId = $paymentDto->order_id;
         $statusDto = new StatusDto($orderId, $paymentStatus);
+        
         $this->ordersService->updateStatus($statusDto);
 
         PaymentConfirmed::dispatch($resp);
