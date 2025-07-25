@@ -19,7 +19,7 @@ class AuthController extends Controller
     }
 
     /**
-     * Get a JWT via given credentials.
+     * Получить JWT токен.
      *
      * @return \Illuminate\Http\JsonResponse
      */
@@ -35,7 +35,7 @@ class AuthController extends Controller
     }
 
     /**
-     * Get the authenticated User.
+     * Получить данне авторизованного пользователя.
      *
      * @return \Illuminate\Http\JsonResponse
      */
@@ -45,7 +45,7 @@ class AuthController extends Controller
     }
 
     /**
-     * Refresh a token.
+     * Обновить токен.
      *
      * @return \Illuminate\Http\JsonResponse
      */

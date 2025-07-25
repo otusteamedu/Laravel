@@ -26,7 +26,7 @@ use App\Services\UseCases\Queries\TodoStatus\FetchForProject\Fetcher as IndexFet
 class TodoStatusController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Получить список статусов задач для проекта.
      */
     public function index(int $projectId, IndexFetcher $fetcher): JsonResponse
     {
@@ -60,7 +60,7 @@ class TodoStatusController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Добавить новый статус задачи для проекта.
      */
     public function store(StoreRequest $request, StoreHandler $handler): JsonResponse
     {
@@ -95,7 +95,7 @@ class TodoStatusController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * Получить данные о статусе задачи для проекта.
      */
     public function show(ShowRequest $request, ShowFetcher $fetcher): JsonResponse
     {
@@ -134,7 +134,7 @@ class TodoStatusController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * Обновить данне статуса задачи для проекта
      */
     public function update(UpdateRequest $request, UpdateHandler $handler): JsonResponse
     {
@@ -178,7 +178,7 @@ class TodoStatusController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Удалить статус задачи для проекта
      */
     public function destroy(ShowRequest $request, DestroyHandler $handler): JsonResponse
     {
