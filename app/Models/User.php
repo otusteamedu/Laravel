@@ -73,6 +73,15 @@ class User extends Authenticatable implements JWTSubject
     }
 
     /**
+     * Соцсети, через которые пользователь авторизовывался
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany<UserSocialite, User>
+     */
+    public function socialites(): HasMany
+    {
+        return $this->hasMany(UserSocialite::class);
+    }
+
+    /**
      * Проекты пользователя
      * @return HasMany<ProjectUser, User>
      */
