@@ -5,11 +5,11 @@ namespace App\Http\API\V1\Controllers;
 use Exception;
 use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
-use App\Http\API\V1\Requests\ShowRequest;
-use App\Http\API\V1\Requests\StoreRequest;
-use App\Http\API\V1\Requests\UpdateRequest;
 use App\Http\API\V1\Responses\ErrorResponse;
 use App\Http\API\V1\Responses\SuccessResponse;
+use App\Http\API\V1\Requests\TodoStatus\ShowRequest;
+use App\Http\API\V1\Requests\TodoStatus\StoreRequest;
+use App\Http\API\V1\Requests\TodoStatus\UpdateRequest;
 use App\Services\Repositories\Exceptions\ModelNotFoundException;
 use App\Services\UseCases\Queries\TodoStatus\FetchOne\Query as ShowQuery;
 use App\Services\UseCases\Commands\TodoStatus\Create\Command as StoreCommand;
@@ -27,6 +27,9 @@ class TodoStatusController extends Controller
 {
     /**
      * Получить список статусов задач для проекта.
+     * @param int $projectId
+     * @param \App\Services\UseCases\Queries\TodoStatus\FetchForProject\Fetcher $fetcher
+     * @return JsonResponse
      */
     public function index(int $projectId, IndexFetcher $fetcher): JsonResponse
     {
@@ -61,6 +64,9 @@ class TodoStatusController extends Controller
 
     /**
      * Добавить новый статус задачи для проекта.
+     * @param \App\Http\API\V1\Requests\TodoStatus\StoreRequest $request
+     * @param \App\Services\UseCases\Commands\TodoStatus\Create\Handler $handler
+     * @return JsonResponse
      */
     public function store(StoreRequest $request, StoreHandler $handler): JsonResponse
     {
@@ -96,6 +102,9 @@ class TodoStatusController extends Controller
 
     /**
      * Получить данные о статусе задачи для проекта.
+     * @param \App\Http\API\V1\Requests\TodoStatus\ShowRequest $request
+     * @param \App\Services\UseCases\Queries\TodoStatus\FetchOne\Fetcher $fetcher
+     * @return JsonResponse
      */
     public function show(ShowRequest $request, ShowFetcher $fetcher): JsonResponse
     {
@@ -135,6 +144,9 @@ class TodoStatusController extends Controller
 
     /**
      * Обновить данне статуса задачи для проекта
+     * @param \App\Http\API\V1\Requests\TodoStatus\UpdateRequest $request
+     * @param \App\Services\UseCases\Commands\TodoStatus\Update\Handler $handler
+     * @return JsonResponse
      */
     public function update(UpdateRequest $request, UpdateHandler $handler): JsonResponse
     {
@@ -179,6 +191,9 @@ class TodoStatusController extends Controller
 
     /**
      * Удалить статус задачи для проекта
+     * @param \App\Http\API\V1\Requests\TodoStatus\ShowRequest $request
+     * @param \App\Services\UseCases\Commands\TodoStatus\Delete\Handler $handler
+     * @return JsonResponse
      */
     public function destroy(ShowRequest $request, DestroyHandler $handler): JsonResponse
     {

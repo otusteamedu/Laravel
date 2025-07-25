@@ -2,7 +2,17 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\API\V1\Controllers\AuthController;
+use App\Http\API\V1\Controllers\ProjectController;
 use App\Http\API\V1\Controllers\TodoStatusController;
+
+Route::middleware('auth:api')
+    ->prefix('/v1/projects')
+    ->name('api.projects.')
+    ->group(function () {
+        Route::post('/store', [ProjectController::class, 'store'])
+            ->name('store')
+            ->can('project.create');
+    });
 
 Route::middleware('auth:api')
     ->prefix('/v1/project/{projectId}/todostatuses')

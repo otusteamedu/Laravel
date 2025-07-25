@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\API\V1\Requests;
+namespace App\Http\API\V1\Requests\TodoStatus;
 
 use Illuminate\Http\JsonResponse;
 use Illuminate\Foundation\Http\FormRequest;
@@ -8,9 +8,10 @@ use App\Http\API\V1\Responses\ErrorResponse;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Http\Exceptions\HttpResponseException;
 
-class StoreRequest extends FormRequest
+class UpdateRequest extends FormRequest
 {
     private $projectId;
+    private $statusId;
 
     /**
      * Determine if the user is authorized to make this request.
@@ -29,6 +30,7 @@ class StoreRequest extends FormRequest
     {
         return [
             'project_id' => ['required', 'exists:projects,id'],
+            'status_id'  => ['required', 'exists:todo_statuses,id,project_id,' . $this->projectId],
             'name' => ['required', 'string', 'min:3', 'max:255'],
             'sort' => ['required', 'numeric'],
             'color' => ['required', 'hex_color'],
@@ -42,6 +44,7 @@ class StoreRequest extends FormRequest
     public function messages(): array
     {
         return [
+            'status_id.exists' => 'Статус не существует',
             'project_id.exists' => 'Проект не существует',
             'name.required' => 'Пожалуйста, укажите название статуса.',
             'name.string' => 'Название статуса должно быть строкой.',
@@ -57,9 +60,11 @@ class StoreRequest extends FormRequest
     protected function prepareForValidation(): void
     {
         $this->projectId = request()->route('projectId');
+        $this->statusId = request()->route('statusId');
 
         $this->merge([
             'project_id' => $this->projectId,
+            'status_id' => $this->statusId
         ]);
     }
 

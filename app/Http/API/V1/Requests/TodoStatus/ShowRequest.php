@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\API\V1\Requests;
+namespace App\Http\API\V1\Requests\TodoStatus;
 
 use Illuminate\Http\JsonResponse;
 use Illuminate\Foundation\Http\FormRequest;
