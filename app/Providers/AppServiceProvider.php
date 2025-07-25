@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use Carbon\CarbonInterval;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Pagination\Paginator;
@@ -10,6 +11,7 @@ use App\Ddd\Domain\Repositories\PaymentsRepositoryInterface;
 use App\Ddd\Infrastructure\Repositories\PaymentsRepository;
 use App\Ddd\Application\UseCases\Payments\Commands\Store\Handler;
 use App\Repositories\OrdersRepository;
+use Laravel\Passport\Passport;
 use YooKassa\Client;
 
 class AppServiceProvider extends ServiceProvider
@@ -82,5 +84,15 @@ class AppServiceProvider extends ServiceProvider
             'screen_size'
         ]);
         $client->index('products')->updateSortableAttributes(['price']);
+
+        Passport::tokensExpireIn(CarbonInterval::days(15));
+        Passport::refreshTokensExpireIn(CarbonInterval::days(30));
+        Passport::personalAccessTokensExpireIn(CarbonInterval::months(6));
+
+        Passport::tokensCan([
+            'products:modify' => 'Modify products and categories',
+        ]);
+
+        Passport::enablePasswordGrant();
     }
 }

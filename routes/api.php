@@ -1,12 +1,10 @@
 <?php
 
-use App\Http\Controllers\Api\LoginController;
+use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\v1\CategoryController;
 use App\Http\Controllers\Api\v1\ProductController;
 use App\Http\Controllers\Api\v2\SearchController;
 use Illuminate\Support\Facades\Route;
-
-Route::post('/v1/login', LoginController::class)->name('v1.login');
 
 function v1Routes()
 {
@@ -14,11 +12,13 @@ function v1Routes()
     Route::apiResource('/products', ProductController::class);
 }
 
-Route::prefix('v1')->name('v1.')->middleware('auth:sanctum')->group(function () {
+Route::prefix('v1')->name('v1.')->middleware('auth:api')->group(function () {
     v1Routes();
 });
 
-Route::prefix('v2')->name('v2.')->middleware('auth:sanctum')->group(function () {
+Route::prefix('v2')->name('v2.')->middleware('auth:api')->group(function () {
     v1Routes();
     Route::get('/search', SearchController::class);
 });
+
+Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:api');
