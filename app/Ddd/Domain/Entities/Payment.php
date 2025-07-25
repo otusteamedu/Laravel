@@ -8,6 +8,7 @@ use App\Ddd\Domain\ValueObjects\Status;
 use App\Ddd\Domain\ValueObjects\Uid;
 use App\Exceptions\IllegalStateTransitionException;
 use Illuminate\Support\Carbon;
+use App\Exceptions\PaymentAmountNotCorrectException;
 
 class Payment
 {
@@ -62,20 +63,30 @@ class Payment
         return $this->updated_at;
     }
 
-    public function confirm(Carbon $date): void 
+    public function confirm(int $amount): void 
     {
         if (!$this->status = Status::Pending) {
             throw new IllegalStateTransitionException();
         }
+
+        if ($this->getAmount()->toInt() !== $amount) {
+            throw new PaymentAmountNotCorrectException();
+        }
+        
         $this->status = Status::Succeeded;
-        $this->confirmed_at = $date;
+        $this->confirmed_at = now();
     }
 
-    public function cancel(): void 
+    public function cancel(int $amount): void 
     {
         if (!$this->status = Status::Canceled) {
             throw new IllegalStateTransitionException();
         }
+
+        if ($this->getAmount()->toInt() !== $amount) {
+            throw new PaymentAmountNotCorrectException();
+        }
+
         $this->status = Status::Canceled;
     }
 }

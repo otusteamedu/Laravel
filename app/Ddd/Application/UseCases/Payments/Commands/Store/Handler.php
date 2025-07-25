@@ -38,7 +38,7 @@ class Handler
         $uid = $response->getId();
         $confirmationUrl = $response->getConfirmation()->getConfirmationUrl();
 
-        $payment = new Payment(new Uid($uid), new Id($orderId), Status::from('pending'), new Amount($amount));
+        $payment = new Payment(new Uid($uid), new Id($orderId), Status::Pending, new Amount($amount));
         $this->repository->add($payment);
 
         $dto = new UpdateDto($orderId, $order->getUser()->id);
