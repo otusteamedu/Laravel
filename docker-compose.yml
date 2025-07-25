@@ -88,6 +88,20 @@ services:
     networks:
       - sail
 
+  swagger-ui:
+    container_name: ${APP_NAME}-${APP_ENV}-swagger-ui
+    restart: on-failure
+    image: swaggerapi/swagger-ui:latest
+    hostname: swagger.ui
+    environment:
+      SWAGGER_JSON: /v1/openapi.json
+    ports:
+      - "8082:8080"
+    volumes:
+       - ./.swagger/v1/todoapp.json:/v1/openapi.json
+    networks:
+      - sail
+
 networks:
     sail:
         driver: bridge

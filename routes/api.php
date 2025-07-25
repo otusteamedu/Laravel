@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\API\V1\Controllers\AuthController;
+use App\Http\API\V1\Controllers\OAuthController;
 use App\Http\API\V1\Controllers\ProjectController;
 use App\Http\API\V1\Controllers\TodoStatusController;
 
@@ -41,4 +42,17 @@ Route::middleware('api')
         Route::post('login', [AuthController::class, 'login']);
         Route::post('refresh', [AuthController::class, 'refresh']);
         Route::post('user', [AuthController::class, 'user']);
+    });
+
+Route::prefix('/v1/oauth')
+    ->group(function () {
+        Route::post('register', [OAuthController::class, 'register']);
+        Route::post('login', [OAuthController::class, 'login']);
+    });
+
+Route::middleware('auth:api')
+    ->prefix('/v1/oauth')
+    ->group(function () {
+        Route::get('user', [OAuthController::class, 'user']);
+        Route::post('logout', [OAuthController::class, 'logout']);
     });
