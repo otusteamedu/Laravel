@@ -15,4 +15,5 @@ interface ProductRepositoryInterface
     public function delete(Product $product): bool;
     public function syncCategories(Product $product, array $categoryIds): void;
     public function search(string $query, int $perPage = 10): LengthAwarePaginator;
+    public function count(): int;
 }

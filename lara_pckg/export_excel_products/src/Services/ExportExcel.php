@@ -16,4 +16,13 @@ class ExportExcel implements ExportExcelInterface
 
         return Excel::download(new ProductsExport($selectedColumns, $selectedCategories), 'products_by_categories.xlsx');
     }
+
+    public function saveProductsToFile($selectedColumns, $selectedCategories, $filename){
+        // TO DO
+        return Excel::store(new ProductsExport($selectedColumns, $selectedCategories), $filename);
+    }
+    public function saveProductsGroupByCategoriesToFile($selectedColumns, $selectedCategories, $filename){
+
+        return Excel::store(new ProductsExport($selectedColumns, $selectedCategories), $filename,);
+    }
 }
