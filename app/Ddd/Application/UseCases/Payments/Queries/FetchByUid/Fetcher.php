@@ -12,13 +12,13 @@ class Fetcher
     {
         $payment = $this->repository->fetchByUid($uid);
         $dto = new Dto(
-            $payment->getId()->getValue(),
-            $payment->getUid()->getValue(),
-            $payment->getOrderId()->getValue(),
-            $payment->getStatus()->getValue(),
-            $payment->getAmount()->getValue(),
-            $payment->getConfirmedAt()->getValue(),
-            $payment->getCreatedAt(),
+            $payment->getId()->toInt(),
+            $payment->getUid()->toString(),
+            $payment->getOrderId()->toInt(),
+            $payment->getStatus()->value,
+            $payment->getAmount()->toInt(),
+            $payment->getConfirmedAt(),
+            $payment->getCreatedAt()
         );
         return $dto;
     }

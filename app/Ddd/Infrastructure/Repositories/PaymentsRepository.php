@@ -7,7 +7,6 @@ use App\Ddd\Domain\Repositories\PaymentsRepositoryInterface;
 use App\Ddd\Domain\ValueObjects\Amount;
 use App\Ddd\Domain\ValueObjects\Id;
 use App\Ddd\Domain\ValueObjects\Status;
-use App\Ddd\Domain\ValueObjects\StringDate;
 use App\Ddd\Domain\ValueObjects\Uid;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
@@ -27,10 +26,10 @@ class PaymentsRepository implements PaymentsRepositoryInterface
             $arr[] = new Payment(
                 new Uid($item->uid), 
                 new Id($item->order_id), 
-                new Status($item->status),
+                Status::from($item->status),
                 new Amount($item->amount),
                 new Id($item->id), 
-                new StringDate($item->confirmed_at),
+                Carbon::parse($item->confirmed_at),
                 Carbon::parse($item->created_at),
                 Carbon::parse($item->updated_at)
             );
@@ -42,10 +41,10 @@ class PaymentsRepository implements PaymentsRepositoryInterface
     public function add(Payment $payment): void
     {
         $params = [
-            $payment->getUid()->getValue(), 
-            $payment->getOrderId()->getValue(), 
-            $payment->getStatus()->getValue(), 
-            $payment->getAmount()->getValue(), 
+            $payment->getUid()->toString(), 
+            $payment->getOrderId()->toInt(), 
+            $payment->getStatus()->value, 
+            $payment->getAmount()->toInt(), 
             now(), 
             now()
         ];
@@ -55,10 +54,10 @@ class PaymentsRepository implements PaymentsRepositoryInterface
     public function save(Payment $payment): void
     {
         if ($payment->getStatus() == 'succeeded') {
-            $params = [$payment->getStatus()->getValue(), now(), $payment->getUid()->getValue()];
+            $params = [$payment->getStatus()->value, now(), $payment->getUid()->toString()];
             DB::update('update payments set status = ?, confirmed_at = ? where uid = ?', $params);
         } else {
-            $params = [$payment->getStatus()->getValue(), $payment->getUid()->getValue()];
+            $params = [$payment->getStatus()->value, $payment->getUid()->toString()];
             DB::update('update payments set status = ? where uid = ?', $params);
         }
     }
@@ -75,10 +74,10 @@ class PaymentsRepository implements PaymentsRepositoryInterface
         $payment = new Payment(
             new Uid($row->uid), 
             new Id($row->order_id), 
-            new Status($row->status),
+            Status::from($row->status),
             new Amount($row->amount),
             new Id($row->id), 
-            new StringDate($row->confirmed_at),
+            Carbon::parse($row->confirmed_at),
             Carbon::parse($row->created_at),
             Carbon::parse($row->updated_at)
         );

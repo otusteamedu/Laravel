@@ -5,22 +5,11 @@ namespace App\Ddd\Domain\Entities;
 use App\Ddd\Domain\ValueObjects\Amount;
 use App\Ddd\Domain\ValueObjects\Id;
 use App\Ddd\Domain\ValueObjects\Status;
-use App\Ddd\Domain\ValueObjects\StringDate;
 use App\Ddd\Domain\ValueObjects\Uid;
+use App\Exceptions\IllegalStateTransitionException;
 use Illuminate\Support\Carbon;
+use App\Exceptions\PaymentAmountNotCorrectException;
 
-/**
- * Payment model.
- *
- * @property Uid $uid
- * @property Id $order_id 
- * @property Status $status 
- * @property Amount $amount 
- * @property ?Id $id
- * @property ?StringDate $confirmed_at
- * @property ?Carbon $created_at
- * @property ?Carbon $updated_at
- */
 class Payment
 {
     public function __construct(
@@ -29,7 +18,7 @@ class Payment
         private Status $status,
         private Amount $amount,
         private ?Id $id = null, 
-        private ?StringDate $confirmed_at = null,
+        private ?Carbon $confirmed_at = null,
         private ?Carbon $created_at = null,
         private ?Carbon $updated_at = null
     ) {}
@@ -59,7 +48,7 @@ class Payment
         return $this->amount;
     }
 
-    public function getConfirmedAt(): ?StringDate
+    public function getConfirmedAt(): ?Carbon
     {
         return $this->confirmed_at;
     }
@@ -74,13 +63,30 @@ class Payment
         return $this->updated_at;
     }
 
-    public function changeStatus(Status $status): void
+    public function confirm(int $amount): void 
     {
-        $this->status = $status;
+        if (!$this->status = Status::Pending) {
+            throw new IllegalStateTransitionException();
+        }
+
+        if ($this->getAmount()->toInt() !== $amount) {
+            throw new PaymentAmountNotCorrectException();
+        }
+        
+        $this->status = Status::Succeeded;
+        $this->confirmed_at = now();
     }
 
-    public function setConfirmedAt(StringDate $date): void
+    public function cancel(int $amount): void 
     {
-        $this->confirmed_at = $date;
+        if (!$this->status = Status::Canceled) {
+            throw new IllegalStateTransitionException();
+        }
+
+        if ($this->getAmount()->toInt() !== $amount) {
+            throw new PaymentAmountNotCorrectException();
+        }
+
+        $this->status = Status::Canceled;
     }
 }

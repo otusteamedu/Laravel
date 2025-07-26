@@ -36,20 +36,9 @@
                     <td>{{ $payment->id }}</td>
                     <td>{{ $payment->uid }}</td>
                     <td>{{ $payment->order_id }}</td>
-                    <td>
-                        @php
-                            $status = $payment->status;
-                            $statusName = match ($status) {
-                                'succeeded' => 'Выполнен',
-                                'pending' => 'Ожидает подтверждения',
-                                'canceled' => 'Не прошел',
-                                default => '-'
-                            };
-                        @endphp
-                        {{ $statusName }}
-                    </td>
+                    <td>{{ $payment->status->message() }}</td>
                     <td>{{ $payment->amount }}</td>
-                    <td>{{ $payment->confirmed_at ? date('d.m.Y H:i', strtotime($payment->confirmed_at)) : '-' }}</td>
+                    <td>{{ $payment->confirmed_at ? $payment->confirmed_at->format('d.m.Y H:i') : '-' }}</td>
                     <td>{{ $payment->created_at->format('d.m.Y H:i') }}</td>
                 </tr>
             @endforeach

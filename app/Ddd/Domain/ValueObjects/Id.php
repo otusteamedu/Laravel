@@ -2,26 +2,19 @@
 
 namespace App\Ddd\Domain\ValueObjects;
 
-use InvalidArgumentException;
+use Webmozart\Assert\Assert;
 
-class Id
+final readonly class Id
 {
     private int $value;
     
     public function __construct(int $value) {
-        $this->assertIdIsValid($value);
+        Assert::greaterThan($value, 0, 'Идентификатор должен быть натуральным числом. Получено: %s');
         $this->value = $value;
     }
 
-    public function getValue(): int
+    public function toInt(): int
     {
         return $this->value;
-    }
-
-    public function assertIdIsValid(int $value)
-    {
-        if ($value <= 0) {
-            throw new InvalidArgumentException('Идентификатор должен быть натуральным числом');
-        }
     }
 }
