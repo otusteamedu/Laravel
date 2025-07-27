@@ -19,6 +19,15 @@ Route::group([
         });
 });
 
+Route::get('/setPrice', function () {
+
+    $product = App\Models\Product::find(1);
+    $product->price = 180.00;
+    $product->save();
+
+    return $product->price;
+});
+
 
 
 Route::get('/dashboard', function () {

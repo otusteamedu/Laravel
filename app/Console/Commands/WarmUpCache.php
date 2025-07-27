@@ -13,7 +13,7 @@ class WarmUpCache extends Command
      *
      * @var string
      */
-    protected $signature = 'cache:warmup';
+    protected $signature = 'cache:warm-products';
 
     /**
      * The console command description.
