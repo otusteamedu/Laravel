@@ -6,7 +6,6 @@ namespace App\Services\OAuth\UseCases\Commands\Login;
 
 use App\Services\OAuth\Contracts\AuthServiceInterface;
 use App\Services\OAuth\Exceptions\InvalidCredentialsException;
-use Illuminate\Support\Facades\Log;
 
 class Handler
 {
