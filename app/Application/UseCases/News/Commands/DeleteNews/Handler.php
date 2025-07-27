@@ -7,7 +7,7 @@ use App\Domain\News\Exceptions\NewsNotFoundException;
 use App\Domain\News\Exceptions\NewsSaveException;
 use App\Domain\News\Repositories\NewsRepositoryInterface;
 
-final class Handler
+class Handler
 {
     public function __construct(
         private NewsRepositoryInterface $newsRepository,

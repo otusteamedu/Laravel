@@ -9,7 +9,7 @@ Authorization: Bearer {{token}}
 
 ###
 
-GET {{host}}/api/v2/news/22
+GET {{host}}/api/v2/news/2222222
 Content-Type: application/json
 Accept: application/json
 Authorization: Bearer {{token}}
@@ -22,11 +22,11 @@ Accept: application/json
 Authorization: Bearer {{token}}
 
 {
-    "title": "Заголовок новости 8888",
+    "title": "Заголовок новости 99999999",
     "content": "Тест новости",
     "author_id": 3,
     "category_id": 2,
-    "published_at": "2025-07-20T14:47",
+    "published_at": "2025-07-28 14:47",
     "is_draft":  false
 }
 
