@@ -55,10 +55,10 @@ class StoreRequest extends FormRequest
 
     protected function failedValidation(Validator $validator)
     {
-        throw new HttpResponseException(redirect()
-            ->route('projects.create')
-            ->withInput()
-            ->withErrors($validator->errors())
-            ->with('error', 'Ошибка валидации формы'));
+        throw new HttpResponseException(response()->json([
+            'success' => false,
+            'message' => 'Validation errors',
+            'errors' => $validator->errors(),
+        ], 422));
     }
 }
