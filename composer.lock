@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d9792b576ce7ed5c8771eaac835c4474",
+    "content-hash": "bc1f58cb71f492156bd7634c4599c01b",
     "packages": [
         {
             "name": "brick/math",
@@ -5507,6 +5507,41 @@
             "time": "2025-06-27T19:55:54+00:00"
         },
         {
+            "name": "tariff/tariff",
+            "version": "dev-SCherepanov/hw11",
+            "dist": {
+                "type": "path",
+                "url": "./packages/Tariff",
+                "reference": "9f03bedd2548546b68a9cca60c9f555639f4c603"
+            },
+            "require": {
+                "illuminate/support": "^12.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Tariff\\Providers\\TariffServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Tariff\\": "src/"
+                }
+            },
+            "authors": [
+                {
+                    "name": "Sergey Cherepanov",
+                    "email": "sergmzk@gmail.com"
+                }
+            ],
+            "description": "Tariff package",
+            "transport-options": {
+                "relative": true
+            }
+        },
+        {
             "name": "tijsverkoyen/css-to-inline-styles",
             "version": "v2.3.0",
             "source": {
@@ -9088,7 +9123,9 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {},
+    "stability-flags": {
+        "tariff/tariff": 20
+    },
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
