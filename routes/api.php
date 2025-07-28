@@ -1,52 +1,25 @@
 <?php
 
-use App\Models\Blog;
+use App\Http\Controllers\Api\v1\CarsController;
+use App\Http\Controllers\Api\v1\OauthController;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use Laravel\Passport\Http\Middleware\CheckToken;
 
-require __DIR__.'/auth.php';
+Route::get('/user', function (Request $request) {
+    return $request->user();
+})->middleware('auth:api');
 
-// Токен для аутентификации
-$token = '12345';
-
-Route::group(['middleware' => 'auth:api', 'parameters' => ['token' => $token],
-], function () {
-    Route::get('create', function () {
-        $blog = new Blog;
-
-        $blog->title = 'New title 123123';
-        $blog->text = 'New text new text';
-        $blog->preview = 'New preview new preview';
-        $blog->author_id = 2;
-
-        $blog->save();
-
-        return dump($blog->save());
-
+Route::group(['prefix' => 'v1'], function() {
+    Route::group(['prefix' => 'auth'], function() {
+        Route::post('register', [OauthController::class, 'register']);
+        Route::post('login', [OauthController::class, 'login']);
     });
 
-    Route::get('update/{id}', function (string $id) {
-        $blog = Blog::find($id);
+    Route::middleware('auth:api')->group(function() {
+        Route::apiResource('cars', CarsController::class);
 
-        $blog->title = 'Updated title==========================';
-        $blog->save();
-
-        return dump($blog->save());
-
-    });
-
-    Route::get('delete/{id}', function (string $id) {
-        $blog = Blog::find($id);
-
-        return dump($blog->delete());
-
-    });
-
-    Route::get('index', function () {
-        return Blog::all();
-    });
-
-    Route::get('index/{id}', function (string $id) {
-        return Blog::find($id);
-
+        Route::get('test_scope', [CarsController::class, 'testScope'])
+            ->middleware(CheckToken::using(['cars:create']));
     });
 });

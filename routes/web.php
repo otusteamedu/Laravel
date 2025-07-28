@@ -1,17 +1,15 @@
 <?php
 
+use App\Http\Controllers\Api\v1\CarsController;
+use App\Http\Controllers\Api\v1\OauthController;
 use App\Http\Controllers\ProfileController;
-use App\Models\User;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Route;
-
-// Route::get('/', function () {
-//     return view('welcome');
-// });
-
-// first commit
+use Illuminate\Support\Str;
 
 Route::get('/', function () {
-    return redirect('/blogs');
+    return view('welcome');
 });
 
 Route::get('/dashboard', function () {
@@ -24,22 +22,41 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::resource('blogs', \App\Http\Controllers\BlogsController::class)->middleware('auth');
+require __DIR__.'/auth.php';
 
-// Создадим пользователя с токеном11
-Route::get('/user', function () {
-    $user = new User;
+Route::get('/redirect', function(Request $request) {
+    $request->session()->put('state', $state = Str::random(40));
 
-    $user->name = 'olga';
-    $user->email = 'olga123@mail.ru';
-    $user->password = '123123123';
-    $user->api_token = '12345';
+    $query = http_build_query([
+        'client_id' => '01983387-420b-7041-9266-9cce8fad9f5d', // Replace with valid client id
+        'redirect_uri' => 'http://localhost/callback',
+        'response_type' => 'code',
+        'scope' => '',
+        'state' => $state,
+        // 'prompt' => '', // "none", "consent", or "login"
+    ]);
 
-    $user->save();
-
-    dump($user->save());
-
-    return '';
+    return redirect('http://localhost/oauth/authorize?' . $query);
 });
 
-require __DIR__.'/auth.php';
+Route::get('/callback', function(Request $request) {
+    $state = $request->session()->pull('state');
+
+//    dd($request->state, $state);
+
+    throw_unless(
+        strlen($state) > 0 && $state === $request->state,
+        InvalidArgumentException::class,
+        'Invalid state value.'
+    );
+
+    $response = Http::asForm()->post('http://nginx/oauth/token', [
+        'grant_type' => 'authorization_code',
+        'client_id' => '01983387-420b-7041-9266-9cce8fad9f5d', // Replace with valid client id
+        'client_secret' => 'jwVyy3rszPKtNipa6JTqmNpgIbgx89PlFtB910jT', // Replace with client secret
+        'redirect_uri' => 'http://localhost/callback',
+        'code' => $request->code
+    ]);
+
+    return $response->json();
+});
