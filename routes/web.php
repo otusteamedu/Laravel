@@ -1,11 +1,14 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Models\User;
 use Illuminate\Support\Facades\Route;
 
 // Route::get('/', function () {
 //     return view('welcome');
 // });
+
+// first commit
 
 Route::get('/', function () {
     return redirect('/blogs');
@@ -22,5 +25,21 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::resource('blogs', \App\Http\Controllers\BlogsController::class)->middleware('auth');
+
+// Создадим пользователя с токеном 11
+Route::get('/user', function () {
+    $user = new User;
+
+    $user->name = 'olga';
+    $user->email = 'olga123@mail.ru';
+    $user->password = '123123123';
+    $user->api_token = '12345';
+
+    $user->save();
+
+    dump($user->save());
+
+    return '';
+});
 
 require __DIR__.'/auth.php';
