@@ -26,7 +26,7 @@ Route::middleware('auth')->group(function () {
 
 Route::resource('blogs', \App\Http\Controllers\BlogsController::class)->middleware('auth');
 
-// Создадим пользователя с токеном
+// Создадим пользователя с токеном11
 Route::get('/user', function () {
     $user = new User;
 
