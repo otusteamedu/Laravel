@@ -27,4 +27,15 @@ class Apartment extends Model
     {
         return $this->attributes['serial_number'];
     }
+    
+    public function details()
+    {
+        return $this->hasMany(ApartmentDetail::class);
+    }
+
+    public function fees()
+    {
+        return $this->hasMany(ApartmentFee::class);
+    }
+
 }

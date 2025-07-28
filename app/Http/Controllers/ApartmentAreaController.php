@@ -12,8 +12,30 @@ use App\Models\ApartmentFee;
 use App\Models\Tariff;
 use App\Services\FeeCalculatorService;
 
+
 class ApartmentAreaController extends Controller
 {
+
+    public function index(Request $request)
+    {
+        $filter = $request->query('filter');
+
+        $query = Apartment::with(['details', 'fees']);
+
+        if ($filter === 'balance_end_gt_6000') {
+            $query->whereHas('fees', function ($q) {
+                $q->where('balance_end', '>', 6000);
+            });
+        }
+
+        $apartments = $query->get();
+
+        return view('home', [
+            'title' => 'ТСЖ Радуга',
+            'apartments' => $apartments,
+        ]);
+    }
+
     public function calculate(Request $request)
     {
         $data = $request->validate([

@@ -7,9 +7,7 @@ use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\ApartmentAreaController;
 
 // Главная страница
-Route::get('/', function () {
-    return view('home', ['title' => 'ТСЖ Радуга']);
-})->name('index');
+Route::get('/', [ApartmentAreaController::class, 'index'])->name('index');
 
 // Страница тарифов
 Route::get('/tariffs', function () {
