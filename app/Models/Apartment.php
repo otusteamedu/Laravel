@@ -5,17 +5,26 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * @property string $owner
+ * @property string $serial_number
+ */
 class Apartment extends Model
 {
     use HasFactory;
 
     protected $fillable = [
         'owner',
-        'serialNumber'
+        'serial_number'
     ];
 
-    public function __toString()
+    public function getOwner(): string
     {
-        return (string) $this->serialNumber;
+        return $this->attributes['owner'];
+    }
+
+    public function getSerialNumber(): string
+    {
+        return $this->attributes['serial_number'];
     }
 }

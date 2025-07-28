@@ -10,25 +10,23 @@ return new class extends Migration
      * Run the migrations.
      */
     public function up(): void
-        {
-            Schema::table('tariffs', function (Blueprint $table) {
-                $table->float('heating_rub')->nullable()->after('heating');
-                $table->float('hot_water')->nullable()->after('heating_rub');
-                $table->float('hot_water_odn')->nullable()->after('hot_water');
-                $table->float('cold_water')->nullable()->after('hot_water_odn');
-                $table->float('cold_water_odn')->nullable()->after('cold_water');
-                $table->float('sewage')->nullable()->after('cold_water_odn');
-                $table->float('sewage_odn')->nullable()->after('sewage');
-                $table->float('solid_waste')->nullable()->after('sewage_odn');
-                $table->float('electricity')->nullable()->after('solid_waste');
-                $table->float('lift')->nullable()->after('electricity');
-                $table->float('electricity_odn')->nullable()->after('lift');
-                $table->float('multiplying_factor')->nullable()->default(1)->after('capital_repair');
-                
-                // Обновление существующего поля (если нужно изменить дефолтное значение)
-                $table->float('capital_repair')->nullable()->default(0)->change();
-            });
-        }
+    {
+        Schema::table('tariffs', function (Blueprint $table) {
+            $table->float('heating_rub')->nullable();
+            $table->float('hot_water')->nullable();
+            $table->float('hot_water_odn')->nullable();
+            $table->float('cold_water')->nullable();
+            $table->float('cold_water_odn')->nullable();
+            $table->float('sewage')->nullable();
+            $table->float('sewage_odn')->nullable();
+            $table->float('solid_waste')->nullable();
+            $table->float('electricity')->nullable();
+            $table->float('lift')->nullable();
+            $table->float('electricity_odn')->nullable();
+            $table->float('multiplying_factor')->nullable()->default(1);
+            $table->float('capital_repair')->nullable()->default(0)->change();
+        });
+    }
 
     /**
      * Reverse the migrations.
@@ -36,7 +34,21 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('tariffs', function (Blueprint $table) {
-            //
+            $table->dropColumn([
+                'heating_rub',
+                'hot_water',
+                'hot_water_odn',
+                'cold_water',
+                'cold_water_odn',
+                'sewage',
+                'sewage_odn',
+                'solid_waste',
+                'electricity',
+                'lift',
+                'electricity_odn',
+                'multiplying_factor',
+            ]);
+            $table->float('capital_repair')->nullable(false)->default(null)->change();
         });
     }
 };
