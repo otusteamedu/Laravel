@@ -48,9 +48,14 @@ services:
                 - '${DB_USERNAME}'
             retries: 3
             timeout: 5s
+    memcached:
+        image: memcached:latest
+        ports:
+        - "11211:11211"
 networks:
     sail:
         driver: bridge
 volumes:
     sail-pgsql:
         driver: local
+

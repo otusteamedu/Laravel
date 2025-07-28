@@ -6,6 +6,14 @@ use App\Http\Controllers\Admin\ApartmentController;
 use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\ApartmentAreaController;
 
+
+//временно для проверки memcached
+Route::get('/test-session', function (Illuminate\Http\Request $request) {
+    $request->session()->put('check_memcached', 'работает');
+
+    return 'Сессия записана: ' . $request->session()->get('check_memcached');
+});
+
 // Главная страница
 Route::get('/', [ApartmentAreaController::class, 'index'])->name('index');
 

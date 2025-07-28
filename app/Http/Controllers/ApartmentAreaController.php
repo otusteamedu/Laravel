@@ -3,32 +3,30 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;  
 use App\Helpers\AreaCalculator;
 use App\Models\Apartment;
-use App\Models\ApartmentCharge;
-use App\Models\ApartmentCounter;
-use App\Models\ApartmentDetail;
-use App\Models\ApartmentFee;
-use App\Models\Tariff;
 use App\Services\FeeCalculatorService;
-
 
 class ApartmentAreaController extends Controller
 {
-
     public function index(Request $request)
     {
         $filter = $request->query('filter');
 
-        $query = Apartment::with(['details', 'fees']);
+        $cacheKey = 'apartments_list_' . ($filter ?? 'all');
 
-        if ($filter === 'balance_end_gt_6000') {
-            $query->whereHas('fees', function ($q) {
-                $q->where('balance_end', '>', 6000);
-            });
-        }
+        $apartments = Cache::remember($cacheKey, 600, function () use ($filter) {
+            $query = Apartment::with(['details', 'fees']);
 
-        $apartments = $query->get();
+            if ($filter === 'balance_end_gt_6000') {
+                $query->whereHas('fees', function ($q) {
+                    $q->where('balance_end', '>', 6000);
+                });
+            }
+
+            return $query->get();
+        });
 
         return view('home', [
             'title' => 'ТСЖ Радуга',
