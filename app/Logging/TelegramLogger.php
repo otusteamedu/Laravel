@@ -13,7 +13,7 @@ class TelegramLogger
             new TelegramBotHandler(
                 $config['token'],
                 $config['chat_id'],
-                Logger::ERROR, 
+                Logger::INFO, 
                 true, 
                 null, 
                 true

@@ -7,6 +7,10 @@ use Illuminate\Routing\Controller;
 use Tariff\Models\Tariff;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ViewErrorBag;
+use App\Events\TariffCreated;
+use App\Events\TariffUpdated;
+use App\Events\TariffDeleted;
+use Illuminate\Support\Facades\Log;
 
 class TariffController extends Controller
 {
@@ -58,6 +62,8 @@ class TariffController extends Controller
 
         $tariff = Tariff::create($data);
 
+        event(new TariffCreated($tariff)); 
+
         return response('', 204)->header('HX-Trigger', json_encode([
             'tariffListChanged' => null,
             'showMessage' => "Тариф {$tariff->name} добавлен.",
@@ -102,6 +108,8 @@ class TariffController extends Controller
 
         $tariff->update($data);
 
+         event(new TariffUpdated($tariff));
+
         return response('', 204)->header('HX-Trigger', json_encode([
             'tariffListChanged' => null,
             'showMessage' => "Тариф {$tariff->name} изменен.",
@@ -112,7 +120,12 @@ class TariffController extends Controller
     {
         $tariff = Tariff::findOrFail($id);
         $tariffName = $tariff->name;
+
+        event(new TariffDeleted($tariffName));
+
         $tariff->delete();
+        
+        //Log::info("TariffDeleted event fired for tariff: {$tariffName}");
 
         return redirect()->route('tariffs.index')
                         ->with('success', "Тариф {$tariffName} удалён.");
