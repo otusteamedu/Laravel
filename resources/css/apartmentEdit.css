@@ -1,0 +1,25 @@
+.header_text {
+  background-color: #E7F7FF;
+  text-align: center;
+  color: #0085C8;
+
+  font-family: 'Segoe UI', sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 12px;
+}
+
+label.form-label-table-counters {
+  font-family: 'Segoe UI', serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 17px;
+  color: #46423E;
+  width: 160px;
+}
+
+.table td {
+  vertical-align: middle;
+  padding-bottom:0px;
+}

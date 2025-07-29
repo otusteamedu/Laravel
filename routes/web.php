@@ -17,10 +17,11 @@ Route::get('/test-session', function (Illuminate\Http\Request $request) {
 // Главная страница
 Route::get('/', [ApartmentAreaController::class, 'index'])->name('index');
 
+/*
 // Страница тарифов
 Route::get('/tariffs', function () {
     return view('tariffs', ['title' => 'Тарифы']);
-})->name('tariffs.index');
+})->name('tariffs.index');*/
 
 // Страница квартир
 Route::get('/apartments', function () {
