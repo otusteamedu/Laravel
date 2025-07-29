@@ -12,6 +12,6 @@ class TariffSeeder extends Seeder
      */
     public function run()
     {
-        \App\Models\Tariff::factory()->count(10)->create();
+        \Tariff\Models\Tariff::factory()->count(10)->create();
     }
 }

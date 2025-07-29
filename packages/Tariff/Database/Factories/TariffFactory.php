@@ -1,8 +1,9 @@
 <?php
 
-namespace Database\Factories;
+namespace Tariff\Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Tariff\Models\Tariff;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Tariff>
@@ -14,6 +15,9 @@ class TariffFactory extends Factory
      *
      * @return array<string, mixed>
      */
+
+    protected $model = Tariff::class;
+
     public function definition()
     {
         return [

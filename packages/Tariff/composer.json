@@ -4,7 +4,8 @@
     "type": "library",
     "autoload": {
         "psr-4": {
-            "Tariff\\": "src/"
+            "Tariff\\": "src/",
+            "Database\\Seeders\\": "packages/Tariff/database/seeders/",
         }
     },
     "authors": [

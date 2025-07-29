@@ -1,9 +1,11 @@
 <?php
 
-namespace App\Models;
+namespace Tariff\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Tariff\Database\Factories\TariffFactory;
+
 
 /**
  * @property string $name
@@ -134,4 +136,10 @@ class Tariff extends Model
     {
         return (float) $this->attributes['multiplying_factor'];
     }
+
+    protected static function newFactory()
+    {
+        return TariffFactory::new();
+    }
+
 }
