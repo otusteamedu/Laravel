@@ -2,7 +2,7 @@
 
 namespace App\Services;
 
-use App\Models\Apartment;
+use App\Domain\Apartment\Apartment;
 use App\Models\ApartmentCharge;
 use App\Models\ApartmentCounter;
 use App\Models\ApartmentDetail;

@@ -5,8 +5,11 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;  
 use App\Helpers\AreaCalculator;
-use App\Models\Apartment;
 use App\Services\FeeCalculatorService;
+use App\Domain\Apartment\Apartment;
+use App\Domain\Apartment\ValueObjects\Owner;
+use App\Domain\Apartment\ValueObjects\SerialNumber;
+
 
 class ApartmentAreaController extends Controller
 {

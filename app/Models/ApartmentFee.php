@@ -185,7 +185,7 @@ class ApartmentFee extends Model
         return (int) $this->attributes['apartment_id'];
     }
 
-    public function getApartment(): \App\Models\Apartment
+    public function getApartment(): \App\Domain\Apartment\Apartment
     {
         return $this->apartment;
     }

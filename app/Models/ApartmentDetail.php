@@ -82,7 +82,7 @@ class ApartmentDetail extends Model
         return (int) $this->attributes['tariff_id'];
     }
 
-    public function getApartment(): \App\Models\Apartment
+    public function getApartment(): \App\Domain\Apartment\Apartment
     {
         return $this->apartment;
     }

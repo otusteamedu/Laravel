@@ -2,7 +2,7 @@
 
 namespace Tests\Unit;
 
-use App\Models\Apartment;
+use App\Domain\Apartment\Apartment;
 use App\Models\ApartmentDetail;
 use App\Models\ApartmentCharge;
 use App\Models\ApartmentCounter;

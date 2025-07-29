@@ -2,7 +2,7 @@
 
 namespace Database\Factories;
 
-use App\Models\Apartment;
+use App\Domain\Apartment\Apartment;
 use App\Models\Tariff;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
