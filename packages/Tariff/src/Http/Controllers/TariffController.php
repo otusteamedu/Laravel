@@ -62,7 +62,7 @@ class TariffController extends Controller
 
         $tariff = Tariff::create($data);
 
-        event(new TariffCreated($tariff)); 
+        event(new TariffCreated($tariff->id));
 
         return response('', 204)->header('HX-Trigger', json_encode([
             'tariffListChanged' => null,
@@ -108,7 +108,7 @@ class TariffController extends Controller
 
         $tariff->update($data);
 
-         event(new TariffUpdated($tariff));
+         event(new TariffUpdated($tariff->id));
 
         return response('', 204)->header('HX-Trigger', json_encode([
             'tariffListChanged' => null,

@@ -7,20 +7,12 @@ use App\Events\TariffUpdated;
 use App\Events\TariffDeleted;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Support\Facades\Log;
+use Tariff\Models\Tariff;
 
 class SendTariffNotification implements ShouldQueue
 {
-    /**
-     * Handle the event.
-     *
-     * @param object $event
-     * @return void
-     */
     public function handle(object $event): void
     {
-
-        //Log::info('SendTariffNotification handle() triggered for event: ' . get_class($event));
-
         $message = $this->buildMessage($event);
 
         if ($message) {
@@ -28,20 +20,22 @@ class SendTariffNotification implements ShouldQueue
         }
     }
 
-    /**
-     * Build Telegram message based on event type.
-     *
-     * @param object $event
-     * @return string|null
-     */
     protected function buildMessage(object $event): ?string
     {
         if ($event instanceof TariffCreated) {
-            return "Tariff created: {$event->tariff->name}";
+            $tariff = Tariff::find($event->tariffId);
+            if (!$tariff) {
+                return null;
+            }
+            return "Tariff created: {$tariff->name}";
         }
 
         if ($event instanceof TariffUpdated) {
-            return "Tariff updated: {$event->tariff->name}";
+            $tariff = Tariff::find($event->tariffId);
+            if (!$tariff) {
+                return null;
+            }
+            return "Tariff updated: {$tariff->name}";
         }
 
         if ($event instanceof TariffDeleted) {

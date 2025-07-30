@@ -4,26 +4,25 @@ namespace App\Events;
 
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
-use Tariff\Models\Tariff;
 
 class TariffUpdated
 {
     use Dispatchable, SerializesModels;
 
     /**
-     * The tariff instance.
+     * The tariff ID.
      *
-     * @var \Tariff\Models\Tariff
+     * @var int
      */
-    public $tariff;
+    public $tariffId;
 
     /**
      * Create a new event instance.
      *
-     * @param \Tariff\Models\Tariff $tariff
+     * @param int $tariffId
      */
-    public function __construct(Tariff $tariff)
+    public function __construct(int $tariffId)
     {
-        $this->tariff = $tariff;
+        $this->tariffId = $tariffId;
     }
 }
