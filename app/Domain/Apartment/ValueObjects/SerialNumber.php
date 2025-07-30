@@ -9,12 +9,12 @@ class SerialNumber
     public function __construct(int $number)
     {
         if ($number <= 0) {
-            throw new \InvalidArgumentException('Serial number must be a positive integer');
+            throw new \InvalidArgumentException('Serial number must be positive.');
         }
         $this->number = $number;
     }
 
-    public function getValue(): int
+    public function toInt(): int
     {
         return $this->number;
     }
@@ -24,3 +24,4 @@ class SerialNumber
         return (string) $this->number;
     }
 }
+

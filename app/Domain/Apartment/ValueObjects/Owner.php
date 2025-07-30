@@ -8,10 +8,15 @@ class Owner
 
     public function __construct(string $name)
     {
-        if (trim($name) === '') {
-            throw new \InvalidArgumentException('Не может быть пусто');
+        if (empty(trim($name))) {
+            throw new \InvalidArgumentException('Не может быть пустым');
         }
         $this->name = $name;
+    }
+
+    public function toString(): string
+    {
+        return $this->name;
     }
 
     public function __toString(): string
@@ -19,3 +24,4 @@ class Owner
         return $this->name;
     }
 }
+

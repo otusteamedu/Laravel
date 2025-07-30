@@ -3,29 +3,24 @@
 namespace App\Domain\Apartment;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use App\Domain\Apartment\ValueObjects\Owner;
 use App\Domain\Apartment\ValueObjects\SerialNumber;
-use App\Models\ApartmentDetail;
-use App\Models\ApartmentFee;
-
-/**
- * @property string $owner
- * @property int $serial_number
- */
 
 class Apartment extends Model
 {
-    use HasFactory;
-
     protected $fillable = ['owner', 'serial_number'];
 
-    protected static function booted()
+    public function __construct(array $attributes = [])
     {
-        static::creating(function ($model) {
-            $model->owner = (string) new Owner($model->owner);
-            $model->serial_number = (new SerialNumber((int) $model->serial_number))->getValue();
-        });
+        parent::__construct($attributes);
+    }
+
+    public static function create(Owner $owner, SerialNumber $serialNumber): self
+    {
+        $apartment = new self();
+        $apartment->attributes['owner'] = $owner->toString();
+        $apartment->attributes['serial_number'] = $serialNumber->toInt();
+        return $apartment;
     }
 
     public function getOwner(): Owner
@@ -38,21 +33,14 @@ class Apartment extends Model
         return new SerialNumber((int) $this->attributes['serial_number']);
     }
 
-    public function changeOwner(Owner $newOwner): void
-    {
-        if (empty((string)$newOwner)) {
-            throw new \InvalidArgumentException('Не может быть пусто');
-        }
-        $this->attributes['owner'] = (string) $newOwner;
-    }
-
     public function details()
     {
-        return $this->hasMany(ApartmentDetail::class);
+        return $this->hasMany(\App\Models\ApartmentDetail::class);
     }
 
     public function fees()
     {
-        return $this->hasMany(ApartmentFee::class);
+        return $this->hasMany(\App\Models\ApartmentFee::class);
     }
 }
+
