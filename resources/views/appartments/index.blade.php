@@ -18,9 +18,9 @@
         </thead>
         <tbody>
             @foreach ($apartments as $apartment)
-            <tr onclick="window.location='{{ route('apartments.update', $apartment->serialNumber) }}'" style="cursor:pointer;">
-                <td><span class="apartment-nomer">{{ $apartment->serialNumber }}</span></td>
-                <td><span class="apartment-owner">{{ $apartment->owner }}</span></td>
+            <tr onclick="window.location='{{ route('apartments.update', $apartment->getSerialNumber()->toInt()) }}'" style="cursor:pointer;">
+                <td><span class="apartment-nomer">{{ $apartment->getSerialNumber()->toInt() }}</span></td>
+                <td><span class="apartment-owner">{{ $apartment->getOwner()->toString() }}</span></td>
                 <!-- Остальные данные -->
             </tr>
             @endforeach

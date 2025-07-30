@@ -4,7 +4,7 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Cache;
-use App\Models\Apartment;
+use App\Domain\Apartment\Apartment;
 use App\Models\ApartmentCharge;
 use App\Models\ApartmentCounter;
 use App\Models\ApartmentDetail;

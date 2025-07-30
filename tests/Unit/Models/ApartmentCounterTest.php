@@ -2,7 +2,7 @@
 
 namespace Tests\Unit\Models;
 
-use App\Models\Apartment;
+use App\Domain\Apartment\Apartment;
 use App\Models\ApartmentCounter;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;

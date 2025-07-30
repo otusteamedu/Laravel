@@ -17,12 +17,6 @@ Route::get('/test-session', function (Illuminate\Http\Request $request) {
 // Главная страница
 Route::get('/', [ApartmentAreaController::class, 'index'])->name('index');
 
-/*
-// Страница тарифов
-Route::get('/tariffs', function () {
-    return view('tariffs', ['title' => 'Тарифы']);
-})->name('tariffs.index');*/
-
 // Страница квартир
 Route::get('/apartments', function () {
     return view('apartments.index', [
@@ -75,3 +69,9 @@ Route::get('/fail', function () {
 Route::post('/apartment/calculate-area', [ApartmentAreaController::class, 'calculate']);
 Route::post('/apartment/calculate-fees', [ApartmentAreaController::class, 'calculateFees']);
 Route::get('/calculate-fees', [ApartmentAreaController::class, 'calculateFees'])->name('calculate_fees');
+
+//временно для теста
+Route::get('/test-telegram', function () {
+    Log::channel('telegram')->info('Test Telegram from queue');
+    return 'ok';
+});

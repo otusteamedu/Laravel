@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Models\Apartment;
+use App\Domain\Apartment\Apartment;
 use App\Models\ApartmentCounter;
 use Illuminate\Database\Seeder;
 
