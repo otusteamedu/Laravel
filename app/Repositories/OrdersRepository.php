@@ -11,9 +11,10 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Cache;
 
-
 class OrdersRepository
 {
+    public function __construct(private UsersRepository $userRepository) {}
+
     /**
      * @return Collection<array-key, Order>
      */
@@ -68,11 +69,25 @@ class OrdersRepository
     /**
      * @return Collection<array-key, Order>
      */
-    public function fetchByUserEmail(string $email): Collection
+    public function fetchByUserEmail(string $email, bool $warmup = false): Collection
     {
-        $orders = Order::with(['products'])->whereHas('user', function($query) use ($email) {
-            $query->where('email', $email);
-        })->get();
+        $key = 'order.email.' . $email;
+        $ttl = now()->addDay();
+        $tag = 'order-list';
+
+        if ($warmup) {
+            $orders = Order::with(['products'])->whereHas('user', function($query) use ($email) {
+                $query->where('email', $email);
+            })->get();
+            Cache::tags($tag)->put($key, $orders, $ttl);
+            return $orders;
+        }
+
+        $orders = Cache::tags($tag)->remember($key, $ttl, function () use($email) {
+            return Order::with(['products'])->whereHas('user', function($query) use ($email) {
+                $query->where('email', $email);
+            })->get();
+        });
 
         return $orders;
     }
@@ -107,8 +122,22 @@ class OrdersRepository
     /**
      * @return int
      */
-    public function count(): int{
-        return Order::count();
+    public function count(bool $warmup = false): int
+    {
+        $key = 'orders.count';
+        $ttl = now()->addDay();
+        
+        if ($warmup) {
+            $count = Order::count();
+            Cache::put($key, $count, $ttl);
+            return $count;
+        }
+        
+        $count = Cache::remember($key, $ttl, function () {
+            return Order::count();
+        });
+
+        return $count;
     }
 
     /**
@@ -122,6 +151,7 @@ class OrdersRepository
         $order->save();
 
         Cache::tags('order-list')->flush();
+        Cache::forget('orders.count');
 
         return $order;
     }
@@ -149,6 +179,23 @@ class OrdersRepository
         return $order;
     }
 
+    public function saveStatus(int $id, int $status): Order
+    {
+        $order = Order::find($id);
+
+        if (!$order) {
+            throw new OrderNotFoundException();
+        }
+
+        $order->status = $status;
+        $order->save();
+
+        Cache::forget('order.' . $id);
+        Cache::tags('order-list')->flush();
+
+        return $order;
+    }
+
     public function delete(int $orderId): void
     {
         $order = Order::find($orderId);
@@ -161,6 +208,7 @@ class OrdersRepository
 
         Cache::forget('order.' . $orderId);
         Cache::tags('order-list')->flush();
+        Cache::forget('orders.count');
     }
 
     public function warmupCache(): void
@@ -185,22 +233,13 @@ class OrdersRepository
         foreach ($ids as $orderId) {
             $this->find($orderId, true);
         }
-    }
 
-    public function saveStatus(int $id, int $status): Order
-    {
-        $order = Order::find($id);
+        $users = $this->userRepository->fetchAll();
+        $emails = $users->pluck('email')->toArray();
+        foreach ($emails as $email) {
+            $this->fetchByUserEmail($email, true);
+        } 
 
-        if (!$order) {
-            throw new OrderNotFoundException();
-        }
-
-        $order->status = $status;
-        $order->save();
-
-        Cache::forget('order.' . $id);
-        Cache::tags('order-list')->flush();
-
-        return $order;
+        $this->count(true);
     }
 }

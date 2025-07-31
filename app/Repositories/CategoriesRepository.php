@@ -83,8 +83,23 @@ class CategoriesRepository
     /**
      * @return int
      */
-    public function count(): int{
-        return Category::count();
+    public function count(bool $warmup = false): int
+    {
+        
+        $key = 'category.count';
+        $ttl = now()->addWeek();
+        
+        if ($warmup) {
+            $count = Category::count();
+            Cache::put($key, $count, $ttl);
+            return $count;
+        }
+        
+        $count = Cache::remember($key, $ttl, function () {
+            return Category::count();
+        });
+
+        return $count;
     }
 
     public function save(UpdateDto $updateDto): void
@@ -111,6 +126,7 @@ class CategoriesRepository
         $category->save();
 
         Cache::tags('category-list')->flush();
+        Cache::forget('category.count');
     }
 
     public function delete(int $categoryId): void
@@ -125,6 +141,7 @@ class CategoriesRepository
 
         Cache::forget('category.' . $categoryId);
         Cache::tags('category-list')->flush();
+        Cache::forget('category.count');
     }
 
     public function warmupCache(): void
@@ -143,5 +160,7 @@ class CategoriesRepository
         foreach ($ids as $categoryId) {
             $this->find($categoryId, true);
         }
+
+        $this->count(true);
     }
 }

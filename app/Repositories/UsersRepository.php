@@ -87,8 +87,22 @@ class UsersRepository
     /**
      * @return int
      */
-    public function count(): int{
-        return User::count();
+    public function count(bool $warmup = false): int
+    {
+        $key = 'users.count';
+        $ttl = now()->addDay();
+
+        if ($warmup) {
+            $count = User::count();
+            Cache::put($key, $count, $ttl);
+            return $count;
+        }
+
+        $count = Cache::remember($key, $ttl, function () {
+            return User::count();
+        });
+
+        return $count;
     }
 
     public function add(StoreDto $storeDto): void
@@ -101,6 +115,7 @@ class UsersRepository
         $user->save();
 
         Cache::tags('user-list')->flush();
+        Cache::forget('users.count');
     }
 
     public function save(UpdateDto $updateDto): void
@@ -163,6 +178,7 @@ class UsersRepository
 
         Cache::forget('user.' . $userId);
         Cache::tags('user-list')->flush();
+        Cache::forget('users.count');
     }
 
     public function warmupCache(): void
@@ -187,5 +203,7 @@ class UsersRepository
         foreach ($ids as $userId) {
             $this->find($userId, true);
         }
+
+        $this->count(true);
     }
 }
