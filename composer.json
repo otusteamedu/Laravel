@@ -9,7 +9,8 @@
         "php": "^8.2",
         "laravel-lang/lang": "^12.17",
         "laravel/framework": "^12.0",
-        "laravel/tinker": "^2.10.1"
+        "laravel/tinker": "^2.10.1",
+        "stronger21012/autotranslator": "dev-main"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.16",
