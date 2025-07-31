@@ -33,7 +33,7 @@ class AuthTest extends TestCase
             'password' => 'password',
             'scope' => '',
         ];
-        $response = $this->postJson(route('passport.token'), $params);
+        $response = $this->postJson('/oauth/token', $params);
 
         $response->assertStatus(200);
         $response->assertJsonStructure(['token_type', 'expires_in', 'access_token', 'refresh_token']);
@@ -50,7 +50,7 @@ class AuthTest extends TestCase
             'password' => 'password',
             'scope' => '',
         ];
-        $response = $this->postJson(route('passport.token'), $params);
+        $response = $this->postJson('/oauth/token', $params);
         $content = json_decode($response->getContent(), true);
         $resfreshToken = $content['refresh_token'];
 
@@ -60,7 +60,7 @@ class AuthTest extends TestCase
             'refresh_token' => $resfreshToken,
             'scope' => '',
         ];
-        $response = $this->postJson(route('passport.token'), $params);
+        $response = $this->postJson('/oauth/token', $params);
 
         $response->assertStatus(200);
         $response->assertJsonStructure(['token_type', 'expires_in', 'access_token', 'refresh_token']);
@@ -81,7 +81,7 @@ class AuthTest extends TestCase
         $content = json_decode($response->getContent(), true);
         $accessToken = $content['access_token'];
 
-        $response = $this->withHeaders(['Authorization' => 'Bearer ' . $accessToken])->postJson(route('api.logout'));
+        $response = $this->withHeaders(['Authorization' => 'Bearer ' . $accessToken])->postJson('/api/logout');
 
         $response->assertStatus(200);
     }

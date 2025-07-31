@@ -38,7 +38,7 @@ class ProfileControllerTest extends TestCase
             'password' => 'password',
             'scope' => '',
         ];
-        $response = $this->postJson(route('passport.token'), $params);
+        $response = $this->postJson('/oauth/token', $params);
         $content = json_decode($response->getContent(), true);
         $this->accessToken = $content['access_token'];
     }
@@ -47,7 +47,7 @@ class ProfileControllerTest extends TestCase
     {
         $response = $this
             ->withHeaders(['Authorization' => 'Bearer ' . $this->accessToken])
-            ->getJson(route('v3.profile.get'));
+            ->getJson('/api/v3/profile');
 
         $response->assertOk();
         $response->assertJson(fn(AssertableJson $json) =>
@@ -64,7 +64,7 @@ class ProfileControllerTest extends TestCase
 
         $response = $this
             ->withHeaders(['Authorization' => 'Bearer ' . $this->accessToken])
-            ->patchJson(route('v3.profile.update'), ['name' => $newName]);
+            ->patchJson('/api/v3/profile', ['name' => $newName]);
 
 
         $response->assertOk();
@@ -80,7 +80,7 @@ class ProfileControllerTest extends TestCase
 
         $response = $this
             ->withHeaders(['Authorization' => 'Bearer ' . $this->accessToken])
-            ->patchJson(route('v3.profile.password'), [
+            ->patchJson('/api/v3/profile/password', [
                 'password' => $newPassword,
                 'password_confirmation' => $newPassword,
             ]);
@@ -111,7 +111,7 @@ class ProfileControllerTest extends TestCase
 
         $response = $this
             ->withHeaders(['Authorization' => 'Bearer ' . $this->accessToken])
-            ->getJson(route('v3.profile.orders'));
+            ->getJson('/api/v3/profile/orders');
 
         $response->assertOk();
         $response->assertJson(fn(AssertableJson $json) => 
