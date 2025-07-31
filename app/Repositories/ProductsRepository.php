@@ -69,11 +69,18 @@ class ProductsRepository
             return new Collection();
         }
 
-        $products = Product::with('first_image')
-            ->whereIn('id', $productIds)
-            ->orderByRaw("FIELD(id, " . implode(',', $productIds) . ")")
-            ->get();
-        
+        $ids = implode('.', $productIds);
+        $key = 'products.image.ids.' . $ids;
+        $ttl = now()->addDay();
+        $tag = 'product-list';
+
+        $products = Cache::tags($tag)->remember($key, $ttl, function () use($productIds) {
+            return Product::with('first_image')
+                ->whereIn('id', $productIds)
+                ->orderByRaw("FIELD(id, " . implode(',', $productIds) . ")")
+                ->get();
+        });
+
         return $products;
     }
 
@@ -84,14 +91,15 @@ class ProductsRepository
     {
         $key = 'products.category.' . $categoryId;
         $ttl = now()->addDay();
+        $tag = 'product-list';
 
         if ($warmup) {
             $products = Product::with('first_image')->where('category_id', $categoryId)->get();
-            Cache::put($key, $products, $ttl);
+            Cache::tags($tag)->put($key, $products, $ttl);
             return $products;
         }
 
-        $products = Cache::remember($key, $ttl, function () use($categoryId) {
+        $products = Cache::tags($tag)->remember($key, $ttl, function () use($categoryId) {
             return Product::with('first_image')->where('category_id', $categoryId)->get();
         });
 
@@ -101,11 +109,26 @@ class ProductsRepository
     /**
      * @return Collection<array-key, Product>
      */
-    public function fetchByCategoryTitle(string $categoryTitle): Collection
+    public function fetchByCategoryTitle(string $categoryTitle, bool $warmup = false): Collection
     {
-        $products = Product::whereHas('category', function($query) use ($categoryTitle) {
-            $query->where('title', $categoryTitle);
-        })->get();
+        $key = 'products.category_title.' . str_replace(' ', '_', $categoryTitle);
+        $ttl = now()->addDay();
+        $tag = 'product-list';
+
+        if ($warmup) {
+            $products = Product::whereHas('category', function($query) use ($categoryTitle) {
+                $query->where('title', $categoryTitle);
+            })->get();
+            Cache::tags($tag)->put($key, $products, $ttl);
+            return $products;
+        }
+
+        $products = Cache::tags($tag)->remember($key, $ttl, function () use ($categoryTitle) {
+            return Product::whereHas('category', function($query) use ($categoryTitle) {
+                $query->where('title', $categoryTitle);
+            })->get();
+        });
+
         return $products;
     }
 
@@ -194,19 +217,13 @@ class ProductsRepository
     /**
      * @return Collection<array-key, Product>
      */
-    public function findByIds(array $product_ids, bool $warmup = false): Collection
+    public function findByIds(array $product_ids): Collection
     {
         $ids = implode('.', $product_ids);
 
         $key = 'products.ids.' . $ids;
         $ttl = now()->addDay();
         $tag = 'product-list';
-
-        if ($warmup) {
-            $products = Product::whereIn('id', $product_ids)->get();
-            Cache::tags($tag)->put($key, $products, $ttl);
-            return $products;
-        }
 
         $products = Cache::tags($tag)->remember($key, $ttl, function () use($product_ids) {
             return Product::whereIn('id', $product_ids)->get();
@@ -218,8 +235,23 @@ class ProductsRepository
     /**
      * @return int
      */
-    public function count(): int{
-        return Product::count();
+    public function count(bool $warmup = false): int
+    {
+        
+        $key = 'products.count';
+        $ttl = now()->addDay();
+        
+        if ($warmup) {
+            $count = Product::count();
+            Cache::put($key, $count, $ttl);
+            return $count;
+        }
+        
+        $count = Cache::remember($key, $ttl, function () {
+            return Product::count();
+        });
+
+        return $count;
     }
 
     /**
@@ -236,6 +268,7 @@ class ProductsRepository
         $product->save();
 
         Cache::tags('product-list')->flush();
+        Cache::forget('products.count');
 
         return $product;
     }
@@ -276,6 +309,7 @@ class ProductsRepository
         Cache::forget('product.' . $productId);
         Cache::forget('products.category.' . $product->getCategoryId());
         Cache::tags('product-list')->flush();
+        Cache::forget('products.count');
 
         $product->delete();
     }
@@ -283,8 +317,7 @@ class ProductsRepository
     public function warmupCache(): void
     {
         $products = $this->fetchAll(true);
-        $productTotal = count($products);
-        $categoryIds = Category::all()->pluck('id')->toArray();
+        $productTotal = $this->count(true);
 
         $perPage = self::PRODUCT_FOR_PAGE;
         $totalPage = ceil($productTotal / $perPage);
@@ -293,8 +326,15 @@ class ProductsRepository
             $this->fetchAllWithImage($page, true);
         }
 
+        $categories = Category::all();
+        $categoryIds = $categories->pluck('id')->toArray();
+        $categoryTitles = $categories->pluck('title')->toArray();
+
         foreach ($categoryIds as $categoryId) {
             $this->fetchByCategoryId($categoryId, true);
+        }
+        foreach ($categoryTitles as $categoryTitle) {
+            $this->fetchByCategoryTitle($categoryTitle, true);
         }
 
         $perPage = config('custom.perPageAdmin');
