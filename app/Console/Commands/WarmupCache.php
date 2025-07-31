@@ -10,6 +10,7 @@ use App\Repositories\ProductsRepository;
 use App\Repositories\RolesRepository;
 use App\Repositories\UsersRepository;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Redis;
 
 class WarmupCache extends Command
 {
@@ -27,6 +28,9 @@ class WarmupCache extends Command
      */
     protected $description = 'Warm up the application cache';
 
+    private string $lockKey = 'lock:cache-warmup';
+    private int $lockTtl = 60;
+
     /**
      * Execute the console command.
      */
@@ -40,16 +44,57 @@ class WarmupCache extends Command
         MessagesRepository $messageRepo
     )
     {
-        $this->info('Starting cache warmup...');
+        $lockAcquired = $this->acquireLock();
         
-        $brandRepo->warmupCache();
-        $categoryRepo->warmupCache();
-        $orderRepo->warmupCache();
-        $productRepo->warmupCache();
-        $roleRepo->warmupCache();
-        $userRepo->warmupCache();
-        $messageRepo->warmupCache();
+        if (!$lockAcquired) {
+            $this->info('Another process is already warming cache. Skipping...');
+            return;
+        }
+
+        try {
+            $this->info('Starting cache clear...');
+            $this->call('cache:clear');
+            $this->info('Cache clear completed!');
+
+            $this->info('Starting cache warmup...');
+            
+            $brandRepo->warmupCache();
+            $categoryRepo->warmupCache();
+            $orderRepo->warmupCache();
+            $productRepo->warmupCache();
+            $roleRepo->warmupCache();
+            $userRepo->warmupCache();
+            $messageRepo->warmupCache();
+            
+            $this->info('Cache warmup completed!');
+        } finally {
+            $this->releaseLock();
+        }   
+    }
+
+    protected function acquireLock(): bool
+    {
+        $script = <<<'LUA'
+            if redis.call("setnx", KEYS[1], ARGV[1]) == 1 then
+                return redis.call("expire", KEYS[1], ARGV[2]) == 1
+            else
+                return false
+            end
+        LUA;
+
+        $timestamp = now()->toDateTimeString();
         
-        $this->info('Cache warmup completed!');
+        return (bool) Redis::eval(
+            $script,
+            1,
+            $this->lockKey,
+            $timestamp,
+            $this->lockTtl
+        );
+    }
+
+    protected function releaseLock(): void
+    {
+        Redis::del($this->lockKey);
     }
 }

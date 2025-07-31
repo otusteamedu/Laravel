@@ -8,8 +8,4 @@ Artisan::command('inspire', function () {
     $this->comment(Inspiring::quote());
 })->purpose('Display an inspiring quote');
 
-Schedule::command('cache:clear')
-    ->daily()
-    ->then(function () {
-        Schedule::command('cache:warmup')->daily();
-    });
+Schedule::command('cache:warmup')->daily();
