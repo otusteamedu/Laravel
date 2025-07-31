@@ -81,6 +81,6 @@ class User extends Authenticatable implements OAuthenticatable
 
     public function orders(): HasMany
     {
-        return $this->hasMany(Order::class)->orderBy('created_at', 'desc');
+        return $this->hasMany(Order::class)->orderBy('created_at', 'desc')->with('products');
     }
 }
