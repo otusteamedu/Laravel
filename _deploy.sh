@@ -8,7 +8,7 @@ SHARED_DIR="$PROJECT_ROOT/shared_folders"
 CURRENT_TIMESTAMP=$(date +%Y-%m-%d-%H%M%S)
 NEW_RELEASE_DIR="$RELEASES_DIR/$CURRENT_TIMESTAMP"
 GIT_REPO="https://github.com/otusteamedu/Laravel.git"
-GIT_BRANCH="SCherepanov/hw14"
+GIT_BRANCH="SCherepanov/hw15"
 
 echo "=== Deploy started at $CURRENT_TIMESTAMP ==="
 
@@ -43,8 +43,7 @@ fi
 ./vendor/bin/sail up -d
 
 
-echo "Waiting for PostgreSQL to be ready..."
-
+echo "Waiting for PostgreSQL"
 until ./vendor/bin/sail exec pgsql pg_isready -U postgres > /dev/null 2>&1; do
   echo -n "."
   sleep 2
@@ -52,11 +51,11 @@ done
 
 echo "PostgreSQL is ready!"
 
-echo "Running package migrations"
-./vendor/bin/sail artisan migrate --path=packages/Tariff/database/migrations --force
-
 echo "Running main migrations"
 ./vendor/bin/sail artisan migrate --force
+
+echo "Running database seeders"
+./vendor/bin/sail artisan db:seed --force
 
 echo "Clearing and caching config, routes, views"
 ./vendor/bin/sail artisan cache:clear
@@ -67,7 +66,7 @@ echo "Clearing and caching config, routes, views"
 echo "Updating 'current' symlink"
 ln -sfn "$NEW_RELEASE_DIR" "$PROJECT_ROOT/current"
 
-echo "Cleaning up old releases, keeping last 3"
+echo "Cleaning up old releases"
 cd "$RELEASES_DIR"
 ls -1dt */ | tail -n +4 | xargs -r rm -rf
 
