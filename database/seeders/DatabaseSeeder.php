@@ -21,7 +21,7 @@ class DatabaseSeeder extends Seeder
         ]);*/
 
         $this->call([
-            RoleSeeder::class,
+            //RoleSeeder::class,
             UserSeeder::class,
             \Tariff\Database\Seeders\TariffSeeder::class,
             ApartmentSeeder::class,

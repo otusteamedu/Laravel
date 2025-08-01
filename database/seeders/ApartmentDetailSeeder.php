@@ -4,7 +4,7 @@ namespace Database\Seeders;
 
 use App\Domain\Apartment\Apartment;
 use App\Models\ApartmentDetail;
-use App\Models\Tariff;
+use Tariff\Models\Tariff;
 use Illuminate\Database\Seeder;
 
 class ApartmentDetailSeeder extends Seeder

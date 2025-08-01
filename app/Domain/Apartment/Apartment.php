@@ -5,9 +5,12 @@ namespace App\Domain\Apartment;
 use Illuminate\Database\Eloquent\Model;
 use App\Domain\Apartment\ValueObjects\Owner;
 use App\Domain\Apartment\ValueObjects\SerialNumber;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Apartment extends Model
 {
+    use HasFactory;
+
     protected $fillable = ['owner', 'serial_number'];
 
     public function __construct(array $attributes = [])
