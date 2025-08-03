@@ -12,18 +12,22 @@ class ProductPriceChangedNotification extends Notification implements ShouldQueu
 {
     use Queueable;
 
-    public Product $product;
+    public int $productId;
     public float $oldPrice;
     public float $newPrice;
+    public string $productTitle;
+    public string $alias;
 
     /**
      * Create a new notification instance.
      */
-    public function __construct(Product $product, float $oldPrice, float $newPrice)
+    public function __construct(int $productId, float $oldPrice, float $newPrice, string $title, string $alias)
     {
-        $this->product = $product;
+        $this->productId = $productId;
         $this->oldPrice = $oldPrice;
         $this->newPrice = $newPrice;
+        $this->productTitle = $title;
+        $this->alias = $alias;
     }
 
     /**
@@ -45,12 +49,12 @@ class ProductPriceChangedNotification extends Notification implements ShouldQueu
         $priceChangeIcon = $this->newPrice > $this->oldPrice ? '📈' : '📉';
 
         return (new MailMessage)
-            ->subject("Изменение цены на товар: {$this->product->title}")
+            ->subject("Изменение цены на товар: {$this->productTitle}")
             ->greeting("Здравствуйте, {$notifiable->name}!")
-            ->line("Цена на товар \"{$this->product->title}\" {$priceChange} {$priceChangeIcon}")
+            ->line("Цена на товар \"{$this->productTitle}\" {$priceChange} {$priceChangeIcon}")
             ->line("Старая цена: {$this->formatPrice($this->oldPrice)}")
             ->line("Новая цена: {$this->formatPrice($this->newPrice)}")
-            ->action('Посмотреть товар', url("/products/{$this->product->alias}"))
+            ->action('Посмотреть товар', url("/products/{$this->alias}"))
             ->line('Спасибо за использование нашего сервиса!');
     }
 
@@ -62,9 +66,9 @@ class ProductPriceChangedNotification extends Notification implements ShouldQueu
     public function toArray(object $notifiable): array
     {
         return [
-            'product_id' => $this->product->id,
-            'product_title' => $this->product->title,
-            'product_alias' => $this->product->alias,
+            'product_id' => $this->productId,
+            'product_title' => $this->productTitle,
+            'product_alias' => $this->alias,
             'old_price' => $this->oldPrice,
             'new_price' => $this->newPrice,
             'price_change_type' => $this->newPrice > $this->oldPrice ? 'increase' : 'decrease',

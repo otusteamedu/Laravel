@@ -2,8 +2,7 @@
 
 namespace App\Jobs;
 
-use App\Events\ProductPriceChanged;
-use App\Models\Product;
+use App\DTO\ProductPriceData;
 use App\Models\User;
 use App\Notifications\ProductPriceChangedNotification;
 use Illuminate\Bus\Queueable;
@@ -12,23 +11,26 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Log;
+use App\Repositories\Contracts\ProductRepositoryInterface;
 
 class SendPriceChangeNotification implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    public Product $product;
+    public int $productId;
     public float $oldPrice;
     public float $newPrice;
+    protected ProductRepositoryInterface $productRepository;
 
     /**
      * Create a new job instance.
      */
-    public function __construct(Product $product, float $oldPrice, float $newPrice)
+    public function __construct(ProductPriceData $priceData,)
     {
-        $this->product = $product;
-        $this->oldPrice = $oldPrice;
-        $this->newPrice = $newPrice;
+        $this->productId = $priceData->productId;
+        $this->oldPrice = $priceData->oldPrice;
+        $this->newPrice = $priceData->newPrice;
+        $this->productRepository = app(ProductRepositoryInterface::class);
     }
 
     /**
@@ -46,17 +48,22 @@ class SendPriceChangeNotification implements ShouldQueue
                 ->orWhereDoesntHave('notifications_settings')
                 ->get();
 
+            $product = $this->productRepository->find($this->productId);;
+
             foreach ($users as $user) {
                 $user->notify(new ProductPriceChangedNotification(
-                    $this->product,
+                    $this->productId,
                     $this->oldPrice,
-                    $this->newPrice
+                    $this->newPrice,
+                    $product->title,
+                    $product->alias
                 ));
             }
 
+
             Log::info('Price change notifications sent', [
-                'product_id' => $this->product->id,
-                'product_title' => $this->product->title,
+                'product_id' => $this->productId,
+                'product_title' => $product->title,
                 'old_price' => $this->oldPrice,
                 'new_price' => $this->newPrice,
                 'users_notified' => $users->count()
@@ -64,7 +71,7 @@ class SendPriceChangeNotification implements ShouldQueue
 
         } catch (\Exception $e) {
             Log::error('Failed to send price change notifications', [
-                'product_id' => $this->product->id,
+                'product_id' => $this->productId,
                 'error' => $e->getMessage()
             ]);
 
@@ -78,7 +85,7 @@ class SendPriceChangeNotification implements ShouldQueue
     public function failed(\Throwable $exception): void
     {
         Log::error('Price change notification job failed', [
-            'product_id' => $this->product->id,
+            'product_id' => $this->productId,
             'error' => $exception->getMessage()
         ]);
     }

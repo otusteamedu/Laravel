@@ -26,9 +26,7 @@ class HandleProductPriceChange implements ShouldQueue
     {
         // Отправляем job в очередь для рассылки уведомлений
         SendPriceChangeNotification::dispatch(
-            $event->product,
-            $event->oldPrice,
-            $event->newPrice
+            $event->productPriceData
         )->delay(now()->addMinutes(1)); // Задержка в 1 минуту для избежания спама
     }
 }

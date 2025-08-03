@@ -2,6 +2,7 @@
 
 namespace App\Events;
 
+use App\DTO\ProductPriceData;
 use App\Models\Product;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Foundation\Events\Dispatchable;
@@ -11,14 +12,10 @@ class ProductPriceChanged
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public Product $product;
-    public float $oldPrice;
-    public float $newPrice;
+    public ProductPriceData $productPriceData;
 
-    public function __construct(Product $product, float $oldPrice, float $newPrice)
+    public function __construct(ProductPriceData $priceData)
     {
-        $this->product = $product;
-        $this->oldPrice = $oldPrice;
-        $this->newPrice = $newPrice;
+       $this->productPriceData = $priceData;
     }
 }

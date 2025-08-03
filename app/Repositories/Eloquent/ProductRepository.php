@@ -2,6 +2,8 @@
 
 namespace App\Repositories\Eloquent;
 
+use App\DTO\ProductPriceData;
+use App\Events\ProductPriceChanged;
 use App\Models\Product;
 use App\Repositories\Contracts\ProductRepositoryInterface;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -44,8 +46,26 @@ class ProductRepository implements ProductRepositoryInterface
 
     public function update(Product $product, array $data): Product
     {
+        $oldPrice = $product->price;
         $product->update($data);
+
+        $this->handlePriceChange($product, $oldPrice, $data);
+
         return $product;
+    }
+
+
+    protected function handlePriceChange(Product $product, float $oldPrice, array $data): void
+    {
+        if (isset($data['price']) && $product->price != $oldPrice) {
+            event(new ProductPriceChanged(
+                new ProductPriceData(
+                    productId: $product->id,
+                    oldPrice: $oldPrice,
+                    newPrice: $data['price']
+                )
+            ));
+        }
     }
 
     public function delete(Product $product): bool
