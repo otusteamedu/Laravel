@@ -40,6 +40,11 @@ return [
             'driver' => 'session',
             'provider' => 'users',
         ],
+        //добавил страж для jwt токена api
+        'jwt' => [
+            'driver'=>'jwt',
+            'provider'=>'users'
+        ],
     ],
 
     /*

@@ -34,6 +34,9 @@ use App\Modules\ISS\src\Services\issUser\loadUserDataFromMainApp\OrganizationDTO
 use App\Modules\ISS\src\Services\issUser\loadUserDataFromMainApp\FioDTO;
 use App\Modules\ISS\src\Services\issUser\loadUserDataFromMainApp\ContactDTO;
 use App\Modules\ISS\src\Services\issUser\IssUser;
+use App\Modules\ISS\src\Services\issUser\deleteIssUser\DeleteIssUser;
+use App\Modules\ISS\src\Services\issUser\deleteIssUser\InputDTO as deleteIssUserInputDTO;
+use App\Modules\ISS\src\Services\issUser\deleteIssUser\OutputDTO as deleteIssUserOutputDTO;
 
 class IssUserTest extends TestCase
 {
@@ -199,6 +202,7 @@ class IssUserTest extends TestCase
                         'name' => 'test',
                         'second_name' => 'test',
                         'last_name' => 'test',
+                        'email' => 'test@test.com',
                         'created_at' => '12-12-12 13:13',
                         'updated_at' => '15-08-23 15:47',
                         'deleted_at' => '12-12-12 13:13'
@@ -214,6 +218,7 @@ class IssUserTest extends TestCase
                             'name' => null,
                             'second_name' => null,
                             'last_name' => null,
+                            'email' => null,
                             'created_at' => null,
                             'updated_at' => null,
                             'deleted_at' => null
@@ -338,7 +343,7 @@ class IssUserTest extends TestCase
      * при извлечении из базы пользователей одной фирмы (для менеждера фирмы)
      */
     #[Group(name: "getUser(s)")]
-    public function test_get_users_related_to_manager()
+    public function test_get_users_related_to_manager_service()
     {
         //сервис отработал правильно (извлечение всех полей)
         $fakeRepo = $this->mock(IssUserRepoInterface::class, function (MockInterface $mock) {
@@ -434,7 +439,7 @@ class IssUserTest extends TestCase
      * при загрузке данных в ИОС из основного приложения
      */
     #[Group(name: "loadFromMainApp")]
-    public function test_load_user_data_from_main_app()
+    public function test_load_user_data_from_main_app_service()
     {
         //ошибка сервиса (обновляемый пользователь не найден в ИОС)
         $fakeRepo = $this->mock(IssUserRepoInterface::class, function (MockInterface $mock) {
@@ -515,5 +520,80 @@ class IssUserTest extends TestCase
         );
 
         $this->assertSame('ok', $result->result);
+    }
+
+    /**
+     * Проверка что сервис возвращает правильную структуру данных
+     * при удалении пользователя ИОС
+     */
+    #[Group(name: "operationOnIssUser")]
+    public function test_delete_iss_user_service()
+    {
+        //ошибка сервиса не удалось удалить маршруты пользователя
+        $fakeRepo= $this->createMock(IssUserRepoInterface::class);
+        $fakeRepo->method('deleteEducationRoutesOfIssUser')
+            ->will($this->throwException(new \Exception()));
+        $fakeRepo->method('deleteIssUser')
+            ->willReturn([1]);
+
+        $testedService = new DeleteIssUser($fakeRepo);
+        $result = $testedService(
+            new deleteIssUserInputDTO(issUserId: 345677)
+        );
+
+        $this->assertSame(false, $result->result, 'If routes del make error must be false');
+
+        //ошибка сервиса не удалось удалить пользователя
+        $fakeRepo= $this->createMock(IssUserRepoInterface::class);
+        $fakeRepo->method('deleteIssUser')
+            ->will($this->throwException(new \Exception()));
+        $fakeRepo->method('deleteEducationRoutesOfIssUser')
+            ->willReturn([2]);
+
+        $testedService = new DeleteIssUser($fakeRepo);
+        $result = $testedService(
+            new deleteIssUserInputDTO(issUserId: 345677)
+        );
+
+        $this->assertSame(false, $result->result, 'If user del make error must be false');
+
+        //сервис отработал правильно, маршрутов у пользователя не было
+        $fakeRepo = $this->mock(IssUserRepoInterface::class, function (MockInterface $mock) {
+            $mock->shouldReceive('deleteEducationRoutesOfIssUser')->once()->andReturn([0]);
+            $mock->shouldReceive('deleteIssUser')->once()->andReturn([1]);
+        });
+
+        $testedService = new DeleteIssUser($fakeRepo);
+        $result = $testedService(
+            new deleteIssUserInputDTO(issUserId: 345677)
+        );
+
+        $this->assertSame(true, $result->result, 'If user del make error must be false');
+
+        //сервис отработал правильно, удалены маршруты пользователя
+        $fakeRepo = $this->mock(IssUserRepoInterface::class, function (MockInterface $mock) {
+            $mock->shouldReceive('deleteEducationRoutesOfIssUser')->once()->andReturn([5]);
+            $mock->shouldReceive('deleteIssUser')->once()->andReturn([1]);
+        });
+
+        $testedService = new DeleteIssUser($fakeRepo);
+        $result = $testedService(
+            new deleteIssUserInputDTO(issUserId: 345677)
+        );
+
+        $this->assertSame(true, $result->result, 'If user del make error must be false');
+
+        //сервис отработал правильно, но ни маршрутов ни пользователя не нашел
+        $fakeRepo = $this->mock(IssUserRepoInterface::class, function (MockInterface $mock) {
+            $mock->shouldReceive('deleteEducationRoutesOfIssUser')->once()->andReturn([0]);
+            $mock->shouldReceive('deleteIssUser')->once()->andReturn([0]);
+        });
+
+        $testedService = new DeleteIssUser($fakeRepo);
+        $result = $testedService(
+            new deleteIssUserInputDTO(issUserId: 345677)
+        );
+
+        $this->assertSame(false, $result->result, 'If user del make error must be false');
     }
 }

@@ -5,7 +5,7 @@ namespace App\Modules\ISS\src\Services\EducationRoutePoint;
 interface EducationRoutePointRepoInterface
 {
     /**
-     * Достать общие данные для точки обучающего маршрута
+     * Запрос к БД достать общие данные для точки обучающего маршрута
      * @param array $inputData
      *              код реальной точки обучающего маршрута
      *                  $inputData['id'],
@@ -17,7 +17,7 @@ interface EducationRoutePointRepoInterface
     public function getRealPointMainData(array $inputData): array;
 
     /**
-     * Достать видео/пдф/текстовые файлы точки обучающего маршрута
+     * Запос к БД достать видео/пдф/текстовые файлы точки обучающего маршрута
      * @param array $inputData
      *              код реальной точки обучающего маршрута,
      *                  $inputData['id']
@@ -26,6 +26,15 @@ interface EducationRoutePointRepoInterface
      * @return array [['title' =>'example1', 'file_path' => 'example\file\path\1'], [...], [],...]
      */
     public function getFilesOfRealPointData(array $inputData): array;
+
+    /**
+     * Запрос к БД достать все справочные точки обучающих маршрутов
+     * @param array $inputData
+     *              массив имен полей, которые хотим получить
+     *              $inputData['returned_fields']
+     * @return array
+     */
+    public function getAllReferenceRoutePoints(array $inputData): array;
 
 
 }

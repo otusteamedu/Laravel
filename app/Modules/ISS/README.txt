@@ -84,7 +84,10 @@
     		]
 
 НАПОМИНАНИЯ
-1) Дописать\переписать тесты для сервисов (CheckSimpleExam, ProcessExamCheck, IsExamCanBePassed, getAllManagers, fillExamBlank)
+1) Дописать\переписать тесты для сервисов (
+CheckSimpleExam, ProcessExamCheck, IsExamCanBePassed, getAllManagers, fillExamBlank,
+updateIssUser, createIssUser,
+getAllRoutePoints, GetRefPointExamQuestions)
 2) Дописать тесты на контроллеры
 3) в сервисах где написано "//запись в лог" вместо этого в этих местах выбрасывать исключения и ловить их в контроллерах
    а уже в контроллерах писать в лог
@@ -101,5 +104,6 @@
 5) в IssStartPageController.php в сервисе getUserData УБРАТЬ из INPUTDTO названия полей user_id и т.д.,
    вместо этого из модели доставать scope (фильтрующие по нужным полям)
    иначе нарушается принцип изолированности сервиса
+6) Пока пишу функционал в сервисы, когда начну перенос в модуль в корне проекта, разобью по слоям и вынесу все правила в домены
 
 

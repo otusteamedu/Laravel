@@ -5,6 +5,8 @@ namespace App\Modules\ISS\src\Repositories;
 use Illuminate\Support\Facades\DB;
 use App\Modules\ISS\src\Services\issUser\IssUserRepoInterface;
 use App\Modules\ISS\src\Models\UserData;
+use App\Modules\ISS\src\Models\UserRole;
+use App\Modules\ISS\src\Models\RealEducationRoutesOfUser;
 
 class IssUserRepo implements IssUserRepoInterface
 {
@@ -189,4 +191,82 @@ class IssUserRepo implements IssUserRepoInterface
     {
         return UserData::where('id', $inputData['iss_user_id'])->first('web_token')->toArray();
     }
+
+    /**
+     * Запрос БД удалить обучающие маршруты пользователя иос
+     * @param array $inputData
+     * код пользователя ИОС
+     * $inputData['iss_user_id']
+     * @return array
+     */
+    public function deleteEducationRoutesOfIssUser(array $inputData): array
+    {
+        $result = RealEducationRoutesOfUser::where('user_data_id', $inputData['iss_user_id'])->forceDelete();
+        return [$result];
+    }
+
+    /**
+     * Запрос БД удалить пользователя иос
+     * @param array $inputData
+     * код пользователя ИОС
+     * $inputData['iss_user_id']
+     * @return array
+     */
+    public function deleteIssUser(array $inputData): array
+    {
+        $result = UserData::where('id', $inputData['iss_user_id'])->forceDelete();
+        return [$result];
+    }
+
+    /**
+     * Запрос БД найти роль пользователя иос по ее названию
+     * @param array $inputData
+     * название роли пользователя ИОС
+     * $inputData['name']
+     * @return array
+     */
+    public function findIssUserRoleByName(array $inputData): array //напрашивается перевод в scope в модель
+    {
+        return UserRole::where('name', $inputData['name'])->first()->toArray();
+    }
+
+    /**
+     * Запрос БД обновить данные пользователя иос
+     * @param array $inputData
+     * Код пользователя ИОС
+     * $inputData['id', '', ... все или некоторые поля модели]
+     * @return array
+     */
+    public function updateIssUser(array $inputData): array
+    {
+        $targetUser = UserData::where('id', $inputData['id'])->first();
+        foreach ($inputData as $key => $value) {
+            if ($key !== 'id') {
+                $targetUser->{$key} = $value;
+            }
+        }
+        return [$targetUser->save()];
+    }
+
+    /**
+     * Запрос БД создать пользователя иос
+     * @param array $inputData
+     * Код пользователя ИОС
+     * $inputData['id', '', ... все или некоторые поля модели]
+     * @return array
+     */
+    public function createIssUser(array $inputData): array
+    {
+        $dataForNewUser = [];
+        foreach ($inputData as $key => $value) {
+            if ($key !== 'id') {
+                $dataForNewUser[$key] = $value;
+            }
+        }
+
+        $newUser = UserData::create($dataForNewUser);
+
+        return $newUser->toArray();
+    }
+
 }

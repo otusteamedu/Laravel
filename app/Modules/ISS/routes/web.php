@@ -8,6 +8,8 @@ use App\Modules\ISS\src\Http\Controllers\IssAdminController;
 use App\Modules\ISS\src\Http\Controllers\IssRoutePointController;
 use App\Modules\ISS\src\Http\Controllers\AjaxEducationMaterialController;
 use App\Modules\ISS\src\Http\Controllers\IssCheckExamController;
+use App\Modules\ISS\src\Http\Controllers\AdminInterface\MainIssUserManageController;
+use App\Modules\ISS\src\Http\Controllers\AdminInterface\RoutePointManageController;
 
 //Route::prefix('/iss')
 Route::prefix(config('iss.ISS_ROUTE_PREFIX'))
@@ -42,16 +44,11 @@ Route::prefix(config('iss.ISS_ROUTE_PREFIX'))
         //страница администратора
         Route::get('/', [IssAdminController::class, 'adminPanel'])->name('issAdmin');
 
-        //добавление нового пользователя ИОС
-        //Route::get('/addIssUser', [IssAdminController::class, 'addIssUser'])->name('issAdmin.add');
-        //Route::post('/addIssUser', [IssAdminController::class, 'createIssUser'])->name('issAdmin.create');
-        //редактирование данных пользователя ИОС
-        //Route::get('/updateIssUser', [IssAdminController::class, 'editIssUser'])->name('issAdmin.edit');
-        //Route::post('/updateIssUser/{issUserId}', [IssAdminController::class, 'updateIssUser'])->name('issAdmin.update');
-        //удаление пользователя ИОС
-        //Route::get('/deleteIssUser', [IssAdminController::class, 'deleteIssUser'])->name('issAdmin.delete');
-        //Route::post('/deleteIssUser/{issUserId}', [IssAdminController::class, 'destroyIssUser'])->name('issAdmin.destroy');
+        //работа с пользователями ИОС
+        Route::resource('MainIssUserManage', MainIssUserManageController::class);
 
+        //работа со справочной точкой обучающего маршрута
+        Route::resource('RoutePointManage', RoutePointManageController::class);
 
         //инструмент для управления маршрутами пользователей ИОС
         //Route::get('/router', [IssRouterController::class, 'routerShow'])->name('issRouter.show');
@@ -65,16 +62,6 @@ Route::prefix(config('iss.ISS_ROUTE_PREFIX'))
         //удаление обучающего маршрута
         //Route::get('/router/route/delete', [IssRouterRouteController::class, 'delRoute'])->name('issRouter.delRoute');
         //Route::delete('/router/route/delete/{routeId}', [IssRouterRouteController::class, 'destroyRoute'])->name('issRouter.destroyRoute');
-
-        //добавление справочной точки обучающего маршрута
-        //Route::get('router/refPoint/add', [IssRouterRefPointController::class, 'addRefPoint'])->name('issRouter.addRefPoint');
-        //Route::post('router/refPoint/add', [IssRouterRefPointController::class, 'createRefPoint'])->name('issRouter.createRefPoint');
-        //редактирование справочной точки обучающего маршрута
-        //Route::get('/router/refPoint/edit', [IssRouterRefPointController::class, 'editRefPoint'])->name('issRouter.editRefPoint');
-        //Route::patch('/router/refPoint/edit/{refPointId}', [IssRouterRefPointController::class, 'updateRefPoint'])->name('issRouter.updateRefPoint');
-        //удаление справочной точки обучающего маршрута
-        //Route::get('/router/refPoint/del', [IssRouterRefPointController::class, 'delRefPoint'])->name('issRouter.delRefPoint');
-        //Route::delete('/router/refPoint/del/{refPointId}', [IssRouterRefPointController::class, 'destroyRefPoint'])->name('issRouter.destroyRefPoint');
 
         //добавление реальной точки обучающего маршрута
         //Route::get('router/point/add', [IssRouterPointController::class, 'addPoint'])->name('issRouter.addPoint');

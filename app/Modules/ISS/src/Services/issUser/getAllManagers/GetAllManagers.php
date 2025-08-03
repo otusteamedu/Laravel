@@ -42,6 +42,7 @@ class GetAllManagers
                         name: $currentUser['name'] ?? null,
                         secondName: $currentUser['second_name'] ?? null,
                         lastName: $currentUser['last_name'] ?? null,
+                        email: $currentUser['last_name'] ?? null,
                         createdAt: $currentUser['created_at'] ?? null,
                         updatedAt: $currentUser['updated_at'] ?? null,
                         deletedAt: $currentUser['deleted_at'] ?? null

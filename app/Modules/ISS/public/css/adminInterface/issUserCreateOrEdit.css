@@ -1,0 +1,37 @@
+/* Блок Данные пользователя */
+#userData /* Блок содержания: Блок с данными пользователя */
+{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    min-width: 330px;
+}
+
+.errorMsg
+{
+    color: red;
+    font-size: 1.5vw;
+}
+
+
+@media screen and (min-width: 800px)  /* НАСТРОЙКА САЙТА для ПК и планшетов */
+{
+
+}
+@media screen and (max-width: 800px)  /* НАСТРОЙКА САЙТА для телефонов */
+{
+    #userData { justify-content: center; }
+    #dataTable { width: 70%; }
+    .errorMsg { font-size: 2vw; }
+}
+@media screen and (max-width: 600px)  /* НАСТРОЙКА САЙТА для телефонов */
+{
+    #dataTable { width: 90%; }
+    .errorMsg { font-size: 3vw; }
+}
+@media screen and (max-width: 350px)  /* НАСТРОЙКА САЙТА для телефонов */
+{
+    .errorMsg { font-size: 15px; }
+}
+
+

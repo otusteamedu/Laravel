@@ -1,0 +1,46 @@
+<?php
+
+return [
+    'refToIssUserList' => 'Back to ISS User List',
+    'refBackToAdminPage' => 'Back to Admin Page',
+
+    'issUserList' => 'Users list',
+    'avatar' => 'Avatar',
+    'issUserId' => 'ISS user id',
+    'mainAppUserId' => 'Main app user ID',
+    'userRole' => 'User role in ISS',
+    'organization' => 'Organization',
+    'lastName' => 'Last name',
+    'secondName' => 'Second name',
+    'firstName' => 'First name',
+    'email' => 'Contacts',
+    'userAction' => 'Action',
+    'userEdit' => 'Edit',
+    'userDelete' => 'Delete',
+    'userCreate' => 'Create',
+    'userEditFormLabel' => 'Edit ISS user form',
+    'userCreateFormLabel' => 'Create ISS user form',
+
+    'validationErrors' => [
+        'avatarImage' => 'Avatar must be an image.',
+        'avatarTypes' => 'Avatar file must be one of: JPG, GIF, PNG.',
+        'mainAppUserIdRequired' => 'Main app user ID is required.',
+        'mustBeInteger' => 'Must be integer.',
+        'mustBeString' => 'Must be string.',
+        'userRoleRequired' => 'Role is required.',
+        'userRoleAccepted' => 'Role name must be one of :values.',
+        'organizationRequired' => 'Organization is required.',
+        'lastNameRequired' => 'Last name is required.',
+        'firstNameRequired' => 'First name is required.',
+        'secondNameRequired' => 'Second name is required.',
+        'emailRequired' => 'Email is required.',
+        'emailFormatWrong' => 'Email format is invalid.',
+    ],
+
+    'deleteSuccess' => 'ISS user deleted successfully.',
+    'deleteError' => 'Error while ISS user delete operation.',
+    'updateError' => 'ISS user update error.',
+    'updatedSuccess' => 'ISS user updated successfully.',
+    'createSuccess' => 'ISS user created successfully.',
+    'createError' => 'Error while ISS user create operation.',
+];

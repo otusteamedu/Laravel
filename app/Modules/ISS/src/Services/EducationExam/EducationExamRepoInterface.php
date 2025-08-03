@@ -5,7 +5,7 @@ namespace App\Modules\ISS\src\Services\EducationExam;
 interface EducationExamRepoInterface
 {
     /**
-     * Запрос БД извлеч все экзаменационные вопросы теста для данной точки обучающего маршрута
+     * Запрос БД извлеч все экзаменационные вопросы теста для данной РЕАЛЬНОЙ точки обучающего маршрута
      * (вместе с вериантами ответов, если они есть)
      * @param array $inputData $inputData['id'] код реальной точки учебного маршрута
      * @return array
@@ -16,6 +16,19 @@ interface EducationExamRepoInterface
      *               ]
      */
     public function getExamQuestions(array $inputData): array;
+
+    /**
+     * Запрос БД извлечь экзаменационные вопросы для СПРАВОЧНОЙ точки экзаменационного маршрута
+     *  (вместе с вериантами ответов, если они есть)
+     * @param array $inputData $inputData['id'] код справочной точки учебного маршрута
+     * @return array
+     *               [
+     *                 ['id'=>, 'question'=>, ... ,'exam_answer'=> [ ['id'=>, 'answer'=>, 'is_right'=>, ...], [...], .... ],
+     *                 ['id'=>, 'question'=>, ... ,'exam_answer'=> [ ['id'=>, 'answer'=>, 'is_right'=>, ...], [...], .... ],
+     *               ...
+     *               ]
+     */
+    public function getRefPointQuestions(array $inputData): array;
 
     /**
      * Запрос БД извлеч все ответы для экзаменационногоо вопроса теста

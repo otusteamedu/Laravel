@@ -42,6 +42,7 @@ class GetAllUsers
                         name: $currentUser['name'] ?? null,
                         secondName: $currentUser['second_name'] ?? null,
                         lastName: $currentUser['last_name'] ?? null,
+                        email: $currentUser['email'] ?? null,
                         createdAt: $currentUser['created_at'] ?? null,
                         updatedAt: $currentUser['updated_at'] ?? null,
                         deletedAt: $currentUser['deleted_at'] ?? null

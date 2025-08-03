@@ -2,15 +2,15 @@
 
 namespace App\Modules\ISS\src\Services\EducationRoutePoint\getFilesOfRealPointData;
 
-use App\Modules\ISS\src\Repositories\EducationRoutePointRepo;
+use App\Modules\ISS\src\Services\EducationRoutePoint\EducationRoutePointRepoInterface;
 use App\Modules\ISS\src\Services\EducationRoutePoint\getFilesOfRealPointData\InputDTO;
 use App\Modules\ISS\src\Services\EducationRoutePoint\getFilesOfRealPointData\OutputDTO;
 
 class GetFilesOfRealPointData
 {
-    private EducationRoutePointRepo $repository;
+    private EducationRoutePointRepoInterface $repository;
 
-    public function __construct(EducationRoutePointRepo $repository)
+    public function __construct(EducationRoutePointRepoInterface $repository)
     {
         $this->repository = $repository;
     }

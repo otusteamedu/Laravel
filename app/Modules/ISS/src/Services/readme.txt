@@ -17,3 +17,6 @@ App\Modules\ISS\src\Services\EducationExam\processExamCheck =>
                                          => EducationExam\chooseExamCheckTeacher
                                          => EducationExam\makeCheckCode
                                          => EducationExam\fillExamBlank
+App\Modules\ISS\src\Services\EducationRoutePoint\getPointData =>
+                                         => EducationExam\GetRefPointExamQuestions
+                                         => EducationMaterial\GetMaterialsOrRefPoint

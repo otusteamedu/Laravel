@@ -45,6 +45,13 @@ export default defineConfig({
                 //стили для компонентов
                 'app/Modules/ISS/public/css/components/iss-messages-Style.css',
 
+                //стили для интерфейса администратора ИОС
+                'app/Modules/ISS/public/css/adminInterface/issUserListStyle.css',
+                'app/Modules/ISS/public/css/adminInterface/issUserCreateOrEdit.css',
+                'app/Modules/ISS/public/css/adminInterface/issSharedStyle.css',
+                'app/Modules/ISS/public/css/adminInterface/issPointListStyle.css',
+                'app/Modules/ISS/public/css/adminInterface/issRoutePointCreateOrEditStyle.css',
+
 
 
             ],
