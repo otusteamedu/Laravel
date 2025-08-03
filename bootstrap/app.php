@@ -6,6 +6,8 @@ use Illuminate\Foundation\Configuration\Middleware;
 use App\Http\Middleware\RoleMiddleware;
 use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\SetLocaleMiddleware;
+use Illuminate\Console\Scheduling\Schedule;
+use App\Console\Commands\WarmCacheCommand;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -27,6 +29,20 @@ return Application::configure(basePath: dirname(__DIR__))
                 'role' => RoleMiddleware::class
             ]
         );
+    })
+    ->withSchedule(function (Schedule $schedule) {
+
+        $schedule->command(WarmCacheCommand::class, ['news'])
+                 ->everyFifteenMinutes()
+                 ->onOneServer();
+
+        $schedule->command(WarmCacheCommand::class, ['categories'])
+                 ->everyThirtyMinutes()
+                 ->onOneServer();
+
+        $schedule->command('cache:clear')
+                 ->daily()
+                 ->onOneServer();
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //
