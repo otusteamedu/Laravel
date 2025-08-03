@@ -3,11 +3,11 @@
 namespace App\Modules\ISS\src\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Modules\ISS\src\Services\EducationMeterial\downloadFile\DownloadFile;
-use App\Modules\ISS\src\Services\EducationMeterial\downloadFile\InputDTO as downloadFileDTO;
+use App\Modules\ISS\src\Services\EducationMaterial\downloadFile\DownloadFile;
+use App\Modules\ISS\src\Services\EducationMaterial\downloadFile\InputDTO as downloadFileDTO;
 //use App\Modules\ISS\src\Services\EducationMeterial\downloadFile\OutputDTO;
-use App\Modules\ISS\src\Services\EducationMeterial\openFile\OpenFile;
-use App\Modules\ISS\src\Services\EducationMeterial\openFile\InputDTO as openFileDTO;
+use App\Modules\ISS\src\Services\EducationMaterial\openFile\OpenFile;
+use App\Modules\ISS\src\Services\EducationMaterial\openFile\InputDTO as openFileDTO;
 //use App\Modules\ISS\src\Services\EducationMeterial\openFile\OutputDTO;
 
 /**

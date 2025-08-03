@@ -1,6 +1,5 @@
 <?php
 
-
 namespace App\Modules\ISS\src\Repositories;
 
 use Illuminate\Support\Facades\DB;
@@ -15,7 +14,7 @@ use App\Modules\ISS\src\Models\ExamCheckCode;
 class EducationExamRepo implements EducationExamRepoInterface
 {
     /**
-     * Запрос БД извлеч все экзаменационные вопросы теста для данной точки обучающего маршрута
+     * Запрос БД извлеч все экзаменационные вопросы теста для данной РЕАЛЬНОЙ точки обучающего маршрута
      * (вместе с вериантами ответов, если они есть)
      * @param array $inputData $inputData['id'] код реальной точки учебного маршрута
      * @return array
@@ -48,6 +47,22 @@ class EducationExamRepo implements EducationExamRepoInterface
             ->where('real_education_route_points.id', $inputData['id'])->get()->toArray();
 
         return $result;
+    }
+
+    /**
+     * Запрос БД извлечь экзаменационные вопросы для СПРАВОЧНОЙ точки экзаменационного маршрута
+     *  (вместе с вериантами ответов, если они есть)
+     * @param array $inputData $inputData['id'] код справочной точки учебного маршрута
+     * @return array
+     *               [
+     *                 ['id'=>, 'question'=>, ... ,'exam_answer'=> [ ['id'=>, 'answer'=>, 'is_right'=>, ...], [...], .... ],
+     *                 ['id'=>, 'question'=>, ... ,'exam_answer'=> [ ['id'=>, 'answer'=>, 'is_right'=>, ...], [...], .... ],
+     *               ...
+     *               ]
+     */
+    public function getRefPointQuestions(array $inputData): array //тоже можно в scope модели
+    {
+        return ExamQuestion::with('examAnswer')->where('point_id', $inputData['id'])->get()->toArray();
     }
 
     /**
@@ -106,7 +121,7 @@ class EducationExamRepo implements EducationExamRepoInterface
      *                ...
      *               ]
      */
-    public function getQuestionsWithAnswers(array $inputData): array
+    public function getQuestionsWithAnswers(array $inputData): array //это просится в scope модели
     {
         return ExamQuestion::with('examAnswer')->whereIn('id', $inputData)->get()->toArray();
     }

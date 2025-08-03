@@ -1,0 +1,62 @@
+/* Главный блок */
+#exam
+{
+    min-width: 330px;
+    margin: 5vw auto;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    background-color: rgb(123, 220, 169, 0.1);
+}
+
+/* Блок отдельного экзамювопроса */
+.question
+{
+    width: 80vw;
+    margin: 20px auto;
+    background-color: rgb(123, 220, 169, 0.3);
+}
+.question input { width: 55vw; }
+.question {  font-size: 2vw; }
+.question table { margin: 1px auto; }
+
+/* Блок ответов к вопросу */
+.answers
+{
+    width: 75vw;
+    margin: 10px auto;
+    background-color: rgb(123, 220, 169, 0.7);
+}
+
+/* Каждый отдельный ответ внутри блока ответов */
+.singleAnswer
+{
+    margin: 10px auto;
+    border: 1px solid green;
+}
+
+/* Кнопки */
+.myButton { margin: 0.7vw; }
+#addQuestion { width: 30vw; }
+.fontRed { color: red; }
+.fontGreen { color: green; }
+input[type=button] { width: 40vw; }
+
+
+
+
+
+
+@media screen and (min-width: 800px)  /* НАСТРОЙКА САЙТА для ПК и планшетов */
+{
+
+}
+@media screen and (max-width: 800px)  /* НАСТРОЙКА САЙТА для телефонов */
+{
+    .question {  font-size: 2.5vw; }
+}
+@media screen and (max-width: 350px)  /* НАСТРОЙКА САЙТА для телефонов */
+{
+    h1 { font-size: 20px;}
+    .question { width: 70vw; }
+}

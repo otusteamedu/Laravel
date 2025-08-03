@@ -35,6 +35,7 @@ return new class extends Migration
             $table->index(['user_id']);
             $table->index(['role_id']);
             //$table->unique(['user_iss_login', 'user_iss_password']);
+            $table->unique('user_id');
         });
     }
 

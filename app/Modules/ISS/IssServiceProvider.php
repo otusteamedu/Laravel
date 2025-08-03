@@ -16,11 +16,13 @@ use App\Modules\ISS\src\Repositories\EducationRoutePointRepo;
 use App\Modules\ISS\src\Repositories\EducationRouteRepo;
 use App\Modules\ISS\src\Repositories\IssUserRepo;
 use App\Modules\ISS\src\Repositories\NotifyServiceRepo;
+use App\Modules\ISS\src\Repositories\EducationMaterialRepo;
 use App\Modules\ISS\src\Services\EducationExam\EducationExamRepoInterface;
 use App\Modules\ISS\src\Services\EducationRoute\EducationRouteRepoInterface;
 use App\Modules\ISS\src\Services\EducationRoutePoint\EducationRoutePointRepoInterface;
 use App\Modules\ISS\src\Services\issUser\IssUserRepoInterface;
 use App\Modules\ISS\src\Services\NotifyService\NotifyServiceRepoInterface;
+use App\Modules\ISS\src\Services\EducationMaterial\EducationMaterialRepoInterface;
 use App\Modules\ISS\src\View\Components\IssMessages;
 
 class IssServiceProvider extends ServiceProvider
@@ -50,6 +52,7 @@ class IssServiceProvider extends ServiceProvider
         $this->app->bind(EducationRoutePointRepoInterface::class, EducationRoutePointRepo::class);
         $this->app->bind(EducationRouteRepoInterface::class, EducationRouteRepo::class);
         $this->app->bind(NotifyServiceRepoInterface::class, NotifyServiceRepo::class);
+        $this->app->bind(EducationMaterialRepoInterface::class, EducationMaterialRepo::class);
 
 
         //регистрация команд

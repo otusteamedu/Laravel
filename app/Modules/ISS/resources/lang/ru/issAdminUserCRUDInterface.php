@@ -1,0 +1,46 @@
+<?php
+
+return [
+    'refToIssUserList' => 'Назад к списку пользователей ИОС',
+    'refBackToAdminPage' => 'Назад на страницу администратора ИОС',
+
+    'issUserList' => 'Список пользователей ИОС',
+    'avatar' => 'Аватар',
+    'issUserId' => 'Код пользователя ИОС',
+    'mainAppUserId' => 'Код пользователя из основного приложения',
+    'userRole' => 'Роль пользователя в ИОС',
+    'organization' => 'Организация',
+    'lastName' => 'Фамилия',
+    'secondName' => 'Отчество',
+    'firstName' => 'Имя',
+    'email' => 'Контакты',
+    'userAction' => 'Действие',
+    'userEdit' => 'Редактировать',
+    'userDelete' => 'Удвлить',
+    'userCreate' => 'Создать',
+    'userEditFormLabel' => 'Форма для редактирования пользователя ИОС',
+    'userCreateFormLabel' => 'Форма создания пользователя ИОС',
+
+    'validationErrors' => [
+        'avatarImage' => 'Файл Аватара должен быть изображением',
+        'avatarTypes' => 'Допустимые типы файла: JPG, GIF, PNG.',
+        'mainAppUserIdRequired' => 'Код пользователя в главном приложении должен быть заполнен.',
+        'mustBeInteger' => 'Должен быть целым числом.',
+        'mustBeString' => 'Должна быть строкой.',
+        'userRoleRequired' => 'Роль пользователя должна быть указана.',
+        'userRoleAccepted' => 'Название роли должно быть одним из значений :values.',
+        'organizationRequired' => 'Организация должна быть указана.',
+        'lastNameRequired' => 'Заполните фамилию.',
+        'firstNameRequired' => 'Заполните имя.',
+        'secondNameRequired' => 'Заполните отчество.',
+        'emailRequired' => 'Почта должна быть задана.',
+        'emailFormatWrong' => 'Формат почты не правильный.',
+    ],
+
+    'deleteSuccess' => 'Пользователь ИОС успешно удален',
+    'deleteError' => 'Ошибка при попытке удаления пользователя ИОС',
+    'updateError' => 'Ошибка при обновлении данных пользователя ИОС',
+    'updatedSuccess' => 'Данные пользователя ИОС обновлены успешно',
+    'createSuccess' => 'Пользователь ИОС создан успешно',
+    'createError' => 'Ошибка при создании пользователя ИОС',
+];

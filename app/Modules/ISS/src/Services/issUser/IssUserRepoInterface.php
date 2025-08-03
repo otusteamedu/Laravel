@@ -115,4 +115,49 @@ interface IssUserRepoInterface
      * @return array
      */
     public function fetchWebToken(array $inputData): array;
+
+    /**
+     * Запрос БД удалить обучающие маршруты пользователя иос
+     * @param array $inputData
+     * код пользователя ИОС
+     * $inputData['iss_user_id']
+     * @return array
+     */
+    public function deleteEducationRoutesOfIssUser(array $inputData): array;
+
+    /**
+     * Запрос БД удалить пользователя иос
+     * @param array $inputData
+     * код пользователя ИОС
+     * $inputData['iss_user_id']
+     * @return array
+     */
+    public function deleteIssUser(array $inputData): array;
+
+    /**
+     * Запрос БД найти роль пользователя иос по ее названию
+     * @param array $inputData
+     * название роли пользователя ИОС
+     * $inputData['name']
+     * @return array
+     */
+    public function findIssUserRoleByName(array $inputData): array;
+
+    /**
+     * Запрос БД обновить данные пользователя иос
+     * @param array $inputData
+     * Код пользователя ИОС
+     * $inputData['id', '', ... все или некоторые поля модели]
+     * @return array
+     */
+    public function updateIssUser(array $inputData): array;
+
+    /**
+     * Запрос БД создать пользователя иос
+     * @param array $inputData
+     * Код пользователя ИОС
+     * $inputData['id', '', ... все или некоторые поля модели]
+     * @return array
+     */
+    public function createIssUser(array $inputData): array;
 }

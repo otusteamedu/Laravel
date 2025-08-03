@@ -5,11 +5,12 @@ namespace App\Modules\ISS\src\Repositories;
 use Illuminate\Support\Facades\DB;
 use App\Modules\ISS\src\Services\EducationRoutePoint\EducationRoutePointRepoInterface;
 use App\Modules\ISS\src\Models\RealEducationRoutePoint;
+use App\Modules\ISS\src\Models\EducationRoutePoint;
 
 class EducationRoutePointRepo implements EducationRoutePointRepoInterface
 {
     /**
-     * Достать общие данные для точки обучающего маршрута
+     * Запос к БД достать общие данные для точки обучающего маршрута
      * @param array $inputData
      *              код реальной точки обучающего маршрута
      *                  $inputData['id'],
@@ -79,7 +80,7 @@ class EducationRoutePointRepo implements EducationRoutePointRepoInterface
     }
 
     /**
-     * Достать видео/пдф/текстовые файлы точки обучающего маршрута
+     * Запос к БД достать видео/пдф/текстовые файлы точки обучающего маршрута
      * @param array $inputData
      *              код реальной точки обучающего маршрута,
      *                  $inputData['id']
@@ -99,5 +100,30 @@ class EducationRoutePointRepo implements EducationRoutePointRepoInterface
         })->get(['title', 'file_path'])->toArray();
 
         return $result;
+    }
+
+    /**
+     * Запрос к БД достать все справочные точки обучающих маршрутов
+     * @param array $inputData
+     *              массив имен полей, которые хотим получить
+     *              $inputData['returned_fields']
+     * @return array
+     */
+    public function getAllReferenceRoutePoints(array $inputData): array
+    {
+        return EducationRoutePoint::get($inputData['returned_fields'])->toArray();
+    }
+
+    /**
+     * Запрос БД достать все учебные материалы для выбранной СПРАВОЧНОЙ точки учебного маршрута
+     * @param array $inputData
+     *               код справочной точки маршрута
+     *               $inputData['point_id']
+     *               массив имен полей, которые хотим получить
+     *               $inputData['returned_fields']
+     */
+    public function getEducationMaterialsForRefPoint()
+    {
+        //
     }
 }

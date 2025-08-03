@@ -8,6 +8,11 @@ use App\Modules\ISS\src\Http\Resources\UserDataResourceCollection;
 use App\Modules\ISS\src\Models\UserData;
 use Illuminate\Http\Request;
 
+/**
+ * Ресурсный контроллер, использует ресурсные коллекции
+ * для CRUD операций с сущностью UserData (пользователь ИОС)
+ */
+
 class UserDataController extends Controller
 {
     /**

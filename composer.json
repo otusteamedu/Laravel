@@ -8,6 +8,7 @@
     "require": {
         "php": "^8.2",
         "laravel/framework": "^12.0",
+        "laravel/passport": "^13.0",
         "laravel/tinker": "^2.10.1",
         "my/package-with-packages": "dev-main",
         "php-open-source-saver/jwt-auth": "^2.8"
@@ -28,7 +29,9 @@
             "Database\\Factories\\": "database/factories/",
             "Database\\Seeders\\": "database/seeders/",
             "Modules\\MyTestModule\\": "Modules/myTestModule/src/",
-            "Modules\\ISS\\": "Modules/ISS/src/"
+            "ISS\\App\\": "Modules/ISS/src/",
+            "ISS\\Database\\Factories\\": "Modules/ISS/database/factories/",
+            "ISS\\Database\\Seeders\\": "Modules/ISS/database/seeders/"
         }
     },
     "autoload-dev": {
