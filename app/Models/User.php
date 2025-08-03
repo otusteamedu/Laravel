@@ -96,4 +96,11 @@ class User extends Authenticatable
     public function isAdmin(): bool{
        return $this->hasRole('Administrator');
     }
+
+
+    public function notifications_settings()
+    {
+        return $this->hasOne(NotificationSettings::class);
+    }
+
 }

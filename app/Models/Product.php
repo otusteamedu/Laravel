@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Events\ProductPriceChanged;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 /**
@@ -26,6 +27,13 @@ class Product extends BaseModel
     /** @use HasFactory<\Database\Factories\ProductFactory> */
     use HasFactory;
 
+    /**
+     * Temporary storage for price change data
+     *
+     * @var array|null
+     */
+    private $priceChangeData = null;
+
 
     protected $fillable = [
         'title',
@@ -39,7 +47,9 @@ class Product extends BaseModel
         'price',
     ];
 
+
     public function categories(){
         return $this->belongsToMany(Category::class);
     }
+
 }

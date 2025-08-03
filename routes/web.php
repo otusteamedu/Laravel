@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TestLogController;
+use App\Repositories\Contracts\ProductRepositoryInterface;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\ProductController;
 
@@ -17,6 +18,21 @@ Route::group([
         Route::get('/', function () {
             return view('welcome');
         });
+});
+
+Route::get('/setPrice', function (ProductRepositoryInterface $repository) {
+
+    $product = $repository->find(1);
+
+    if (!$product) {
+        abort(404, 'Product not found');
+    }
+
+    $product = $repository->update($product, [
+        'price' => mt_rand(100, 500)
+    ]);
+
+    return $product->price;
 });
 
 
