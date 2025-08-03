@@ -73,7 +73,6 @@ services:
             - sail
     scheduler:
         image: sail-8.4/app
-        container_name: laravel_scheduler
         volumes:
             - '.:/var/www/html'
         working_dir: /var/www/html
