@@ -38,6 +38,7 @@ class WarmUpCacheCommand extends Command
             $this->info('Прогревам кэш статусов задач для проектов');
 
             foreach ($projects as $project) {
+                Cache::forget("project_{$project->projectId}_todo_statuses");
                 Cache::remember(
                     "project_{$project->projectId}_todo_statuses",
                     Carbon::now()->addDay(),
