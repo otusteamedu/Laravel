@@ -45,6 +45,12 @@ return [
             'driver'=>'jwt',
             'provider'=>'users'
         ],
+
+        //добавил для Passport API
+        'api' => [
+            'driver'=>'passport',
+            'provider'=>'users'
+        ],
     ],
 
     /*

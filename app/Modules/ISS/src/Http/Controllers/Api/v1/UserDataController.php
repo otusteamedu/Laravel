@@ -3,14 +3,21 @@
 namespace App\Modules\ISS\src\Http\Controllers\Api\v1;
 
 use App\Modules\ISS\src\Http\Controllers\Api\Controller;
+use Illuminate\Http\Request;
 use App\Modules\ISS\src\Http\Resources\UserDataResource;
 use App\Modules\ISS\src\Http\Resources\UserDataResourceCollection;
 use App\Modules\ISS\src\Models\UserData;
-use Illuminate\Http\Request;
 
 /**
  * Ресурсный контроллер, использует ресурсные коллекции
  * для CRUD операций с сущностью UserData (пользователь ИОС)
+ *
+ * защищен JWT
+ * для авторизации в JWT перейти по маршруту api/jwt/login и передать форму POST (email+password)
+ * получить jwt токен и поставить его в запросы в заголовок
+ * Authorization = "Bearer _token string...._"
+ *
+ * для выхода с АПИ api/jwt/logout
  */
 
 class UserDataController extends Controller
