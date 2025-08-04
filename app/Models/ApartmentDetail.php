@@ -7,6 +7,46 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
+ * @OA\Schema(
+ *     schema="ApartmentDetail",
+ *     type="object",
+ *     title="Apartment Detail",
+ *     required={"registred_qt","lived_qt","total_area","personal_account","account_number","apartment_id","tariff_id"},
+ *     @OA\Property(property="id", type="integer", example=1),
+ *     @OA\Property(property="registred_qt", type="integer", example=3, description="Количество зарегистрированных"),
+ *     @OA\Property(property="lived_qt", type="integer", example=2, description="Количество проживающих"),
+ *     @OA\Property(property="total_area", type="number", format="float", example=45.7, description="Общая площадь"),
+ *     @OA\Property(property="personal_account", type="string", example="12345678", description="Лицевой счет"),
+ *     @OA\Property(property="account_number", type="string", example="ACC-98765", description="Номер счета"),
+ *     @OA\Property(property="apartment_id", type="integer", example=10, description="ID квартиры"),
+ *     @OA\Property(property="tariff_id", type="integer", example=5, description="ID тарифа")
+ * )
+ *
+ * @OA\Schema(
+ *     schema="ApartmentDetailCreateRequest",
+ *     type="object",
+ *     required={"registred_qt","lived_qt","total_area","personal_account","account_number","apartment_id","tariff_id"},
+ *     @OA\Property(property="registred_qt", type="integer", example=3),
+ *     @OA\Property(property="lived_qt", type="integer", example=2),
+ *     @OA\Property(property="total_area", type="number", format="float", example=45.7),
+ *     @OA\Property(property="personal_account", type="string", example="12345678"),
+ *     @OA\Property(property="account_number", type="string", example="ACC-98765"),
+ *     @OA\Property(property="apartment_id", type="integer", example=10),
+ *     @OA\Property(property="tariff_id", type="integer", example=5)
+ * )
+ *
+ * @OA\Schema(
+ *     schema="ApartmentDetailUpdateRequest",
+ *     type="object",
+ *     @OA\Property(property="registred_qt", type="integer", example=4),
+ *     @OA\Property(property="lived_qt", type="integer", example=3),
+ *     @OA\Property(property="total_area", type="number", format="float", example=48.2),
+ *     @OA\Property(property="personal_account", type="string", example="654321"),
+ *     @OA\Property(property="account_number", type="string", example="ACC-12345"),
+ *     @OA\Property(property="apartment_id", type="integer", example=12),
+ *     @OA\Property(property="tariff_id", type="integer", example=6)
+ * )
+ *
  * @property int $registred_qt
  * @property int $lived_qt
  * @property float $total_area
@@ -82,7 +122,7 @@ class ApartmentDetail extends Model
         return (int) $this->attributes['tariff_id'];
     }
 
-    public function getApartment(): \App\Domain\Apartment\Apartment
+    public function getApartment(): \App\Models\Apartment
     {
         return $this->apartment;
     }
