@@ -1,0 +1,353 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Apartment API",
+        "description": "API documentation for Apartment Management",
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "http://my-default-host.com",
+            "description": "API Server"
+        }
+    ],
+    "paths": {
+        "/api/v1/apartment-details": {
+            "get": {
+                "tags": [
+                    "ApartmentDetails"
+                ],
+                "summary": "Получить список деталей квартир",
+                "operationId": "8ea0cbe1f6ae92a94500f598492f7899",
+                "responses": {
+                    "200": {
+                        "description": "Успешный ответ",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/ApartmentDetail"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "ApartmentDetails"
+                ],
+                "summary": "Создать новую деталь квартиры",
+                "operationId": "9baac35ce3707b97956b4937cb610fd2",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ApartmentDetailCreateRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Создано успешно",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ApartmentDetail"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Ошибка валидации"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/apartment-details/{id}": {
+            "get": {
+                "tags": [
+                    "ApartmentDetails"
+                ],
+                "summary": "Получить деталь квартиры по ID",
+                "operationId": "38f09f8f27c6f1a8bf7c258d8fdc38d9",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID детали квартиры",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Успешный ответ",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ApartmentDetail"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Не найдено"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            },
+            "put": {
+                "tags": [
+                    "ApartmentDetails"
+                ],
+                "summary": "Обновить деталь квартиры",
+                "operationId": "1fc6fdf58b1d21760e097383a6c2a4a1",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID детали квартиры",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ApartmentDetailUpdateRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Обновлено успешно",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ApartmentDetail"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Ошибка валидации"
+                    },
+                    "404": {
+                        "description": "Не найдено"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "ApartmentDetails"
+                ],
+                "summary": "Удалить деталь квартиры",
+                "operationId": "5e1f7bcc530651326a6459d2860cfbd8",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID детали квартиры",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Удалено успешно"
+                    },
+                    "404": {
+                        "description": "Не найдено"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "ApartmentDetail": {
+                "title": "Apartment Detail",
+                "required": [
+                    "registred_qt",
+                    "lived_qt",
+                    "total_area",
+                    "personal_account",
+                    "account_number",
+                    "apartment_id",
+                    "tariff_id"
+                ],
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "registred_qt": {
+                        "description": "Количество зарегистрированных",
+                        "type": "integer",
+                        "example": 3
+                    },
+                    "lived_qt": {
+                        "description": "Количество проживающих",
+                        "type": "integer",
+                        "example": 2
+                    },
+                    "total_area": {
+                        "description": "Общая площадь",
+                        "type": "number",
+                        "format": "float",
+                        "example": 45.7
+                    },
+                    "personal_account": {
+                        "description": "Лицевой счет",
+                        "type": "string",
+                        "example": "12345678"
+                    },
+                    "account_number": {
+                        "description": "Номер счета",
+                        "type": "string",
+                        "example": "ACC-98765"
+                    },
+                    "apartment_id": {
+                        "description": "ID квартиры",
+                        "type": "integer",
+                        "example": 10
+                    },
+                    "tariff_id": {
+                        "description": "ID тарифа",
+                        "type": "integer",
+                        "example": 5
+                    }
+                },
+                "type": "object"
+            },
+            "ApartmentDetailCreateRequest": {
+                "required": [
+                    "registred_qt",
+                    "lived_qt",
+                    "total_area",
+                    "personal_account",
+                    "account_number",
+                    "apartment_id",
+                    "tariff_id"
+                ],
+                "properties": {
+                    "registred_qt": {
+                        "type": "integer",
+                        "example": 3
+                    },
+                    "lived_qt": {
+                        "type": "integer",
+                        "example": 2
+                    },
+                    "total_area": {
+                        "type": "number",
+                        "format": "float",
+                        "example": 45.7
+                    },
+                    "personal_account": {
+                        "type": "string",
+                        "example": "12345678"
+                    },
+                    "account_number": {
+                        "type": "string",
+                        "example": "ACC-98765"
+                    },
+                    "apartment_id": {
+                        "type": "integer",
+                        "example": 10
+                    },
+                    "tariff_id": {
+                        "type": "integer",
+                        "example": 5
+                    }
+                },
+                "type": "object"
+            },
+            "ApartmentDetailUpdateRequest": {
+                "properties": {
+                    "registred_qt": {
+                        "type": "integer",
+                        "example": 4
+                    },
+                    "lived_qt": {
+                        "type": "integer",
+                        "example": 3
+                    },
+                    "total_area": {
+                        "type": "number",
+                        "format": "float",
+                        "example": 48.2
+                    },
+                    "personal_account": {
+                        "type": "string",
+                        "example": "654321"
+                    },
+                    "account_number": {
+                        "type": "string",
+                        "example": "ACC-12345"
+                    },
+                    "apartment_id": {
+                        "type": "integer",
+                        "example": 12
+                    },
+                    "tariff_id": {
+                        "type": "integer",
+                        "example": 6
+                    }
+                },
+                "type": "object"
+            }
+        },
+        "securitySchemes": {
+            "bearerAuth": {
+                "type": "http",
+                "bearerFormat": "JWT",
+                "scheme": "bearer"
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "ApartmentDetails",
+            "description": "API Endpoints для работы с деталями квартир"
+        }
+    ]
+}
