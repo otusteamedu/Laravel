@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
+use App\Domain\Apartment\Apartment;
+
 /**
  * @property float $maintenance
  * @property float $electricity_odn
