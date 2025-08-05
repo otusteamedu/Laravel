@@ -4,8 +4,7 @@ namespace App\Http\Controllers\Admin\Tasks;
 
 use App\Http\Controllers\Controller;
 use App\Models\Priority;
-use App\Services\Commands\CreateTask\Command;
-use App\Services\Commands\CreateTask\Handler;
+use App\Services\Tasks\TaskDomainService;
 use App\Services\Queries\FetchAllUsers\Query as FetchAllUsersQuery;
 use App\Services\Queries\FetchAllUsers\Fetcher as UsersFetcher;
 use App\Services\Queries\FetchAllCategories\Query as FetchAllCategoriesQuery;
@@ -38,22 +37,21 @@ class CreateController extends Controller
     /**
      * Сохранить новую задачу
      */
-    public function store(CreateTaskRequest $request, Handler $handler)
+    public function store(CreateTaskRequest $request, TaskDomainService $taskService)
     {
         $request->validated();
 
-        $command = new Command(
-            title: $request->get('title'),
-            description: $request->get('description', ''),
-            executorId: (int)$request->get('executor_id'),
-            categoryId: (int)$request->get('category_id'),
-            priorityId: (int)$request->get('priority_id'),
-            creatorId: auth()->id(),
-            status: $request->get('status', 'новая'),
-            dueDate: $request->get('due_date')
-        );
+        $data = [
+            'title' => $request->get('title'),
+            'description' => $request->get('description', ''),
+            'executor_id' => (int)$request->get('executor_id'),
+            'category_id' => (int)$request->get('category_id'),
+            'priority_id' => (int)$request->get('priority_id'),
+            'creator_id' => auth()->id(),
+            'due_date' => $request->get('due_date')
+        ];
 
-        $handler->handle($command);
+        $taskService->createTask($data);
 
         return redirect()->route('admin.tasks.index')
             ->with('success', "Задача успешно создана");

@@ -4,10 +4,7 @@ namespace App\Http\Controllers\Admin\Tasks;
 
 use App\Http\Controllers\Controller;
 use App\Models\Priority;
-use App\Services\Commands\UpdateTask\Command;
-use App\Services\Commands\UpdateTask\Handler;
-use App\Services\Queries\FetchTaskById\Query;
-use App\Services\Queries\FetchTaskById\Fetcher;
+use App\Services\Tasks\TaskDomainService;
 use App\Services\Queries\FetchAllUsers\Query as FetchAllUsersQuery;
 use App\Services\Queries\FetchAllUsers\Fetcher as UsersFetcher;
 use App\Services\Queries\FetchAllCategories\Query as FetchAllCategoriesQuery;
@@ -22,15 +19,14 @@ class UpdateController extends Controller
      * Показать форму редактирования задачи
      */
     public function edit(
-        Fetcher $fetcher, 
+        TaskDomainService $taskService,
         UsersFetcher $usersFetcher, 
         CategoriesFetcher $categoriesFetcher, 
         string $taskId
     ): View {
-        try {
-            $query = new Query((int)$taskId);
-            $task = $fetcher->fetch($query);
-        } catch (\Exception) {
+        $task = $taskService->getTaskById((int)$taskId);
+        
+        if (!$task) {
             throw new NotFoundHttpException('Задача не найдена');
         }
 
@@ -53,27 +49,26 @@ class UpdateController extends Controller
     /**
      * Обновить данные задачи
      */
-    public function update(UpdateTaskRequest $request, Handler $handler, string $taskId)
+    public function update(UpdateTaskRequest $request, TaskDomainService $taskService, string $taskId)
     {
         $request->validated();
 
-        try {
-            $command = new Command(
-                id: (int)$taskId,
-                title: $request->get('title'),
-                description: $request->get('description', ''),
-                executorId: (int)$request->get('executor_id'),
-                categoryId: (int)$request->get('category_id'),
-                priorityId: (int)$request->get('priority_id'),
-                creatorId: auth()->id(),
-                status: $request->get('status'),
-                dueDate: $request->get('due_date')
-            );
+        $data = [
+            'title' => $request->get('title'),
+            'description' => $request->get('description', ''),
+            'executor_id' => (int)$request->get('executor_id'),
+            'category_id' => (int)$request->get('category_id'),
+            'priority_id' => (int)$request->get('priority_id'),
+            'due_date' => $request->get('due_date')
+        ];
 
-            $task = $handler->handle($command);
-        } catch (\Exception) {
+        $success = $taskService->updateTask((int)$taskId, $data);
+        
+        if (!$success) {
             throw new NotFoundHttpException('Задача не найдена');
         }
+
+        $task = $taskService->getTaskById((int)$taskId);
 
         return redirect()->route('admin.tasks.index')
             ->with('success', "Задача \"{$task->title}\" успешно обновлена");

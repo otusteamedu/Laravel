@@ -3,8 +3,7 @@
 namespace App\Http\Controllers\Admin\Tasks;
 
 use App\Http\Controllers\Controller;
-use App\Services\Queries\FetchTaskById\Query;
-use App\Services\Queries\FetchTaskById\Fetcher;
+use App\Services\Tasks\TaskDomainService;
 use Illuminate\View\View;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
@@ -13,12 +12,11 @@ class ShowController extends Controller
     /**
      * Показать детали задачи
      */
-    public function show(Fetcher $fetcher, string $taskId): View
+    public function show(TaskDomainService $taskService, string $taskId): View
     {
-        try {
-            $query = new Query((int)$taskId);
-            $task = $fetcher->fetch($query);
-        } catch (\Exception) {
+        $task = $taskService->getTaskById((int)$taskId);
+        
+        if (!$task) {
             throw new NotFoundHttpException('Задача не найдена');
         }
 

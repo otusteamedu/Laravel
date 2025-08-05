@@ -3,8 +3,7 @@
 namespace App\Http\Controllers\Admin\Tasks;
 
 use App\Http\Controllers\Controller;
-use App\Services\Commands\DeleteTask\Command;
-use App\Services\Commands\DeleteTask\Handler;
+use App\Services\Tasks\TaskDomainService;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class DestroyController extends Controller
@@ -12,12 +11,11 @@ class DestroyController extends Controller
     /**
      * Удалить задачу
      */
-    public function destroy(Handler $handler, string $taskId)
+    public function destroy(TaskDomainService $taskService, string $taskId)
     {
-        try {
-            $command = new Command((int)$taskId);
-            $handler->handle($command);
-        } catch (\Exception) {
+        $success = $taskService->deleteTask((int)$taskId);
+        
+        if (!$success) {
             throw new NotFoundHttpException('Задача не найдена');
         }
 

@@ -3,8 +3,7 @@
 namespace App\Http\Controllers\Admin\Tasks;
 
 use App\Http\Controllers\Controller;
-use App\Services\Queries\FetchAllTasks\Query;
-use App\Services\Queries\FetchAllTasks\Fetcher;
+use App\Services\Tasks\TaskDomainService;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
 
@@ -13,20 +12,20 @@ class IndexController extends Controller
     /**
      * Показать список задач
      */
-    public function index(Request $request, Fetcher $fetcher)
+    public function index(Request $request, TaskDomainService $taskService)
     {
         $page = max(1, (int) $request->get('page', 1));
         $perPage = 10;
+        $offset = ($page - 1) * $perPage;
         
-        $query = Query::fromPage($page, $perPage);
-        $paginatedResult = $fetcher->fetch($query);
+        $paginatedResult = $taskService->getPaginatedTasks($perPage, $offset);
 
         // Преобразуем PaginatedResult в LengthAwarePaginator для шаблона
         $tasks = new LengthAwarePaginator(
             items: $paginatedResult->items,
             total: $paginatedResult->total,
-            perPage: $paginatedResult->getPerPage(),
-            currentPage: $paginatedResult->getCurrentPage(),
+            perPage: $perPage,
+            currentPage: $page,
             options: [
                 'path' => $request->url(),
                 'pageName' => 'page',
