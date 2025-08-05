@@ -44,7 +44,7 @@ class EducationRouteController
      */
     public function store(Request $request)
     {
-        EducationRoute::create($request->all());
+        return EducationRoute::create($request->all());
     }
 
     /**
@@ -53,7 +53,17 @@ class EducationRouteController
      */
     public function show(string $id)
     {
-        return new EducationRouteResource(EducationRoute::where('id', $id)->first());
+        try {
+            $route = EducationRoute::where('id', $id)->first();
+        } catch (\Error | \Exception $e) {
+            $route = null;
+        }
+
+        if (is_null($route)) {
+            return [];
+        } else {
+            return new EducationRouteResource($route);
+        }
     }
 
     /**
@@ -62,8 +72,19 @@ class EducationRouteController
      */
     public function update(Request $request, string $id)
     {
-        $issUser = EducationRoute::where('id', $id)->update($request->all());
-        return new EducationRouteResource($issUser);
+        $error = null;
+        try {
+            $updated = EducationRoute::where('id', $id)->first()->update($request->all());
+        } catch (\Error | \Exception $e) {
+            $updated = false;
+            $error = $e->getMessage();
+        }
+
+        if ($updated) {
+            return ['ok', 200];
+        } else {
+            return ['error' => $error, 500];
+        }
     }
 
     /**
@@ -72,7 +93,22 @@ class EducationRouteController
      */
     public function destroy(string $id)
     {
-        EducationRoute::where('id', $id)->delete();
-        return response('ok', 200);
+        $error = null;
+        try {
+            $result = EducationRoute::where('id', $id)->forceDelete();
+        } catch (\Error | \Exception $e) {
+            $result = false;
+            $error = $e->getMessage();
+        }
+
+        if ($result !== false) {
+            if ($result > 0) {
+                return ['ok', 200];
+            } else {
+                return ['message' => 'not deleted', 200];
+            }
+        } else {
+            return ['error' => $error, 500];
+        }
     }
 }

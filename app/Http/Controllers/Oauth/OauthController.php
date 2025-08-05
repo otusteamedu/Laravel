@@ -47,6 +47,9 @@ class OauthController
         ];
     }
 
+    /**
+     * Маршрут POST http://localhost/api/oauth/register
+     */
     public function register(Request $request): JsonResponse
     {
         $validator = Validator::make($request->only(
@@ -67,6 +70,9 @@ class OauthController
         return new JsonResponse($response);
     }
 
+    /**
+     * Маршрут POST http://localhost/api/oauth/login
+     */
     public function login(Request $request): JsonResponse
     {
         $validator = Validator::make($request->only(

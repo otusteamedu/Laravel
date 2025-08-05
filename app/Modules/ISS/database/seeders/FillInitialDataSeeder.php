@@ -50,27 +50,30 @@ class FillInitialDataSeeder  extends Seeder
             );
         }
 
-        //заполняем справочники обучающих маршрутов и точек маршрута
+        //заполняем справочники маршрутов
         EducationRoute::factory()->create(['name' => 'r1']);
         EducationRoute::factory()->create(['name' => 'r2']);
         EducationRoute::factory()->create(['name' => 'r3']);
         EducationRoute::factory()->create(['name' => 'r4']); //последний будет без точек
+
+        //заполняем справочник точек маршрутов
         EducationRoutePoint::factory(10)->create(); //последняя точка не привязана ни к одному маршруту
 
         //заполняем справочник обучающих материалов
-        for($i=1 ;$i<10; $i++) {
-            $type = fake()->numberBetween(1,5);
+        for($i = 1; $i < 6; $i++) {
+            $type = $i; //fake()->numberBetween(1, 5);
             switch ($type) {
                 case 1: $filePath = fake()->randomElement(['mp4-1.mp4', 'mp4-2.mp4']); break;
-                case 2: break;
+                case 2: $filePath = 'file not exists'; break;
                 case 3: $filePath = fake()->randomElement(['t1.txt', 't2.txt']); break;
                 case 4: $filePath = fake()->randomElement(['p1.pdf', 'p2.pdf']); break;
                 case 5: $filePath = fake()->randomElement(['doc1.docx']); break;
-                default: $filePath = null; break;
+                default: $filePath = 'file not exists 2'; break;
             }
+
             EducationMaterial::factory()->create(
                 [
-                    'point_id' => fake()->randomDigit(),
+                    'point_id' => fake()->numberBetween(1,9),
                     'material_type_id' => $type,
                     'file_path' => $filePath
                 ]
@@ -186,7 +189,7 @@ class FillInitialDataSeeder  extends Seeder
             ['connected_organization' => 'org1', 'teacher_email' => 'alekseev.a@v2grp.ru']
         );
         $teacher2 = Teacher::factory()->create(
-            ['connected_organization' => 'org1', 'teacher_email' => 'alekseev.a@v2grp.ru']
+            ['connected_organization' => 'org2', 'teacher_email' => 'alekseev.a@v2grp.ru']
         );
     }
 }
