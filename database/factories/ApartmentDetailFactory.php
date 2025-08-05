@@ -3,7 +3,7 @@
 namespace Database\Factories;
 
 use App\Domain\Apartment\Apartment;
-use App\Models\Tariff;
+use Tariff\Models\Tariff;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class ApartmentDetailFactory extends Factory
