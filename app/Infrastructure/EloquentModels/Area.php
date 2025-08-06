@@ -4,7 +4,6 @@ namespace App\Infrastructure\EloquentModels;
 
 use App\Domain\BusinessModels\Area as BusinessModelArea;
 use App\Domain\BusinessModels\BaseModel as BusinessBaseModel;
-use App\Exceptions\NotFoundException;
 use App\Application\Helpers\LocaleHelper;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Log;

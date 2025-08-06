@@ -2,8 +2,8 @@
 
 namespace App\Application\Services\Measure;
 
-use App\Exceptions\NotFoundException;
-use App\Repositories\Measure\MeasureRepositoryInterface;
+use App\Domain\Exceptions\NotFoundException;
+use App\Infrastructure\Repositories\Measure\MeasureRepositoryInterface;
 
 final readonly class MeasureService implements MeasureServiceInterface
 {
