@@ -70,6 +70,13 @@
 
                    //стили для компонентов
                    'app/Modules/ISS/public/css/components/iss-messages-Style.css',
+
+                    //стили для интерфейса администратора ИОС
+                    'app/Modules/ISS/public/css/adminInterface/issUserListStyle.css',
+                    'app/Modules/ISS/public/css/adminInterface/issUserCreateOrEdit.css',
+                    'app/Modules/ISS/public/css/adminInterface/issSharedStyle.css',
+                     'app/Modules/ISS/public/css/adminInterface/issPointListStyle.css',
+                     'app/Modules/ISS/public/css/adminInterface/issRoutePointCreateOrEditStyle.css',
 8) Для работы модуля нужен пакет JWT open source
 поставить пакет:
     опустить контейнер выполнить composer require php-open-source-saver/jwt-auth
@@ -82,6 +89,13 @@
     			'driver'=>'jwt',
     			'prowider'=>'users'
     		]
+9) В файл routes\console.php главного приложения добавить задачу
+   use App\Modules\ISS\src\Console\IssCache;
+    Schedule::command(IssCache::class, ['--clear', '-n'])->daily();
+    Schedule::command(IssCache::class, ['--start'])->dailyAt('00:20');
+
+
+
 
 НАПОМИНАНИЯ
 1) Дописать\переписать тесты для сервисов (
