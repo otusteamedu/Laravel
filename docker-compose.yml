@@ -52,6 +52,17 @@ services:
         image: memcached:latest
         ports:
         - "11211:11211"
+    redis:
+        image: redis:alpine
+        ports:
+            - '${FORWARD_REDIS_PORT:-6379}:6379'
+        networks:
+            - sail
+        healthcheck:
+            test: ["CMD", "redis-cli", "ping"]
+            retries: 3
+            timeout: 5s
+
 networks:
     sail:
         driver: bridge
