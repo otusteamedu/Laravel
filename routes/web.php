@@ -1,9 +1,9 @@
 <?php
 
-use App\Http\Controllers\AreaController;
-use App\Http\Controllers\FibonachiController;
-use App\Http\Controllers\MeasureController;
-use App\Http\Controllers\ProfileController;
+use App\Interfaces\Http\Controllers\AreaController;
+use App\Interfaces\Http\Controllers\FibonachiController;
+use App\Interfaces\Http\Controllers\MeasureController;
+use App\Interfaces\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Route;

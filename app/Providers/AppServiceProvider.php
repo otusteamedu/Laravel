@@ -2,17 +2,17 @@
 
 namespace App\Providers;
 
-use App\CacheDecorator\Area\AreaRepositoryCacheDecorator;
-use App\EloquentModels\User;
-use App\Policies\Fibonachi\FibonachiPolicy;
-use App\Repositories\Area\AreaRepository;
-use App\Services\Area\AreaRepositoryInterface;
-use App\Repositories\Measure\MeasureRepository;
-use App\Repositories\Measure\MeasureRepositoryInterface;
-use App\Services\Area\AreaService;
-use App\Services\Area\AreaServiceInterface;
-use App\Services\Measure\MeasureService;
-use App\Services\Measure\MeasureServiceInterface;
+use App\Interfaces\CacheDecorator\Area\CachedAreaService;
+use App\Infrastructure\EloquentModels\User;
+use App\Domain\Policies\Fibonachi\FibonachiPolicy;
+use App\Infrastructure\Repositories\Area\AreaRepository;
+use App\Application\Services\Area\AreaRepositoryInterface;
+use App\Infrastructure\Repositories\Measure\MeasureRepository;
+use App\Infrastructure\Repositories\Measure\MeasureRepositoryInterface;
+use App\Application\Services\Area\AreaService;
+use App\Application\Services\Area\AreaServiceInterface;
+use App\Application\Services\Measure\MeasureService;
+use App\Application\Services\Measure\MeasureServiceInterface;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
@@ -25,13 +25,14 @@ class AppServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->app->bind(
-            AreaServiceInterface::class,
-            AreaService::class
+            AreaRepositoryInterface::class,
+            AreaRepository::class
         );
-        $this->app->singleton(AreaRepositoryInterface::class, function ($app) {
-            $repository = new AreaRepository();
-            return new AreaRepositoryCacheDecorator($repository);
-        });
+        $this->app->bind(AreaService::class);
+        $this->app->when(CachedAreaService::class)
+          ->needs(AreaServiceInterface::class)
+          ->give(AreaService::class);
+        $this->app->bind(AreaServiceInterface::class, CachedAreaService::class);
         $this->app->bind(
             MeasureServiceInterface::class,
             MeasureService::class
@@ -48,8 +49,8 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         Relation::morphMap([
-            'recipe' => \App\EloquentModels\Recipe::class,
-            'product' => \App\EloquentModels\Product::class,
+            'recipe' => \App\Infrastructure\EloquentModels\Recipe::class,
+            'product' => \App\Infrastructure\EloquentModels\Product::class,
         ]);
 
         Gate::policy(User::class, FibonachiPolicy::class);
