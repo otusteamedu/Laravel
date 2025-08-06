@@ -182,7 +182,12 @@ class IssCache extends Command
             case __('iss::issCommands.cache.clearDiagramsData'):
                     Cache::tags(['diagram'])->flush();
                     break;
-            default: break;
+            default:
+                    $action = 'default(clear all cache)';
+                    Cache::tags(['userData'])->flush();
+                    Cache::tags(['diagram'])->flush();
+                    Cache::tags(['pointData'])->flush();
+                    break;
         }
         $this->line($action . ': ok');
     }
