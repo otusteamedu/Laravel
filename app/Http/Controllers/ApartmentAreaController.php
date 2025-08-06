@@ -4,35 +4,29 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
-use App\Helpers\AreaCalculator;
-use App\Services\FeeCalculatorService;
+use App\Domain\Apartment\Repositories\ApartmentRepository;
 use App\Domain\Apartment\Apartment;
 use App\Domain\Apartment\ValueObjects\Owner;
 use App\Domain\Apartment\ValueObjects\SerialNumber;
+use App\Helpers\AreaCalculator;
+use App\Services\FeeCalculatorService;
 
 class ApartmentAreaController extends Controller
 {
+    private ApartmentRepository $repository;
+
+    public function __construct(ApartmentRepository $repository)
+    {
+        $this->repository = $repository;
+    }
+
     public function index(Request $request)
     {
         $filter = $request->query('filter');
         $cacheKey = 'apartments_list_' . ($filter ?? 'all');
 
         $apartments = Cache::remember($cacheKey, 600, function () use ($filter) {
-            $query = Apartment::with(['details', 'fees']);
-
-            if ($filter === 'balance_end_gt_6000') {
-                $query->whereHas('fees', function ($q) {
-                    $q->where('balance_end', '>', 6000);
-                });
-            }
-
-            return $query->get()->map(function ($apartment) {
-                return Apartment::create(
-                    new Owner($apartment->owner),
-                    new SerialNumber((int) $apartment->serial_number)
-                )->setRelation('details', $apartment->details)
-                 ->setRelation('fees', $apartment->fees);
-            });
+            return $this->repository->findAllWithFilter($filter);
         });
 
         return view('home', [
@@ -48,12 +42,12 @@ class ApartmentAreaController extends Controller
             'serial_number' => 'required|integer|min:1',
         ]);
 
-        $apartment = Apartment::create(
+        $apartment = new Apartment(
             new Owner($data['owner']),
             new SerialNumber($data['serial_number'])
         );
 
-        $apartment->save();
+        $this->repository->save($apartment);
 
         return redirect()->route('apartments.index')->with('success', 'Apartment created successfully.');
     }

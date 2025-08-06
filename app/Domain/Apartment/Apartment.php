@@ -2,45 +2,51 @@
 
 namespace App\Domain\Apartment;
 
-use Illuminate\Database\Eloquent\Model;
 use App\Domain\Apartment\ValueObjects\Owner;
 use App\Domain\Apartment\ValueObjects\SerialNumber;
 
-class Apartment extends Model
+class Apartment
 {
-    protected $fillable = ['owner', 'serial_number'];
+    private Owner $owner;
+    private SerialNumber $serialNumber;
+    private array $details = [];
+    private array $fees = [];
 
-    public function __construct(array $attributes = [])
-    {
-        parent::__construct($attributes);
-    }
-
-    public static function create(Owner $owner, SerialNumber $serialNumber): self
-    {
-        $apartment = new self();
-        $apartment->attributes['owner'] = $owner->toString();
-        $apartment->attributes['serial_number'] = $serialNumber->toInt();
-        return $apartment;
+    public function __construct(
+        Owner $owner,
+        SerialNumber $serialNumber,
+        array $details = [],
+        array $fees = []
+    ) {
+        $this->owner = $owner;
+        $this->serialNumber = $serialNumber;
+        $this->details = $details;
+        $this->fees = $fees;
     }
 
     public function getOwner(): Owner
     {
-        return new Owner($this->attributes['owner']);
+        return $this->owner;
     }
 
     public function getSerialNumber(): SerialNumber
     {
-        return new SerialNumber((int) $this->attributes['serial_number']);
+        return $this->serialNumber;
     }
 
-    public function details()
+    /**
+     * @return array
+     */
+    public function getDetails(): array
     {
-        return $this->hasMany(\App\Models\ApartmentDetail::class);
+        return $this->details;
     }
 
-    public function fees()
+    /**
+     * @return array
+     */
+    public function getFees(): array
     {
-        return $this->hasMany(\App\Models\ApartmentFee::class);
+        return $this->fees;
     }
 }
-

@@ -31,19 +31,23 @@
         </thead>
         <tbody>
             @foreach($apartments as $apartment)
-                <tr onclick="location.href='/update/{{ $apartment->serial_number }}';" style="cursor:pointer;">
-                    <td>{{ $apartment->serial_number }}</td>
-                    <td>{{ $apartment->owner }}</td>
-                    <td>{{ $apartment->details->first()->lived_qt ?? '' }}</td>
-                    <td>{{ $apartment->details->first()->total_area ?? '' }}</td>
-                    <td>{{ number_format($apartment->fees->first()->maintenance ?? 0, 2, ',', ' ') }}</td>
-                    <td>{{ number_format($apartment->fees->first()->accrued_expenses ?? 0, 2, ',', ' ') }}</td>
-                    <td>{{ number_format($apartment->fees->first()->recalculation ?? 0, 2, ',', ' ') }}</td>
-                    <td>{{ number_format($apartment->fees->first()->balance_start ?? 0, 2, ',', ' ') }}</td>
-                    <td>{{ number_format($apartment->fees->first()->balance_end ?? 0, 2, ',', ' ') }}</td>
-                    <td>{{ number_format($apartment->fees->first()->paid ?? 0, 2, ',', ' ') }}</td>
-                    <td>{{ number_format($apartment->fees->first()->fine ?? 0, 2, ',', ' ') }}</td>
-                    <td>{{ number_format($apartment->fees->first()->total ?? 0, 2, ',', ' ') }}</td>
+                @php
+                    $detail = collect($apartment->getDetails())->first();
+                    $fee = collect($apartment->getFees())->first();
+                @endphp
+                <tr onclick="location.href='{{ url('/update/' . $apartment->getSerialNumber()->toInt()) }}';" style="cursor:pointer;">
+                    <td>{{ $apartment->getSerialNumber()->toInt() }}</td>
+                    <td>{{ $apartment->getOwner()->toString() }}</td>
+                    <td>{{ $detail->lived_qt ?? '' }}</td>
+                    <td>{{ $detail->total_area ?? '' }}</td>
+                    <td>{{ number_format($fee->maintenance ?? 0, 2, ',', ' ') }}</td>
+                    <td>{{ number_format($fee->accrued_expenses ?? 0, 2, ',', ' ') }}</td>
+                    <td>{{ number_format($fee->recalculation ?? 0, 2, ',', ' ') }}</td>
+                    <td>{{ number_format($fee->balance_start ?? 0, 2, ',', ' ') }}</td>
+                    <td>{{ number_format($fee->balance_end ?? 0, 2, ',', ' ') }}</td>
+                    <td>{{ number_format($fee->paid ?? 0, 2, ',', ' ') }}</td>
+                    <td>{{ number_format($fee->fine ?? 0, 2, ',', ' ') }}</td>
+                    <td>{{ number_format($fee->total ?? 0, 2, ',', ' ') }}</td>
                 </tr>
             @endforeach
         </tbody>
