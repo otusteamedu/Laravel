@@ -115,6 +115,30 @@ services:
             - mysql
             - redis
             - laravel.test
+    #scheduler container for start artisan scheduler:run without using outer crone
+    scheduler_main_app:
+        #        profiles:
+        #            - queues
+        build:
+            context: ./vendor/laravel/sail/runtimes/8.4
+            dockerfile: Dockerfile
+            args:
+                WWWGROUP: '${WWWGROUP}'
+        image: sail-8.4/app
+        restart: unless-stopped
+        #command: 'scheduler_start.sh'
+        entrypoint: ["/bin/bash", "scheduler_start.sh"]
+        environment:
+            WWWUSER: '${WWWUSER}'
+            LARAVEL_SAIL: 1
+        volumes:
+            - '.:/var/www/html'
+        networks:
+            - sail
+        depends_on:
+            - mysql
+            - redis
+            - laravel.test
 networks:
     sail:
         driver: bridge
