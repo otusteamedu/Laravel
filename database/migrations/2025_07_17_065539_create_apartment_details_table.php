@@ -19,7 +19,6 @@ return new class extends Migration
             $table->integer('personal_account');
             $table->string('account_number', 200);
             $table->foreignId('apartment_id')->constrained('apartments');
-            $table->foreignId('tariff_id')->nullable()->constrained('tariffs');
             $table->timestamps();
         });
     }

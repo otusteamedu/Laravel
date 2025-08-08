@@ -1,8 +1,18 @@
 <?php
 
-use Illuminate\Foundation\Inspiring;
-use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Schedule;
+use Illuminate\Support\Facades\Log;
 
-Artisan::command('inspire', function () {
-    $this->comment(Inspiring::quote());
-})->purpose('Display an inspiring quote');
+Schedule::command('warmup:cache')
+    ->daily()
+    ->withoutOverlapping()
+    ->onOneServer();
+
+Schedule::command('clear:cache')
+    ->daily()
+    ->withoutOverlapping()
+    ->onOneServer();
+
+#Schedule::call(function () {
+#    file_put_contents(storage_path('logs/scheduler_test.log'), now() . " - Scheduler ran\n", FILE_APPEND);
+#})->everyMinute();

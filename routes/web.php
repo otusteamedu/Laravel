@@ -6,23 +6,29 @@ use App\Http\Controllers\Admin\ApartmentController;
 use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\ApartmentAreaController;
 
-// Главная страница
-Route::get('/', function () {
-    return view('home', ['title' => 'ТСЖ Радуга']);
-})->name('index');
 
-// Страница тарифов
-Route::get('/tariffs', function () {
-    return view('tariffs', ['title' => 'Тарифы']);
-})->name('tariffs.index');
+//временно для проверки memcached
+Route::get('/test-session', function (Illuminate\Http\Request $request) {
+    $request->session()->put('check_memcached', 'работает');
+
+    return 'Сессия записана: ' . $request->session()->get('check_memcached');
+});
+
+// Главная страница
+Route::get('/', [ApartmentAreaController::class, 'index'])->name('index');
+
+Route::get('/apartments', [ApartmentAreaController::class, 'index'])->name('apartments.index');
+Route::post('/apartments', [ApartmentAreaController::class, 'store']);
+
 
 // Страница квартир
+/*
 Route::get('/apartments', function () {
     return view('apartments.index', [
         'title' => 'Квартиры',
         'apartments' => []
     ]);
-})->name('apartments.index');
+})->name('apartments.index');*/
 
 // Страница dashboard с локалью в URL
 Route::get('/{locale}/dashboard', function ($locale) {
@@ -68,3 +74,12 @@ Route::get('/fail', function () {
 Route::post('/apartment/calculate-area', [ApartmentAreaController::class, 'calculate']);
 Route::post('/apartment/calculate-fees', [ApartmentAreaController::class, 'calculateFees']);
 Route::get('/calculate-fees', [ApartmentAreaController::class, 'calculateFees'])->name('calculate_fees');
+
+//временно для теста
+Route::get('/test-telegram', function () {
+    Log::channel('telegram')->info('Test Telegram from queue');
+    return 'ok';
+});
+
+
+Route::post('/apartments', [ApartmentAreaController::class, 'store']);
