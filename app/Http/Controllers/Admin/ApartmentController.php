@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Apartment;
+use App\Domain\Apartment\Apartment;
 use Illuminate\Http\Request;
 
 class ApartmentController extends Controller

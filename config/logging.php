@@ -55,7 +55,7 @@ return [
         'stack' => [
             'driver' => 'stack',
             'channels' => explode(',', (string) env('LOG_STACK', 'single')),
-            'ignore_exceptions' => false,
+            'ignore_exceptions' => true,
         ],
 
         'single' => [
@@ -125,6 +125,13 @@ return [
 
         'emergency' => [
             'path' => storage_path('logs/laravel.log'),
+        ],
+
+        'telegram' => [
+            'driver' => 'custom',
+            'via' => App\Logging\TelegramLogger::class,
+            'token' => env('TELEGRAM_BOT_TOKEN'),
+            'chat_id' => env('TELEGRAM_CHAT_ID'),
         ],
 
     ],

@@ -5,10 +5,22 @@
     "description": "The skeleton application for the Laravel framework.",
     "keywords": ["laravel", "framework"],
     "license": "MIT",
+
+    "repositories": [
+        {
+            "type": "path",
+            "url": "./packages/Tariff"
+        }
+    ],
+    
     "require": {
         "php": "^8.2",
+        "darkaonline/l5-swagger": "^9.0",
         "laravel/framework": "^12.0",
-        "laravel/tinker": "^2.10.1"
+        "laravel/sanctum": "^4.2",
+        "laravel/tinker": "^2.10.1",
+        "predis/predis": "^3.2",
+        "tariff/tariff": "@dev"
     },
     "require-dev": {
         "fakerphp/faker": "^1.23",

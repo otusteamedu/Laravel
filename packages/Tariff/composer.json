@@ -1,0 +1,25 @@
+{
+    "name": "tariff/tariff",
+    "description": "Tariff package",
+    "type": "library",
+    "autoload": {
+        "psr-4": {
+            "Tariff\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Sergey Cherepanov",
+            "email": "sergmzk@gmail.com"
+        }
+    ],
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Tariff\\Providers\\TariffServiceProvider"
+            ]
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}
