@@ -17,13 +17,18 @@ Route::get('/test-session', function (Illuminate\Http\Request $request) {
 // Главная страница
 Route::get('/', [ApartmentAreaController::class, 'index'])->name('index');
 
+Route::get('/apartments', [ApartmentAreaController::class, 'index'])->name('apartments.index');
+Route::post('/apartments', [ApartmentAreaController::class, 'store']);
+
+
 // Страница квартир
+/*
 Route::get('/apartments', function () {
     return view('apartments.index', [
         'title' => 'Квартиры',
         'apartments' => []
     ]);
-})->name('apartments.index');
+})->name('apartments.index');*/
 
 // Страница dashboard с локалью в URL
 Route::get('/{locale}/dashboard', function ($locale) {
@@ -75,3 +80,6 @@ Route::get('/test-telegram', function () {
     Log::channel('telegram')->info('Test Telegram from queue');
     return 'ok';
 });
+
+
+Route::post('/apartments', [ApartmentAreaController::class, 'store']);
