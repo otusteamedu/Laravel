@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-
+use App\Http\Controllers\Test;
 Route::get('/', function () {
     return view('main',
         [
@@ -38,3 +38,5 @@ Route::get('/news/', function () {
         ]
     );
 });
+
+Route::get('/test/', [Test::class, 'test']);
