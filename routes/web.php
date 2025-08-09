@@ -1,7 +1,13 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Test;
+use App\Http\Controllers\NewsController;
+use App\Models\News;
+use App\Queries\UserQueries;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
+use Carbon\Carbon;
 Route::get('/', function () {
     return view('main',
         [
@@ -39,4 +45,4 @@ Route::get('/news/', function () {
     );
 });
 
-Route::get('/test/', [Test::class, 'test']);
+Route::resource('/admin/news', NewsController::class)->names('news');
