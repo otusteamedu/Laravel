@@ -2,7 +2,7 @@
 
 namespace Tests\Feature\Fibonachi;
 
-use App\EloquentModels\User;
+use App\Infrastructure\EloquentModels\User;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\Gate;
 use PHPUnit\Framework\Attributes\Group;

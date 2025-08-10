@@ -1,12 +1,12 @@
 <?php
 
-namespace Tests\Unit;
+namespace Tests\Unit\Area;
 
-use App\BusinessModels\Area;
-use App\Exceptions\NotFoundException;
-use App\Services\Area\AreaDTO;
-use App\Services\Area\AreaRepositoryInterface;
-use App\Services\Area\AreaService;
+use App\Domain\BusinessModels\Area;
+use App\Domain\Exceptions\NotFoundException;
+use App\Application\Services\Area\AreaDTO;
+use App\Application\Services\Area\AreaRepositoryInterface;
+use App\Application\Services\Area\AreaService;
 use Mockery;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use PHPUnit\Framework\Attributes\Group;

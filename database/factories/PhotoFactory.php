@@ -2,7 +2,7 @@
 
 namespace Database\Factories;
 
-use App\EloquentModels\Photo;
+use App\Infrastructure\EloquentModels\Photo;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**

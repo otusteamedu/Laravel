@@ -1,16 +1,16 @@
 <?php
 
-namespace Tests\Feature\Feature\Area;
+namespace Tests\Feature\Area;
 
-use App\BusinessModels\Area;
-use App\Repositories\Area\AreaRepository;
+use App\Domain\BusinessModels\Area;
+use App\Infrastructure\Repositories\Area\AreaRepository;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\Attributes\TestWith;
 use Tests\TestCase;
-use App\Helpers\LocaleHelper;
+use App\Application\Helpers\LocaleHelper;
 
 #[Group('feature_area_repository')]
 

@@ -3,7 +3,7 @@
 namespace App\Interfaces\Console\Commands;
 
 use Illuminate\Console\Command;
-use Stronger21012\Autotranslator\Services\TranslatorInterface;
+use Stronger21012\Autotranslator\Services\Translation\TranslatorInterface;
 
 class TranslateTestCommand extends Command
 {

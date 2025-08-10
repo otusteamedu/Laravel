@@ -2,8 +2,8 @@
 
 namespace Tests\Feature\Area;
 
-use App\Services\Area\AreaDTO;
-use App\Response\WebResponse;
+use App\Application\Services\Area\AreaDTO;
+use App\Domain\Response\WebResponse;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Test;
