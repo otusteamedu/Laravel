@@ -12,7 +12,8 @@
                         <p class="description">{{ $body }}</p>
                         <span class="pull-left">
                             <span class="glyphicon glyphicon-folder-open" aria-hidden="true"></span>  
-                            <a class="text-blue-500 hover:underline" href="{{ route('news.edit', ['news' => $news]) }}">Редактировать</a>
+                            <a class="text-blue-500 hover:underline" href="{{ route('news.edit', ['newsId' => $newsId]) }}">Редактировать</a>
+                            <a class="text-blue-500 hover:underline" href="{{ route('news.destroy', ['newsId' => $newsId]) }}">Удалить</a>
                         </span>
                         <span class="pull-right">
               <span class="capacity">

@@ -30,25 +30,19 @@
                             'news' => $item,
                         ])
                 @endforeach
-                <div class="mt-8">
-                    <ul class="flex">
-                        <li class="mx-1 px-3 py-2 bg-gray-200 text-gray-500 rounded-lg">
-                            <a class="flex items-center font-bold" href="#">Предыдущая</a>
-                        </li>
-                        <li class="mx-1 px-3 py-2 bg-gray-200 text-gray-700 hover:bg-gray-700 hover:text-gray-200 rounded-lg">
-                            <a class="font-bold" href="#">1</a>
-                        </li>
-                        <li class="mx-1 px-3 py-2 bg-gray-200 text-gray-700 hover:bg-gray-700 hover:text-gray-200 rounded-lg">
-                            <a class="font-bold" href="#">2</a>
-                        </li>
-                        <li class="mx-1 px-3 py-2 bg-gray-200 text-gray-700 hover:bg-gray-700 hover:text-gray-200 rounded-lg">
-                            <a class="font-bold" href="#">3</a>
-                        </li>
-                        <li class="mx-1 px-3 py-2 bg-gray-200 text-gray-700 hover:bg-gray-700 hover:text-gray-200 rounded-lg">
-                            <a class="flex items-center font-bold" href="#">Следующая</a>
-                        </li>
+                <nav class="pagination is-centered" role="navigation" aria-label="pagination">
+                    <a class="pagination-previous" href="{{ route('news.indexpage',['num' => 0]) }}">Previous</a>
+                    <a class="pagination-next" href="{{ route('news.indexpage',['num' => $pagination['page']+1]) }}">Next</a>                     
+                    <ul class="pagination-list">                            
+                        @for($page=0;$page<$pagination['count'];$page++)                                
+                            @if ($page == $pagination['page'])
+                                <li class="is-current"><a class="pagination-link " aria-label="Page {{ $page }}" aria-current="page">{{ $page+1 }}</a></li>
+                            @else
+                                <li><a class="pagination-link" href="{{ route('news.indexpage',['num' => $page]) }}" aria-label="Page {{ $page }}">{{ $page+1 }}</a></li>
+                            @endif
+                        @endfor
                     </ul>
-                </div>
+                </nav>
             </div>
         </div>
     </div>

@@ -1,12 +1,10 @@
 @extends('layouts.app')
 
-@section('title', isset($newsId) ? 'Редактирование новости' : 'Создание новости')
+@section('title',  'Редактирование новости')
 
 @section('content')
     <div class="container mx-auto px-4">
-        <h1 class="text-2xl font-semibold my-4">
-            {{ isset($newsId) ? 'Редактирование новости' : 'Создание новости'}}
-        </h1>
+        <h1 class="text-2xl font-semibold my-4">Редактирование новости</h1>
         @if ($errors->any())
             <ul class="errors">
                 @foreach ($errors->all() as $error)
@@ -14,7 +12,7 @@
                 @endforeach
             </ul>
         @endif
-        <form action="{{ isset($newsId) ? route('news.update', $newsId) : route('news.store') }}" method="POST">
+        <form action="{{ route('news.update', $newsId)  }}" method="POST">
             @csrf
             @if (isset($newsId))
                 @method('PUT')
@@ -34,9 +32,10 @@
                 </div>
             </div>
             <div>
-                <button type="submit" class="btn btn-primary">
-                    {{ isset($newsId) ? 'Update' : 'Create' }}
-                </button>
+                <button type="submit" class="btn btn-primary">Редактирование новости</button>
+            </div>
+            <div>
+                <a class="text-blue-500 hover:underline" href="{{ route('news.destroy', ['newsId' => $newsId]) }}">Удалить</a>
             </div>
         </form>
     </div>

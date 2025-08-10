@@ -113,3 +113,32 @@ body {
 .ribbon:after {
     bottom: 0;
 }
+
+ul.pagination-list li {
+    display: inline-block;
+    padding: 12px;
+    border: 1px solid #eee;
+    border-radius: 2px;
+}
+
+ul.pagination-list {
+    display: inline-block;
+}
+
+a.pagination-next {
+    display: inline-block;
+    padding: 12px;
+    border: 1px solid #eee;
+    border-radius: 2px;
+}
+
+a.pagination-previous {
+    display: inline-block;
+    padding: 12px;
+    border: 1px solid #eee;
+    border-radius: 2px;
+}
+ul.pagination-list li.is-current {
+    background: #247d3d;
+    color: #fff;
+}

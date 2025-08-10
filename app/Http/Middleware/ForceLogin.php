@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace App\Http\Middleware;
 
 use App\Models\User;
@@ -27,7 +25,7 @@ class ForceLogin
 
         if ($user) {
             // Log in the user
-            Auth::login($user);
+            //Auth::login($user);
         }
 
         return $next($request);

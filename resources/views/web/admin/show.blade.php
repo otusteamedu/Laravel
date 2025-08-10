@@ -21,7 +21,7 @@
                 <br>
                 <br>
                 <p class="pl-2 font-body font-light text-primary">
-                    <a class="text-blue-500" href="{{ route('news.edit', ['news' => $news]) }}">Edit</a>
+                    <a class="text-blue-500" href="{{ route('news.edit', ['newsId' => $news->id]) }}">Edit</a>
                 </p>
             </div>
         </div>

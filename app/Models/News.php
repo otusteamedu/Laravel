@@ -4,6 +4,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class News extends BaseModel
 {
@@ -38,5 +40,10 @@ class News extends BaseModel
     {
         return $this->morphMany(Like::class, 'liked');
     }
+    public function author()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
+
     
 }
