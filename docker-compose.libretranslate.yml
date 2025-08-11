@@ -1,0 +1,17 @@
+version: '3.8'
+
+services:
+  libretranslate:
+    image: libretranslate/libretranslate
+    container_name: libretranslate
+    ports:
+      - "5000:5000"
+    environment:
+      - LT_LOAD_ONLY=en,ru
+      - LT_API_KEYS=a49e5da4c194bb11edb210789b22463bc884ea77564db29564a9a25ae6f2b78a
+    networks:
+      - autotranslator_net
+
+networks:
+  autotranslator_net:
+    name: autotranslator_net
