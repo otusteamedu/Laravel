@@ -74,3 +74,5 @@ class ApartmentAreaController extends Controller
         return response()->json(['message' => 'Fees calculated successfully']);
     }
 }
+
+//для коммита
