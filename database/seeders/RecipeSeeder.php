@@ -2,8 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\EloquentModels\Recipe;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Infrastructure\EloquentModels\Recipe;
 use Illuminate\Database\Seeder;
 
 class RecipeSeeder extends Seeder

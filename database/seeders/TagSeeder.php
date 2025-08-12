@@ -2,10 +2,9 @@
 
 namespace Database\Seeders;
 
-use App\EloquentModels\Recipe;
-use App\EloquentModels\Tag;
+use App\Infrastructure\EloquentModels\Recipe;
+use App\Infrastructure\EloquentModels\Tag;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\Log;
 
 class TagSeeder extends Seeder
 {
