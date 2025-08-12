@@ -34,11 +34,11 @@ class Area extends BaseModel implements BusinessModelsInterface
         return $this->created_at;
     }
 
-    public function toArray(): array 
+    public function toArray(?string $lang = null): array 
     {
         return [
             'id' => $this->id,
-            'name_' . LocaleHelper::getLocale() => $this->name,
+            'name_' . ($lang ?? LocaleHelper::getLocale()) => $this->name,
             'created_at' => $this->created_at
         ];
     }

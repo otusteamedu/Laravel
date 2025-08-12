@@ -4,6 +4,6 @@ namespace App\Domain\BusinessModels;
 
 interface BusinessModelsInterface 
 {
-    public function toArray(): array;
+    public function toArray(?string $lang): array;
     public function toArrayForCreat(): array;
 }
