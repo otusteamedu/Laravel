@@ -1,6 +1,6 @@
 @host = http://localhost
 @token = eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzUxMiJ9.eyJpc3MiOiJodHRwOi8vbG9jYWxob3N0L2FwaS9hdXRoL3JlZnJlc2gtdG9rZW4iLCJpYXQiOjE3NTUwNjY1NDAsImV4cCI6MTc1NTA2NzQ0MCwibmJmIjoxNzU1MDY2NTQwLCJqdGkiOiJRdzYxSUFlaUp3b0tIY1E5Iiwic3ViIjoiMSIsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjciLCJyb2xlcyI6WzFdLCJlbWFpbCI6ImFkbWluQGV4YW1wbGUuY29tIiwibmFtZSI6IkFkbWluIFVzZXIifQ.AVplZoXXVmLGlapJMY17RNnUcqw5PH0vxtd1vu0yWWIcYM5WAFQ8sgFlrMH0sqaafMGTkikBTfyLGow6M2JxyS2xiCveMN6vxaBA_XwNUqASL4pIKDhkplB7rfxZO_vUxhMdT_0Qup6UQzAhRohq8-EWT6Ha9AjyOGXYSxWhAL1tGAUNLlAlk3Scsh5Zw4rkJRDhOx-OXPZFN3QxKO011Rc2uCzpeNS0j7Ij8zYw3KYO8ypLbPsajV6P1fIAso-Sn1rJ4jmITQnpHVPCPUkNh2O4Yc19KLOVx3W75PD59uaRCCod9mIkspBRJhlHwtlBi9p3q-9Q3Y3ePCbbhKLkVnEiWQj5sZ8L1z4pTi_syULBp6Fs9YCIGXZ8NbSXZUuyKjWCIw1w4XpUvM7W0RR8UdxNW8nzAWEaeE2WoPhGe7ZI0nqZte8oZUP2xCijCbQ8pqchHgAmuV9GsJjnGPN78kpv-xwAaJZpLxzXRRtM1lVYHUexsTiz6OVX67xrPTP4NCV7E9uy7Oed3FGWl6_bDSAE5gqw8YXd6hFrkZrgCHBoDYmbMcAtRcoFJSS6u6nkLpmN9N-_s_E2tgJQGwSeOtvEaACMkD-zO8pQzCGXX2mn8iApeNKd7FECLMwNuFfIqvdi_PrmZoykRLAqQI6pnFB6lGwL4mYuQBD7OjqlvyM
-
+@token2 = eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxIiwianRpIjoiNjIyMzg3YjQ5NWUwYmU0NjhiMzVmODg0OWMzYmYwYWNhNjNiNTExN2FlNTk0YmU4YjBmNzE3MjIxMGYyNzU0ZTVhYzI3MmIxODdhMzczZDMiLCJpYXQiOjE3NTUxMDIxMTUuMTM2NjMyLCJuYmYiOjE3NTUxMDIxMTUuMTM2NjM3LCJleHAiOjE3NzA5OTk3MTUuMTE4OTM1LCJzdWIiOiI4Iiwic2NvcGVzIjpbInByb2R1Y3Q6YWRtaW4iLCJjYXRlZ29yeTphZG1pbiJdfQ.VGqSxxvKeMSHLO9anb9fG0zTtAwoI1enrIr_eftSkcRWB_NQqUAS5qES3pCJDiLw2WrqmG3fMtJXchjManxFhXNKeXdWSNmty4InoKKMjCOLNdvzaBJG-6P2JHlvbiPn4zTKkPE2w-4RBeL37-kw4NdE7A65b2q_siTBBT30nFdzefOii2oWNgKen7Hm54OVSdKDU6oJrFSaFGZd80lyU9nuVPvMkg0hciRzimtQCWd1f-xI2wfxkHt3qj1VPYplwalDPw2MHQq5azd7zIr6M1z4a54bZlxWoSQVXIJ8QrWbigilxVHPbfa0VV-qVvxybSLwyUknia03bPIK58l8ITkpM_lDOWNmGrKWH-o2-Rd0WiQ5mmiFoAwXNamEeFaZ6pfOIdBzqCI1GycLVppcUiaqb643XIvCLt-O-eKVtDXMa5v9S5Q1iF6Gk-pBxn1IoS7uCABODdybBUnkeVFnbPnz13BScgdtWCtnj1BwURhhS80IFwXeTgI2jyoHSEdr9MyXOFPiPGPh7hPWHyXtIQ5D29F9R9qjOls-dwxsFbIh-L7BRq0yBaTdvjRiZY_KJvjWJWF1eYpc55VLl129Z5Rmuc0-bG_TwdG5LxG69EU2ZOGo0olXibC9oLplvtvDiUZOO9HT5BVHJLyiXs-VLIJeC2UBsBKJUBUvGB6YSzk
 ### User login
 POST {{host}}/api/auth/login
 Accept: application/json
@@ -121,5 +121,33 @@ Content-Type: application/json
 ### Delete category
 DELETE {{host}}/api/v1/categories/6
 Authorization: Bearer {{token}}
+Accept: application/json
+Content-Type: application/json
+
+###
+POST {{host}}/api/v2/auth/register
+Accept: application/json
+Content-Type: application/json
+
+{
+    "name": "OAuser2",
+    "email": "OAuser2@example.com",
+    "password": "password"
+}
+
+###
+POST {{host}}/api/v2/auth/login
+Accept: application/json
+Content-Type: application/json
+
+{
+    "email": "OAuser2@example.com",
+    "password": "password"
+}
+
+
+### Get all products (paginated)
+GET {{host}}/api/v2/products
+Authorization: Bearer {{token2}}
 Accept: application/json
 Content-Type: application/json
