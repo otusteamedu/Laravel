@@ -15,19 +15,6 @@ use InvalidArgumentException;
 
 class Blog extends Model
 {
-    // protected string $title;
-
-    // protected string $preview;
-
-    // protected string $text;
-
-    // private $created_at;
-
-    // private $updated_at;
-
-    // private $fillable = ['title', 'preview', 'text', 'created_at', 'updated_at'];
-    // protected $guarded = ['title', 'preview', 'text', 'created_at', 'updated_at'];
-
     private function validate(string $title, string $preview, string $text): void
     {
 
@@ -106,16 +93,4 @@ class Blog extends Model
     {
         return parent::all();
     }
-
-    /*
-        public function fillBlog(string $title, string $preview, string $text): void
-        {
-
-            if ($this->validate(['title' => $title, 'preview' => $preview, 'text' => $text])) {
-                $this->title = $title;
-                $this->preview = $preview;
-                $this->text = $text;
-            }
-        }
-    */
 }
