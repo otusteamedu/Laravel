@@ -2,6 +2,7 @@
 
 namespace App\Infrastructure\Jobs;
 
+use App\Application\Services\Area\AreaRepositoryInterface;
 use App\Domain\BusinessModels\Area;
 use App\Domain\Exceptions\NotFoundException;
 use App\Domain\Response\WebResponse;
@@ -29,28 +30,49 @@ class ProcessTranclationModelField implements ShouldQueue
         return [60, 120, 240]; 
     }
 
+    /**
+     * Репозиторий для работы с моделью Area.
+     * @var AreaRepositoryInterface
+     */
+    private AreaRepositoryInterface $areaRepository;
+    /**
+     * Репозитории, с которыми будет работать задача.
+     * @var array<int, \App\Domain\Repositories\...RepositoryInterface>
+     */
     public array $repositoryModels;
+    /**
+     * Список языков, которые будут учавствовать при переводе.
+     * @var array<int, string>
+     */
     public array $langs;
+    /**
+     * Сервис перевода.
+     * @var TranslatorInterface
+     */
     public TranslatorInterface $translator;
 
     /**
      * Create a new job instance.
      */
-    public function __construct(
-        array $repositoryModels,
-        array $langs,
-    ) {
-        $this->repositoryModels = $repositoryModels;
-        $this->langs = $langs;
+    public function __construct() 
+    {
+        $this->langs = ['ru', 'en'];
         $this->onQueue('translationModelFeild');
     }
 
     /**
      * Execute the job.
+     * @param AreaRepositoryInterface $areaRepository
+     * @param TranslatorInterface $translator
+     * @return void
      */
     public function handle(
+        AreaRepositoryInterface $areaRepository,
         TranslatorInterface $translator,
     ): void {
+        $this->repositoryModels = [
+            $areaRepository,
+        ];
         foreach ($this->repositoryModels as $repositoryModel) {
             foreach ($this->langs as $lang) {
                 $idsModels = $repositoryModel->getIdWhereNullField('name_' . $lang);
