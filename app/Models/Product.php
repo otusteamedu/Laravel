@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Events\ProductPriceChanged;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 /**

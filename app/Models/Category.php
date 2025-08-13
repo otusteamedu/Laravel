@@ -32,6 +32,6 @@ class Category extends BaseModel
 
     public function products()
     {
-        return $this->hasMany(Product::class);
+        return $this->belongsToMany(Product::class);
     }
 }

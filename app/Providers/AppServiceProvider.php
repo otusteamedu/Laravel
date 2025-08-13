@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
 use App\Models\Category;
@@ -26,5 +28,18 @@ class AppServiceProvider extends ServiceProvider
     {
         Gate::policy(Category::class, CategoryPolicy::class);
         Gate::policy(Product::class, ProductPolicy::class);
+
+        Auth::viaRequest('custom-token', function ($request) {
+
+            $token = $request->bearerToken();
+
+            if($token === null){
+                return null;
+            }
+
+            return User::where('api_token', $token)->first();
+
+
+        });
     }
 }
