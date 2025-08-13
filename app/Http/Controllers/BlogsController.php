@@ -17,7 +17,7 @@ class BlogsController extends Controller
      */
     public function index(): View
     {
-        $blogs = Blog::all();
+        $blogs = Blog::myAll();
 
         return view('blogs.index', compact('blogs'));
     }
@@ -40,16 +40,11 @@ class BlogsController extends Controller
     ): RedirectResponse {
 
         try {
-            echo 'dump blogsController 1'.PHP_EOL;
-            dump($request);
             $blog = new Blog(['title' => $request->title, 'preview' => $request->preview, 'text' => $request->text]);
-            echo 'dump blogsController 2'.PHP_EOL;
-            dump($blog);
-
-            $blog->save();
+            $blog->mySave();
         } catch (InvalidArgumentException $e) {
             // Обработка ошибок валидации
-            return redirect()->back()->withInput()->withErrors($e->errors());
+            return redirect()->back()->withInput()->withErrors($e->getMessage());
         } catch (Exception $e) {
             // Обработка остальных исключений
             // В этом случае можно перенаправить на страницу с общей ошибкой или логировать ошибку
@@ -76,10 +71,10 @@ class BlogsController extends Controller
     public function edit(Blog $blog): View
     {
         return view('blogs.edit', [
-            'blogId' => $blog->id,
-            'title' => $blog->title,
-            'preview' => $blog->preview,
-            'text' => $blog->text,
+            'blogId' => $blog->getId(),
+            'title' => $blog->getTitle(),
+            'preview' => $blog->getPreview(),
+            'text' => $blog->getText(),
         ]);
     }
 
@@ -88,16 +83,12 @@ class BlogsController extends Controller
      */
     public function update(UpdateBlogRequest $request, Blog $blog)
     {
-
-        dump($request);
-        exit();
-
         $requestData = $request->validated();
 
-        $blog->title = $requestData['title'];
-        $blog->preview = $requestData['preview'];
-        $blog->text = $requestData['text'];
-        $blog->save();
+        $blog->setTitle($requestData['title']);
+        $blog->setPreview($requestData['preview']);
+        $blog->setText($requestData['text']);
+        $blog->mySave();
 
         return redirect()->route('blogs.show', ['blog' => $blog]);
     }

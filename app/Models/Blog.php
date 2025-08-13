@@ -15,20 +15,22 @@ use InvalidArgumentException;
 
 class Blog extends Model
 {
-    private string $title;
+    // protected string $title;
 
-    private string $preview;
+    // protected string $preview;
 
-    private string $text;
+    // protected string $text;
 
-    private $created_at;
+    // private $created_at;
 
-    private $updated_at;
+    // private $updated_at;
 
-    protected $fillable = ['title', 'preview', 'text', 'created_at', 'updated_at'];
+    // private $fillable = ['title', 'preview', 'text', 'created_at', 'updated_at'];
+    // protected $guarded = ['title', 'preview', 'text', 'created_at', 'updated_at'];
 
     private function validate(string $title, string $preview, string $text): void
     {
+
         if (empty($title) or
             empty($preview) or
             empty($text) or
@@ -36,37 +38,73 @@ class Blog extends Model
             strlen($text) < 10 or
             strlen($preview) > 255
         ) {
-            throw new InvalidArgumentException('Некорректный набор данных: ожидаются корректно заполенные поля.');
+            throw new InvalidArgumentException('Некорректный набор данных: ожидаются корректно заполненные поля.');
         }
     }
 
     public function __construct(array $attributes = [])
     {
-        echo 'dump blog 1'.PHP_EOL;
-        dump($attributes);
+        parent::__construct();
 
-        // parent::__construct();
-
-        // if (count($attributes) >= 3) {
-        // exit();
-        try {
-            echo 'dump blog 2'.PHP_EOL;
-            dump($attributes['title']);
-
-            $this->validate($attributes['title'], $attributes['preview'], $attributes['text']);
-        } catch (InvalidArgumentException $e) {
+        if (count($attributes) >= 3) {
+            try {
+                $this->validate($attributes['title'], $attributes['preview'], $attributes['text']);
+            } catch (InvalidArgumentException $e) {
+                throw $e;
+            }
+            $this->title = $attributes['title'];
+            $this->preview = $attributes['preview'];
+            $this->text = $attributes['text'];
+            $this->created_at = now();
+            $this->updated_at = now();
 
         }
-        $this->title = $attributes['title'];
-        $this->preview = $attributes['preview'];
-        $this->text = $attributes['text'];
-        $this->created_at = now();
-        $this->updated_at = now();
 
-        echo 'dump blog 3'.PHP_EOL;
-        dump($this->title);
-        // }
+    }
 
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    public function getTitle()
+    {
+        return $this->title;
+    }
+
+    public function getPreview()
+    {
+        return $this->preview;
+    }
+
+    public function getText()
+    {
+        return $this->text;
+    }
+
+    public function setTitle(string $value)
+    {
+        $this->title = $value;
+    }
+
+    public function setPreview(string $value)
+    {
+        $this->preview = $value;
+    }
+
+    public function setText(string $value)
+    {
+        $this->text = $value;
+    }
+
+    public function mySave(array $options = [])
+    {
+        return $this->save();
+    }
+
+    public static function myAll(array $options = [])
+    {
+        return parent::all();
     }
 
     /*
