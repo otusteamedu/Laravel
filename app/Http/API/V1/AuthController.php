@@ -10,7 +10,10 @@ use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Str;
 
-
+/**
+ * @title Authentication
+ * @description API endpoints for user authentication
+ */
 class AuthController extends Controller implements HasMiddleware
 {
 
@@ -23,9 +26,20 @@ class AuthController extends Controller implements HasMiddleware
     }
 
     /**
-     * Get a JWT via given credentials.
+     * User login
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @bodyParam email string required User's email. Example: user@example.com
+     * @bodyParam password string required User's password. Example: password
+     * @response {
+     *   "access_token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9...",
+     *   "refresh_token": "def50200f2045a5f8167e0ab25f5a5...",
+     *   "token_type": "bearer",
+     *   "expires_in": 3600,
+     *   "refresh_expires_in": 604800
+     * }
+     * @response 401 {
+     *   "error": "Unauthorized"
+     * }
      */
     public function login()
     {
@@ -43,9 +57,16 @@ class AuthController extends Controller implements HasMiddleware
     }
 
     /**
-     * Get the authenticated User.
+     * Get authenticated user info
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @authenticated
+     * @response {
+     *   "id": 1,
+     *   "name": "John Doe",
+     *   "email": "john@example.com",
+     *   "created_at": "2023-01-01T00:00:00.000000Z",
+     *   "updated_at": "2023-01-01T00:00:00.000000Z"
+     * }
      */
     public function me()
     {
@@ -53,9 +74,12 @@ class AuthController extends Controller implements HasMiddleware
     }
 
     /**
-     * Log the user out (Invalidate the token).
+     * Logout user (invalidate token)
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @authenticated
+     * @response {
+     *   "message": "Successfully logged out"
+     * }
      */
     public function logout()
     {
@@ -65,9 +89,19 @@ class AuthController extends Controller implements HasMiddleware
     }
 
     /**
-     * Refresh access token using refresh token.
+     * Refresh access token
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @bodyParam refresh_token string required Refresh token. Example: def50200f2045a5f8167e0ab25f5a5...
+     * @response {
+     *   "access_token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9...",
+     *   "refresh_token": "def50200f2045a5f8167e0ab25f5a5...",
+     *   "token_type": "bearer",
+     *   "expires_in": 3600,
+     *   "refresh_expires_in": 604800
+     * }
+     * @response 401 {
+     *   "error": "Invalid or expired refresh token"
+     * }
      */
     public function refreshToken(Request $request)
     {
