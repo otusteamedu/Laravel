@@ -8,7 +8,7 @@ use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Validation\ValidationException;
+use InvalidArgumentException;
 
 class BlogsController extends Controller
 {
@@ -40,11 +40,14 @@ class BlogsController extends Controller
     ): RedirectResponse {
 
         try {
-            $blog = new Blog;
-            $blog->fillBlog($request->input('title'), $request->input('preview'), $request->input('text'));
+            echo 'dump blogsController 1'.PHP_EOL;
+            dump($request);
+            $blog = new Blog(['title' => $request->title, 'preview' => $request->preview, 'text' => $request->text]);
+            echo 'dump blogsController 2'.PHP_EOL;
+            dump($blog);
+
             $blog->save();
-            // } catch (\Exception $e) {
-        } catch (ValidationException $e) {
+        } catch (InvalidArgumentException $e) {
             // Обработка ошибок валидации
             return redirect()->back()->withInput()->withErrors($e->errors());
         } catch (Exception $e) {

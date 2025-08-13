@@ -11,12 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
+        Schema::dropIfExists('blogs');
         Schema::create('blogs', function (Blueprint $table) {
             $table->id();
             $table->string('title');
             $table->string('preview');
             $table->string('text');
-            $table->timestamps();
+            $table->timestamp('created_at');
+            $table->timestamp('updated_at');
         });
     }
 

@@ -3,49 +3,81 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Validation\ValidationException;
+use InvalidArgumentException;
 
 /*
     @property string $title
     @property string $preview
     @property string $text
-    @property string $created_at
-    @property string $updated_at
+    @property timestamp $created_at
+    @property timestamp $updated_at
 */
 
 class Blog extends Model
 {
-    protected $fillable = [
-        'title',
-        'preview',
-        'text',
-        // 'created_at',
-        // 'updated_at',
-    ];
+    private string $title;
 
-    private function validate($fields): bool
+    private string $preview;
+
+    private string $text;
+
+    private $created_at;
+
+    private $updated_at;
+
+    protected $fillable = ['title', 'preview', 'text', 'created_at', 'updated_at'];
+
+    private function validate(string $title, string $preview, string $text): void
     {
-        $validator = Validator::make($fields, [
-            'title' => ['required', 'min:10', 'max: 255'],
-            'preview' => ['min:10'],
-            'text' => ['required', 'min:10'],
-        ]);
-
-        if ($validator->fails()) {
-            throw new ValidationException($validator);
-        }
-
-        return true;
-    }
-
-    public function fillBlog($title, $preview, $text)
-    {
-
-        if ($this->validate(['title' => $title, 'preview' => $preview, 'text' => $text])) {
-            $this->title = $title;
-            $this->preview = $preview;
-            $this->text = $text;
+        if (empty($title) or
+            empty($preview) or
+            empty($text) or
+            strlen($title) < 10 or
+            strlen($text) < 10 or
+            strlen($preview) > 255
+        ) {
+            throw new InvalidArgumentException('Некорректный набор данных: ожидаются корректно заполенные поля.');
         }
     }
+
+    public function __construct(array $attributes = [])
+    {
+        echo 'dump blog 1'.PHP_EOL;
+        dump($attributes);
+
+        // parent::__construct();
+
+        // if (count($attributes) >= 3) {
+        // exit();
+        try {
+            echo 'dump blog 2'.PHP_EOL;
+            dump($attributes['title']);
+
+            $this->validate($attributes['title'], $attributes['preview'], $attributes['text']);
+        } catch (InvalidArgumentException $e) {
+
+        }
+        $this->title = $attributes['title'];
+        $this->preview = $attributes['preview'];
+        $this->text = $attributes['text'];
+        $this->created_at = now();
+        $this->updated_at = now();
+
+        echo 'dump blog 3'.PHP_EOL;
+        dump($this->title);
+        // }
+
+    }
+
+    /*
+        public function fillBlog(string $title, string $preview, string $text): void
+        {
+
+            if ($this->validate(['title' => $title, 'preview' => $preview, 'text' => $text])) {
+                $this->title = $title;
+                $this->preview = $preview;
+                $this->text = $text;
+            }
+        }
+    */
 }
