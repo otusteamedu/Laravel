@@ -1,0 +1,125 @@
+@host = http://localhost
+@token = eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzUxMiJ9.eyJpc3MiOiJodHRwOi8vbG9jYWxob3N0L2FwaS9hdXRoL3JlZnJlc2gtdG9rZW4iLCJpYXQiOjE3NTUwNjY1NDAsImV4cCI6MTc1NTA2NzQ0MCwibmJmIjoxNzU1MDY2NTQwLCJqdGkiOiJRdzYxSUFlaUp3b0tIY1E5Iiwic3ViIjoiMSIsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjciLCJyb2xlcyI6WzFdLCJlbWFpbCI6ImFkbWluQGV4YW1wbGUuY29tIiwibmFtZSI6IkFkbWluIFVzZXIifQ.AVplZoXXVmLGlapJMY17RNnUcqw5PH0vxtd1vu0yWWIcYM5WAFQ8sgFlrMH0sqaafMGTkikBTfyLGow6M2JxyS2xiCveMN6vxaBA_XwNUqASL4pIKDhkplB7rfxZO_vUxhMdT_0Qup6UQzAhRohq8-EWT6Ha9AjyOGXYSxWhAL1tGAUNLlAlk3Scsh5Zw4rkJRDhOx-OXPZFN3QxKO011Rc2uCzpeNS0j7Ij8zYw3KYO8ypLbPsajV6P1fIAso-Sn1rJ4jmITQnpHVPCPUkNh2O4Yc19KLOVx3W75PD59uaRCCod9mIkspBRJhlHwtlBi9p3q-9Q3Y3ePCbbhKLkVnEiWQj5sZ8L1z4pTi_syULBp6Fs9YCIGXZ8NbSXZUuyKjWCIw1w4XpUvM7W0RR8UdxNW8nzAWEaeE2WoPhGe7ZI0nqZte8oZUP2xCijCbQ8pqchHgAmuV9GsJjnGPN78kpv-xwAaJZpLxzXRRtM1lVYHUexsTiz6OVX67xrPTP4NCV7E9uy7Oed3FGWl6_bDSAE5gqw8YXd6hFrkZrgCHBoDYmbMcAtRcoFJSS6u6nkLpmN9N-_s_E2tgJQGwSeOtvEaACMkD-zO8pQzCGXX2mn8iApeNKd7FECLMwNuFfIqvdi_PrmZoykRLAqQI6pnFB6lGwL4mYuQBD7OjqlvyM
+
+### User login
+POST {{host}}/api/auth/login
+Accept: application/json
+Content-Type: application/json
+
+{
+    "email": "admin@example.com",
+    "password": "password"
+}
+
+### Refresh token
+POST {{host}}/api/auth/refresh-token
+Accept: application/json
+Content-Type: application/json
+
+{
+    "refresh_token": "QzRYhsjlnlFuEWjKTqicvVufJplCneM9ddDppPkSsE5co1Kcote785iiKIlBwlWm"
+}
+
+### Get all products (paginated)
+GET {{host}}/api/v1/products
+Authorization: Bearer {{token}}
+Accept: application/json
+Content-Type: application/json
+
+### Get products with filters
+GET {{host}}/api/v1/products?category_id=1&is_sale=1&sort=price&direction=desc&per_page=5
+Authorization: Bearer {{token}}
+Accept: application/json
+Content-Type: application/json
+
+### Get single product by ID
+GET {{host}}/api/v1/products/1
+Authorization: Bearer {{token}}
+Accept: application/json
+Content-Type: application/json
+
+### Create new product
+POST {{host}}/api/v1/products
+Authorization: Bearer {{token}}
+Accept: application/json
+Content-Type: application/json
+
+{
+    "title": "New Product",
+    "price": 99.99,
+    "published": true,
+    "categories": [1, 2],
+    "image": "product.jpg",
+    "is_sale": true
+}
+
+### Update product
+PUT {{host}}/api/v1/products/1
+Authorization: Bearer {{token}}
+Accept: application/json
+Content-Type: application/json
+
+{
+    "title": "Updated Product Name",
+    "price": 109.99,
+    "categories": [1, 3]
+}
+
+### Delete product
+DELETE {{host}}/api/v1/products/72
+Authorization: Bearer {{token}}
+Accept: application/json
+Content-Type: application/json
+
+### Get all categories (paginated)
+GET {{host}}/api/v1/categories
+Authorization: Bearer {{token}}
+Accept: application/json
+Content-Type: application/json
+
+### Get categories with products included
+GET {{host}}/api/v1/categories?with_products=1
+Authorization: Bearer {{token}}
+Accept: application/json
+Content-Type: application/json
+
+### Get single category by ID
+GET {{host}}/api/v1/categories/1
+Authorization: Bearer {{token}}
+Accept: application/json
+Content-Type: application/json
+
+### Get category with products
+GET {{host}}/api/v1/categories/1?with_products=1
+Authorization: Bearer {{token}}
+Accept: application/json
+Content-Type: application/json
+
+### Create new category
+POST {{host}}/api/v1/categories
+Authorization: Bearer {{token}}
+Accept: application/json
+Content-Type: application/json
+
+{
+    "title": "New Category",
+    "published": true,
+    "order": 5
+}
+
+### Update category
+PUT {{host}}/api/v1/categories/1
+Authorization: Bearer {{token}}
+Accept: application/json
+Content-Type: application/json
+
+{
+    "title": "Updated Category Name",
+    "published": false
+}
+
+### Delete category
+DELETE {{host}}/api/v1/categories/6
+Authorization: Bearer {{token}}
+Accept: application/json
+Content-Type: application/json
