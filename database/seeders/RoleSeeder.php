@@ -18,9 +18,11 @@ class RoleSeeder extends Seeder
         Role::firstOrCreate(['name' => 'editor', 'description' => 'Can create and edit content']);
         Role::firstOrCreate(['name' => 'user', 'description' => 'Regular user']);
 
+        Permission::create(['name' => 'view-category', 'description' => 'Разрешение на просмотр категорий']);
         Permission::create(['name' => 'create-category', 'description' => 'Разрешение на создание категорий']);
         Permission::create(['name' => 'edit-category', 'description' => 'Разрешение на редактирование категорий']);
         Permission::create(['name' => 'delete-category', 'description' => 'Разрешение на удаление категорий']);
+        Permission::create(['name' => 'view-product', 'description' => 'Разрешение на просмотр продуктов']);
         Permission::create(['name' => 'create-product', 'description' => 'Разрешение на создание продуктов']);
         Permission::create(['name' => 'edit-product', 'description' => 'Разрешение на редактирование продуктов']);
         Permission::create(['name' => 'delete-product', 'description' => 'Разрешение на удаление продуктов']);
