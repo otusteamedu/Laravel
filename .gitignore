@@ -9,6 +9,7 @@
 .env
 .env.backup
 .env.production
+.env.testing
 .phpactor.json
 .phpunit.result.cache
 Homestead.json
@@ -25,3 +26,6 @@ yarn-error.log
 /.sail
 /coverage-report
 /packages
+Envoy*
+!Envoy.blade.php
+
