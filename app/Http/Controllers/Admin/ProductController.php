@@ -152,7 +152,7 @@ class ProductController extends Controller
         if ($product->image && Storage::disk('public')->exists($product->image)) {
             Storage::disk('public')->delete($product->image);
         }
-        if ($product->images) {
+        if ($product->images && is_array($product->images)) {
             foreach ($product->images as $imagePath) {
                 if (Storage::disk('public')->exists($imagePath)) {
                     Storage::disk('public')->delete($imagePath);

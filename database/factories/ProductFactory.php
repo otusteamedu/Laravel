@@ -17,7 +17,6 @@ class ProductFactory extends Factory
      */
     public function definition(): array
     {
-        $userIds = User::whereIn('email', ['admin@example.com', 'editor@example.com'])->get()->pluck('id');
 
         return [
             'title' => fake()->sentence(),
@@ -28,7 +27,7 @@ class ProductFactory extends Factory
             'published' => 1,
             'order' => fake()->numberBetween(0, 1000),
             'price' => fake()->randomFloat(100, 100000),
-            'user_id' => $userIds->random(),
+            'user_id' => User::factory(),
         ];
     }
 }

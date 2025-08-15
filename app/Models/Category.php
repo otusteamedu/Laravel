@@ -27,7 +27,9 @@ class Category extends BaseModel
         'title',
         'alias',
         'text',
-        'published'
+        'published',
+        'order',
+        'user_id'
     ];
 
     public function products()
