@@ -1,0 +1,58 @@
+name: Blue-Green Deploy
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Docker
+        uses: docker/setup-buildx-action@v2
+
+      - name: Login to Docker (optional, if using Docker Hub)
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Determine active version
+        id: active
+        run: |
+          ACTIVE=$(cat deploy/active_version.txt)
+          if [ "$ACTIVE" = "blue" ]; then
+            echo "NEXT=green" >> $GITHUB_ENV
+            echo "CURRENT=blue" >> $GITHUB_ENV
+          else
+            echo "NEXT=blue" >> $GITHUB_ENV
+            echo "CURRENT=green" >> $GITHUB_ENV
+          fi
+
+      - name: Build Docker image
+        run: |
+          docker build -t laravel_app:${{ env.NEXT }} -f docker/php/Dockerfile .
+
+      - name: Deploy next version
+        run: |
+          docker-compose -f docker-compose.${{ env.NEXT }}.yml up -d --build
+
+      - name: Run tests on next version
+        run: |
+          # Запуск тестов
+          docker exec otus_laravel_app_${{ env.NEXT }} php artisan test || exit 1
+
+      - name: Switch Nginx to next version
+        run: |
+          # Меняем upstream в nginx.conf
+          sed -i "s/server app-${{ env.CURRENT }}:9000;/# server app-${{ env.CURRENT }}:9000;/g" deploy/nginx.conf
+          sed -i "s/# server app-${{ env.NEXT }}:9000;/server app-${{ env.NEXT }}:9000;/g" deploy/nginx.conf
+          docker exec otus_nginx_server nginx -s reload
+
+      - name: Update active version
+        run: echo "${{ env.NEXT }}" > deploy/active_version.txt
