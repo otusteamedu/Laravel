@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "6501e4c1572b51b90e237ba84e7e160b",
+    "content-hash": "c45e857f1523ca751a29637f06034246",
     "packages": [
         {
             "name": "brick/math",
@@ -2647,6 +2647,53 @@
                 }
             ],
             "time": "2024-07-20T21:41:07+00:00"
+        },
+        {
+            "name": "prog-time/tg-logger",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/prog-time/tg-logger.git",
+                "reference": "477bd6c4969343e3692d7fdd374a22ed2c7380a7"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/prog-time/tg-logger/zipball/477bd6c4969343e3692d7fdd374a22ed2c7380a7",
+                "reference": "477bd6c4969343e3692d7fdd374a22ed2c7380a7",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^8.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "ProgTime\\TgLogger\\TgLoggerServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "ProgTime\\TgLogger\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Prog-Time",
+                    "email": "liya-rabota97@mail.ru"
+                }
+            ],
+            "description": "A Laravel package for sending logs to Telegram",
+            "support": {
+                "issues": "https://github.com/prog-time/tg-logger/issues",
+                "source": "https://github.com/prog-time/tg-logger"
+            },
+            "time": "2024-12-24T22:13:42+00:00"
         },
         {
             "name": "psr/clock",
