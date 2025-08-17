@@ -4,12 +4,15 @@ use App\Http\Controllers\NewsController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\WithdrawController;
 use App\Models\News;
+use App\Models\User;
 use App\Models\NewsPreview;
 use App\Queries\UserQueries;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Response;
+use Illuminate\Support\Facades\Storage;
+use Monolog\Handler\TelegramBotHandler;
 Route::get('/', function () {
     return view('welcome');
 });
@@ -88,4 +91,67 @@ Route::group(['prefix' => '/e'], function () {
     });
 });
 
+Route::get('/withdraw', [WithdrawController::class, 'withdraw'])->name('withdraw');
+
+Route::get('/c', function (Request $request) {
+    $users = User::all();
+
+    dump($users->map(fn($v) => $v->name));
+    dump($users->map->name);
+    dump($users->filter(fn($u) => $u->is_admin));
+    dump($users->filter->is_admin->map->name);
+
+    return "ok";
+});
+
+Route::get('/lazy', function () {
+    $users = User::lazy();
+
+    dump($users->all());
+
+    return "ok";
+});
+
+Route::get('/file', function () {
+    // Storage::put('sub/text.txt','sometext');
+    // return 'ok';
+    $text = Storage::get('sub/text.txt');
+    return dump($text);
+});
+
+Route::get('/log', function (Request $request) {
+    $qwe = 123;
+    $res = ProgTime\TgLogger\TgLogger::sendLog('Debug messages', 'debug');
+    dump($res);
+    Log::channel('monolog')->info('get info request');
+    Log::channel('monolog')->warning('get warn request');
+    Log::channel('monolog')->emergency('get warn request');
+
+    return ['ok' => true];
+});
+Route::post('/upload', function (Request $request) {
+    $file = $request->file('avatar');
+   // $res = Storage::disk('public')->putFile('avatars',$file);
+    $res = Storage::putFileAs(
+        'avatars',
+        $file,
+        'new_name.' . $file->getClientOriginalExtension()
+    );
+
+    dump($res);
+
+    return "ok";
+})->name('upload');
+
+Route::get('/download', function () {
+    $filename = 'avatars/new_name.jpg';
+    // abort(404);
+    return Storage::download($filename, 'скачай меня.jpg');
+});
+
+Route::get('/download/url', function () {
+    $filename = 'avatars/new_name.jpg';
+    // abort(404);
+    return Storage::disk('public')->url($filename);
+});
 require __DIR__ . '/auth.php';

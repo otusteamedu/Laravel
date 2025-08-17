@@ -93,7 +93,12 @@ return [
             ],
             'processors' => [PsrLogMessageProcessor::class],
         ],
-
+        'telegram' => [
+                'driver' => 'monolog',
+                'handler' => ProgTime\TgLogger\TgHandler::class,
+                'formatter' => ProgTime\TgLogger\TgFormatter::class,
+                'level' => 'debug',
+        ],
         'stderr' => [
             'driver' => 'monolog',
             'level' => env('LOG_LEVEL', 'debug'),
