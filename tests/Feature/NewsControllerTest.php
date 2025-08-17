@@ -36,25 +36,20 @@ class NewsControllerTest extends TestCase
 
     public function test_news_content()
     {
-        $user = User::factory()->create();
         $news = News::factory()->create();
-
         $expectedPostJson = [
-            "id" => $news->id,
-            "user_id" => $news->user_id,
-            "name" => $news->name,
-            "link"=>$news->link,
-            "preview" => $news->preview,
-            "photo" => $news->photo,
-            "create_at" => $news->create_at,
-            "text" => $news->text,
-            "created_at" => null,
-            "updated_at" => null,
-            "deleted_at" => null
+            'name' => $news->name,
+            'preview'=> $news->preview,
+            'text' => $news->text,
+            'link'=> $news->link,
+            'user_id'=>$news->user_id,
+            'photo'=> $news->photo,
+            'create_at' => $news->create_at
         ];
-        $response = $this->json('GET', '/e/one-all');
-        $response->assertStatus(200)
-        ->assertJsonFragment([$expectedPostJson]);
+        
+        $response = $this->get('/e/one-all');
+        $response->assertOk();
+        $response->assertJsonFragment($expectedPostJson);
     }
 
     public function test_create_news_stored_in_db()

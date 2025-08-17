@@ -69,9 +69,18 @@ Route::group(['prefix' => '/e'], function () {
     });
 
     Route::get('/one-all', function () {
-        $news = News::all();
+        $newsall = News::all();
+        foreach($newsall as $news){
+        $arr[] = ['name' => $news->name,
+            'preview'=> $news->preview,
+            'text' => $news->text,
+            'link'=> $news->link,
+            'user_id'=>$news->user_id,
+            'photo'=> $news->photo,
+            'create_at' => $news->create_at];
+        }
         $news->load('preview');
-        return json_encode($news,true);
+        return json_encode($arr,true);
     })->name('news.index');
 
     Route::get("/poly", function () {
