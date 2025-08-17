@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\NewsController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\LocaleController;
 use App\Http\Controllers\WithdrawController;
 use App\Models\News;
 use App\Models\User;
@@ -13,6 +14,7 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Storage;
 use Monolog\Handler\TelegramBotHandler;
+use App\Http\Middleware\CheckLocale;
 Route::get('/', function () {
     return view('welcome');
 });
@@ -111,7 +113,9 @@ Route::get('/lazy', function () {
 
     return "ok";
 });
-
+Route::middleware([CheckLocale::class])->group(function () {
+    Route::get('/{locale}/locale', [LocaleController::class, 'show']);
+});
 Route::get('/file', function () {
     // Storage::put('sub/text.txt','sometext');
     // return 'ok';
