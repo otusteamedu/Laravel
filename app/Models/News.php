@@ -6,10 +6,10 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-
+use Watson\Rememberable\Rememberable;
 class News extends BaseModel
 {
-    use SoftDeletes;
+    use SoftDeletes,Rememberable;
     public $timestamps = true;
 
     public $fillable = [

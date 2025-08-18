@@ -5,10 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreNewsRequest;
 use App\Http\Requests\UpdateNewsRequest;
 use App\Models\News;
-use Illuminate\Contracts\Auth\Access\Gate;
-use Illuminate\Contracts\View\Factory;
-use Illuminate\Contracts\View\View;
-use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Auth\AuthManager;
@@ -25,8 +22,12 @@ class NewsController extends Controller
      */
     public function index(Request $request)
     {   
-        $news = News::all();
-        return view('web.admin.index', ['news'=>$news]);
+        $cache = Cache::get('allnews');
+        if (is_null($cache)) {
+            $cache =  News::all();
+            Cache::set('allnews', $cache, 10);
+        }
+        return view('web.admin.index', ['news'=>$cache]);
     }
 
     /**

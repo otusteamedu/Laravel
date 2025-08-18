@@ -39,59 +39,59 @@ Route::middleware('auth')->group(function () {
 
 Route::get('/withdraw', [WithdrawController::class, 'withdraw'])->name('withdraw');
 
-Route::group(['prefix' => '/e'], function () {
-    Route::post('/create', function (Request $request) {
-        $name = 'test name';
-        $photo = "https://via.placeholder.com/320x250.png/004433?text=quaerat";
-        dump(News::create([
-            "name" => $name,
-            "text" => 'test text new line',
-            'preview'=> 'test text new line',
-            'link'=> Str::slug($name),
-            'photo'=> $photo,
-            "user_id" => 1,
-        ]));
-        return "";
-    })->name('news.create');
+// Route::group(['prefix' => '/e'], function () {
+//     Route::post('/create', function (Request $request) {
+//         $name = 'test name';
+//         $photo = "https://via.placeholder.com/320x250.png/004433?text=quaerat";
+//         dump(News::create([
+//             "name" => $name,
+//             "text" => 'test text new line',
+//             'preview'=> 'test text new line',
+//             'link'=> Str::slug($name),
+//             'photo'=> $photo,
+//             "user_id" => 1,
+//         ]));
+//         return "";
+//     })->name('news.create');
 
-    Route::get("/update", function () {
-        $news = News::find(1);
-        $news->name = "12updated title";
-        dump($news->save());
-        return "";
-    });
+//     Route::get("/update", function () {
+//         $news = News::find(1);
+//         $news->name = "12updated title";
+//         dump($news->save());
+//         return "";
+//     });
 
-    Route::get("/delete", function () {
-        $news = News::withTrashed()->find(2);
-        dump($news->trashed());
-        dump($news->restore());
-        return "";
-    });
+//     Route::get("/delete", function () {
+//         $news = News::withTrashed()->find(2);
+//         dump($news->trashed());
+//         dump($news->restore());
+//         return "";
+//     });
 
-    Route::get('/one', function () {
-        $news = News::find(20);
-        return json_encode($news,true);
-    });
+//     Route::get('/one', function () {
+//         $news = News::find(20);
+//         return json_encode($news,true);
+//     });
 
-    Route::get('/one-all', function () {
-        $newsall = News::all();
-        foreach($newsall as $news){
-        $arr[] = ['name' => $news->name,
-            'preview'=> $news->preview,
-            'text' => $news->text,
-            'link'=> $news->link,
-            'user_id'=>$news->user_id,
-            'photo'=> $news->photo,
-            'create_at' => $news->create_at];
-        }
-        $news->load('preview');
-        return json_encode($arr,true);
-    })->name('news.index');
+//     Route::get('/one-all', function () {
+//         $newsall = News::all();
+//         foreach($newsall as $news){
+//         $arr[] = ['name' => $news->name,
+//             'preview'=> $news->preview,
+//             'text' => $news->text,
+//             'link'=> $news->link,
+//             'user_id'=>$news->user_id,
+//             'photo'=> $news->photo,
+//             'create_at' => $news->create_at];
+//         }
+//         $news->load('preview');
+//         return json_encode($arr,true);
+//     })->name('news.index');
 
-    Route::get("/poly", function () {
-        News::find(1);
-    });
-});
+//     Route::get("/poly", function () {
+//         News::find(1);
+//     });
+// });
 
 Route::get('/withdraw', [WithdrawController::class, 'withdraw'])->name('withdraw');
 
@@ -159,3 +159,4 @@ Route::get('/download/url', function () {
     return Storage::disk('public')->url($filename);
 });
 require __DIR__ . '/auth.php';
+require __DIR__ . '/cached.php';
