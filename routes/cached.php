@@ -3,6 +3,7 @@ use Illuminate\Support\Facades\Cache;
 use App\Models\News;
 use App\Models\User;
 use App\Services\Memcached;
+use Illuminate\Support\Facades\Route;
 
 Route::group(['prefix' => '/cached'], function () {
     Route::get('/get', function () {

@@ -8,9 +8,11 @@
     "require": {
         "php": "^8.2",
         "fakerphp/faker": "^1.24",
+        "konstantin/calc": "@dev",
         "laravel/framework": "^12.0",
         "laravel/tinker": "^2.10.1",
         "prog-time/tg-logger": "^1.0",
+        "vagrant/ascii": "@dev",
         "watson/rememberable": "^7.0"
     },
     "require-dev": {
@@ -73,6 +75,20 @@
             "php-http/discovery": true
         }
     },
-    "minimum-stability": "stable",
-    "prefer-stable": true
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "repositories": [
+        {
+            "type": "path",
+            "url": "../ascii"
+        },
+        {
+            "type": "path",
+            "url": "../calc"
+        },
+        {
+            "type": "git",
+            "url": "https://github.com/ilya-nurullin/img2ascii.git"
+        }
+    ]
 }
