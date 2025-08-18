@@ -5,6 +5,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\LocaleController;
 use App\Http\Controllers\WithdrawController;
 use App\Models\News;
+use App\Http\Controllers;
 use App\Models\User;
 use App\Models\NewsPreview;
 use App\Queries\UserQueries;
@@ -15,13 +16,37 @@ use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Storage;
 use Monolog\Handler\TelegramBotHandler;
 use App\Http\Middleware\CheckLocale;
+use App\Services\JobService;
+use Illuminate\Http\Response as HttpResponse;
+
 Route::get('/', function () {
     return view('welcome');
 });
 
 Route::view('/page', 'page');
 
-Route::resource('news', NewsController::class)->middleware('auth');
+//Route::resource('news', NewsController::class)->middleware('auth');
+
+Route::prefix('news')
+    ->name('news.')
+    ->group(function () {
+        Route::get('/', Controllers\News\Index::class)
+            ->name('index');
+        Route::get('/page/{num}', [Controllers\News\Index::class,'pagination'])
+            ->name('indexpage');
+        Route::get('/create', [Controllers\News\Create::class, 'create'])
+            ->name('create');
+        Route::post('/', [Controllers\News\Create::class, 'creates'])
+            ->name('store');
+        Route::get('/{news}', Controllers\News\Show::class)
+            ->name('show');
+        Route::get('/{newsId}/edit', [Controllers\News\Update::class, 'edit'])
+            ->name('edit');
+        Route::put('/{newsId}', [Controllers\News\Update::class, 'update'])
+            ->name('update');
+        Route::get('/{newsId}/destroy', [Controllers\News\Delete::class,'delete'])
+            ->name('destroy');
+    });
 
 Route::get('/dashboard', function (Request $request) {
     $locale = mb_substr($request->headers->get('accept-language'), 0, 2);
@@ -39,34 +64,49 @@ Route::middleware('auth')->group(function () {
 
 Route::get('/withdraw', [WithdrawController::class, 'withdraw'])->name('withdraw');
 
-// Route::group(['prefix' => '/e'], function () {
-//     Route::post('/create', function (Request $request) {
-//         $name = 'test name';
-//         $photo = "https://via.placeholder.com/320x250.png/004433?text=quaerat";
-//         dump(News::create([
-//             "name" => $name,
-//             "text" => 'test text new line',
-//             'preview'=> 'test text new line',
-//             'link'=> Str::slug($name),
-//             'photo'=> $photo,
-//             "user_id" => 1,
-//         ]));
-//         return "";
-//     })->name('news.create');
+Route::group(['prefix' => '/e'], function () {
+    Route::get('/create', function (Request $request) {
+        $width=320;
+        $height=250;
+        $name = fake()->name;
+        $arr = [
+            'name' => $name,
+            'preview'=> fake()->sentence,
+            'text' => fake()->paragraph,
+            'link'=> Str::slug($name),
+            'user_id'=>10,
+            'is_admin'=>1,
+            'photo'=> fake()->imageUrl($width, $height),
+            'create_at' => fake()->dateTimeBetween('-1 year', 'now')
+        ];
+        dump(News::create($arr));
+        JobService::add('Добавлена запись в таблицу');
+        return "";
+    })->name('news.create');
 
-//     Route::get("/update", function () {
-//         $news = News::find(1);
-//         $news->name = "12updated title";
-//         dump($news->save());
-//         return "";
-//     });
+    Route::get("/update", function (Request $request) {
+        $id = $request->get('id');
+        if($id){
+            $news = News::find($id);
+            if($news){
+                $news->name = "12updated title";
+                JobService::add('Обновлена запись в таблице');
+                dump($news->save());
+            }
+        }
+        return "";
+    });
 
-//     Route::get("/delete", function () {
-//         $news = News::withTrashed()->find(2);
-//         dump($news->trashed());
-//         dump($news->restore());
-//         return "";
-//     });
+    Route::get("/delete", function (Request $request) {
+        $id = $request->get('id');
+        if($id){
+            $news = News::find($id);
+            dump($news->trashed());
+            dump($news->restore());
+            JobService::add('Удалена запись в таблице');
+        }
+        return "";
+    });
 
 //     Route::get('/one', function () {
 //         $news = News::find(20);
@@ -91,7 +131,7 @@ Route::get('/withdraw', [WithdrawController::class, 'withdraw'])->name('withdraw
 //     Route::get("/poly", function () {
 //         News::find(1);
 //     });
-// });
+ });
 
 Route::get('/withdraw', [WithdrawController::class, 'withdraw'])->name('withdraw');
 
@@ -122,6 +162,20 @@ Route::get('/file', function () {
     // return 'ok';
     $text = Storage::get('sub/text.txt');
     return dump($text);
+});
+Route::get('/sendtg', function (Request $request) {
+    $text = $request->get('text');
+    if($text){
+        $job = new \App\Jobs\SendTgJobs(
+            $text,
+            'debug'
+        );
+        dispatch($job)->onQueue('telegram')->afterResponse();
+        return new HttpResponse('ok');
+    }
+    else{
+        return new HttpResponse('Не указан get параметр text');
+    }
 });
 
 Route::get('/log', function (Request $request) {
@@ -159,5 +213,5 @@ Route::get('/download/url', function () {
     // abort(404);
     return Storage::disk('public')->url($filename);
 });
-require __DIR__ . '/auth.php';
+//require __DIR__ . '/auth.php';
 require __DIR__ . '/cached.php';

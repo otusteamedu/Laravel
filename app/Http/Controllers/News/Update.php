@@ -41,9 +41,7 @@ class Update
 
     public function update(AuthManager $auth,UpdateNewsRequest $request,int $newsId): RedirectResponse
     {
-        if (!$auth->check()) {
-            return redirect()->route('login');
-        }
+        
         $requestData = $request->validated();
         $news = News::query()->find($newsId);
         $news->name = $requestData['name'];

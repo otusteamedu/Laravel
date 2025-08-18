@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Auth;
 use \Illuminate\Contracts\Foundation\Application;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
+use App\Events\NotificationEvent;
 class Create
 {
     public function create(): View
@@ -32,9 +33,7 @@ class Create
     ): RedirectResponse
     {
         
-        if (!$auth->check()) {
-            return redirect()->route('login');
-        }
+        
         $validator = $validationFactory->make(request()->all(), [
             'name' => ['required', 'min:10', 'max: 255'],
             'text' => ['required', 'min:10'],
@@ -58,6 +57,7 @@ class Create
         $news->user_id = Auth::id();
         $news->create_at = Carbon::now()->format('Y-m-d');
         $news->save();
+        event(new NotificationEvent($news));
         return redirect()
             ->route('news.index')
             ->with('success', 'Пост успешно создан')
