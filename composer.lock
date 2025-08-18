@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "ac018e43b1c0e44defd28f97ceebbed2",
+    "content-hash": "ca24e408b263f504748b0e8108be47a3",
     "packages": [
         {
             "name": "brick/math",
@@ -1116,6 +1116,59 @@
                 }
             ],
             "time": "2025-02-03T10:55:03+00:00"
+        },
+        {
+            "name": "ilya-nurullin/img2ascii",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/ilya-nurullin/img2ascii.git",
+                "reference": "70a51f142817a6f4171c1dd9ef13bc1f75aa66ad"
+            },
+            "require": {
+                "ext-gd": "*",
+                "php": ">= 5.3"
+            },
+            "default-branch": true,
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Img2Ascii\\": "src/"
+                }
+            },
+            "time": "2021-09-14T14:55:11+00:00"
+        },
+        {
+            "name": "konstantin/calc",
+            "version": "dev-main",
+            "dist": {
+                "type": "path",
+                "url": "../calc",
+                "reference": "1dc70d2bdc1f5945a8e6bb4091ec9f3e20b21d38"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Konstantin\\Calc\\ServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Konstantin\\Calc\\": "src/"
+                }
+            },
+            "authors": [
+                {
+                    "name": "mrkamischinmailru",
+                    "email": "mr.kamischin@mail.ru"
+                }
+            ],
+            "description": "Calculator for works",
+            "transport-options": {
+                "relative": true
+            }
         },
         {
             "name": "laravel/framework",
@@ -5717,6 +5770,42 @@
             "time": "2024-12-21T16:25:41+00:00"
         },
         {
+            "name": "vagrant/ascii",
+            "version": "dev-main",
+            "dist": {
+                "type": "path",
+                "url": "../ascii",
+                "reference": "f5a20995af300b480f1865442ab70785e6f8f11b"
+            },
+            "require": {
+                "illuminate/support": "^12.0",
+                "ilya-nurullin/img2ascii": "dev-master"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Vagrant\\Ascii\\ServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Vagrant\\Ascii\\": "src/"
+                }
+            },
+            "authors": [
+                {
+                    "name": "mrkamischinmailru",
+                    "email": "mr.kamischin@mail.ru"
+                }
+            ],
+            "description": "Image to ascii generator",
+            "transport-options": {
+                "relative": true
+            }
+        },
+        {
             "name": "vlucas/phpdotenv",
             "version": "v5.6.2",
             "source": {
@@ -8407,8 +8496,11 @@
         }
     ],
     "aliases": [],
-    "minimum-stability": "stable",
-    "stability-flags": {},
+    "minimum-stability": "dev",
+    "stability-flags": {
+        "konstantin/calc": 20,
+        "vagrant/ascii": 20
+    },
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {

@@ -113,6 +113,7 @@ Route::get('/lazy', function () {
 
     return "ok";
 });
+
 Route::middleware([CheckLocale::class])->group(function () {
     Route::get('/{locale}/locale', [LocaleController::class, 'show']);
 });
