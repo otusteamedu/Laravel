@@ -1,0 +1,24 @@
+{
+    "name": "konstantin/calc",
+    "description": "Calculator for works",
+    "type": "library",
+    "autoload": {
+        "psr-4": {
+            "Konstantin\\Calc\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Konstantin\\Calc\\ServiceProvider"
+            ]
+        }
+    },
+    "authors": [
+        {
+            "name": "mrkamischinmailru",
+            "email": "mr.kamischin@mail.ru"
+        }
+    ],
+    "require": {}
+}
