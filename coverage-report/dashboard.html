@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="en">
+ <head>
+  <meta charset="UTF-8">
+  <title>Dashboard for /var/www/html/app</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="_css/bootstrap.min.css?v=11.0.9" rel="stylesheet" type="text/css">
+  <link href="_css/nv.d3.min.css?v=11.0.9" rel="stylesheet" type="text/css">
+  <link href="_css/style.css?v=11.0.9" rel="stylesheet" type="text/css">
+  <link href="_css/custom.css" rel="stylesheet" type="text/css">
+ </head>
+ <body>
+  <header>
+   <div class="container-fluid">
+    <div class="row">
+     <div class="col-md-12">
+      <nav aria-label="breadcrumb">
+       <ol class="breadcrumb">
+         <li class="breadcrumb-item"><a href="index.html">/var/www/html/app</a></li>
+         <li class="breadcrumb-item active">(Dashboard)</li>
+
+       </ol>
+      </nav>
+     </div>
+    </div>
+   </div>
+  </header>
+  <div class="container-fluid">
+   <div class="row">
+    <div class="col-md-12">
+     <h2>Classes</h2>
+    </div>
+   </div>
+   <div class="row">
+    <div class="col-md-6">
+     <h3>Coverage Distribution</h3>
+     <div id="classCoverageDistribution" style="height: 300px;">
+       <svg></svg>
+     </div>
+    </div>
+    <div class="col-md-6">
+     <h3>Complexity</h3>
+     <div id="classComplexity" style="height: 300px;">
+       <svg></svg>
+     </div>
+    </div>
+   </div>
+   <div class="row">
+    <div class="col-md-6">
+     <h3>Insufficient Coverage</h3>
+     <div class="scrollbox">
+      <table class="table">
+       <thead>
+        <tr>
+         <th>Class</th>
+         <th class="text-right">Coverage</th>
+        </tr>
+       </thead>
+       <tbody>
+       <tr><td><a href="DTO/ProductPriceData.php.html#4">App\DTO\ProductPriceData</a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Events/ProductPriceChanged.php.html#11">App\Events\ProductPriceChanged</a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/Admin/CategoryController.php.html#12">App\Http\Controllers\Admin\CategoryController</a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/Admin/ProductController.php.html#15">App\Http\Controllers\Admin\ProductController</a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/Auth/AuthenticatedSessionController.php.html#12">App\Http\Controllers\Auth\AuthenticatedSessionController</a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/Auth/ConfirmablePasswordController.php.html#12">App\Http\Controllers\Auth\ConfirmablePasswordController</a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/Auth/EmailVerificationNotificationController.php.html#9">App\Http\Controllers\Auth\EmailVerificationNotificationController</a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/Auth/EmailVerificationPromptController.php.html#10">App\Http\Controllers\Auth\EmailVerificationPromptController</a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/Auth/NewPasswordController.php.html#16">App\Http\Controllers\Auth\NewPasswordController</a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/Auth/PasswordController.php.html#11">App\Http\Controllers\Auth\PasswordController</a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/Auth/PasswordResetLinkController.php.html#11">App\Http\Controllers\Auth\PasswordResetLinkController</a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/Auth/RegisteredUserController.php.html#15">App\Http\Controllers\Auth\RegisteredUserController</a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/Auth/VerifyEmailController.php.html#10">App\Http\Controllers\Auth\VerifyEmailController</a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/ProfileController.php.html#12">App\Http\Controllers\ProfileController</a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/TestLogController.php.html#8">App\Http\Controllers\TestLogController</a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Middleware/SetLocale.php.html#10">App\Http\Middleware\SetLocale</a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Requests/Auth/LoginRequest.php.html#12">App\Http\Requests\Auth\LoginRequest</a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Requests/ProfileUpdateRequest.php.html#9">App\Http\Requests\ProfileUpdateRequest</a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Jobs/SendPriceChangeNotification.php.html#16">App\Jobs\SendPriceChangeNotification</a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Listeners/HandleProductPriceChange.php.html#10">App\Listeners\HandleProductPriceChange</a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Logging/TelegramLogger.php.html#13">App\Logging\TelegramLogger</a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Models/NotificationSettings.php.html#25">App\Models\NotificationSettings</a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Models/Permission.php.html#17">App\Models\Permission</a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Models/Role.php.html#17">App\Models\Role</a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Models/Task.php.html#21">App\Models\Task</a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Models/UserProfile.php.html#36">App\Models\UserProfile</a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Notifications/ProductPriceChangedNotification.php.html#11">App\Notifications\ProductPriceChangedNotification</a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Policies/CategoryPolicy.php.html#9">App\Policies\CategoryPolicy</a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Policies/ProductPolicy.php.html#9">App\Policies\ProductPolicy</a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Providers/EventServiceProvider.php.html#12">App\Providers\EventServiceProvider</a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Repositories/Eloquent/CategoryRepository.php.html#10">App\Repositories\Eloquent\CategoryRepository</a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="View/Components/AppLayout.php.html#8">App\View\Components\AppLayout</a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="View/Components/GuestLayout.php.html#8">App\View\Components\GuestLayout</a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Console/Commands/ExportProductExcel.php.html#10">App\Console\Commands\ExportProductExcel</a></td><td class="text-right">3%</td></tr>
+       <tr><td><a href="Repositories/Eloquent/ProductRepository.php.html#12">App\Repositories\Eloquent\ProductRepository</a></td><td class="text-right">4%</td></tr>
+       <tr><td><a href="Console/Commands/WarmUpCache.php.html#9">App\Console\Commands\WarmUpCache</a></td><td class="text-right">5%</td></tr>
+       <tr><td><a href="Models/RefreshToken.php.html#25">App\Models\RefreshToken</a></td><td class="text-right">33%</td></tr>
+       <tr><td><a href="Providers/AppServiceProvider.php.html#14">App\Providers\AppServiceProvider</a></td><td class="text-right">55%</td></tr>
+       <tr><td><a href="Models/User.php.html#25">App\Models\User</a></td><td class="text-right">63%</td></tr>
+       <tr><td><a href="Providers/RepositoryServiceProvider.php.html#12">App\Providers\RepositoryServiceProvider</a></td><td class="text-right">81%</td></tr>
+       <tr><td><a href="Http/API/V1/PersonalCabinetController.php.html#12">App\Http\API\V1\PersonalCabinetController</a></td><td class="text-right">88%</td></tr>
+
+       </tbody>
+      </table>
+     </div>
+    </div>
+    <div class="col-md-6">
+     <h3>Project Risks</h3>
+     <div class="scrollbox">
+      <table class="table">
+       <thead>
+        <tr>
+         <th>Class</th>
+         <th class="text-right"><abbr title="Change Risk Anti-Patterns (CRAP) Index">CRAP</abbr></th>
+        </tr>
+       </thead>
+       <tbody>
+       <tr><td><a href="Http/Controllers/Admin/ProductController.php.html#15">App\Http\Controllers\Admin\ProductController</a></td><td class="text-right">462</td></tr>
+       <tr><td><a href="Repositories/Eloquent/ProductRepository.php.html#12">App\Repositories\Eloquent\ProductRepository</a></td><td class="text-right">162</td></tr>
+       <tr><td><a href="Policies/CategoryPolicy.php.html#9">App\Policies\CategoryPolicy</a></td><td class="text-right">90</td></tr>
+       <tr><td><a href="Policies/ProductPolicy.php.html#9">App\Policies\ProductPolicy</a></td><td class="text-right">90</td></tr>
+       <tr><td><a href="Notifications/ProductPriceChangedNotification.php.html#11">App\Notifications\ProductPriceChangedNotification</a></td><td class="text-right">72</td></tr>
+       <tr><td><a href="Http/Requests/Auth/LoginRequest.php.html#12">App\Http\Requests\Auth\LoginRequest</a></td><td class="text-right">56</td></tr>
+       <tr><td><a href="Console/Commands/ExportProductExcel.php.html#10">App\Console\Commands\ExportProductExcel</a></td><td class="text-right">51</td></tr>
+       <tr><td><a href="Jobs/SendPriceChangeNotification.php.html#16">App\Jobs\SendPriceChangeNotification</a></td><td class="text-right">30</td></tr>
+       <tr><td><a href="Console/Commands/WarmUpCache.php.html#9">App\Console\Commands\WarmUpCache</a></td><td class="text-right">26</td></tr>
+       <tr><td><a href="Http/Controllers/ProfileController.php.html#12">App\Http\Controllers\ProfileController</a></td><td class="text-right">20</td></tr>
+       <tr><td><a href="Http/Controllers/Auth/ConfirmablePasswordController.php.html#12">App\Http\Controllers\Auth\ConfirmablePasswordController</a></td><td class="text-right">12</td></tr>
+       <tr><td><a href="Http/Controllers/Auth/NewPasswordController.php.html#16">App\Http\Controllers\Auth\NewPasswordController</a></td><td class="text-right">12</td></tr>
+       <tr><td><a href="Http/Controllers/Auth/PasswordResetLinkController.php.html#11">App\Http\Controllers\Auth\PasswordResetLinkController</a></td><td class="text-right">12</td></tr>
+       <tr><td><a href="Http/Controllers/Auth/VerifyEmailController.php.html#10">App\Http\Controllers\Auth\VerifyEmailController</a></td><td class="text-right">12</td></tr>
+       <tr><td><a href="Http/API/V1/PersonalCabinetController.php.html#12">App\Http\API\V1\PersonalCabinetController</a></td><td class="text-right">8</td></tr>
+       <tr><td><a href="Http/Controllers/Auth/EmailVerificationNotificationController.php.html#9">App\Http\Controllers\Auth\EmailVerificationNotificationController</a></td><td class="text-right">6</td></tr>
+       <tr><td><a href="Http/Controllers/Auth/EmailVerificationPromptController.php.html#10">App\Http\Controllers\Auth\EmailVerificationPromptController</a></td><td class="text-right">6</td></tr>
+       <tr><td><a href="Http/Middleware/SetLocale.php.html#10">App\Http\Middleware\SetLocale</a></td><td class="text-right">6</td></tr>
+       <tr><td><a href="Logging/TelegramLogger.php.html#13">App\Logging\TelegramLogger</a></td><td class="text-right">6</td></tr>
+       <tr><td><a href="Providers/RepositoryServiceProvider.php.html#12">App\Providers\RepositoryServiceProvider</a></td><td class="text-right">4</td></tr>
+       <tr><td><a href="Providers/AppServiceProvider.php.html#14">App\Providers\AppServiceProvider</a></td><td class="text-right">3</td></tr>
+
+       </tbody>
+      </table>
+     </div>
+    </div>
+   </div>
+   <div class="row">
+    <div class="col-md-12">
+     <h2>Methods</h2>
+    </div>
+   </div>
+   <div class="row">
+    <div class="col-md-6">
+     <h3>Coverage Distribution</h3>
+     <div id="methodCoverageDistribution" style="height: 300px;">
+       <svg></svg>
+     </div>
+    </div>
+    <div class="col-md-6">
+     <h3>Complexity</h3>
+     <div id="methodComplexity" style="height: 300px;">
+       <svg></svg>
+     </div>
+    </div>
+   </div>
+   <div class="row">
+    <div class="col-md-6">
+     <h3>Insufficient Coverage</h3>
+     <div class="scrollbox">
+      <table class="table">
+       <thead>
+        <tr>
+         <th>Method</th>
+         <th class="text-right">Coverage</th>
+        </tr>
+       </thead>
+       <tbody>
+       <tr><td><a href="Console/Commands/ExportProductExcel.php.html#39"><abbr title="App\Console\Commands\ExportProductExcel::handle">handle</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Console/Commands/WarmUpCache.php.html#33"><abbr title="App\Console\Commands\WarmUpCache::handle">handle</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Console/Commands/WarmUpCache.php.html#73"><abbr title="App\Console\Commands\WarmUpCache::cacheSupportsTags">cacheSupportsTags</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="DTO/ProductPriceData.php.html#11"><abbr title="App\DTO\ProductPriceData::__construct">__construct</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Events/ProductPriceChanged.php.html#17"><abbr title="App\Events\ProductPriceChanged::__construct">__construct</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/Admin/CategoryController.php.html#17"><abbr title="App\Http\Controllers\Admin\CategoryController::__construct">__construct</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/Admin/CategoryController.php.html#28"><abbr title="App\Http\Controllers\Admin\CategoryController::index">index</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/Admin/CategoryController.php.html#38"><abbr title="App\Http\Controllers\Admin\CategoryController::create">create</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/Admin/CategoryController.php.html#47"><abbr title="App\Http\Controllers\Admin\CategoryController::store">store</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/Admin/CategoryController.php.html#69"><abbr title="App\Http\Controllers\Admin\CategoryController::edit">edit</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/Admin/CategoryController.php.html#78"><abbr title="App\Http\Controllers\Admin\CategoryController::update">update</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/Admin/CategoryController.php.html#97"><abbr title="App\Http\Controllers\Admin\CategoryController::destroy">destroy</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/Admin/ProductController.php.html#21"><abbr title="App\Http\Controllers\Admin\ProductController::__construct">__construct</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/Admin/ProductController.php.html#33"><abbr title="App\Http\Controllers\Admin\ProductController::index">index</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/Admin/ProductController.php.html#51"><abbr title="App\Http\Controllers\Admin\ProductController::create">create</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/Admin/ProductController.php.html#61"><abbr title="App\Http\Controllers\Admin\ProductController::store">store</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/Admin/ProductController.php.html#105"><abbr title="App\Http\Controllers\Admin\ProductController::edit">edit</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/Admin/ProductController.php.html#115"><abbr title="App\Http\Controllers\Admin\ProductController::update">update</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/Admin/ProductController.php.html#161"><abbr title="App\Http\Controllers\Admin\ProductController::destroy">destroy</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/Auth/AuthenticatedSessionController.php.html#17"><abbr title="App\Http\Controllers\Auth\AuthenticatedSessionController::create">create</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/Auth/AuthenticatedSessionController.php.html#25"><abbr title="App\Http\Controllers\Auth\AuthenticatedSessionController::store">store</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/Auth/AuthenticatedSessionController.php.html#37"><abbr title="App\Http\Controllers\Auth\AuthenticatedSessionController::destroy">destroy</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/Auth/ConfirmablePasswordController.php.html#17"><abbr title="App\Http\Controllers\Auth\ConfirmablePasswordController::show">show</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/Auth/ConfirmablePasswordController.php.html#25"><abbr title="App\Http\Controllers\Auth\ConfirmablePasswordController::store">store</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/Auth/EmailVerificationNotificationController.php.html#14"><abbr title="App\Http\Controllers\Auth\EmailVerificationNotificationController::store">store</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/Auth/EmailVerificationPromptController.php.html#15"><abbr title="App\Http\Controllers\Auth\EmailVerificationPromptController::__invoke">__invoke</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/Auth/NewPasswordController.php.html#21"><abbr title="App\Http\Controllers\Auth\NewPasswordController::create">create</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/Auth/NewPasswordController.php.html#31"><abbr title="App\Http\Controllers\Auth\NewPasswordController::store">store</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/Auth/PasswordController.php.html#16"><abbr title="App\Http\Controllers\Auth\PasswordController::update">update</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/Auth/PasswordResetLinkController.php.html#16"><abbr title="App\Http\Controllers\Auth\PasswordResetLinkController::create">create</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/Auth/PasswordResetLinkController.php.html#26"><abbr title="App\Http\Controllers\Auth\PasswordResetLinkController::store">store</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/Auth/RegisteredUserController.php.html#20"><abbr title="App\Http\Controllers\Auth\RegisteredUserController::create">create</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/Auth/RegisteredUserController.php.html#30"><abbr title="App\Http\Controllers\Auth\RegisteredUserController::store">store</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/Auth/VerifyEmailController.php.html#15"><abbr title="App\Http\Controllers\Auth\VerifyEmailController::__invoke">__invoke</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/ProfileController.php.html#17"><abbr title="App\Http\Controllers\ProfileController::edit">edit</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/ProfileController.php.html#27"><abbr title="App\Http\Controllers\ProfileController::update">update</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/ProfileController.php.html#43"><abbr title="App\Http\Controllers\ProfileController::destroy">destroy</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/TestLogController.php.html#10"><abbr title="App\Http\Controllers\TestLogController::__invoke">__invoke</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Middleware/SetLocale.php.html#17"><abbr title="App\Http\Middleware\SetLocale::handle">handle</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Requests/Auth/LoginRequest.php.html#17"><abbr title="App\Http\Requests\Auth\LoginRequest::authorize">authorize</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Requests/Auth/LoginRequest.php.html#27"><abbr title="App\Http\Requests\Auth\LoginRequest::rules">rules</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Requests/Auth/LoginRequest.php.html#40"><abbr title="App\Http\Requests\Auth\LoginRequest::authenticate">authenticate</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Requests/Auth/LoginRequest.php.html#60"><abbr title="App\Http\Requests\Auth\LoginRequest::ensureIsNotRateLimited">ensureIsNotRateLimited</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Requests/Auth/LoginRequest.php.html#81"><abbr title="App\Http\Requests\Auth\LoginRequest::throttleKey">throttleKey</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Requests/ProfileUpdateRequest.php.html#16"><abbr title="App\Http\Requests\ProfileUpdateRequest::rules">rules</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Jobs/SendPriceChangeNotification.php.html#28"><abbr title="App\Jobs\SendPriceChangeNotification::__construct">__construct</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Jobs/SendPriceChangeNotification.php.html#39"><abbr title="App\Jobs\SendPriceChangeNotification::handle">handle</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Jobs/SendPriceChangeNotification.php.html#85"><abbr title="App\Jobs\SendPriceChangeNotification::failed">failed</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Listeners/HandleProductPriceChange.php.html#17"><abbr title="App\Listeners\HandleProductPriceChange::__construct">__construct</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Listeners/HandleProductPriceChange.php.html#25"><abbr title="App\Listeners\HandleProductPriceChange::handle">handle</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Logging/TelegramLogger.php.html#15"><abbr title="App\Logging\TelegramLogger::__invoke">__invoke</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Models/NotificationSettings.php.html#45"><abbr title="App\Models\NotificationSettings::user">user</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Models/Permission.php.html#26"><abbr title="App\Models\Permission::roles">roles</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Models/RefreshToken.php.html#60"><abbr title="App\Models\RefreshToken::isExpired">isExpired</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Models/RefreshToken.php.html#68"><abbr title="App\Models\RefreshToken::scopeValid">scopeValid</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Models/Role.php.html#26"><abbr title="App\Models\Role::users">users</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Models/Role.php.html#34"><abbr title="App\Models\Role::permissions">permissions</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Models/Role.php.html#42"><abbr title="App\Models\Role::hasPermissionTo">hasPermissionTo</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Models/Task.php.html#41"><abbr title="App\Models\Task::user">user</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Models/User.php.html#75"><abbr title="App\Models\User::tasks">tasks</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Models/User.php.html#83"><abbr title="App\Models\User::hasPermissionTo">hasPermissionTo</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Models/User.php.html#93"><abbr title="App\Models\User::hasRole">hasRole</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Models/User.php.html#98"><abbr title="App\Models\User::isAdmin">isAdmin</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Models/User.php.html#103"><abbr title="App\Models\User::notifications_settings">notifications_settings</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Models/UserProfile.php.html#48"><abbr title="App\Models\UserProfile::user">user</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Notifications/ProductPriceChangedNotification.php.html#24"><abbr title="App\Notifications\ProductPriceChangedNotification::__construct">__construct</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Notifications/ProductPriceChangedNotification.php.html#38"><abbr title="App\Notifications\ProductPriceChangedNotification::via">via</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Notifications/ProductPriceChangedNotification.php.html#46"><abbr title="App\Notifications\ProductPriceChangedNotification::toMail">toMail</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Notifications/ProductPriceChangedNotification.php.html#66"><abbr title="App\Notifications\ProductPriceChangedNotification::toArray">toArray</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Notifications/ProductPriceChangedNotification.php.html#82"><abbr title="App\Notifications\ProductPriceChangedNotification::formatPrice">formatPrice</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Policies/CategoryPolicy.php.html#14"><abbr title="App\Policies\CategoryPolicy::viewAny">viewAny</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Policies/CategoryPolicy.php.html#22"><abbr title="App\Policies\CategoryPolicy::view">view</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Policies/CategoryPolicy.php.html#30"><abbr title="App\Policies\CategoryPolicy::create">create</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Policies/CategoryPolicy.php.html#38"><abbr title="App\Policies\CategoryPolicy::update">update</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Policies/CategoryPolicy.php.html#46"><abbr title="App\Policies\CategoryPolicy::delete">delete</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Policies/CategoryPolicy.php.html#54"><abbr title="App\Policies\CategoryPolicy::restore">restore</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Policies/CategoryPolicy.php.html#62"><abbr title="App\Policies\CategoryPolicy::forceDelete">forceDelete</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Policies/ProductPolicy.php.html#14"><abbr title="App\Policies\ProductPolicy::viewAny">viewAny</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Policies/ProductPolicy.php.html#22"><abbr title="App\Policies\ProductPolicy::view">view</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Policies/ProductPolicy.php.html#30"><abbr title="App\Policies\ProductPolicy::create">create</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Policies/ProductPolicy.php.html#38"><abbr title="App\Policies\ProductPolicy::update">update</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Policies/ProductPolicy.php.html#46"><abbr title="App\Policies\ProductPolicy::delete">delete</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Policies/ProductPolicy.php.html#54"><abbr title="App\Policies\ProductPolicy::restore">restore</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Policies/ProductPolicy.php.html#62"><abbr title="App\Policies\ProductPolicy::forceDelete">forceDelete</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Providers/EventServiceProvider.php.html#28"><abbr title="App\Providers\EventServiceProvider::boot">boot</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Providers/EventServiceProvider.php.html#39"><abbr title="App\Providers\EventServiceProvider::shouldDiscoverEvents">shouldDiscoverEvents</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Repositories/Eloquent/CategoryRepository.php.html#14"><abbr title="App\Repositories\Eloquent\CategoryRepository::__construct">__construct</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Repositories/Eloquent/CategoryRepository.php.html#19"><abbr title="App\Repositories\Eloquent\CategoryRepository::getAllPaginated">getAllPaginated</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Repositories/Eloquent/CategoryRepository.php.html#24"><abbr title="App\Repositories\Eloquent\CategoryRepository::getAll">getAll</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Repositories/Eloquent/CategoryRepository.php.html#29"><abbr title="App\Repositories\Eloquent\CategoryRepository::find">find</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Repositories/Eloquent/CategoryRepository.php.html#34"><abbr title="App\Repositories\Eloquent\CategoryRepository::create">create</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Repositories/Eloquent/CategoryRepository.php.html#39"><abbr title="App\Repositories\Eloquent\CategoryRepository::update">update</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Repositories/Eloquent/CategoryRepository.php.html#45"><abbr title="App\Repositories\Eloquent\CategoryRepository::delete">delete</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Repositories/Eloquent/ProductRepository.php.html#21"><abbr title="App\Repositories\Eloquent\ProductRepository::count">count</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Repositories/Eloquent/ProductRepository.php.html#26"><abbr title="App\Repositories\Eloquent\ProductRepository::getAllPaginated">getAllPaginated</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Repositories/Eloquent/ProductRepository.php.html#37"><abbr title="App\Repositories\Eloquent\ProductRepository::find">find</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Repositories/Eloquent/ProductRepository.php.html#42"><abbr title="App\Repositories\Eloquent\ProductRepository::create">create</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Repositories/Eloquent/ProductRepository.php.html#47"><abbr title="App\Repositories\Eloquent\ProductRepository::update">update</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Repositories/Eloquent/ProductRepository.php.html#58"><abbr title="App\Repositories\Eloquent\ProductRepository::handlePriceChange">handlePriceChange</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Repositories/Eloquent/ProductRepository.php.html#71"><abbr title="App\Repositories\Eloquent\ProductRepository::delete">delete</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Repositories/Eloquent/ProductRepository.php.html#76"><abbr title="App\Repositories\Eloquent\ProductRepository::syncCategories">syncCategories</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Repositories/Eloquent/ProductRepository.php.html#81"><abbr title="App\Repositories\Eloquent\ProductRepository::search">search</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="View/Components/AppLayout.php.html#13"><abbr title="App\View\Components\AppLayout::render">render</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="View/Components/GuestLayout.php.html#13"><abbr title="App\View\Components\GuestLayout::render">render</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/API/V1/CategoryController.php.html#214"><abbr title="App\Http\API\V1\CategoryController::show">show</abbr></a></td><td class="text-right">40%</td></tr>
+       <tr><td><a href="Providers/RepositoryServiceProvider.php.html#41"><abbr title="App\Providers\RepositoryServiceProvider::warmCache">warmCache</abbr></a></td><td class="text-right">40%</td></tr>
+       <tr><td><a href="Providers/AppServiceProvider.php.html#27"><abbr title="App\Providers\AppServiceProvider::boot">boot</abbr></a></td><td class="text-right">50%</td></tr>
+       <tr><td><a href="Http/API/V1/PersonalCabinetController.php.html#37"><abbr title="App\Http\API\V1\PersonalCabinetController::update">update</abbr></a></td><td class="text-right">83%</td></tr>
+       <tr><td><a href="Http/API/V1/CategoryController.php.html#86"><abbr title="App\Http\API\V1\CategoryController::index">index</abbr></a></td><td class="text-right">88%</td></tr>
+
+       </tbody>
+      </table>
+     </div>
+    </div>
+    <div class="col-md-6">
+     <h3>Project Risks</h3>
+     <div class="scrollbox">
+      <table class="table">
+       <thead>
+        <tr>
+         <th>Method</th>
+         <th class="text-right"><abbr title="Change Risk Anti-Patterns (CRAP) Index">CRAP</abbr></th>
+        </tr>
+       </thead>
+       <tbody>
+       <tr><td><a href="Http/Controllers/Admin/ProductController.php.html#115"><abbr title="App\Http\Controllers\Admin\ProductController::update">update</abbr></a></td><td class="text-right">56</td></tr>
+       <tr><td><a href="Console/Commands/ExportProductExcel.php.html#39"><abbr title="App\Console\Commands\ExportProductExcel::handle">handle</abbr></a></td><td class="text-right">42</td></tr>
+       <tr><td><a href="Http/Controllers/Admin/ProductController.php.html#161"><abbr title="App\Http\Controllers\Admin\ProductController::destroy">destroy</abbr></a></td><td class="text-right">42</td></tr>
+       <tr><td><a href="Http/Controllers/Admin/ProductController.php.html#61"><abbr title="App\Http\Controllers\Admin\ProductController::store">store</abbr></a></td><td class="text-right">20</td></tr>
+       <tr><td><a href="Console/Commands/WarmUpCache.php.html#33"><abbr title="App\Console\Commands\WarmUpCache::handle">handle</abbr></a></td><td class="text-right">12</td></tr>
+       <tr><td><a href="Http/Controllers/Auth/VerifyEmailController.php.html#15"><abbr title="App\Http\Controllers\Auth\VerifyEmailController::__invoke">__invoke</abbr></a></td><td class="text-right">12</td></tr>
+       <tr><td><a href="Jobs/SendPriceChangeNotification.php.html#39"><abbr title="App\Jobs\SendPriceChangeNotification::handle">handle</abbr></a></td><td class="text-right">12</td></tr>
+       <tr><td><a href="Notifications/ProductPriceChangedNotification.php.html#46"><abbr title="App\Notifications\ProductPriceChangedNotification::toMail">toMail</abbr></a></td><td class="text-right">12</td></tr>
+       <tr><td><a href="Repositories/Eloquent/ProductRepository.php.html#58"><abbr title="App\Repositories\Eloquent\ProductRepository::handlePriceChange">handlePriceChange</abbr></a></td><td class="text-right">12</td></tr>
+       <tr><td><a href="Http/Controllers/Auth/ConfirmablePasswordController.php.html#25"><abbr title="App\Http\Controllers\Auth\ConfirmablePasswordController::store">store</abbr></a></td><td class="text-right">6</td></tr>
+       <tr><td><a href="Http/Controllers/Auth/EmailVerificationNotificationController.php.html#14"><abbr title="App\Http\Controllers\Auth\EmailVerificationNotificationController::store">store</abbr></a></td><td class="text-right">6</td></tr>
+       <tr><td><a href="Http/Controllers/Auth/EmailVerificationPromptController.php.html#15"><abbr title="App\Http\Controllers\Auth\EmailVerificationPromptController::__invoke">__invoke</abbr></a></td><td class="text-right">6</td></tr>
+       <tr><td><a href="Http/Controllers/Auth/NewPasswordController.php.html#31"><abbr title="App\Http\Controllers\Auth\NewPasswordController::store">store</abbr></a></td><td class="text-right">6</td></tr>
+       <tr><td><a href="Http/Controllers/Auth/PasswordResetLinkController.php.html#26"><abbr title="App\Http\Controllers\Auth\PasswordResetLinkController::store">store</abbr></a></td><td class="text-right">6</td></tr>
+       <tr><td><a href="Http/Controllers/ProfileController.php.html#27"><abbr title="App\Http\Controllers\ProfileController::update">update</abbr></a></td><td class="text-right">6</td></tr>
+       <tr><td><a href="Http/Middleware/SetLocale.php.html#17"><abbr title="App\Http\Middleware\SetLocale::handle">handle</abbr></a></td><td class="text-right">6</td></tr>
+       <tr><td><a href="Http/Requests/Auth/LoginRequest.php.html#40"><abbr title="App\Http\Requests\Auth\LoginRequest::authenticate">authenticate</abbr></a></td><td class="text-right">6</td></tr>
+       <tr><td><a href="Http/Requests/Auth/LoginRequest.php.html#60"><abbr title="App\Http\Requests\Auth\LoginRequest::ensureIsNotRateLimited">ensureIsNotRateLimited</abbr></a></td><td class="text-right">6</td></tr>
+       <tr><td><a href="Logging/TelegramLogger.php.html#15"><abbr title="App\Logging\TelegramLogger::__invoke">__invoke</abbr></a></td><td class="text-right">6</td></tr>
+       <tr><td><a href="Notifications/ProductPriceChangedNotification.php.html#66"><abbr title="App\Notifications\ProductPriceChangedNotification::toArray">toArray</abbr></a></td><td class="text-right">6</td></tr>
+       <tr><td><a href="Policies/CategoryPolicy.php.html#38"><abbr title="App\Policies\CategoryPolicy::update">update</abbr></a></td><td class="text-right">6</td></tr>
+       <tr><td><a href="Policies/CategoryPolicy.php.html#46"><abbr title="App\Policies\CategoryPolicy::delete">delete</abbr></a></td><td class="text-right">6</td></tr>
+       <tr><td><a href="Policies/ProductPolicy.php.html#38"><abbr title="App\Policies\ProductPolicy::update">update</abbr></a></td><td class="text-right">6</td></tr>
+       <tr><td><a href="Policies/ProductPolicy.php.html#46"><abbr title="App\Policies\ProductPolicy::delete">delete</abbr></a></td><td class="text-right">6</td></tr>
+       <tr><td><a href="Repositories/Eloquent/ProductRepository.php.html#26"><abbr title="App\Repositories\Eloquent\ProductRepository::getAllPaginated">getAllPaginated</abbr></a></td><td class="text-right">6</td></tr>
+       <tr><td><a href="Http/API/V1/PersonalCabinetController.php.html#37"><abbr title="App\Http\API\V1\PersonalCabinetController::update">update</abbr></a></td><td class="text-right">5</td></tr>
+       <tr><td><a href="Http/API/V1/CategoryController.php.html#86"><abbr title="App\Http\API\V1\CategoryController::index">index</abbr></a></td><td class="text-right">4</td></tr>
+       <tr><td><a href="Http/API/V1/CategoryController.php.html#214"><abbr title="App\Http\API\V1\CategoryController::show">show</abbr></a></td><td class="text-right">2</td></tr>
+       <tr><td><a href="Providers/RepositoryServiceProvider.php.html#41"><abbr title="App\Providers\RepositoryServiceProvider::warmCache">warmCache</abbr></a></td><td class="text-right">2</td></tr>
+       <tr><td><a href="Providers/AppServiceProvider.php.html#27"><abbr title="App\Providers\AppServiceProvider::boot">boot</abbr></a></td><td class="text-right">2</td></tr>
+
+       </tbody>
+      </table>
+     </div>
+    </div>
+   </div>
+   <footer>
+    <hr/>
+    <p>
+     <small>Generated by <a href="https://github.com/sebastianbergmann/php-code-coverage" target="_top">php-code-coverage 11.0.9</a> using <a href="https://www.php.net/" target="_top">PHP 8.4.10</a> and <a href="https://phpunit.de/">PHPUnit 11.5.18</a> at Tue Aug 19 19:17:25 UTC 2025.</small>
+    </p>
+   </footer>
+  </div>
+  <script src="_js/jquery.min.js?v=11.0.9" type="text/javascript"></script>
+  <script src="_js/d3.min.js?v=11.0.9" type="text/javascript"></script>
+  <script src="_js/nv.d3.min.js?v=11.0.9" type="text/javascript"></script>
+  <script type="text/javascript">
+$(document).ready(function() {
+  nv.addGraph(function() {
+    var chart = nv.models.multiBarChart();
+    chart.tooltips(false)
+      .showControls(false)
+      .showLegend(false)
+      .reduceXTicks(false)
+      .staggerLabels(true)
+      .yAxis.tickFormat(d3.format('d'));
+
+    d3.select('#classCoverageDistribution svg')
+      .datum(getCoverageDistributionData([33,3,0,0,1,0,1,1,0,2,2,9], "Class Coverage"))
+      .transition().duration(500).call(chart);
+
+    nv.utils.windowResize(chart.update);
+
+    return chart;
+  });
+
+  nv.addGraph(function() {
+    var chart = nv.models.multiBarChart();
+    chart.tooltips(false)
+      .showControls(false)
+      .showLegend(false)
+      .reduceXTicks(false)
+      .staggerLabels(true)
+      .yAxis.tickFormat(d3.format('d'));
+
+    d3.select('#methodCoverageDistribution svg')
+      .datum(getCoverageDistributionData([104,0,0,0,0,2,1,0,0,2,2,35], "Method Coverage"))
+      .transition().duration(500).call(chart);
+
+    nv.utils.windowResize(chart.update);
+
+    return chart;
+  });
+
+  function getCoverageDistributionData(data, label) {
+    var labels = [
+      '0%',
+      '0-10%',
+      '10-20%',
+      '20-30%',
+      '30-40%',
+      '40-50%',
+      '50-60%',
+      '60-70%',
+      '70-80%',
+      '80-90%',
+      '90-100%',
+      '100%'
+    ];
+    var values = [];
+    $.each(labels, function(key) {
+      values.push({x: labels[key], y: data[key]});
+    });
+
+    return [
+      {
+        key: label,
+        values: values,
+        color: "#4572A7"
+      }
+    ];
+  }
+  nv.addGraph(function() {
+    var chart = nv.models.scatterChart()
+      .showDistX(true)
+      .showDistY(true)
+      .showLegend(false)
+      .forceX([0, 100]);
+    chart.tooltipContent(function(graph) {
+      return '<p>' + graph.point.class + '</p>';
+    });
+
+    chart.xAxis.axisLabel('Code Coverage (in percent)');
+    chart.yAxis.axisLabel('Cyclomatic Complexity');
+
+    d3.select('#classComplexity svg')
+      .datum(getComplexityData([[3.3333333333333335,7,"<a href=\"Console\/Commands\/ExportProductExcel.php.html#10\">App\\Console\\Commands\\ExportProductExcel<\/a>"],[5.263157894736842,5,"<a href=\"Console\/Commands\/WarmUpCache.php.html#9\">App\\Console\\Commands\\WarmUpCache<\/a>"],[0,1,"<a href=\"DTO\/ProductPriceData.php.html#4\">App\\DTO\\ProductPriceData<\/a>"],[0,1,"<a href=\"Events\/ProductPriceChanged.php.html#11\">App\\Events\\ProductPriceChanged<\/a>"],[100,11,"<a href=\"Http\/API\/V1\/AuthController.php.html#14\">App\\Http\\API\\V1\\AuthController<\/a>"],[91.78082191780823,14,"<a href=\"Http\/API\/V1\/CategoryController.php.html#20\">App\\Http\\API\\V1\\CategoryController<\/a>"],[88.57142857142857,8,"<a href=\"Http\/API\/V1\/PersonalCabinetController.php.html#12\">App\\Http\\API\\V1\\PersonalCabinetController<\/a>"],[97.9381443298969,18,"<a href=\"Http\/API\/V1\/ProductsController.php.html#20\">App\\Http\\API\\V1\\ProductsController<\/a>"],[0,7,"<a href=\"Http\/Controllers\/Admin\/CategoryController.php.html#12\">App\\Http\\Controllers\\Admin\\CategoryController<\/a>"],[0,21,"<a href=\"Http\/Controllers\/Admin\/ProductController.php.html#15\">App\\Http\\Controllers\\Admin\\ProductController<\/a>"],[0,3,"<a href=\"Http\/Controllers\/Auth\/AuthenticatedSessionController.php.html#12\">App\\Http\\Controllers\\Auth\\AuthenticatedSessionController<\/a>"],[0,3,"<a href=\"Http\/Controllers\/Auth\/ConfirmablePasswordController.php.html#12\">App\\Http\\Controllers\\Auth\\ConfirmablePasswordController<\/a>"],[0,2,"<a href=\"Http\/Controllers\/Auth\/EmailVerificationNotificationController.php.html#9\">App\\Http\\Controllers\\Auth\\EmailVerificationNotificationController<\/a>"],[0,2,"<a href=\"Http\/Controllers\/Auth\/EmailVerificationPromptController.php.html#10\">App\\Http\\Controllers\\Auth\\EmailVerificationPromptController<\/a>"],[0,3,"<a href=\"Http\/Controllers\/Auth\/NewPasswordController.php.html#16\">App\\Http\\Controllers\\Auth\\NewPasswordController<\/a>"],[0,1,"<a href=\"Http\/Controllers\/Auth\/PasswordController.php.html#11\">App\\Http\\Controllers\\Auth\\PasswordController<\/a>"],[0,3,"<a href=\"Http\/Controllers\/Auth\/PasswordResetLinkController.php.html#11\">App\\Http\\Controllers\\Auth\\PasswordResetLinkController<\/a>"],[0,2,"<a href=\"Http\/Controllers\/Auth\/RegisteredUserController.php.html#15\">App\\Http\\Controllers\\Auth\\RegisteredUserController<\/a>"],[0,3,"<a href=\"Http\/Controllers\/Auth\/VerifyEmailController.php.html#10\">App\\Http\\Controllers\\Auth\\VerifyEmailController<\/a>"],[100,0,"<a href=\"Http\/Controllers\/Controller.php.html#5\">App\\Http\\Controllers\\Controller<\/a>"],[0,4,"<a href=\"Http\/Controllers\/ProfileController.php.html#12\">App\\Http\\Controllers\\ProfileController<\/a>"],[0,1,"<a href=\"Http\/Controllers\/TestLogController.php.html#8\">App\\Http\\Controllers\\TestLogController<\/a>"],[0,2,"<a href=\"Http\/Middleware\/SetLocale.php.html#10\">App\\Http\\Middleware\\SetLocale<\/a>"],[0,7,"<a href=\"Http\/Requests\/Auth\/LoginRequest.php.html#12\">App\\Http\\Requests\\Auth\\LoginRequest<\/a>"],[0,1,"<a href=\"Http\/Requests\/ProfileUpdateRequest.php.html#9\">App\\Http\\Requests\\ProfileUpdateRequest<\/a>"],[100,1,"<a href=\"Http\/Resources\/CategoryCollection.php.html#110\">App\\Http\\Resources\\CategoryCollection<\/a>"],[100,1,"<a href=\"Http\/Resources\/CategoryResource.php.html#36\">App\\Http\\Resources\\CategoryResource<\/a>"],[100,1,"<a href=\"Http\/Resources\/ProductCollection.php.html#7\">App\\Http\\Resources\\ProductCollection<\/a>"],[100,2,"<a href=\"Http\/Resources\/ProductResource.php.html#45\">App\\Http\\Resources\\ProductResource<\/a>"],[0,5,"<a href=\"Jobs\/SendPriceChangeNotification.php.html#16\">App\\Jobs\\SendPriceChangeNotification<\/a>"],[0,2,"<a href=\"Listeners\/HandleProductPriceChange.php.html#10\">App\\Listeners\\HandleProductPriceChange<\/a>"],[0,2,"<a href=\"Logging\/TelegramLogger.php.html#13\">App\\Logging\\TelegramLogger<\/a>"],[100,0,"<a href=\"Models\/BaseModel.php.html#7\">App\\Models\\BaseModel<\/a>"],[100,1,"<a href=\"Models\/Category.php.html#21\">App\\Models\\Category<\/a>"],[0,1,"<a href=\"Models\/NotificationSettings.php.html#25\">App\\Models\\NotificationSettings<\/a>"],[0,1,"<a href=\"Models\/Permission.php.html#17\">App\\Models\\Permission<\/a>"],[100,1,"<a href=\"Models\/Product.php.html#24\">App\\Models\\Product<\/a>"],[33.33333333333333,3,"<a href=\"Models\/RefreshToken.php.html#25\">App\\Models\\RefreshToken<\/a>"],[0,3,"<a href=\"Models\/Role.php.html#17\">App\\Models\\Role<\/a>"],[0,1,"<a href=\"Models\/Task.php.html#21\">App\\Models\\Task<\/a>"],[63.1578947368421,10,"<a href=\"Models\/User.php.html#25\">App\\Models\\User<\/a>"],[0,1,"<a href=\"Models\/UserProfile.php.html#36\">App\\Models\\UserProfile<\/a>"],[0,8,"<a href=\"Notifications\/ProductPriceChangedNotification.php.html#11\">App\\Notifications\\ProductPriceChangedNotification<\/a>"],[0,9,"<a href=\"Policies\/CategoryPolicy.php.html#9\">App\\Policies\\CategoryPolicy<\/a>"],[0,9,"<a href=\"Policies\/ProductPolicy.php.html#9\">App\\Policies\\ProductPolicy<\/a>"],[55.55555555555556,3,"<a href=\"Providers\/AppServiceProvider.php.html#14\">App\\Providers\\AppServiceProvider<\/a>"],[0,2,"<a href=\"Providers\/EventServiceProvider.php.html#12\">App\\Providers\\EventServiceProvider<\/a>"],[81.25,4,"<a href=\"Providers\/RepositoryServiceProvider.php.html#12\">App\\Providers\\RepositoryServiceProvider<\/a>"],[0,7,"<a href=\"Repositories\/Eloquent\/CategoryRepository.php.html#10\">App\\Repositories\\Eloquent\\CategoryRepository<\/a>"],[4,13,"<a href=\"Repositories\/Eloquent\/ProductRepository.php.html#12\">App\\Repositories\\Eloquent\\ProductRepository<\/a>"],[0,1,"<a href=\"View\/Components\/AppLayout.php.html#8\">App\\View\\Components\\AppLayout<\/a>"],[0,1,"<a href=\"View\/Components\/GuestLayout.php.html#8\">App\\View\\Components\\GuestLayout<\/a>"]], 'Class Complexity'))
+      .transition()
+      .duration(500)
+      .call(chart);
+
+    nv.utils.windowResize(chart.update);
+
+    return chart;
+  });
+
+  nv.addGraph(function() {
+    var chart = nv.models.scatterChart()
+      .showDistX(true)
+      .showDistY(true)
+      .showLegend(false)
+      .forceX([0, 100]);
+    chart.tooltipContent(function(graph) {
+      return '<p>' + graph.point.class + '</p>';
+    });
+
+    chart.xAxis.axisLabel('Code Coverage (in percent)');
+    chart.yAxis.axisLabel('Method Complexity');
+
+    d3.select('#methodComplexity svg')
+      .datum(getComplexityData([[100,1,"<a href=\"Console\/Commands\/ExportProductExcel.php.html#31\">App\\Console\\Commands\\ExportProductExcel::__construct<\/a>"],[0,6,"<a href=\"Console\/Commands\/ExportProductExcel.php.html#39\">App\\Console\\Commands\\ExportProductExcel::handle<\/a>"],[100,1,"<a href=\"Console\/Commands\/WarmUpCache.php.html#25\">App\\Console\\Commands\\WarmUpCache::__construct<\/a>"],[0,3,"<a href=\"Console\/Commands\/WarmUpCache.php.html#33\">App\\Console\\Commands\\WarmUpCache::handle<\/a>"],[0,1,"<a href=\"Console\/Commands\/WarmUpCache.php.html#73\">App\\Console\\Commands\\WarmUpCache::cacheSupportsTags<\/a>"],[0,1,"<a href=\"DTO\/ProductPriceData.php.html#11\">App\\DTO\\ProductPriceData::__construct<\/a>"],[0,1,"<a href=\"Events\/ProductPriceChanged.php.html#17\">App\\Events\\ProductPriceChanged::__construct<\/a>"],[100,1,"<a href=\"Http\/API\/V1\/AuthController.php.html#17\">App\\Http\\API\\V1\\AuthController::middleware<\/a>"],[100,2,"<a href=\"Http\/API\/V1\/AuthController.php.html#30\">App\\Http\\API\\V1\\AuthController::login<\/a>"],[100,1,"<a href=\"Http\/API\/V1\/AuthController.php.html#50\">App\\Http\\API\\V1\\AuthController::me<\/a>"],[100,1,"<a href=\"Http\/API\/V1\/AuthController.php.html#60\">App\\Http\\API\\V1\\AuthController::logout<\/a>"],[100,2,"<a href=\"Http\/API\/V1\/AuthController.php.html#72\">App\\Http\\API\\V1\\AuthController::refreshToken<\/a>"],[100,1,"<a href=\"Http\/API\/V1\/AuthController.php.html#107\">App\\Http\\API\\V1\\AuthController::refresh<\/a>"],[100,1,"<a href=\"Http\/API\/V1\/AuthController.php.html#119\">App\\Http\\API\\V1\\AuthController::createRefreshToken<\/a>"],[100,1,"<a href=\"Http\/API\/V1\/AuthController.php.html#140\">App\\Http\\API\\V1\\AuthController::respondWithTokens<\/a>"],[100,1,"<a href=\"Http\/API\/V1\/AuthController.php.html#157\">App\\Http\\API\\V1\\AuthController::respondWithToken<\/a>"],[88.46153846153845,4,"<a href=\"Http\/API\/V1\/CategoryController.php.html#86\">App\\Http\\API\\V1\\CategoryController::index<\/a>"],[100,3,"<a href=\"Http\/API\/V1\/CategoryController.php.html#153\">App\\Http\\API\\V1\\CategoryController::store<\/a>"],[40,2,"<a href=\"Http\/API\/V1\/CategoryController.php.html#214\">App\\Http\\API\\V1\\CategoryController::show<\/a>"],[100,4,"<a href=\"Http\/API\/V1\/CategoryController.php.html#264\">App\\Http\\API\\V1\\CategoryController::update<\/a>"],[100,1,"<a href=\"Http\/API\/V1\/CategoryController.php.html#326\">App\\Http\\API\\V1\\CategoryController::destroy<\/a>"],[100,1,"<a href=\"Http\/API\/V1\/PersonalCabinetController.php.html#20\">App\\Http\\API\\V1\\PersonalCabinetController::index<\/a>"],[83.33333333333334,5,"<a href=\"Http\/API\/V1\/PersonalCabinetController.php.html#37\">App\\Http\\API\\V1\\PersonalCabinetController::update<\/a>"],[100,2,"<a href=\"Http\/API\/V1\/PersonalCabinetController.php.html#85\">App\\Http\\API\\V1\\PersonalCabinetController::destroy<\/a>"],[96.66666666666667,5,"<a href=\"Http\/API\/V1\/ProductsController.php.html#85\">App\\Http\\API\\V1\\ProductsController::index<\/a>"],[100,5,"<a href=\"Http\/API\/V1\/ProductsController.php.html#170\">App\\Http\\API\\V1\\ProductsController::store<\/a>"],[100,1,"<a href=\"Http\/API\/V1\/ProductsController.php.html#241\">App\\Http\\API\\V1\\ProductsController::show<\/a>"],[96.875,6,"<a href=\"Http\/API\/V1\/ProductsController.php.html#287\">App\\Http\\API\\V1\\ProductsController::update<\/a>"],[100,1,"<a href=\"Http\/API\/V1\/ProductsController.php.html#365\">App\\Http\\API\\V1\\ProductsController::destroy<\/a>"],[0,1,"<a href=\"Http\/Controllers\/Admin\/CategoryController.php.html#17\">App\\Http\\Controllers\\Admin\\CategoryController::__construct<\/a>"],[0,1,"<a href=\"Http\/Controllers\/Admin\/CategoryController.php.html#28\">App\\Http\\Controllers\\Admin\\CategoryController::index<\/a>"],[0,1,"<a href=\"Http\/Controllers\/Admin\/CategoryController.php.html#38\">App\\Http\\Controllers\\Admin\\CategoryController::create<\/a>"],[0,1,"<a href=\"Http\/Controllers\/Admin\/CategoryController.php.html#47\">App\\Http\\Controllers\\Admin\\CategoryController::store<\/a>"],[0,1,"<a href=\"Http\/Controllers\/Admin\/CategoryController.php.html#69\">App\\Http\\Controllers\\Admin\\CategoryController::edit<\/a>"],[0,1,"<a href=\"Http\/Controllers\/Admin\/CategoryController.php.html#78\">App\\Http\\Controllers\\Admin\\CategoryController::update<\/a>"],[0,1,"<a href=\"Http\/Controllers\/Admin\/CategoryController.php.html#97\">App\\Http\\Controllers\\Admin\\CategoryController::destroy<\/a>"],[0,1,"<a href=\"Http\/Controllers\/Admin\/ProductController.php.html#21\">App\\Http\\Controllers\\Admin\\ProductController::__construct<\/a>"],[0,1,"<a href=\"Http\/Controllers\/Admin\/ProductController.php.html#33\">App\\Http\\Controllers\\Admin\\ProductController::index<\/a>"],[0,1,"<a href=\"Http\/Controllers\/Admin\/ProductController.php.html#51\">App\\Http\\Controllers\\Admin\\ProductController::create<\/a>"],[0,4,"<a href=\"Http\/Controllers\/Admin\/ProductController.php.html#61\">App\\Http\\Controllers\\Admin\\ProductController::store<\/a>"],[0,1,"<a href=\"Http\/Controllers\/Admin\/ProductController.php.html#105\">App\\Http\\Controllers\\Admin\\ProductController::edit<\/a>"],[0,7,"<a href=\"Http\/Controllers\/Admin\/ProductController.php.html#115\">App\\Http\\Controllers\\Admin\\ProductController::update<\/a>"],[0,6,"<a href=\"Http\/Controllers\/Admin\/ProductController.php.html#161\">App\\Http\\Controllers\\Admin\\ProductController::destroy<\/a>"],[0,1,"<a href=\"Http\/Controllers\/Auth\/AuthenticatedSessionController.php.html#17\">App\\Http\\Controllers\\Auth\\AuthenticatedSessionController::create<\/a>"],[0,1,"<a href=\"Http\/Controllers\/Auth\/AuthenticatedSessionController.php.html#25\">App\\Http\\Controllers\\Auth\\AuthenticatedSessionController::store<\/a>"],[0,1,"<a href=\"Http\/Controllers\/Auth\/AuthenticatedSessionController.php.html#37\">App\\Http\\Controllers\\Auth\\AuthenticatedSessionController::destroy<\/a>"],[0,1,"<a href=\"Http\/Controllers\/Auth\/ConfirmablePasswordController.php.html#17\">App\\Http\\Controllers\\Auth\\ConfirmablePasswordController::show<\/a>"],[0,2,"<a href=\"Http\/Controllers\/Auth\/ConfirmablePasswordController.php.html#25\">App\\Http\\Controllers\\Auth\\ConfirmablePasswordController::store<\/a>"],[0,2,"<a href=\"Http\/Controllers\/Auth\/EmailVerificationNotificationController.php.html#14\">App\\Http\\Controllers\\Auth\\EmailVerificationNotificationController::store<\/a>"],[0,2,"<a href=\"Http\/Controllers\/Auth\/EmailVerificationPromptController.php.html#15\">App\\Http\\Controllers\\Auth\\EmailVerificationPromptController::__invoke<\/a>"],[0,1,"<a href=\"Http\/Controllers\/Auth\/NewPasswordController.php.html#21\">App\\Http\\Controllers\\Auth\\NewPasswordController::create<\/a>"],[0,2,"<a href=\"Http\/Controllers\/Auth\/NewPasswordController.php.html#31\">App\\Http\\Controllers\\Auth\\NewPasswordController::store<\/a>"],[0,1,"<a href=\"Http\/Controllers\/Auth\/PasswordController.php.html#16\">App\\Http\\Controllers\\Auth\\PasswordController::update<\/a>"],[0,1,"<a href=\"Http\/Controllers\/Auth\/PasswordResetLinkController.php.html#16\">App\\Http\\Controllers\\Auth\\PasswordResetLinkController::create<\/a>"],[0,2,"<a href=\"Http\/Controllers\/Auth\/PasswordResetLinkController.php.html#26\">App\\Http\\Controllers\\Auth\\PasswordResetLinkController::store<\/a>"],[0,1,"<a href=\"Http\/Controllers\/Auth\/RegisteredUserController.php.html#20\">App\\Http\\Controllers\\Auth\\RegisteredUserController::create<\/a>"],[0,1,"<a href=\"Http\/Controllers\/Auth\/RegisteredUserController.php.html#30\">App\\Http\\Controllers\\Auth\\RegisteredUserController::store<\/a>"],[0,3,"<a href=\"Http\/Controllers\/Auth\/VerifyEmailController.php.html#15\">App\\Http\\Controllers\\Auth\\VerifyEmailController::__invoke<\/a>"],[0,1,"<a href=\"Http\/Controllers\/ProfileController.php.html#17\">App\\Http\\Controllers\\ProfileController::edit<\/a>"],[0,2,"<a href=\"Http\/Controllers\/ProfileController.php.html#27\">App\\Http\\Controllers\\ProfileController::update<\/a>"],[0,1,"<a href=\"Http\/Controllers\/ProfileController.php.html#43\">App\\Http\\Controllers\\ProfileController::destroy<\/a>"],[0,1,"<a href=\"Http\/Controllers\/TestLogController.php.html#10\">App\\Http\\Controllers\\TestLogController::__invoke<\/a>"],[0,2,"<a href=\"Http\/Middleware\/SetLocale.php.html#17\">App\\Http\\Middleware\\SetLocale::handle<\/a>"],[0,1,"<a href=\"Http\/Requests\/Auth\/LoginRequest.php.html#17\">App\\Http\\Requests\\Auth\\LoginRequest::authorize<\/a>"],[0,1,"<a href=\"Http\/Requests\/Auth\/LoginRequest.php.html#27\">App\\Http\\Requests\\Auth\\LoginRequest::rules<\/a>"],[0,2,"<a href=\"Http\/Requests\/Auth\/LoginRequest.php.html#40\">App\\Http\\Requests\\Auth\\LoginRequest::authenticate<\/a>"],[0,2,"<a href=\"Http\/Requests\/Auth\/LoginRequest.php.html#60\">App\\Http\\Requests\\Auth\\LoginRequest::ensureIsNotRateLimited<\/a>"],[0,1,"<a href=\"Http\/Requests\/Auth\/LoginRequest.php.html#81\">App\\Http\\Requests\\Auth\\LoginRequest::throttleKey<\/a>"],[0,1,"<a href=\"Http\/Requests\/ProfileUpdateRequest.php.html#16\">App\\Http\\Requests\\ProfileUpdateRequest::rules<\/a>"],[100,1,"<a href=\"Http\/Resources\/CategoryCollection.php.html#125\">App\\Http\\Resources\\CategoryCollection::toArray<\/a>"],[100,1,"<a href=\"Http\/Resources\/CategoryResource.php.html#43\">App\\Http\\Resources\\CategoryResource::toArray<\/a>"],[100,1,"<a href=\"Http\/Resources\/ProductCollection.php.html#15\">App\\Http\\Resources\\ProductCollection::toArray<\/a>"],[100,2,"<a href=\"Http\/Resources\/ProductResource.php.html#52\">App\\Http\\Resources\\ProductResource::toArray<\/a>"],[0,1,"<a href=\"Jobs\/SendPriceChangeNotification.php.html#28\">App\\Jobs\\SendPriceChangeNotification::__construct<\/a>"],[0,3,"<a href=\"Jobs\/SendPriceChangeNotification.php.html#39\">App\\Jobs\\SendPriceChangeNotification::handle<\/a>"],[0,1,"<a href=\"Jobs\/SendPriceChangeNotification.php.html#85\">App\\Jobs\\SendPriceChangeNotification::failed<\/a>"],[0,1,"<a href=\"Listeners\/HandleProductPriceChange.php.html#17\">App\\Listeners\\HandleProductPriceChange::__construct<\/a>"],[0,1,"<a href=\"Listeners\/HandleProductPriceChange.php.html#25\">App\\Listeners\\HandleProductPriceChange::handle<\/a>"],[0,2,"<a href=\"Logging\/TelegramLogger.php.html#15\">App\\Logging\\TelegramLogger::__invoke<\/a>"],[100,1,"<a href=\"Models\/Category.php.html#33\">App\\Models\\Category::products<\/a>"],[0,1,"<a href=\"Models\/NotificationSettings.php.html#45\">App\\Models\\NotificationSettings::user<\/a>"],[0,1,"<a href=\"Models\/Permission.php.html#26\">App\\Models\\Permission::roles<\/a>"],[100,1,"<a href=\"Models\/Product.php.html#50\">App\\Models\\Product::categories<\/a>"],[100,1,"<a href=\"Models\/RefreshToken.php.html#52\">App\\Models\\RefreshToken::user<\/a>"],[0,1,"<a href=\"Models\/RefreshToken.php.html#60\">App\\Models\\RefreshToken::isExpired<\/a>"],[0,1,"<a href=\"Models\/RefreshToken.php.html#68\">App\\Models\\RefreshToken::scopeValid<\/a>"],[0,1,"<a href=\"Models\/Role.php.html#26\">App\\Models\\Role::users<\/a>"],[0,1,"<a href=\"Models\/Role.php.html#34\">App\\Models\\Role::permissions<\/a>"],[0,1,"<a href=\"Models\/Role.php.html#42\">App\\Models\\Role::hasPermissionTo<\/a>"],[0,1,"<a href=\"Models\/Task.php.html#41\">App\\Models\\Task::user<\/a>"],[100,1,"<a href=\"Models\/User.php.html#56\">App\\Models\\User::casts<\/a>"],[100,1,"<a href=\"Models\/User.php.html#67\">App\\Models\\User::roles<\/a>"],[0,1,"<a href=\"Models\/User.php.html#75\">App\\Models\\User::tasks<\/a>"],[0,1,"<a href=\"Models\/User.php.html#83\">App\\Models\\User::hasPermissionTo<\/a>"],[0,1,"<a href=\"Models\/User.php.html#93\">App\\Models\\User::hasRole<\/a>"],[0,1,"<a href=\"Models\/User.php.html#98\">App\\Models\\User::isAdmin<\/a>"],[0,1,"<a href=\"Models\/User.php.html#103\">App\\Models\\User::notifications_settings<\/a>"],[100,1,"<a href=\"Models\/User.php.html#108\">App\\Models\\User::getJWTIdentifier<\/a>"],[100,1,"<a href=\"Models\/User.php.html#113\">App\\Models\\User::getJWTCustomClaims<\/a>"],[100,1,"<a href=\"Models\/User.php.html#122\">App\\Models\\User::profile<\/a>"],[0,1,"<a href=\"Models\/UserProfile.php.html#48\">App\\Models\\UserProfile::user<\/a>"],[0,1,"<a href=\"Notifications\/ProductPriceChangedNotification.php.html#24\">App\\Notifications\\ProductPriceChangedNotification::__construct<\/a>"],[0,1,"<a href=\"Notifications\/ProductPriceChangedNotification.php.html#38\">App\\Notifications\\ProductPriceChangedNotification::via<\/a>"],[0,3,"<a href=\"Notifications\/ProductPriceChangedNotification.php.html#46\">App\\Notifications\\ProductPriceChangedNotification::toMail<\/a>"],[0,2,"<a href=\"Notifications\/ProductPriceChangedNotification.php.html#66\">App\\Notifications\\ProductPriceChangedNotification::toArray<\/a>"],[0,1,"<a href=\"Notifications\/ProductPriceChangedNotification.php.html#82\">App\\Notifications\\ProductPriceChangedNotification::formatPrice<\/a>"],[0,1,"<a href=\"Policies\/CategoryPolicy.php.html#14\">App\\Policies\\CategoryPolicy::viewAny<\/a>"],[0,1,"<a href=\"Policies\/CategoryPolicy.php.html#22\">App\\Policies\\CategoryPolicy::view<\/a>"],[0,1,"<a href=\"Policies\/CategoryPolicy.php.html#30\">App\\Policies\\CategoryPolicy::create<\/a>"],[0,2,"<a href=\"Policies\/CategoryPolicy.php.html#38\">App\\Policies\\CategoryPolicy::update<\/a>"],[0,2,"<a href=\"Policies\/CategoryPolicy.php.html#46\">App\\Policies\\CategoryPolicy::delete<\/a>"],[0,1,"<a href=\"Policies\/CategoryPolicy.php.html#54\">App\\Policies\\CategoryPolicy::restore<\/a>"],[0,1,"<a href=\"Policies\/CategoryPolicy.php.html#62\">App\\Policies\\CategoryPolicy::forceDelete<\/a>"],[0,1,"<a href=\"Policies\/ProductPolicy.php.html#14\">App\\Policies\\ProductPolicy::viewAny<\/a>"],[0,1,"<a href=\"Policies\/ProductPolicy.php.html#22\">App\\Policies\\ProductPolicy::view<\/a>"],[0,1,"<a href=\"Policies\/ProductPolicy.php.html#30\">App\\Policies\\ProductPolicy::create<\/a>"],[0,2,"<a href=\"Policies\/ProductPolicy.php.html#38\">App\\Policies\\ProductPolicy::update<\/a>"],[0,2,"<a href=\"Policies\/ProductPolicy.php.html#46\">App\\Policies\\ProductPolicy::delete<\/a>"],[0,1,"<a href=\"Policies\/ProductPolicy.php.html#54\">App\\Policies\\ProductPolicy::restore<\/a>"],[0,1,"<a href=\"Policies\/ProductPolicy.php.html#62\">App\\Policies\\ProductPolicy::forceDelete<\/a>"],[100,1,"<a href=\"Providers\/AppServiceProvider.php.html#19\">App\\Providers\\AppServiceProvider::register<\/a>"],[50,2,"<a href=\"Providers\/AppServiceProvider.php.html#27\">App\\Providers\\AppServiceProvider::boot<\/a>"],[0,1,"<a href=\"Providers\/EventServiceProvider.php.html#28\">App\\Providers\\EventServiceProvider::boot<\/a>"],[0,1,"<a href=\"Providers\/EventServiceProvider.php.html#39\">App\\Providers\\EventServiceProvider::shouldDiscoverEvents<\/a>"],[100,1,"<a href=\"Providers\/RepositoryServiceProvider.php.html#17\">App\\Providers\\RepositoryServiceProvider::register<\/a>"],[100,1,"<a href=\"Providers\/RepositoryServiceProvider.php.html#26\">App\\Providers\\RepositoryServiceProvider::boot<\/a>"],[40,2,"<a href=\"Providers\/RepositoryServiceProvider.php.html#41\">App\\Providers\\RepositoryServiceProvider::warmCache<\/a>"],[0,1,"<a href=\"Repositories\/Eloquent\/CategoryRepository.php.html#14\">App\\Repositories\\Eloquent\\CategoryRepository::__construct<\/a>"],[0,1,"<a href=\"Repositories\/Eloquent\/CategoryRepository.php.html#19\">App\\Repositories\\Eloquent\\CategoryRepository::getAllPaginated<\/a>"],[0,1,"<a href=\"Repositories\/Eloquent\/CategoryRepository.php.html#24\">App\\Repositories\\Eloquent\\CategoryRepository::getAll<\/a>"],[0,1,"<a href=\"Repositories\/Eloquent\/CategoryRepository.php.html#29\">App\\Repositories\\Eloquent\\CategoryRepository::find<\/a>"],[0,1,"<a href=\"Repositories\/Eloquent\/CategoryRepository.php.html#34\">App\\Repositories\\Eloquent\\CategoryRepository::create<\/a>"],[0,1,"<a href=\"Repositories\/Eloquent\/CategoryRepository.php.html#39\">App\\Repositories\\Eloquent\\CategoryRepository::update<\/a>"],[0,1,"<a href=\"Repositories\/Eloquent\/CategoryRepository.php.html#45\">App\\Repositories\\Eloquent\\CategoryRepository::delete<\/a>"],[100,1,"<a href=\"Repositories\/Eloquent\/ProductRepository.php.html#16\">App\\Repositories\\Eloquent\\ProductRepository::__construct<\/a>"],[0,1,"<a href=\"Repositories\/Eloquent\/ProductRepository.php.html#21\">App\\Repositories\\Eloquent\\ProductRepository::count<\/a>"],[0,2,"<a href=\"Repositories\/Eloquent\/ProductRepository.php.html#26\">App\\Repositories\\Eloquent\\ProductRepository::getAllPaginated<\/a>"],[0,1,"<a href=\"Repositories\/Eloquent\/ProductRepository.php.html#37\">App\\Repositories\\Eloquent\\ProductRepository::find<\/a>"],[0,1,"<a href=\"Repositories\/Eloquent\/ProductRepository.php.html#42\">App\\Repositories\\Eloquent\\ProductRepository::create<\/a>"],[0,1,"<a href=\"Repositories\/Eloquent\/ProductRepository.php.html#47\">App\\Repositories\\Eloquent\\ProductRepository::update<\/a>"],[0,3,"<a href=\"Repositories\/Eloquent\/ProductRepository.php.html#58\">App\\Repositories\\Eloquent\\ProductRepository::handlePriceChange<\/a>"],[0,1,"<a href=\"Repositories\/Eloquent\/ProductRepository.php.html#71\">App\\Repositories\\Eloquent\\ProductRepository::delete<\/a>"],[0,1,"<a href=\"Repositories\/Eloquent\/ProductRepository.php.html#76\">App\\Repositories\\Eloquent\\ProductRepository::syncCategories<\/a>"],[0,1,"<a href=\"Repositories\/Eloquent\/ProductRepository.php.html#81\">App\\Repositories\\Eloquent\\ProductRepository::search<\/a>"],[0,1,"<a href=\"View\/Components\/AppLayout.php.html#13\">App\\View\\Components\\AppLayout::render<\/a>"],[0,1,"<a href=\"View\/Components\/GuestLayout.php.html#13\">App\\View\\Components\\GuestLayout::render<\/a>"]], 'Method Complexity'))
+      .transition()
+      .duration(500)
+      .call(chart);
+
+    nv.utils.windowResize(chart.update);
+
+    return chart;
+  });
+
+  function getComplexityData(data, label) {
+    var values = [];
+    $.each(data, function(key) {
+      var value = Math.round(data[key][0]*100) / 100;
+      values.push({
+        x: value,
+        y: data[key][1],
+        class: data[key][2],
+        size: 0.05,
+        shape: 'diamond'
+      });
+    });
+
+    return [
+      {
+        key: label,
+        values: values,
+        color: "#4572A7"
+      }
+    ];
+  }
+});
+  </script>
+ </body>
+</html>
