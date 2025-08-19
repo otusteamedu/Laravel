@@ -118,4 +118,9 @@ class User extends Authenticatable implements JWTSubject
            'name' => $this->name,
        ];
     }
+
+    public function profile()
+    {
+        return $this->hasOne(UserProfile::class);
+    }
 }
