@@ -42,7 +42,7 @@ class FibonachiControllerTest extends TestCase
     #[Test()]
     #[TestWith([5, 200, true, [0,1,1,2,3,5]])]
     #[TestWith([5, 403, false, null, false])]
-    #[TestWith([0, 400, false, null, true])]
+    #[TestWith([0, 422, false, null, true])]
     public function calculate_fibonacci_cases(
         int $number,
         int $expectedStatus,

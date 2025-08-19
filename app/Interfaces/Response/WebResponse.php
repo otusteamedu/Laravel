@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Domain\Response;
+namespace App\Interfaces\Response;
 
 class WebResponse
 {

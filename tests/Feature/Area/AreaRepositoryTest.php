@@ -10,7 +10,8 @@ use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\Attributes\TestWith;
 use Tests\TestCase;
-use App\Application\Helpers\LocaleHelper;
+use App\Infrastructure\Helpers\LocaleHelper;
+use App\Domain\Factories\Area\AreaFactory;
 
 #[Group('feature_area_repository')]
 
@@ -42,11 +43,10 @@ class AreaRepositoryTest extends TestCase
     public function store_creates_area_with_current_locale_field(
         string $name,
     ): void {
-        $area = new Area(name: $name);
+        $lang = LocaleHelper::getLocale();
+        $area = AreaFactory::make($name, $lang);
         $this->repository->store($area);
-        $this->assertDatabaseHas('areas', [
-            'name_' . LocaleHelper::getLocale() => $name,
-        ]);
+        $this->assertDatabaseHas('areas', $area->toArray());
     }
 
     #[Test]
@@ -62,7 +62,7 @@ class AreaRepositoryTest extends TestCase
         $result = $this->repository->findById($id);
         if (!$shouldThrow) {
             $this->assertInstanceOf(Area::class, $result);
-            $this->assertEquals($id, $result->id);
+            $this->assertEquals($id, $result->getId());
         }
     }
 
@@ -78,7 +78,7 @@ class AreaRepositoryTest extends TestCase
             $this->expectException(ModelNotFoundException::class);
         }
         $area = $this->repository->findById($id);
-        $area->setName($newName);
+        $area->rename($newName);
         $this->repository->update($area);
         if (!$shouldThrow) {
             $updatedArea = $this->repository->findById($id);

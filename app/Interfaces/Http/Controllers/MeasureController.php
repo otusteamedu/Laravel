@@ -2,8 +2,7 @@
 
 namespace App\Interfaces\Http\Controllers;
 
-use App\Domain\Exceptions\NotFoundException;
-use App\Domain\Response\WebResponse;
+use App\Interfaces\Response\WebResponse;
 use App\Application\Services\Measure\MeasureServiceInterface;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -24,11 +23,8 @@ class MeasureController extends Controller
         try {
             $measures = $this->measureService->prepairDataForIndex();
             $response = new WebResponse(true, $measures, 'Успешно');
-        } catch (NotFoundException $e) {
-            $response = new WebResponse(false, null, $e->getMessage(), [], $e->getCode());
-            Log::warning(__METHOD__ . var_export($response, true));
-        } catch (Throwable $e) {
-            $response = new WebResponse(false, null, $e->getMessage(), [], 500);
+        } catch (Throwable $th) {
+            $response = new WebResponse(false, null, $th->getMessage(), [], $th->getCode());
             Log::error(__METHOD__ . var_export($response, true));
         } finally {
             return response()->view('measure.index.index', compact('response'), $response->statusCode);

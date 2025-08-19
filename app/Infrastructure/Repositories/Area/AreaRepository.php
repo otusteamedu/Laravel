@@ -14,17 +14,17 @@ class AreaRepository implements AreaRepositoryInterface
     public function getAll(): array
     {
         $areas = Area::all()
-                ->sortBy('id')
-                ->map(fn($area) => $area->toBusinessModel())
-                ->filter()
-                ->values()
-                ->toArray();
+            ->sortBy('id')
+            ->map(fn($area) => $area->toBusinessModel())
+            ->filter()
+            ->values()
+            ->all();
         return $areas;
     }
 
     public function store(BusinessModelsArea $area): void
     {
-        Area::create($area->toArrayForCreat());
+        Area::create($area->toArray());
     }
 
     public function findById(int $id): BusinessModelsArea
@@ -33,15 +33,51 @@ class AreaRepository implements AreaRepositoryInterface
         return $area->toBusinessModel();
     }
 
-    public function update(BusinessModelsArea $area): void
-    {
-        $areaEloquent = Area::findOrFail($area->id);
-        $areaEloquent->update($area->toArray());
+    public function update(
+        BusinessModelsArea $area,
+        ?string $lang = null
+    ): void {
+        $areaEloquent = Area::findOrFail($area->getId());
+        $areaEloquent->update($area->toArray($lang));
     }
 
     public function delete(int $id): void
     {
         $area = Area::findOrFail($id);
         $area->delete();
+    }
+
+    /**
+     * @return array <int, int $area_id>
+     */
+    public function getIdWhereNullField(string $nameField): array
+    {
+        $areas = Area::whereNull($nameField)
+            ->pluck('id')
+            ->toArray();
+        return $areas;
+    }
+
+    /**
+     * @return array <string $lang, string $value, string $created_at>
+     */
+    public function findPresenceLangById(int $id): array
+    {
+        $area = Area::findOrFail($id);
+        if (!is_null($area->name_en)) {
+            $result = [
+                'lang' => 'en',
+                'value' => $area->name_en,
+                'created_at' => $area->created_at
+            ];
+        }
+        if (!is_null($area->name_ru)) {
+            $result = [
+                'lang' => 'ru',
+                'value' => $area->name_ru,
+                'created_at' => $area->created_at
+            ];
+        }
+        return $result;
     }
 }

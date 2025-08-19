@@ -4,7 +4,9 @@ namespace App\Infrastructure\EloquentModels;
 
 use App\Domain\BusinessModels\Area as BusinessModelArea;
 use App\Domain\BusinessModels\BaseModel as BusinessBaseModel;
-use App\Application\Helpers\LocaleHelper;
+use App\Infrastructure\Helpers\LocaleHelper;
+use App\Domain\ValueObjects\Area\AreaLang;
+use App\Domain\ValueObjects\Area\AreaName;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Log;
 
@@ -25,10 +27,17 @@ class Area extends BaseModel implements EloquentModelsInterface
         return $this->hasMany(Recipe::class, 'area_id', 'id');
     }
 
-    public function getName() 
+    public function getName(): AreaName 
     {
         $nameField = 'name_' . LocaleHelper::getLocale();
-        return $this->$nameField;
+        $areaName = new AreaName($this->$nameField);
+        return $areaName;
+    }
+
+    public function getLang(): AreaLang 
+    {
+        $areaLang = new AreaLang(LocaleHelper::getLocale());
+        return $areaLang;
     }
 
     public function getCreatedAt(): string 
@@ -45,7 +54,7 @@ class Area extends BaseModel implements EloquentModelsInterface
 
     public function toBusinessModel(): ?BusinessBaseModel
     {
-        if (!$this->getName()) {
+        if (!$this->getName()->getValue()) {
             Log::warning(
                 'Отсутствует название у территории с id = ' . $this->getId() . 
                 ' по локали: ' . LocaleHelper::getLocale()
@@ -55,6 +64,7 @@ class Area extends BaseModel implements EloquentModelsInterface
             return new BusinessModelArea(
                 id:$this->getId(), 
                 name:$this->getName(), 
+                lang:$this->getLang(), 
                 created_at:$this->getCreatedAt()
             );
         }

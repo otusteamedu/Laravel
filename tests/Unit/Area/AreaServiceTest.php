@@ -2,11 +2,13 @@
 
 namespace Tests\Unit\Area;
 
+use App\Application\Exceptions\NotFoundServiceException;
+use App\Infrastructure\Helpers\LocaleHelper;
 use App\Domain\BusinessModels\Area;
-use App\Domain\Exceptions\NotFoundException;
 use App\Application\Services\Area\AreaDTO;
 use App\Application\Services\Area\AreaRepositoryInterface;
 use App\Application\Services\Area\AreaService;
+use App\Domain\ValueObjects\Area\AreaName;
 use Mockery;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use PHPUnit\Framework\Attributes\Group;
@@ -49,7 +51,7 @@ class AreaServiceTest extends TestCase
             ->once()
             ->andReturn($data);
         if ($expectException) {
-            $this->expectException(NotFoundException::class);
+            $this->expectException(NotFoundServiceException::class);
             $this->expectExceptionMessage($expectedMessage);
         }
         $result = $this->service->prepairDataForIndex();
@@ -63,12 +65,15 @@ class AreaServiceTest extends TestCase
     public function store_delegates_to_repository_with_correct_name(): void
     {
         $name = 'Новая территория';
+        $lang = LocaleHelper::getLocale();
         $this->repository->shouldReceive('store')
             ->once()
-            ->with(Mockery::on(function ($area) use ($name) {
-                return $area instanceof Area && $area->getName() === $name;
+            ->with(Mockery::on(function ($area) use ($name, $lang) {
+                return $area instanceof Area
+                    && $area->getName() === $name
+                    && $area->getLang() === $lang;
             }));
-        $this->service->store($name);
+        $this->service->store($name, $lang);
     }
 
     #[Test]
@@ -92,7 +97,7 @@ class AreaServiceTest extends TestCase
         string $newName,
     ): void {
         $areaMock = Mockery::mock(Area::class);
-        $areaMock->shouldReceive('setName')
+        $areaMock->shouldReceive('rename')
             ->once()
             ->with($newName);
         $this->repository->shouldReceive('findById')
