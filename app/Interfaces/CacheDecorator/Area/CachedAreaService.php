@@ -25,9 +25,9 @@ class CachedAreaService implements AreaServiceInterface
         });
     }
 
-    public function store(string $name): void
+    public function store(string $name, string $lang): void
     {
-        $this->service->store($name);
+        $this->service->store($name, $lang);
         $this->refreshCache();
     }
 

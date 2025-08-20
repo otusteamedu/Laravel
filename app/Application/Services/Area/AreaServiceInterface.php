@@ -9,23 +9,11 @@ interface AreaServiceInterface
      */
     public function prepairDataForIndex(): array;
 
-    /**
-     * @return void
-     */
-    public function store(string $name): void;
+    public function store(string $name, string $lang): void;
 
-    /**
-     * @return AreaDTO
-     */
     public function prepairDataForEdit(int $id): AreaDTO;
     
-    /**
-     * @return void
-     */
     public function update(int $id, string $name): void;
 
-    /**
-     * @return void
-     */
     public function delete(int $id): void;
 }

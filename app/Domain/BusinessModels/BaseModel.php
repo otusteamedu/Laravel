@@ -1,12 +1,13 @@
 <?php
 
 namespace App\Domain\BusinessModels;
+use Illuminate\Contracts\Support\Arrayable;
 
-class BaseModel
+abstract class BaseModel implements Arrayable
 {
-    public ?int $id;
+    protected ?int $id;
 
-    public function getId(): int 
+    public function getId(): ?int 
     {
         return $this->id;
     }

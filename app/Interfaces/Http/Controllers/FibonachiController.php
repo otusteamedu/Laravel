@@ -2,11 +2,11 @@
 
 namespace App\Interfaces\Http\Controllers;
 
-use App\Domain\Exceptions\Fibonachi\FibonachiExaption;
-use App\Domain\Exceptions\Fibonachi\NotAdminException;
+use App\Application\Exceptions\NotValidItemServiceException;
+use App\Application\Exceptions\NotAdminServiceException;
 use App\Infrastructure\EloquentModels\User;
 use Illuminate\Http\Response;
-use App\Domain\Response\WebResponse;
+use App\Interfaces\Response\WebResponse;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Contracts\Auth\Access\Gate as GateContract;
 use Illuminate\Support\Facades\Log;
@@ -30,10 +30,10 @@ class FibonachiController extends Controller
     {
         try {
             if (!$gate->allows('calculate', User::class)) {
-                throw new NotAdminException();
+                throw new NotAdminServiceException();
             }
             if ((int) $number < 1 || (int) $number > 100 || !is_int($number)) {
-                throw new FibonachiExaption();
+                throw new NotValidItemServiceException('Число должно быть от 1 до 100.');
             }
             if ($number === 1) {
                 $result = [0];
@@ -44,14 +44,8 @@ class FibonachiController extends Controller
                 }
             }
             $response = new WebResponse(true, $result, 'Успешно');
-        } catch (NotAdminException $e) {
-            $response = new WebResponse(false, null, $e->getMessage(), [], 403);
-            Log::error(__METHOD__ . var_export($response, true));
-        } catch (FibonachiExaption $e) {
-            $response = new WebResponse(false, null, $e->getMessage(), [], 400);
-            Log::error(__METHOD__ . var_export($response, true));
-        } catch (Throwable $e) {
-            $response = new WebResponse(false, null, $e->getMessage(), [], 500);
+        } catch (Throwable $th) {
+            $response = new WebResponse(false, null, $th->getMessage(), [], $th->getCode());
             Log::error(__METHOD__ . var_export($response, true));
         } finally {
             return response()->json($response , $response->statusCode);

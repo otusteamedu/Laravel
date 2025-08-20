@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Providers;
+namespace App\Infrastructure\Providers;
 
 use App\Interfaces\CacheDecorator\Area\CachedAreaService;
 use App\Infrastructure\EloquentModels\User;

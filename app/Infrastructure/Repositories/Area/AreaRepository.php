@@ -14,17 +14,17 @@ class AreaRepository implements AreaRepositoryInterface
     public function getAll(): array
     {
         $areas = Area::all()
-                ->sortBy('id')
-                ->map(fn($area) => $area->toBusinessModel())
-                ->filter()
-                ->values()
-                ->toArray();
+            ->sortBy('id')
+            ->map(fn($area) => $area->toBusinessModel())
+            ->filter()
+            ->values()
+            ->all();
         return $areas;
     }
 
     public function store(BusinessModelsArea $area): void
     {
-        Area::create($area->toArrayForCreat());
+        Area::create($area->toArray());
     }
 
     public function findById(int $id): BusinessModelsArea
@@ -37,7 +37,7 @@ class AreaRepository implements AreaRepositoryInterface
         BusinessModelsArea $area,
         ?string $lang = null
     ): void {
-        $areaEloquent = Area::findOrFail($area->id);
+        $areaEloquent = Area::findOrFail($area->getId());
         $areaEloquent->update($area->toArray($lang));
     }
 
@@ -46,11 +46,11 @@ class AreaRepository implements AreaRepositoryInterface
         $area = Area::findOrFail($id);
         $area->delete();
     }
-    
+
     /**
      * @return array <int, int $area_id>
      */
-    public function getIdWhereNullField(string $nameField): array 
+    public function getIdWhereNullField(string $nameField): array
     {
         $areas = Area::whereNull($nameField)
             ->pluck('id')
@@ -61,7 +61,7 @@ class AreaRepository implements AreaRepositoryInterface
     /**
      * @return array <string $lang, string $value, string $created_at>
      */
-    public function findPresenceLangById(int $id): array 
+    public function findPresenceLangById(int $id): array
     {
         $area = Area::findOrFail($id);
         if (!is_null($area->name_en)) {

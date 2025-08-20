@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Application\Helpers;
+namespace App\Infrastructure\Helpers;
 
 class LocaleHelper 
 {

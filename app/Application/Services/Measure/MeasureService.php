@@ -2,7 +2,7 @@
 
 namespace App\Application\Services\Measure;
 
-use App\Domain\Exceptions\NotFoundException;
+use App\Application\Exceptions\NotFoundServiceException;
 use App\Infrastructure\Repositories\Measure\MeasureRepositoryInterface;
 
 final readonly class MeasureService implements MeasureServiceInterface
@@ -17,9 +17,9 @@ final readonly class MeasureService implements MeasureServiceInterface
     public function prepairDataForIndex(): array
     {
         $measures = $this->measureRepository->getAll();
-        if (empty($Measures)) {
-            throw new NotFoundException('Записи отсутствуют.');
+        if (empty($measures)) {
+            throw new NotFoundServiceException('Записи отсутствуют.');
         };
-        return $Measures;
+        return $measures;
     }
 }

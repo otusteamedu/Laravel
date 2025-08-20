@@ -2,10 +2,12 @@
 
 namespace App\Infrastructure\Jobs;
 
+use App\Application\Exceptions\NotFoundServiceException;
 use App\Application\Services\Area\AreaRepositoryInterface;
 use App\Domain\BusinessModels\Area;
-use App\Domain\Exceptions\NotFoundException;
-use App\Domain\Response\WebResponse;
+use App\Domain\ValueObjects\Area\AreaLang;
+use App\Domain\ValueObjects\Area\AreaName;
+use App\Interfaces\Response\WebResponse;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
 use Illuminate\Support\Facades\Log;
@@ -78,7 +80,7 @@ class ProcessTranclationModelField implements ShouldQueue
                 $idsModels = $repositoryModel->getIdWhereNullField('name_' . $lang);
                 $presenceLang = [];
                 if (empty($idsModels)) {
-                    $e = new NotFoundException(
+                    $e = new NotFoundServiceException(
                         'При выполнении задачи translationModelFeild не найдены записи с пустым переводом по языку ' . $lang,
                         404
                     );
@@ -90,8 +92,11 @@ class ProcessTranclationModelField implements ShouldQueue
                     try {
                         $presenceLang = $repositoryModel->findPresenceLangById($idModel);
                         $searchedLangValue = $translator->translate($presenceLang['value'], $presenceLang['lang'], $lang);
+                        $name = new AreaName($searchedLangValue);
+                        $lang = new AreaLang($lang);
                         $model = new Area(
-                            name:$searchedLangValue,
+                            name:$name,
+                            lang:$lang,
                             id:$idModel,
                             created_at:$presenceLang['created_at'],
                         );
