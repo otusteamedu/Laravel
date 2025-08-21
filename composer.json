@@ -8,10 +8,13 @@
     "require": {
         "php": "^8.2",
         "fakerphp/faker": "^1.24",
+        "illuminate/support": "*",
         "konstantin/calc": "@dev",
         "laravel/framework": "^12.0",
         "laravel/tinker": "^2.10.1",
+        "laravel/ui": "^4.6",
         "prog-time/tg-logger": "^1.0",
+        "tymon/jwt-auth": "^2.1",
         "vagrant/ascii": "@dev",
         "watson/rememberable": "^7.0"
     },
