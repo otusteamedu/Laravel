@@ -1,0 +1,58 @@
+@host=http://laravel
+@token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vbG9jYWxob3N0L2FwaS92MS9yZWZyZXNoIiwiaWF0IjoxNzUyNTAwNDAyLCJleHAiOjE3NTI1MDEwMDIsIm5iZiI6MTc1MjUwMDQwMiwianRpIjoiNGt4S1I2WnJpNTdvRGptZiIsInN1YiI6IjEiLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3IiwiYWRtaW4iOnRydWUsImVtYWlsIjoiYWRtaW5AZXhhbXBsZS5jb20iLCJuYW1lIjoiYWRtaW4ifQ.7r7OM5YtoRQB57gcj3wE48GU_1g9z7KlZo3dUQFYWfI
+
+GET {{host}}/api/v1/news
+Content-Type: application/json
+Accept: application/json
+Authorization: Bearer {{token}}
+
+
+###
+
+GET {{host}}/api/v1/news/5
+Content-Type: application/json
+Accept: application/json
+Authorization: Bearer {{token}}
+
+###
+
+POST {{host}}/api/v1/news
+Content-Type: application/json
+Accept: application/json
+Authorization: Bearer {{token}}
+
+{
+    "name": "новость 1",
+    "text": "Текст новости",
+    "preview":"превью новости",
+    "link":"urlnews",
+    "photo":"photo",
+    "user_id": 3,
+    "published_at": "2025-08-21T14:47"
+}
+
+###
+
+PUT {{host}}/api/v1/news/7
+Content-Type: application/json
+Accept: application/json
+Authorization: Bearer {{token}}
+
+{
+    "name": "новость 2",
+    "text": "Текст новости",
+    "preview":"превью новости",
+    "link":"urlnews",
+    "photo":"photo",
+    "user_id": 5,
+    "published_at": "2025-08-21T14:55"
+}
+
+###
+
+DELETE {{host}}/api/v1/news/5
+Content-Type: application/json
+Accept: application/json
+Authorization: Bearer {{token}}
+
+###

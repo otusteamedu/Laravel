@@ -1,0 +1,170 @@
+<?php
+
+namespace App\Http\Controllers\Api\V1;
+
+use App\Http\Controllers\Controller;
+use App\Application\UseCases\News\Queries\FetchAllNewsPagination\Fetcher as FetchAllFetcher;
+use App\Application\UseCases\News\Queries\FetchAllNewsPagination\Query as FetchAllQuery;
+use App\Application\UseCases\News\Queries\FetchNewsById\Fetcher as FetchByIdFetcher;
+use App\Application\UseCases\News\Queries\FetchNewsById\Query as FetchByIdQuery;
+use App\Application\UseCases\News\Commands\CreateNews\Command as CreateNewsCommand;
+use App\Application\UseCases\News\Commands\CreateNews\Handler as CreateNewsHandler;
+use App\Application\UseCases\News\Commands\UpdateNews\Command as UpdateNewsCommand;
+use App\Application\UseCases\News\Commands\UpdateNews\Handler as UpdateNewsHandler;
+use App\Application\UseCases\News\Commands\DeleteNews\Command as DeleteNewsCommand;
+use App\Application\UseCases\News\Commands\DeleteNews\Handler as DeleteNewsHandler;
+use App\Domain\News\Exceptions\NewsNotFoundException;
+use App\Domain\News\Exceptions\NewsSaveException;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use DomainException;
+use Tymon\JWTAuth\Facades\JWTAuth;
+use App\Http\Requests\CreateNewsRequest;
+use App\Http\Requests\UpdateNewsRequest;
+use App\Http\Resources\NewsResource;
+use App\Http\Resources\Mappers\NewsApiModelMapper;
+
+class NewsController extends Controller
+{
+    public function __construct(
+    ) {}
+
+    /**
+     * Display a listing of the resource.
+     */
+    public function index(FetchAllFetcher $fetchAllFetcher, Request $request): JsonResponse
+    {
+        $limit = (int) $request->get('limit', 10);
+        $page = (int) $request->get('page', 1);
+        $offset = ($page - 1) * $limit;
+
+        $query = new FetchAllQuery(limit: $limit, offset: $offset);
+        $paginatedResult = $fetchAllFetcher->fetch($query);
+
+        $apiModels = array_map(
+            fn($newsDTO) => NewsApiModelMapper::map($newsDTO),
+            $paginatedResult->items
+        );
+
+        return response()->json([
+                                    'data' => NewsResource::collection($apiModels),
+                                    'meta' => [
+                                        'total' => $paginatedResult->total,
+                                        'limit' => $paginatedResult->limit,
+                                        'offset' => $paginatedResult->offset,
+                                    ],
+                                ]);
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     */
+    public function store(CreateNewsHandler $createNewsHandler, CreateNewsRequest $request): JsonResponse
+    {
+        $validated = $request->validated();
+
+        $command = new CreateNewsCommand(
+            name: $validated['name'],
+            text: $validated['text'],
+            user_id: $validated['user_id'],
+            createAt: isset($validated['create_at']) ? new \DateTimeImmutable($validated['create_at']) : null,
+            preview: $validated['preview'],
+            link: $validated['link'],
+            photo: $validated['photo'] ?? null,
+        );
+
+        try {
+            $newsDTO = $createNewsHandler->handle($command);
+            $apiModel = NewsApiModelMapper::map($newsDTO);
+
+            return response()->json(['data' => $apiModel], Response::HTTP_CREATED);
+
+        } catch (DomainException $e) {
+            return response()->json(['message' => $e->getMessage()], Response::HTTP_BAD_REQUEST);
+
+        } catch (\Exception) {
+            return response()->json(['message' => 'Ошибка при сохранении новости'], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    /**
+     * Display the specified resource.
+     */
+    public function show(FetchByIdFetcher $fetchByIdFetcher, int $id): JsonResponse
+    {
+        try {
+            $query = new FetchByIdQuery($id);
+            $newsDTO = $fetchByIdFetcher->fetch($query);
+
+            $apiModel = NewsApiModelMapper::map($newsDTO);
+
+            return response()->json(['data' => new NewsResource($apiModel)]);
+
+        } catch (NewsNotFoundException $e) {
+            return response()->json(['message' => $e->getMessage()], Response::HTTP_NOT_FOUND);
+        }
+    }
+
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(UpdateNewsHandler $updateNewsHandler, UpdateNewsRequest $request, int $id): JsonResponse
+    {
+        $validated = $request->validated();
+
+        $command = new UpdateNewsCommand(
+            id: $id,
+            name: $validated['name'],
+            text: $validated['text'],
+            user_id: $validated['user_id'],
+            createAt: isset($validated['create_at']) ? new \DateTimeImmutable($validated['create_at']) : null,
+            preview: $validated['preview'],
+            link: $validated['link'],
+            photo: $validated['photo'] ?? null,
+        );
+
+        try {
+            $payload = JWTAuth::parseToken()->getPayload();
+            $isAdmin = (bool)$payload->get('admin', false);
+
+            $newsDTO = $updateNewsHandler->handle($command, $isAdmin);
+            $apiModel = NewsApiModelMapper::map($newsDTO);
+
+            //return new NewsResource($apiModel);
+            return response()->json(['data' => new NewsResource($apiModel)]);
+
+        } catch (NewsNotFoundException $e) {
+            return response()->json(['message' => $e->getMessage()], Response::HTTP_NOT_FOUND);
+
+        } catch (DomainException $e) {
+            return response()->json(['message' => $e->getMessage()], Response::HTTP_BAD_REQUEST);
+
+        } catch (NewsSaveException $e) {
+            return response()->json(['message' => $e->getMessage()], Response::HTTP_INTERNAL_SERVER_ERROR);
+        } catch (\Exception) {
+            return response()->json(['message' => 'Ошибка при обновлении новости'], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(DeleteNewsHandler $deleteNewsHandler, int $id)
+    {
+        try {
+            $deleteNewsHandler->handle(new DeleteNewsCommand($id));
+
+            return response()->noContent();
+
+        } catch (NewsNotFoundException $e) {
+            return response()->json(['message' => $e->getMessage()], Response::HTTP_NOT_FOUND);
+
+        } catch (NewsSaveException $e) {
+            return response()->json(['message' => $e->getMessage()], Response::HTTP_INTERNAL_SERVER_ERROR);
+
+        } catch (\Exception) {
+            return response()->json(['message' => 'Ошибка при удалении новости'], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+}
