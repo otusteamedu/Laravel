@@ -1,62 +1,38 @@
 <?php
 namespace App\Infrastructure;
 
-class SettingDTO{
-    private $object,$inc;
+class SettingDTO implements InterfaceDTO{
+    private $dto;
     public function __construct($object)
     {
-        $this->object = $object['model'];
-        $this->inc = $object['inc'];
+        $this->dto = new DTO\Model($object);
     }
     public function all(){
-        return $this->object::all();
+        return $this->dto->all();
     }
     public function find($id){
-        return $this->object::findOrFail($id);
+        return $this->dto->find($id);
     }
     public function where($where){
-        foreach($where as $key=>$value){
-            $arr[] = [$key,$value];
-        }
-        return $this->object::where($arr)->first();
+        return $this->dto->where($where);
     }
     public function whereIn($field,$arr){
-        return $this->object::whereIn($field,$arr)->get();
+        return $this->dto->whereIn($field,$arr);
     }
     public function create($arr){
-        return $this->object::create($arr);
+        return $this->dto->create($arr);
     }
     public function update($arr){
-        return $this->object::update($arr);
+        return $this->dto->update($arr);
     }
     public function delete($id){
-        $delete = $this->object::find($id);
-        return $delete->delete();
+        return $this->dto->delete($id);
     }
 
     public function for($property,$return){
-        $result = [];
-        $inc = $this->inc;
-        if(isset($return->$inc)){
-            foreach($property as $key=>$prop){
-                if(isset($return->$prop)){
-                    $result[$key] = $return->$prop;
-                }
-            }
-        }
-        else{
-            foreach($return as $item=>$arr){
-                foreach($property as $key=>$prop){
-                    if(isset($arr->$prop)){
-                        $result[$item][$key] = $arr->$prop;
-                    }
-                }
-            }
-        }        
-        return $result;
+        return $this->dto->for($property,$return);
     }
     public function list($offset,$count){
-        $offset = $offset*$count;
-        return $this->object::skip($offset)->take($count)->get();
+        return $this->dto->list($offset,$count);
     }
 }
