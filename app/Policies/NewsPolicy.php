@@ -4,7 +4,7 @@ namespace App\Policies;
 
 use App\Models\News;
 use App\Models\User;
-use App\Services\NewsRepositoryInterface;
+use App\Services\Repositories\NewsRepositoryInterface;
 use Illuminate\Contracts\Auth\Authenticatable;
 
 class NewsPolicy
