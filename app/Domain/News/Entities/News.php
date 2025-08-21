@@ -51,9 +51,7 @@ class News
     public function getUser(): User
     {
         return $this->user;
-    }
-
-    
+    }    
 
     public function getName(): string
     {
@@ -64,32 +62,26 @@ class News
     {
         return $this->text;
     }
-
     public function getCreateAt(): ?\DateTimeImmutable
     {
         return $this->createAt;
     }
-
     public function getPhoto(): ?string
     {
         return $this->photo;
     }
-
     public function getLink(): ?string
     {
         return $this->link;
     }
-
     public function getPreview(): ?string
     {
         return $this->preview;
     }
-
     public function getCreatedAt(): ?\DateTimeImmutable
     {
         return $this->createdAt;
     }
-
     public function getUpdatedAt(): ?\DateTimeImmutable
     {
         return $this->updatedAt;
