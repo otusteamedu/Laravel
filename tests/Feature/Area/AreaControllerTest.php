@@ -33,6 +33,9 @@ class AreaControllerTest extends TestCase
         $this->editUrlBase = 'area.edit';
         $this->updateUrlBase = 'area.update';
         $this->destroyUrlBase = 'area.destroy';
+        $this->withHeaders([
+            'Accept-Language' => 'ru',
+        ]);
     }
 
     #[Test()]
@@ -84,9 +87,6 @@ class AreaControllerTest extends TestCase
         bool $expectedSuccess,
         string $expectedMessage
     ): void {
-        $this->withHeaders([
-            'Accept-Language' => 'ru',
-        ]);
         $response = $this->postJson($this->storeUrl, [
             'name-area' => $name,
         ]);
@@ -133,7 +133,7 @@ class AreaControllerTest extends TestCase
                     && $resp->message === $expectedMessage
                     && $resp->data instanceof AreaDTO;
             });
-        } elseif ($expectedStatus === 400) {
+        } elseif ($expectedStatus === 404) {
             $response->assertViewHas('response', function ($resp) use (
                 $expectedSuccess,
                 $expectedStatus,

@@ -2,9 +2,9 @@
 
 namespace App\Domain\Exceptions;
 
-use Exception;
+use DomainException as BaseDomainException;
 
-class NotValidItemDomainException extends Exception
+class NotValidItemDomainException extends BaseDomainException
 {
     protected $message = 'Не валидное значение.';
     protected $code = 422;
