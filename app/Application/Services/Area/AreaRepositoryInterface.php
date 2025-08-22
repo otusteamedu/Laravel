@@ -15,7 +15,7 @@ interface AreaRepositoryInterface
 
     public function findById(int $id): Area;
     
-    public function update(Area $area): void;
+    public function update(Area $area, ?string $lang = null): void;
 
     public function delete(int $id): void;
 }
