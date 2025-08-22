@@ -2,10 +2,10 @@
 
 namespace Database\Factories;
 
-use App\EloquentModels\Measure;
-use App\EloquentModels\MeasureProductRecipe;
-use App\EloquentModels\Product;
-use App\EloquentModels\Recipe;
+use App\Infrastructure\EloquentModels\Measure;
+use App\Infrastructure\EloquentModels\MeasureProductRecipe;
+use App\Infrastructure\EloquentModels\Product;
+use App\Infrastructure\EloquentModels\Recipe;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**

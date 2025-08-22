@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\EloquentModels\Category;
+use App\Infrastructure\EloquentModels\Category;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 

@@ -2,8 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\EloquentModels\Video;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Infrastructure\EloquentModels\Video;
 use Illuminate\Database\Seeder;
 
 class VideoSeeder extends Seeder

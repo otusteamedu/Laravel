@@ -2,7 +2,7 @@
 
 namespace Database\Factories;
 
-use App\EloquentModels\Video;
+use App\Infrastructure\EloquentModels\Video;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -19,7 +19,7 @@ class VideoFactory extends Factory
      */
     public function definition(): array
     {
-        $model = 'App\\EloquentModels\\' . $this->faker->randomElement(['Recipe']);
+        $model = 'App\\Infrastructure\\EloquentModels\\' . $this->faker->randomElement(['Recipe']);
         $id = $this->faker->randomElement($model::pluck('id')->toArray());
         return [
             'url' => $this->faker->url(),

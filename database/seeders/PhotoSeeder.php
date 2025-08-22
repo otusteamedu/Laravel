@@ -2,8 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\EloquentModels\Photo;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Infrastructure\EloquentModels\Photo;
 use Illuminate\Database\Seeder;
 
 class PhotoSeeder extends Seeder

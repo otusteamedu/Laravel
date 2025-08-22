@@ -2,13 +2,16 @@
 
 namespace Database\Factories;
 
-use App\EloquentModels\User;
+use App\Infrastructure\EloquentModels\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\EloquentModels\User>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Infrastructure\EloquentModels\User>
+ * 
+ * @method \App\Infrastructure\EloquentModels\User create(array $attributes = [])
+ * @method \App\Infrastructure\EloquentModels\User make(array $attributes = [])
  */
 class UserFactory extends Factory
 {

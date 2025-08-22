@@ -1,12 +1,15 @@
 <?php
 
-namespace Tests\Unit;
+namespace Tests\Unit\Area;
 
-use App\BusinessModels\Area;
-use App\Exceptions\NotFoundException;
-use App\Services\Area\AreaDTO;
-use App\Services\Area\AreaRepositoryInterface;
-use App\Services\Area\AreaService;
+use App\Application\Exceptions\NotFoundServiceException;
+use App\Infrastructure\Helpers\LocaleHelper;
+use App\Domain\BusinessModels\Area;
+use App\Application\Services\Area\AreaDTO;
+use App\Application\Services\Area\AreaRepositoryInterface;
+use App\Application\Services\Area\AreaService;
+use App\Domain\ValueObjects\Area\AreaLang;
+use App\Domain\ValueObjects\Area\AreaName;
 use Mockery;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use PHPUnit\Framework\Attributes\Group;
@@ -41,7 +44,7 @@ class AreaServiceTest extends TestCase
         $data = array_map(function () {
             $area = Mockery::mock(Area::class);
             $area->shouldReceive('getId')->andReturn(1);
-            $area->shouldReceive('getName')->andReturn('Тестовая территория');
+            $area->shouldReceive('getName')->andReturn(new AreaName('Тестовая территория'));
             $area->shouldReceive('getCreatedAt')->andReturn('2000-01-01');
             return $area;
         }, $mockedData);
@@ -49,7 +52,7 @@ class AreaServiceTest extends TestCase
             ->once()
             ->andReturn($data);
         if ($expectException) {
-            $this->expectException(NotFoundException::class);
+            $this->expectException(NotFoundServiceException::class);
             $this->expectExceptionMessage($expectedMessage);
         }
         $result = $this->service->prepairDataForIndex();
@@ -63,12 +66,19 @@ class AreaServiceTest extends TestCase
     public function store_delegates_to_repository_with_correct_name(): void
     {
         $name = 'Новая территория';
+        $lang = LocaleHelper::getLocale();
+        $expectedArea = new Area(
+            new AreaName($name),
+            new AreaLang($lang),
+        );
         $this->repository->shouldReceive('store')
             ->once()
-            ->with(Mockery::on(function ($area) use ($name) {
-                return $area instanceof Area && $area->getName() === $name;
+            ->with(Mockery::on(function ($area) use ($expectedArea) {
+                return $area instanceof Area
+                    && $area->getName()->getValue() === $expectedArea->getName()->getValue()
+                    && $area->getLang()->getValue() === $expectedArea->getLang()->getValue();
             }));
-        $this->service->store($name);
+        $this->service->store($name, $lang);
     }
 
     #[Test]
@@ -76,13 +86,20 @@ class AreaServiceTest extends TestCase
     public function prepairDataForEdit_returns_area_dto_from_repository(
         int $id,
     ): void {
-        $area = Mockery::mock(Area::class)->shouldIgnoreMissing();
+        $name = 'Новая территория';
+        $lang = LocaleHelper::getLocale();
+        $areaMock = \Mockery::mock(Area::class);
+        $areaMock->shouldReceive('getId')->andReturn($id);
+        $areaMock->shouldReceive('getName')->andReturn(new AreaName($name));
+        $areaMock->shouldReceive('getLang')->andReturn(new AreaLang($lang));
+        $areaMock->shouldReceive('getCreatedAt')->andReturn('2025-01-01 12:00:00');
         $this->repository->shouldReceive('findById')
             ->once()
             ->with($id)
-            ->andReturn($area);
+            ->andReturn($areaMock);
         $result = $this->service->prepairDataForEdit($id);
         $this->assertInstanceOf(AreaDTO::class, $result);
+        $this->assertSame($name, $result->name);
     }
 
     #[Test]
@@ -92,9 +109,9 @@ class AreaServiceTest extends TestCase
         string $newName,
     ): void {
         $areaMock = Mockery::mock(Area::class);
-        $areaMock->shouldReceive('setName')
+        $areaMock->shouldReceive('rename')
             ->once()
-            ->with($newName);
+            ->with(Mockery::on(fn ($arg) => $arg instanceof AreaName && $arg->getValue() === $newName));
         $this->repository->shouldReceive('findById')
             ->once()
             ->with($id)

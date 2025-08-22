@@ -2,7 +2,7 @@
 
 namespace Database\Factories;
 
-use App\EloquentModels\Photo;
+use App\Infrastructure\EloquentModels\Photo;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -20,7 +20,7 @@ class PhotoFactory extends Factory
     public function definition(): array
     {
         $model = $this->faker->randomElement(['recipe', 'product']);
-        $pathModel = 'App\\EloquentModels\\' . ucfirst($model);
+        $pathModel = 'App\\Infrastructure\\EloquentModels\\' . ucfirst($model);
         $id = $this->faker->randomElement($pathModel::pluck('id')->toArray());
         return [
             'url' => $this->faker->url(),

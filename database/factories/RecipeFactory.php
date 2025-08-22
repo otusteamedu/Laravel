@@ -2,9 +2,9 @@
 
 namespace Database\Factories;
 
-use App\EloquentModels\Area;
-use App\EloquentModels\Category;
-use App\EloquentModels\Recipe;
+use App\Infrastructure\EloquentModels\Area;
+use App\Infrastructure\EloquentModels\Category;
+use App\Infrastructure\EloquentModels\Recipe;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**

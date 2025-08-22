@@ -2,10 +2,8 @@
 
 namespace Database\Factories;
 
-use App\EloquentModels\Recipe;
-use App\EloquentModels\Tag;
+use App\Infrastructure\EloquentModels\Tag;
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Facades\Log;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\EloquentModels\Tag>
