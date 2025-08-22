@@ -44,6 +44,9 @@ class AreaControllerTest extends TestCase
         string $expectedView,
         int $expectedStatus,
     ): void {
+        $this->withHeaders([
+            'Accept-Language' => 'ru',
+        ]);
         $response = $this->get($this->indexUrl);
 
         $response->assertStatus($expectedStatus);
@@ -112,6 +115,9 @@ class AreaControllerTest extends TestCase
         int $id,
         string $expectedMessage,
     ): void {
+        $this->withHeaders([
+            'Accept-Language' => 'ru',
+        ]);
         $response = $this->get(route($this->editUrlBase, $id));
         $response->assertStatus($expectedStatus);
         $response->assertViewIs($expectedView);
@@ -152,6 +158,9 @@ class AreaControllerTest extends TestCase
         string $expectedMessage,
         int $id,
     ): void {
+        $this->withHeaders([
+            'Accept-Language' => 'ru',
+        ]);
         $response = $this->putJson(route($this->updateUrlBase, $id), [
             'name-area' => $name,
         ]);
@@ -179,6 +188,9 @@ class AreaControllerTest extends TestCase
         string $expectedMessage,
         int $id,
     ): void {
+        $this->withHeaders([
+            'Accept-Language' => 'ru',
+        ]);
         $response = $this->deleteJson(route($this->destroyUrlBase, $id));
         $response->assertStatus($expectedStatus);
         $response->assertJson([
