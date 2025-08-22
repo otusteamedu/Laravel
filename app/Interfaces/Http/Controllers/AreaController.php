@@ -31,7 +31,7 @@ class AreaController extends Controller
                 false, 
                 null, 
                 $th->getMessage(),  
-                is_null($th->getPrevious()) ? [] : $th->getPrevious()->getTrace(), 
+                is_null($th->getPrevious()) ? [] : ['error' => $th->getPrevious()->getMessage()], 
                 $th->getCode()
             );
             Log::error(__METHOD__ . var_export($response, true));
@@ -49,7 +49,7 @@ class AreaController extends Controller
                 false, 
                 null, 
                 $th->getMessage(),  
-                is_null($th->getPrevious()) ? [] : $th->getPrevious()->getTrace(), 
+                is_null($th->getPrevious()) ? [] : ['error' => $th->getPrevious()->getMessage()], 
                 $th->getCode()
             );
             Log::error(__METHOD__ . var_export($response, true));
@@ -68,7 +68,7 @@ class AreaController extends Controller
                 false, 
                 null, 
                 $th->getMessage(),  
-                is_null($th->getPrevious()) ? [] : $th->getPrevious()->getTrace(), 
+                is_null($th->getPrevious()) ? [] : ['error' => $th->getPrevious()->getMessage()], 
                 $th->getCode()
             );
             Log::error(__METHOD__ . var_export($response, true));
@@ -92,7 +92,7 @@ class AreaController extends Controller
                 false, 
                 null, 
                 $th->getMessage(),  
-                is_null($th->getPrevious()) ? [] : $th->getPrevious()->getTrace(), 
+                is_null($th->getPrevious()) ? [] : ['error' => $th->getPrevious()->getMessage()], 
                 $th->getCode()
             );
             Log::error(__METHOD__ . var_export($response, true));
@@ -111,7 +111,7 @@ class AreaController extends Controller
                 false, 
                 null, 
                 $th->getMessage(),  
-                is_null($th->getPrevious()) ? [] : $th->getPrevious()->getTrace(), 
+                is_null($th->getPrevious()) ? [] : ['error' => $th->getPrevious()->getMessage()], 
                 $th->getCode()
             );
             Log::error(__METHOD__ . var_export($response, true));
@@ -130,7 +130,7 @@ class AreaController extends Controller
                 false, 
                 null, 
                 $th->getMessage(),  
-                is_null($th->getPrevious()) ? [] : $th->getPrevious()->getTrace(), 
+                is_null($th->getPrevious()) ? [] : ['error' => $th->getPrevious()->getMessage()], 
                 $th->getCode()
             );
             Log::error(__METHOD__ . var_export($response, true));

@@ -13,7 +13,7 @@ class AreaDTO
     public function __construct(Area $area)
     {
         $this->id = $area->getId();
-        $this->name = $area->getName();
+        $this->name = $area->getName()->getValue();
         $this->created_at = $area->getCreatedAt();
     }
 

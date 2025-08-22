@@ -5,6 +5,7 @@ namespace App\Application\Services\Area;
 use App\Application\Exceptions\NotFoundServiceException;
 use App\Application\Exceptions\ServiceException;
 use App\Domain\Factories\Area\AreaFactory;
+use App\Domain\ValueObjects\Area\AreaName;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\QueryException;
 
@@ -68,7 +69,8 @@ final readonly class AreaService implements AreaServiceInterface
     {
         try {
             $area = $this->areaRepository->findById($id);
-            $area->rename($name);
+            $newName = new AreaName($name);
+            $area->rename($newName);
             $this->areaRepository->update($area);
         } catch (ModelNotFoundException $e) {
             throw new NotFoundServiceException(

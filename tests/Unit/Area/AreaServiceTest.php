@@ -8,6 +8,7 @@ use App\Domain\BusinessModels\Area;
 use App\Application\Services\Area\AreaDTO;
 use App\Application\Services\Area\AreaRepositoryInterface;
 use App\Application\Services\Area\AreaService;
+use App\Domain\ValueObjects\Area\AreaLang;
 use App\Domain\ValueObjects\Area\AreaName;
 use Mockery;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
@@ -43,7 +44,7 @@ class AreaServiceTest extends TestCase
         $data = array_map(function () {
             $area = Mockery::mock(Area::class);
             $area->shouldReceive('getId')->andReturn(1);
-            $area->shouldReceive('getName')->andReturn('Тестовая территория');
+            $area->shouldReceive('getName')->andReturn(new AreaName('Тестовая территория'));
             $area->shouldReceive('getCreatedAt')->andReturn('2000-01-01');
             return $area;
         }, $mockedData);
@@ -66,12 +67,16 @@ class AreaServiceTest extends TestCase
     {
         $name = 'Новая территория';
         $lang = LocaleHelper::getLocale();
+        $expectedArea = new Area(
+            new AreaName($name),
+            new AreaLang($lang),
+        );
         $this->repository->shouldReceive('store')
             ->once()
-            ->with(Mockery::on(function ($area) use ($name, $lang) {
+            ->with(Mockery::on(function ($area) use ($expectedArea) {
                 return $area instanceof Area
-                    && $area->getName() === $name
-                    && $area->getLang() === $lang;
+                    && $area->getName()->getValue() === $expectedArea->getName()->getValue()
+                    && $area->getLang()->getValue() === $expectedArea->getLang()->getValue();
             }));
         $this->service->store($name, $lang);
     }
@@ -81,13 +86,20 @@ class AreaServiceTest extends TestCase
     public function prepairDataForEdit_returns_area_dto_from_repository(
         int $id,
     ): void {
-        $area = Mockery::mock(Area::class)->shouldIgnoreMissing();
+        $name = 'Новая территория';
+        $lang = LocaleHelper::getLocale();
+        $areaMock = \Mockery::mock(Area::class);
+        $areaMock->shouldReceive('getId')->andReturn($id);
+        $areaMock->shouldReceive('getName')->andReturn(new AreaName($name));
+        $areaMock->shouldReceive('getLang')->andReturn(new AreaLang($lang));
+        $areaMock->shouldReceive('getCreatedAt')->andReturn('2025-01-01 12:00:00');
         $this->repository->shouldReceive('findById')
             ->once()
             ->with($id)
-            ->andReturn($area);
+            ->andReturn($areaMock);
         $result = $this->service->prepairDataForEdit($id);
         $this->assertInstanceOf(AreaDTO::class, $result);
+        $this->assertSame($name, $result->name);
     }
 
     #[Test]
@@ -99,7 +111,7 @@ class AreaServiceTest extends TestCase
         $areaMock = Mockery::mock(Area::class);
         $areaMock->shouldReceive('rename')
             ->once()
-            ->with($newName);
+            ->with(Mockery::on(fn ($arg) => $arg instanceof AreaName && $arg->getValue() === $newName));
         $this->repository->shouldReceive('findById')
             ->once()
             ->with($id)

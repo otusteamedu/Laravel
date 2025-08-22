@@ -24,9 +24,4 @@ class AreaName
     {
         return $this->value;
     }
-
-    public function setValue(string $value): void 
-    {
-        $this->value = $value;
-    }
 }

@@ -2,9 +2,9 @@
 
 namespace App\Domain\Exceptions;
 
-use Exception;
+use DomainException as BaseDomainException;
 
-class NotFoundDomainException extends Exception
+class NotFoundDomainException extends BaseDomainException
 {
     protected $message = 'Запись не найдена.';
     protected $code = 404;

@@ -24,22 +24,22 @@ class Area extends BaseModel implements BusinessModelsInterface
         $this->created_at = $created_at;
     }
 
-    public function getName() 
+    public function getName(): AreaName 
     {
-        return $this->name->getValue();
+        return $this->name;
     }
 
-    public function getLang() 
+    public function getLang(): AreaLang 
     {
-        return $this->lang->getValue();
+        return $this->lang;
     }
 
-    public function rename(string $newName) 
+    public function rename(AreaName $newName): void 
     {
-        if ($this->name->getValue() === $newName) {
+        if ($this->name === $newName) {
             throw new NotValidItemDomainException("Новое название совпадает со старым");
         }
-        $this->name->setValue($newName);
+        $this->name = $newName;
     }
 
     public function getCreatedAt(): string 
@@ -47,16 +47,16 @@ class Area extends BaseModel implements BusinessModelsInterface
         return $this->created_at;
     }
 
-    public function toArray(): array 
+    public function toArray(?string $lang = null): array 
     {
         if (is_null($this->getId())) {
             $array = [
-                'name_' . $this->getLang() => $this->getName(),
+                'name_' . $this->getLang()->getValue() => $this->getName()->getValue(),
             ];
         } else {
             $array = [
                 'id' => $this->getId(),
-                'name_' . ($lang ?? $this->getLang()) => $this->getName(),
+                'name_' . ($lang ?? $this->getLang()->getValue()) => $this->getName()->getValue(),
                 'created_at' => $this->getCreatedAt(),
             ];
         }
