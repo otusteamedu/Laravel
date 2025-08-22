@@ -3,7 +3,7 @@
 namespace App\Domain\BusinessModels;
 use Illuminate\Contracts\Support\Arrayable;
 
-abstract class BaseModel implements Arrayable
+abstract class BaseModel
 {
     protected ?int $id;
 

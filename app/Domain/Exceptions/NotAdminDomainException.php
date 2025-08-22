@@ -2,9 +2,9 @@
 
 namespace App\Domain\Exceptions;
 
-use Exception;
+use DomainException as BaseDomainException;
 
-class NotAdminDomainException extends Exception
+class NotAdminDomainException extends BaseDomainException
 {
     protected $message = 'Доступно только администратору.';
     protected $code = 403;

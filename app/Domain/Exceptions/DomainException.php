@@ -2,10 +2,9 @@
 
 namespace App\Domain\Exceptions;
 
-use Exception;
-use Psr\Container\NotFoundExceptionInterface;
+use DomainException as BaseDomainException;
 
-class DomainException extends Exception implements NotFoundExceptionInterface 
+class DomainException extends BaseDomainException
 {
     protected $message = 'Ошибка отловлена в Domain слое.';
     protected $code = 500;

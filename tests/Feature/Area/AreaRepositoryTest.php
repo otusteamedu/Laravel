@@ -12,6 +12,7 @@ use PHPUnit\Framework\Attributes\TestWith;
 use Tests\TestCase;
 use App\Infrastructure\Helpers\LocaleHelper;
 use App\Domain\Factories\Area\AreaFactory;
+use App\Domain\ValueObjects\Area\AreaName;
 
 #[Group('feature_area_repository')]
 
@@ -78,6 +79,7 @@ class AreaRepositoryTest extends TestCase
             $this->expectException(ModelNotFoundException::class);
         }
         $area = $this->repository->findById($id);
+        $newName = new AreaName($newName);
         $area->rename($newName);
         $this->repository->update($area);
         if (!$shouldThrow) {

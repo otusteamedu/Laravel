@@ -24,7 +24,7 @@ class AreaRepository implements AreaRepositoryInterface
 
     public function store(BusinessModelsArea $area): void
     {
-        Area::create($area->toArray());
+        Area::create($this->toArrayForEloquent($area));
     }
 
     public function findById(int $id): BusinessModelsArea
@@ -38,7 +38,7 @@ class AreaRepository implements AreaRepositoryInterface
         ?string $lang = null
     ): void {
         $areaEloquent = Area::findOrFail($area->getId());
-        $areaEloquent->update($area->toArray($lang));
+        $areaEloquent->update($this->toArrayForEloquent($area, $lang));
     }
 
     public function delete(int $id): void
@@ -79,5 +79,21 @@ class AreaRepository implements AreaRepositoryInterface
             ];
         }
         return $result;
+    }
+
+    private function toArrayForEloquent(BusinessModelsArea $area, ?string $lang = null): array 
+    {
+        // if (is_null($area->getId())) {
+            $array = [
+                'name_' . ($lang ?? $area->getLang()->getValue()) => $area->getName()->getValue(),
+            ];
+        // } else {
+        //     $array = [
+        //         'id' => $area->getId(),
+        //         'name_' . ($lang ?? $area->getLang()->getValue()) => $area->getName()->getValue(),
+        //         'created_at' => $area->getCreatedAt(),
+        //     ];
+        // }
+        return $array;
     }
 }
