@@ -37,18 +37,18 @@ Route::post('/webhook', function () {
             $telegram->sendMessage(['chat_id' => $chat, 'text' => $message]);
             break;
         case '/teachers':
-            $message = 'Английский - Новикова Н.Н.
-                        Китайский - Сюэ Шень,
-                        Испанский - Антонова А.А.';
+            $message = 'Английский - Новикова Н.Н.,'.PHP_EOL.
+                        'Китайский - Сюэ Шень,'.PHP_EOL.
+                        'Испанский - Антонова А.А.';
             $telegram->sendMessage(['chat_id' => $chat, 'text' => $message]);
             break;
         case '/cost':
-            $message = 'Разовое занятие - 1500 рублей,
-                        Абонемент на 4 занятия - 5500 рублей,
-                        Абонемент на 8 занятий - 10500 рублей';
+            $message = 'Разовое занятие - 1500 рублей,'.PHP_EOL.
+                        'Абонемент на 4 занятия - 5500 рублей,'.PHP_EOL.
+                        'Абонемент на 8 занятий - 10500 рублей';
             $telegram->sendMessage(['chat_id' => $chat, 'text' => $message]);
             break;
-        case '/shedule':
+        case '/schedule':
             $message = 'Расписание занятий';
             $telegram->sendMessage(['chat_id' => $chat, 'text' => $message]);
             break;
