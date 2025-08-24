@@ -90,7 +90,7 @@ Route::post('/webhook', function () {
             $telegram->sendMessage(['chat_id' => $chat, 'text' => $message]);
             break;
         case '/ch':
-            $shedules = DB::table('shedules')->where('language_code', '=', 1)->get();
+            $shedules = DB::table('shedules')->where('language_code', '=', 3)->get();
             if (count($shedules) == 0) {
                 $message = 'Нет ни одной записи';
             } else {
