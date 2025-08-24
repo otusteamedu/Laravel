@@ -151,7 +151,7 @@ Route::post('/webhook', function () {
                         /start - начало работы с ботом
                         /teachers - преподаватели
                         /cost - информация о стоимости занятий
-                        /shedule - информация о стоимости занятий
+                        /schedule - информация о стоимости занятий
                         /help - выводит данный список';
             $telegram->sendMessage(['chat_id' => $chat, 'text' => $message]);
             break;
