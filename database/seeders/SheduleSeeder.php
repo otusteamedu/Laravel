@@ -62,7 +62,7 @@ class SheduleSeeder extends Seeder
                 [
                     'language_code' => 3,
                     'group_code' => random_int(1, 3),
-                    'date' => 'пн,сб 18.00-19.00',
+                    'date' => 'пн,сб 19.30-20.30',
                     'teacher' => 'Сюэ Шень',
                     'author_id' => 1,
                     'created_at' => now(),
