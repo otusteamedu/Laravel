@@ -9,7 +9,7 @@ use Telegram\Bot\Api;
 // });
 
 Route::get('/', function () {
-    return redirect('/shedule');
+    return redirect('/shedules');
 });
 
 Route::get('/dashboard', function () {
