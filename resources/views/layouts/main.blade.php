@@ -6,6 +6,7 @@
 @endsection
 
 @section('head-bottom')
+
     <div class="container">
         <div class="topmenu">
             <div class="topmenu__col1">
@@ -18,6 +19,7 @@
         </div>
     </div>
 @endsection
+
 
 @section ('body')
     <div class="row text-center">

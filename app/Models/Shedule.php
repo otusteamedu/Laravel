@@ -5,8 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 
 /*
-    @property string $language
-    @property string $group
+    @property string $language_code
+    @property string $group_code
     @property string $date
     @property string $teacher
     @property string $created_at
@@ -16,8 +16,8 @@ use Illuminate\Database\Eloquent\Model;
 class Shedule extends Model
 {
     protected $fillable = [
-        'language',
-        'group',
+        'language_code',
+        'group_code',
         'date',
         'teacher',
         'author_id',
