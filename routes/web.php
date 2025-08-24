@@ -1,7 +1,6 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
-use App\Models\User;
 use Illuminate\Support\Facades\Route;
 use Telegram\Bot\Api;
 
@@ -68,26 +67,6 @@ Route::post('/webhook', function () {
     }
 
     return response('OK', 200);
-});
-
-Route::get('/users', function () {
-    dump(User::create([
-        'name' => 'olga',
-        'email' => 'olga@mail.ru',
-        'password' => '123123123',
-        'created_at' => now(),
-        'updated_at' => now(),
-    ]));
-
-    dump(User::create([
-        'name' => 'admin',
-        'email' => 'admin@mail.ru',
-        'password' => '123123123',
-        'created_at' => now(),
-        'updated_at' => now(),
-    ]));
-
-    return '';
 });
 
 require __DIR__.'/auth.php';
