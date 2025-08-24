@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Interfaces\Http\Controllers\Api;
+namespace App\Interfaces\Http\Controllers\Api\v1;
 
 use App\Infrastructure\EloquentModels\User as EloquentModelsUser;
 use App\Interfaces\Http\Controllers\Controller;
