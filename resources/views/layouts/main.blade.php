@@ -9,7 +9,7 @@
     <div class="container">
         <div class="topmenu">
             <div class="topmenu__col1">
-                <a href="/blogs">К списку блогов </a>
+                <a href="/shedules">К списку записей </a>
             </div>
             <div class="topmenu__col2">
                 <a href="/dashboard">User: {{ Auth::user()->name }} </a>
