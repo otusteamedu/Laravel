@@ -1,5 +1,6 @@
 <?php
 
+use App\Config;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 use Telegram\Bot\Api;
@@ -8,7 +9,7 @@ use Telegram\Bot\Api;
 // use Illuminate\Support\Facades\DB;
 
 Route::post('/webhook', function () {
-    $telegram = new Api('8456041854:AAGLkhZL4y_SMMX8BhlXBhRi0daPkkNPhIE');
+    $telegram = new Api(Config::TELEGRAM_API_TOKEN);
     $result = $telegram->getWebhookUpdates();
 
     $text = $result['message']['text']; // Текст сообщения
@@ -39,9 +40,9 @@ Route::post('/webhook', function () {
             break;
         case '/lang':
             $message = 'Выберите способ языковую группу:'.PHP_EOL.
-                        '/en - английский'.PHP_EOL.
-                        '/es - испанский'.PHP_EOL.
-                        '/ch - китайский';
+                        '/en - '.Config::LANG[1].PHP_EOL.
+                        '/es - '.Config::LANG[2].PHP_EOL.
+                        '/ch - '.Config::LANG[3].PHP_EOL;
             $telegram->sendMessage(['chat_id' => $chat, 'text' => $message]);
             break;
         case '/en':
@@ -51,7 +52,7 @@ Route::post('/webhook', function () {
             } else {
                 $message = 'Все группы английского языка:'.PHP_EOL;
                 foreach ($shedules as $shedule) {
-                    $message .= $shedule->group_code.' '.$shedule->date.' '.$shedule->teacher.PHP_EOL;
+                    $message .= Config::AGE[$shedule->group_code].' '.$shedule->date.' '.$shedule->teacher.PHP_EOL;
                 }
             }
             $telegram->sendMessage(['chat_id' => $chat, 'text' => $message]);
@@ -63,7 +64,7 @@ Route::post('/webhook', function () {
             } else {
                 $message = 'Все группы испанского языка'.PHP_EOL;
                 foreach ($shedules as $shedule) {
-                    $message .= $shedule->group_code.' '.$shedule->date.' '.$shedule->teacher.PHP_EOL;
+                    $message .= Config::AGE[$shedule->group_code].' '.$shedule->date.' '.$shedule->teacher.PHP_EOL;
                 }
             }
             $telegram->sendMessage(['chat_id' => $chat, 'text' => $message]);
@@ -75,7 +76,7 @@ Route::post('/webhook', function () {
             } else {
                 $message = 'Все группы китайского языка:'.PHP_EOL;
                 foreach ($shedules as $shedule) {
-                    $message .= $shedule->group_code.' '.$shedule->date.' '.$shedule->teacher.PHP_EOL;
+                    $message .= Config::AGE[$shedule->group_code].' '.$shedule->date.' '.$shedule->teacher.PHP_EOL;
                 }
             }
             $telegram->sendMessage(['chat_id' => $chat, 'text' => $message]);
@@ -83,44 +84,44 @@ Route::post('/webhook', function () {
 
         case '/group':
             $message = 'Выберите возрастную группу:'.PHP_EOL.
-                        '/1 - младшая, 5-9 лет'.PHP_EOL.
-                        '/2 - средняя, 9-12 лет'.PHP_EOL.
-                        '/3 - старшая, 12-17 лет';
+                        '/1 - '.Config::AGE[1].PHP_EOL.
+                        '/2 - '.Config::AGE[2].PHP_EOL.
+                        '/3 - '.Config::AGE[3];
             $telegram->sendMessage(['chat_id' => $chat, 'text' => $message]);
             break;
 
         case '/1':
-            $shedules = DB::table('shedules')->where('language_group', '=', 1)->get();
+            $shedules = DB::table('shedules')->where('group_code', '=', 1)->get();
             if (count($shedules) == 0) {
                 $message = 'Нет ни одной записи';
             } else {
                 $message = 'Все занятия младшей группы:'.PHP_EOL;
                 foreach ($shedules as $shedule) {
-                    $message .= $shedule->language_code.' '.$shedule->date.' '.$shedule->teacher.PHP_EOL;
+                    $message .= Config::LANG[$shedule->language_code].' '.$shedule->date.' '.$shedule->teacher.PHP_EOL;
                 }
             }
             $telegram->sendMessage(['chat_id' => $chat, 'text' => $message]);
             break;
         case '/2':
-            $shedules = DB::table('shedules')->where('language_group', '=', 2)->get();
+            $shedules = DB::table('shedules')->where('group_code', '=', 2)->get();
             if (count($shedules) == 0) {
                 $message = 'Нет ни одной записи';
             } else {
                 $message = 'Все занятия средней группы:'.PHP_EOL;
                 foreach ($shedules as $shedule) {
-                    $message .= $shedule->language_code.' '.$shedule->date.' '.$shedule->teacher.PHP_EOL;
+                    $message .= Config::LANG[$shedule->language_code].' '.$shedule->date.' '.$shedule->teacher.PHP_EOL;
                 }
             }
             $telegram->sendMessage(['chat_id' => $chat, 'text' => $message]);
             break;
         case '/3':
-            $shedules = DB::table('shedules')->where('language_group', '=', 3)->get();
+            $shedules = DB::table('shedules')->where('group_code', '=', 3)->get();
             if (count($shedules) == 0) {
                 $message = 'Нет ни одной записи';
             } else {
-                $message = 'Все занятия средней группы:'.PHP_EOL;
+                $message = 'Все занятия старшей группы:'.PHP_EOL;
                 foreach ($shedules as $shedule) {
-                    $message .= $shedule->language_code.' '.$shedule->date.' '.$shedule->teacher.PHP_EOL;
+                    $message .= Config::LANG[$shedule->language_code].' '.$shedule->date.' '.$shedule->teacher.PHP_EOL;
                 }
             }
             $telegram->sendMessage(['chat_id' => $chat, 'text' => $message]);
