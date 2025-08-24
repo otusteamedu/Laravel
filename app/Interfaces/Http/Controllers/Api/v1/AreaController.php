@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Interfaces\Http\Controllers\Api;
+namespace App\Interfaces\Http\Controllers\Api\v1;
 
 use App\Infrastructure\Helpers\LocaleHelper;
 use App\Interfaces\Http\Requests\Area\StoreAreaRequest;
@@ -26,32 +26,6 @@ class AreaController extends Controller
         try {
             $areas = $this->areaService->prepairDataForIndex();
             $response = new WebResponse(true, $areas, 'Успешно');
-        } catch (Throwable $th) {
-            $response = new WebResponse(
-                false,
-                null,
-                $th->getMessage(),
-                is_null($th->getPrevious()) ? [] : ['error' => $th->getPrevious()->getMessage()],
-                $th->getCode()
-            );
-            Log::error(__METHOD__ . var_export($response, true));
-        } finally {
-            return response()->json(
-                $response->toArray(), 
-                $response->statusCode, 
-                [
-                    'Content-Type' => 'application/json; charset=utf-8',
-                    'JSON_UNESCAPED_UNICODE' => true
-                ], 
-                JSON_UNESCAPED_UNICODE
-            );
-        }
-    }
-
-    public function create(): JsonResponse
-    {
-        try {
-            $response = new WebResponse(true, [], 'Успешно');
         } catch (Throwable $th) {
             $response = new WebResponse(
                 false,
@@ -102,33 +76,6 @@ class AreaController extends Controller
     }
 
     public function show(string $id)
-    {
-        try {
-            $area = $this->areaService->prepairDataForEdit($id);
-            $response = new WebResponse(true, $area, 'Успешно');
-        } catch (Throwable $th) {
-            $response = new WebResponse(
-                false,
-                null,
-                $th->getMessage(),
-                is_null($th->getPrevious()) ? [] : ['error' => $th->getPrevious()->getMessage()],
-                $th->getCode()
-            );
-            Log::error(__METHOD__ . var_export($response, true));
-        } finally {
-            return response()->json(
-                $response->toArray(), 
-                $response->statusCode, 
-                [
-                    'Content-Type' => 'application/json; charset=utf-8',
-                    'JSON_UNESCAPED_UNICODE' => true
-                ], 
-                JSON_UNESCAPED_UNICODE
-            );
-        }
-    }
-
-    public function edit(int $id): JsonResponse
     {
         try {
             $area = $this->areaService->prepairDataForEdit($id);
