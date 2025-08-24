@@ -22,8 +22,8 @@ class UpdateSheduleRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'language' => ['required', 'min:5'],
-            'group' => ['required', 'min:5'],
+            'language_code' => ['required', 'numeric', 'min:1', 'max:3'],
+            'group_code' => ['required', 'numeric', 'min:1', 'max:3'],
             'date' => ['required', 'min:5'],
             'teacher' => ['required', 'min:5'],
         ];

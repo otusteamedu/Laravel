@@ -50,8 +50,8 @@
             @include('shedules.components.shedule', [
                 'sheduleId' => $shedule->id,
                 'date' => $shedule->created_at->format('d-m-Y H-i-s'),
-                'language' => $shedule->language,
-                'group' => $shedule->group,
+                'language_code' => $shedule->language_code,
+                'group_code' => $shedule->group_code,
                 'date' => $shedule->date,
                 'teacher' => $shedule->teacher,
                 'author_id' => User::where('id', $shedule->author_id)->first()->name,

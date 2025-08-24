@@ -5,10 +5,10 @@
             <a class="" href="{{ route('shedules.show', ['shedule' => $sheduleId]) }}">{{ $sheduleId }}</a>
         </div>
         <div class="newscont__title">
-            <a class="" href="{{ route('shedules.show', ['shedule' => $sheduleId]) }}">{{ $language }}</a>
+            <a class="" href="{{ route('shedules.show', ['shedule' => $sheduleId]) }}">{{ $language_code }}</a>
         </div>
                 <div class="newscont__title">
-            <a class="" href="{{ route('shedules.show', ['shedule' => $sheduleId]) }}">{{ $group }}</a>
+            <a class="" href="{{ route('shedules.show', ['shedule' => $sheduleId]) }}">{{ $group_code }}</a>
         </div>
                 <div class="newscont__title">
             <a class="" href="{{ route('shedules.show', ['shedule' => $sheduleId]) }}">{{ $date }}</a>

@@ -1,8 +1,8 @@
 @php
     /**
      * @var int|null $sheduleId - The ID of the shedule (for edit form)
-     * @var string|null $language - The language of the lesson
-     * @var string|null $group - The group of the shedule
+     * @var string|null $language_code - The language_code of the lesson
+     * @var string|null $group_code - The group_code of the shedule
      * @var string|null $date - The date
      * @var string|null $teacher - The teacher
      */
@@ -33,17 +33,17 @@
             @endif
 
             <div class="mb-4 editfield">
-                <label for="language">Язык</label>
-                <input type="text" name="language" id="language" value="{{ old('language', $language ?? '') }}"
-                       class="{{$errors->has('language') ? 'invalid' : ''}}"
+                <label for="language_code">Язык</label>
+                <input type="text" name="language_code" id="language_code" value="{{ old('language_code', $language_code ?? '') }}"
+                       class="{{$errors->has('language_code') ? 'invalid' : ''}}"
                        style="width: 1040px"
                        required>
             </div>
 
             <div class="mb-4 editfield">
-                <label for="group">Группа</label>
-                <input type="text" name="group" id="group" value="{{ old('group', $group ?? '') }}"
-                       class="{{$errors->has('group') ? 'invalid' : ''}}"
+                <label for="group_code">Группа</label>
+                <input type="text" name="group_code" id="group_code" value="{{ old('group_code', $group_code ?? '') }}"
+                       class="{{$errors->has('group_code') ? 'invalid' : ''}}"
                        style="width: 1040px"
                        required>
             </div>

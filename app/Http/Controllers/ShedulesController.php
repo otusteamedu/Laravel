@@ -39,8 +39,8 @@ class ShedulesController extends Controller
         \Illuminate\Contracts\Auth\Factory $auth
     ): RedirectResponse {
         $validator = $validationFactory->make(request()->all(), [
-            'language' => ['required', 'min:5'],
-            'group' => ['required', 'min:5'],
+            'language_code' => ['required', 'numeric', 'min:1', 'max:3'],
+            'group_code' => ['required', 'numeric', 'min:1', 'max:3'],
             'date' => ['required', 'min:5'],
             'teacher' => ['required', 'min:5'],
         ]);
@@ -55,8 +55,8 @@ class ShedulesController extends Controller
         }
 
         $shedule = new Shedule;
-        $shedule->language = $request->input('language');
-        $shedule->group = $request->input('group');
+        $shedule->language_code = $request->input('language_code');
+        $shedule->group_code = $request->input('group_code');
         $shedule->date = $request->input('date');
         $shedule->teacher = $request->input('teacher');
         $shedule->author_id = $request->input('author_id');
@@ -89,8 +89,8 @@ class ShedulesController extends Controller
 
         return view('shedules.edit', [
             'sheduleId' => $shedule->id,
-            'language' => $shedule->language,
-            'group' => $shedule->group,
+            'language_code' => $shedule->language_code,
+            'group_code' => $shedule->group_code,
             'date' => $shedule->date,
             'teacher' => $shedule->teacher,
 
@@ -104,8 +104,8 @@ class ShedulesController extends Controller
     {
         $requestData = $request->validated();
 
-        $shedule->language = $requestData['language'];
-        $shedule->group = $requestData['group'];
+        $shedule->language_code = $requestData['language_code'];
+        $shedule->group_code = $requestData['group_code'];
         $shedule->date = $requestData['date'];
         $shedule->teacher = $requestData['teacher'];
         $shedule->save();

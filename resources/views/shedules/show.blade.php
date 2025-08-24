@@ -1,6 +1,6 @@
 @extends ('layouts.main')
 
-@props(['$sheduleId', 'language', 'group', 'date', 'teacher', ])
+@props(['$sheduleId', 'language_code', 'group_code', 'date', 'teacher', ])
 
 @php
 /**
@@ -12,13 +12,13 @@
 @section('content')
     <div class="showblog">
         <h2>
-            {{ $shedule->language }}
+            {{ $shedule->language_code }}
         </h2>
         <div class="showblog__date">
             <div>Created: {{ $shedule->created_at->format('d-m-Y H-i-s') }}</div>
             <div>Updated: {{ $shedule->updated_at->format('d-m-Y H-i-s') }}</div>
         </div>
-        <p>Группа: {!! $shedule->group !!}</p>
+        <p>Группа: {!! $shedule->group_code !!}</p>
         <p>Дни проведения: {!! $shedule->date !!}</p>
         <p>Преподаватель: {!! $shedule->teacher !!}</p>
 

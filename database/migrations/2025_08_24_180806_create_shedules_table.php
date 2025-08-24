@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('shedules', function (Blueprint $table) {
             $table->id();
-            $table->string('language');
-            $table->string('group');
+            $table->unsignedInteger('language_code');
+            $table->unsignedInteger('group_code');
             $table->string('date');
             $table->string('teacher');
             $table->integer('author_id');
