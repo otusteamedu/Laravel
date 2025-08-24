@@ -48,7 +48,7 @@ Route::post('/webhook', function () {
         case '/en':
             $shedules = DB::table('shedules')->where('language_code', '=', 1)->get();
             if (count($shedules) == 0) {
-                $message = 'Нет ни одной записи';
+                $message = Config::NO_GROUP;
             } else {
                 $message = 'Все группы английского языка:'.PHP_EOL;
                 foreach ($shedules as $shedule) {
@@ -60,7 +60,7 @@ Route::post('/webhook', function () {
         case '/es':
             $shedules = DB::table('shedules')->where('language_code', '=', 2)->get();
             if (count($shedules) == 0) {
-                $message = 'Нет ни одной записи';
+                $message = Config::NO_GROUP;
             } else {
                 $message = 'Все группы испанского языка'.PHP_EOL;
                 foreach ($shedules as $shedule) {
@@ -72,7 +72,7 @@ Route::post('/webhook', function () {
         case '/ch':
             $shedules = DB::table('shedules')->where('language_code', '=', 3)->get();
             if (count($shedules) == 0) {
-                $message = 'Нет ни одной записи';
+                $message = Config::NO_GROUP;
             } else {
                 $message = 'Все группы китайского языка:'.PHP_EOL;
                 foreach ($shedules as $shedule) {
@@ -93,7 +93,7 @@ Route::post('/webhook', function () {
         case '/1':
             $shedules = DB::table('shedules')->where('group_code', '=', 1)->get();
             if (count($shedules) == 0) {
-                $message = 'Нет ни одной записи';
+                $message = Config::NO_GROUP;
             } else {
                 $message = 'Все занятия младшей группы:'.PHP_EOL;
                 foreach ($shedules as $shedule) {
@@ -105,7 +105,7 @@ Route::post('/webhook', function () {
         case '/2':
             $shedules = DB::table('shedules')->where('group_code', '=', 2)->get();
             if (count($shedules) == 0) {
-                $message = 'Нет ни одной записи';
+                $message = Config::NO_GROUP;
             } else {
                 $message = 'Все занятия средней группы:'.PHP_EOL;
                 foreach ($shedules as $shedule) {
@@ -117,7 +117,7 @@ Route::post('/webhook', function () {
         case '/3':
             $shedules = DB::table('shedules')->where('group_code', '=', 3)->get();
             if (count($shedules) == 0) {
-                $message = 'Нет ни одной записи';
+                $message = Config::NO_GROUP;
             } else {
                 $message = 'Все занятия старшей группы:'.PHP_EOL;
                 foreach ($shedules as $shedule) {

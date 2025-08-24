@@ -17,4 +17,6 @@ class Config
     ];
 
     const TELEGRAM_API_TOKEN = '8456041854:AAGLkhZL4y_SMMX8BhlXBhRi0daPkkNPhIE';
+
+    const NO_GROUP = 'На данный момент таких групп нет';
 }
