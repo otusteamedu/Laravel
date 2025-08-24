@@ -23,7 +23,6 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::resource('blogs', \App\Http\Controllers\BlogsController::class)->middleware('auth');
 Route::resource('shedules', \App\Http\Controllers\ShedulesController::class)->middleware('auth');
 
 Route::post('/webhook', function () {
