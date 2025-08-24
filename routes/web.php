@@ -34,21 +34,36 @@ Route::post('/webhook', function () {
 
     switch ($text) {
         case '/start':
-            $message = date('Y-m-d h:i').' Вас приветствует бот olukianova! Для вывода списка доступных команд введите /help';
+            $message = 'Вас приветствует чат-бот школы иностранных языков Olukianova-LangSpace! Для вывода списка доступных команд введите /help';
             $telegram->sendMessage(['chat_id' => $chat, 'text' => $message]);
             break;
-        case '/send':
-            $message = 'Вы ввели команду /send';
+        case '/teachers':
+            $message = 'Английский - Новикова Н.Н.
+                        Китайский - Сюэ Шень,
+                        Испанский - Антонова А.А.';
+            $telegram->sendMessage(['chat_id' => $chat, 'text' => $message]);
+            break;
+        case '/cost':
+            $message = 'Разовое занятие - 1500 рублей,
+                        Абонемент на 4 занятия - 5500 рублей,
+                        Абонемент на 8 занятий - 10500 рублей';
+            $telegram->sendMessage(['chat_id' => $chat, 'text' => $message]);
+            break;
+        case '/shedule':
+            $message = 'Расписание занятий';
             $telegram->sendMessage(['chat_id' => $chat, 'text' => $message]);
             break;
         case '/help':
-            $message = date('Y-m-d h:i').' Список доступных команд:
-    /start - начало работы с ботом
-    /help - выводит данный список';
+            $message = 'Список доступных команд:
+                        /start - начало работы с ботом
+                        /teachers - преподаватели
+                        /cost - информация о стоимости занятий
+                        /shedule - информация о стоимости занятий
+                        /help - выводит данный список';
             $telegram->sendMessage(['chat_id' => $chat, 'text' => $message]);
             break;
         default:
-            $telegram->sendMessage(['chat_id' => $chat, 'text' => date('Y-m-d h:i').'  '.$text]);
+            $telegram->sendMessage(['chat_id' => $chat, 'text' => 'Команда не распознана']);
             break;
     }
 
