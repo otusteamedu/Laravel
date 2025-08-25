@@ -2,7 +2,12 @@
 
 namespace App\Infrastructure\EloquentModels;
 
+use App\Domain\BusinessModels\Measure as BusinessModelsMeasure;
+use App\Domain\BusinessModels\BaseModel as BusinessBaseModel;
+use App\Domain\ValueObjects\Measure\MeasureName;
+use App\Infrastructure\Helpers\LocaleHelper;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Log;
 
 class Measure extends BaseModel
 {
@@ -21,10 +26,11 @@ class Measure extends BaseModel
         return $this->hasMany(MeasureProductRecipe::class, 'measure_id', 'id');
     }
 
-    public function getName() 
+    public function getName(): MeasureName 
     {
-        $name = 'name_' . config('app.locale');
-        return $this->$name;
+        $nameField = 'name_' . LocaleHelper::getLocale();
+        $measureName = new MeasureName($this->$nameField);
+        return $measureName;
     }
 
     public function getCreatedAt() 
@@ -37,6 +43,24 @@ class Measure extends BaseModel
     {
         $data = Carbon::createFromDate($this->updated_at)->format('d.m.Y');
         return $data;
+    }
+
+    public function toBusinessModel(): ?BusinessBaseModel
+    {
+        if (!$this->getName()->getValue()) {
+            Log::warning(
+                'Отсутствует название у меры с id = ' . $this->getId() . 
+                ' по локали: ' . LocaleHelper::getLocale()
+            );
+            return null;
+        } else {
+            return new BusinessModelsMeasure(
+                id:$this->getId(), 
+                name:$this->getName(), 
+                lang:$this->getLang(), 
+                created_at:$this->getCreatedAt()
+            );
+        }
     }
     
     protected static function newFactory()

@@ -11,8 +11,8 @@ class AreaFactory
     public static function make(string $name, string $lang): Area
     {
         $areaName = new AreaName($name);
-        $areaLang = new Lang($lang);
+        $lang = new Lang($lang);
 
-        return new Area($areaName, $areaLang);
+        return new Area($areaName, $lang);
     }
 }
