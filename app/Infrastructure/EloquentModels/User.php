@@ -5,6 +5,7 @@ namespace App\Infrastructure\EloquentModels;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Carbon;
 use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
@@ -44,6 +45,36 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function getName(): string
+    {
+        return $this->name;
+    }
+
+    public function getEmail(): string
+    {
+        return $this->email;
+    }
+
+    public function getPassword(): string
+    {
+        return $this->password;
+    }
+
+    public function getRole(): string
+    {
+        return $this->role;
+    }
+
+    public function getCreatedAt(): string
+    {
+        return Carbon::parse($this->created_at)->format('d.m.Y');
+    }
+
+    public function getUpdatedAt(): string
+    {
+        return Carbon::parse($this->updated_at)->format('d.m.Y');
     }
 
     protected static function newFactory()
