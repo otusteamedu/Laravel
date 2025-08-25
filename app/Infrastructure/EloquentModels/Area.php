@@ -5,7 +5,6 @@ namespace App\Infrastructure\EloquentModels;
 use App\Domain\BusinessModels\Area as BusinessModelArea;
 use App\Domain\BusinessModels\BaseModel as BusinessBaseModel;
 use App\Infrastructure\Helpers\LocaleHelper;
-use App\Domain\ValueObjects\Lang;
 use App\Domain\ValueObjects\Area\AreaName;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Log;
