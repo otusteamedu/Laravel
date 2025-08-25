@@ -2,10 +2,13 @@
 
 namespace App\Infrastructure\EloquentModels;
 
+use App\Domain\BusinessModels\BaseModel as BusinessBaseModel;
+use App\Domain\BusinessModels\Category as BusinessModelsCategory;
 use App\Domain\ValueObjects\Category\CategoryDescription;
 use App\Domain\ValueObjects\Category\CategoryName;
 use App\Infrastructure\Helpers\LocaleHelper;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Log;
 
 class Category extends BaseModel
 {
@@ -50,6 +53,25 @@ class Category extends BaseModel
     {
         $data = Carbon::createFromDate($this->updated_at)->format('d.m.Y');
         return $data;
+    }
+
+    public function toBusinessModel(): ?BusinessBaseModel
+    {
+        if (!$this->getName()->getValue()) {
+            Log::warning(
+                'Отсутствует название у территории с id = ' . $this->getId() . 
+                ' по локали: ' . LocaleHelper::getLocale()
+            );
+            return null;
+        } else {
+            return new BusinessModelsCategory(
+                id:$this->getId(), 
+                name:$this->getName(), 
+                description:$this->getDescription(), 
+                lang:$this->getLang(), 
+                created_at:$this->getCreatedAt()
+            );
+        }
     }
 
     protected static function newFactory()
