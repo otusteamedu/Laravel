@@ -4,8 +4,6 @@ namespace App\Interfaces\Console\Commands;
 
 use App\Application\Services\Area\AreaServiceInterface;
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\Cache;
-use App\Services\Area\AreaRepositoryInterface;
 
 class WarmupCache extends Command
 {
