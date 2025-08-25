@@ -5,7 +5,7 @@ namespace App\Infrastructure\Jobs;
 use App\Application\Exceptions\NotFoundServiceException;
 use App\Application\Services\Area\AreaRepositoryInterface;
 use App\Domain\BusinessModels\Area;
-use App\Domain\ValueObjects\Area\AreaLang;
+use App\Domain\ValueObjects\Lang;
 use App\Domain\ValueObjects\Area\AreaName;
 use App\Interfaces\Response\WebResponse;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -93,7 +93,7 @@ class ProcessTranclationModelField implements ShouldQueue
                         $presenceLang = $repositoryModel->findPresenceLangById($idModel);
                         $searchedLangValue = $translator->translate($presenceLang['value'], $presenceLang['lang'], $lang);
                         $name = new AreaName($searchedLangValue);
-                        $lang = new AreaLang($lang);
+                        $lang = new Lang($lang);
                         $model = new Area(
                             name:$name,
                             lang:$lang,

@@ -2,6 +2,11 @@
 
 namespace App\Infrastructure\EloquentModels;
 
+use App\Domain\ValueObjects\Category\CategoryDescription;
+use App\Domain\ValueObjects\Category\CategoryName;
+use App\Infrastructure\Helpers\LocaleHelper;
+use Carbon\Carbon;
+
 class Category extends BaseModel
 {
     /**
@@ -16,39 +21,35 @@ class Category extends BaseModel
      * @property \Illuminate\Support\Carbon $updated_at
      */
 
-    public function recipes() 
+    public function recipes()
     {
         return $this->hasMany(Recipe::class, 'category_id', 'id');
     }
 
-    public function getNameEn() 
+    public function getName(): CategoryName
     {
-        return $this->name_en;
+        $nameField = 'name_' . LocaleHelper::getLocale();
+        $categoryName = new CategoryName($this->$nameField);
+        return $categoryName;
     }
 
-    public function getNameRu() 
+    public function getDescription(): CategoryDescription
     {
-        return $this->name_ru;
+        $nameField = 'name_' . LocaleHelper::getLocale();
+        $categoryDescription = new CategoryDescription($this->$nameField);
+        return $categoryDescription;
     }
 
-    public function getDescriptionEn() 
+    public function getCreatedAt(): string
     {
-        return $this->description_en;
+        $data = Carbon::createFromDate($this->created_at)->format('d.m.Y');
+        return $data;
     }
 
-    public function getDescriptionRu() 
+    public function getUpdatedAt(): string
     {
-        return $this->description_ru;
-    }
-
-    public function getCreatedAt() 
-    {
-        return $this->created_at;
-    }
-
-    public function getUpdatedAt() 
-    {
-        return $this->updated_at;
+        $data = Carbon::createFromDate($this->updated_at)->format('d.m.Y');
+        return $data;
     }
 
     protected static function newFactory()
