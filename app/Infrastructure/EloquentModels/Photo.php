@@ -2,6 +2,10 @@
 
 namespace App\Infrastructure\EloquentModels;
 
+use App\Domain\ValueObjects\Photo\PhotoPath;
+use App\Domain\ValueObjects\Photo\PhotoUrl;
+use Carbon\Carbon;
+
 class Photo extends BaseModel
 {
     /**
@@ -29,12 +33,12 @@ class Photo extends BaseModel
 
     public function getURL() 
     {
-        return $this->url;
+        return new PhotoUrl($this->url);
     }
 
     public function getPath() 
     {
-        return $this->path;
+        return new PhotoPath($this->path);
     }
 
     public function getIsPreview() 
@@ -52,14 +56,16 @@ class Photo extends BaseModel
         return $this->photo_id;
     }
 
-    public function getCreatedAt() 
+    public function getCreatedAt(): string 
     {
-        return $this->created_at;
+        $data = Carbon::createFromDate($this->created_at)->format('d.m.Y');
+        return $data;
     }
 
-    public function getUpdatedAt() 
+    public function getUpdatedAt(): string 
     {
-        return $this->updated_at;
+        $data = Carbon::createFromDate($this->updated_at)->format('d.m.Y');
+        return $data;
     }
     
     protected static function newFactory()
