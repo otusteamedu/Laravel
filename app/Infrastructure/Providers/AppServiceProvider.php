@@ -13,6 +13,8 @@ use App\Application\Services\Area\AreaService;
 use App\Application\Services\Area\AreaServiceInterface;
 use App\Application\Services\Measure\MeasureService;
 use App\Application\Services\Measure\MeasureServiceInterface;
+use App\Interfaces\Console\Kernel;
+use Illuminate\Contracts\Console\Kernel as ConsoleKernel;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
@@ -31,8 +33,8 @@ class AppServiceProvider extends ServiceProvider
         );
         $this->app->bind(AreaService::class);
         $this->app->when(CachedAreaService::class)
-          ->needs(AreaServiceInterface::class)
-          ->give(AreaService::class);
+            ->needs(AreaServiceInterface::class)
+            ->give(AreaService::class);
         $this->app->bind(AreaServiceInterface::class, CachedAreaService::class);
         $this->app->bind(
             MeasureServiceInterface::class,
@@ -41,6 +43,11 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(
             MeasureRepositoryInterface::class,
             MeasureRepository::class
+        );
+
+        $this->app->singleton(
+            ConsoleKernel::class,
+            Kernel::class
         );
     }
 
