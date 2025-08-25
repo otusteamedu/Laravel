@@ -2,11 +2,26 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
-use Illuminate\Foundation\Validation\ValidatesRequests;
-use Illuminate\Routing\Controller as BaseController;
-
-abstract class Controller extends BaseController
+/**
+ * @OA\Info(
+ *     title="Tasks API",
+ *     version="1.0.0",
+ *     description="API для управления задачами с OAuth2 аутентификацией"
+ * )
+ * 
+ * @OA\Server(
+ *     url="/api/v1",
+ *     description="Tasks API Server"
+ * )
+ * 
+ * @OA\SecurityScheme(
+ *     securityScheme="bearerAuth",
+ *     type="http",
+ *     scheme="bearer"
+ * )
+ */
+abstract class Controller
 {
-    use AuthorizesRequests, ValidatesRequests;
+    use \Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+    use \Illuminate\Foundation\Validation\ValidatesRequests;
 }

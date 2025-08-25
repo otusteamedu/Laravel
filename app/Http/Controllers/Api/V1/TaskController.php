@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\StoreTaskRequest;
@@ -19,11 +19,16 @@ use App\Services\Queries\FetchTaskById\Fetcher as FetchTaskByIdFetcher;
 use App\Services\Exceptions\Tasks\TaskNotFoundException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use OpenApi\Attributes as OA;
 
 class TaskController extends Controller
 {
     /**
-     * Получить список задач
+     * @OA\Get(
+     *     path="/tasks",
+     *     summary="Get tasks",
+     *     tags={"Tasks"}
+     * )
      */
     public function index(Request $request, FetchAllTasksFetcher $fetcher): JsonResponse
     {
@@ -45,7 +50,11 @@ class TaskController extends Controller
     }
 
     /**
-     * Создать новую задачу
+     * @OA\Post(
+     *     path="/tasks",
+     *     summary="Create task",
+     *     tags={"Tasks"}
+     * )
      */
     public function store(StoreTaskRequest $request, CreateTaskHandler $handler): JsonResponse
     {
