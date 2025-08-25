@@ -44,6 +44,11 @@ class Category extends BaseModel implements BusinessModelsInterface
         $this->name = $newName;
     }
 
+    public function updateDescription(CategoryDescription $newDescription): void
+    {
+        $this->description = $newDescription;
+    }
+
     public function getCreatedAt(): string
     {
         return $this->created_at;
