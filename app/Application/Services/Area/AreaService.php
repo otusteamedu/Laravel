@@ -11,38 +11,38 @@ use Illuminate\Database\QueryException;
 
 final readonly class AreaService implements AreaServiceInterface
 {
-    public AreaRepositoryInterface $areaRepository;
+    public AreaRepositoryInterface $repository;
 
-    public function __construct(AreaRepositoryInterface $areaRepository)
+    public function __construct(AreaRepositoryInterface $repository)
     {
-        $this->areaRepository = $areaRepository;
+        $this->repository = $repository;
     }
 
     public function prepairDataForIndex(): array 
     {
         try {
-            $areas = $this->areaRepository->getAll();
+            $models = $this->repository->getAll();
         } catch (\Throwable $th) {
             throw new ServiceException(previos:$th);
         }
-        if (empty($areas)) {
+        if (empty($models)) {
             throw new NotFoundServiceException('Записи отсутствуют.');
         };
         try {
-            $areas = collect($areas)->map(function($area) {
-                return (new AreaDTO($area));
+            $models = collect($models)->map(function($model) {
+                return (new AreaDTO($model));
             })->toArray();
         } catch (\Throwable $th) {
             throw new ServiceException(previos:$th);
         }
-        return $areas;
+        return $models;
     }
 
     public function store(string $name, string $lang): void 
     {
         try {
-            $area = AreaFactory::make($name, $lang);
-            $this->areaRepository->store($area);
+            $model = AreaFactory::make($name, $lang);
+            $this->repository->store($model);
         } catch (\Throwable $th) {
             throw new ServiceException(
                 message:'Запись не добавлена',
@@ -54,8 +54,8 @@ final readonly class AreaService implements AreaServiceInterface
     public function prepairDataForEdit(int $id): AreaDTO 
     {
         try {
-            $area = $this->areaRepository->findById($id);
-            return new AreaDTO($area);
+            $model = $this->repository->findById($id);
+            return new AreaDTO($model);
         } catch (ModelNotFoundException $e) {
             throw new NotFoundServiceException(
                 message:'Запись не найдена для редактирования'
@@ -68,10 +68,10 @@ final readonly class AreaService implements AreaServiceInterface
     public function update(int $id, string $name): void 
     {
         try {
-            $area = $this->areaRepository->findById($id);
+            $model = $this->repository->findById($id);
             $newName = new AreaName($name);
-            $area->rename($newName);
-            $this->areaRepository->update($area);
+            $model->rename($newName);
+            $this->repository->update($model);
         } catch (ModelNotFoundException $e) {
             throw new NotFoundServiceException(
                 message:'Запись не найдена для редактирования'
@@ -89,7 +89,7 @@ final readonly class AreaService implements AreaServiceInterface
     public function delete(int $id): void 
     {
         try {
-            $area = $this->areaRepository->delete($id);
+            $model = $this->repository->delete($id);
         } catch (ModelNotFoundException $e) {
             throw new NotFoundServiceException(
                 message:'Запись не найдена для удаления'

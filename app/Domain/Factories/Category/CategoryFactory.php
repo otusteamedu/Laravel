@@ -9,12 +9,12 @@ use App\Domain\ValueObjects\Lang;
 
 class CategoryFactory
 {
-    public static function make(string $name, string $description, string $lang): Category
+    public static function make(string $name, string $description, string $lang, string $apiId): Category
     {
         $categoryName = new CategoryName($name);
         $categoryDescription = new CategoryDescription($description);
         $lang = new Lang($lang);
 
-        return new Category($categoryName, $categoryDescription, $lang);
+        return new Category($categoryName, $categoryDescription, $lang, $apiId);
     }
 }

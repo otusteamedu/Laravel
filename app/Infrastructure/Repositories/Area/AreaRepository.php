@@ -13,49 +13,49 @@ class AreaRepository implements AreaRepositoryInterface
      */
     public function getAll(): array
     {
-        $areas = Area::all()
+        $models = Area::all()
             ->sortBy('id')
-            ->map(fn($area) => $area->toBusinessModel())
+            ->map(fn($model) => $model->toBusinessModel())
             ->filter()
             ->values()
             ->all();
-        return $areas;
+        return $models;
     }
 
-    public function store(BusinessModelsArea $area): void
+    public function store(BusinessModelsArea $model): void
     {
-        Area::create($this->toArrayForEloquent($area));
+        Area::create($this->toArrayForEloquent($model));
     }
 
     public function findById(int $id): BusinessModelsArea
     {
-        $area = Area::findOrFail($id);
-        return $area->toBusinessModel();
+        $model = Area::findOrFail($id);
+        return $model->toBusinessModel();
     }
 
     public function update(
-        BusinessModelsArea $area,
+        BusinessModelsArea $model,
         ?string $lang = null
     ): void {
-        $areaEloquent = Area::findOrFail($area->getId());
-        $areaEloquent->update($this->toArrayForEloquent($area, $lang));
+        $modelEloquent = Area::findOrFail($model->getId());
+        $modelEloquent->update($this->toArrayForEloquent($model, $lang));
     }
 
     public function delete(int $id): void
     {
-        $area = Area::findOrFail($id);
-        $area->delete();
+        $model = Area::findOrFail($id);
+        $model->delete();
     }
 
     /**
-     * @return array <int, int $area_id>
+     * @return array <int, int $model_id>
      */
     public function getIdWhereNullField(string $nameField): array
     {
-        $areas = Area::whereNull($nameField)
+        $models = Area::whereNull($nameField)
             ->pluck('id')
             ->toArray();
-        return $areas;
+        return $models;
     }
 
     /**
@@ -63,35 +63,35 @@ class AreaRepository implements AreaRepositoryInterface
      */
     public function findPresenceLangById(int $id): array
     {
-        $area = Area::findOrFail($id);
-        if (!is_null($area->name_en)) {
+        $model = Area::findOrFail($id);
+        if (!is_null($model->name_en)) {
             $result = [
                 'lang' => 'en',
-                'value' => $area->name_en,
-                'created_at' => $area->created_at
+                'value' => $model->name_en,
+                'created_at' => $model->created_at
             ];
         }
-        if (!is_null($area->name_ru)) {
+        if (!is_null($model->name_ru)) {
             $result = [
                 'lang' => 'ru',
-                'value' => $area->name_ru,
-                'created_at' => $area->created_at
+                'value' => $model->name_ru,
+                'created_at' => $model->created_at
             ];
         }
         return $result;
     }
 
-    private function toArrayForEloquent(BusinessModelsArea $area, ?string $lang = null): array 
+    private function toArrayForEloquent(BusinessModelsArea $model, ?string $lang = null): array 
     {
-        // if (is_null($area->getId())) {
+        // if (is_null($model->getId())) {
             $array = [
-                'name_' . ($lang ?? $area->getLang()->getValue()) => $area->getName()->getValue(),
+                'name_' . ($lang ?? $model->getLang()->getValue()) => $model->getName()->getValue(),
             ];
         // } else {
         //     $array = [
-        //         'id' => $area->getId(),
-        //         'name_' . ($lang ?? $area->getLang()->getValue()) => $area->getName()->getValue(),
-        //         'created_at' => $area->getCreatedAt(),
+        //         'id' => $model->getId(),
+        //         'name_' . ($lang ?? $model->getLang()->getValue()) => $model->getName()->getValue(),
+        //         'created_at' => $model->getCreatedAt(),
         //     ];
         // }
         return $array;

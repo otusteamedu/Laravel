@@ -11,8 +11,12 @@ use App\Infrastructure\Repositories\Measure\MeasureRepository;
 use App\Infrastructure\Repositories\Measure\MeasureRepositoryInterface;
 use App\Application\Services\Area\AreaService;
 use App\Application\Services\Area\AreaServiceInterface;
+use App\Application\Services\Category\CategoryRepositoryInterface;
+use App\Application\Services\Category\CategoryService;
+use App\Application\Services\Category\CategoryServiceInterface;
 use App\Application\Services\Measure\MeasureService;
 use App\Application\Services\Measure\MeasureServiceInterface;
+use App\Infrastructure\Repositories\Category\CategoryRepository;
 use App\Interfaces\Console\Kernel;
 use Illuminate\Contracts\Console\Kernel as ConsoleKernel;
 use Illuminate\Database\Eloquent\Relations\Relation;
@@ -36,6 +40,16 @@ class AppServiceProvider extends ServiceProvider
             ->needs(AreaServiceInterface::class)
             ->give(AreaService::class);
         $this->app->bind(AreaServiceInterface::class, CachedAreaService::class);
+
+        $this->app->bind(
+            CategoryServiceInterface::class,
+            CategoryService::class
+        );
+        $this->app->bind(
+            CategoryRepositoryInterface::class,
+            CategoryRepository::class
+        );
+
         $this->app->bind(
             MeasureServiceInterface::class,
             MeasureService::class
