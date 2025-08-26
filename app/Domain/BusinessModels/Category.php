@@ -11,18 +11,21 @@ class Category extends BaseModel implements BusinessModelsInterface
 {
     private CategoryName $name;
     private CategoryDescription $description;
+    private string $apiId;
     private ?string $created_at;
 
     public function __construct(
         CategoryName $name,
         CategoryDescription $description,
         Lang $lang,
+        string $apiId,
         ?int $id = null,
         ?string $created_at = null,
     ) {
         $this->id = $id;
         $this->name = $name;
         $this->lang = $lang;
+        $this->apiId = $apiId;
         $this->created_at = $created_at;
     }
 
@@ -34,6 +37,11 @@ class Category extends BaseModel implements BusinessModelsInterface
     public function getDescription(): CategoryDescription
     {
         return $this->description;
+    }
+
+    public function getApiId(): string
+    {
+        return $this->apiId;
     }
 
     public function rename(CategoryName $newName): void

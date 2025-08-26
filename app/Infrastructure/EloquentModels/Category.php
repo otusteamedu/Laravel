@@ -16,6 +16,7 @@ class Category extends BaseModel
      * Class Category
      *
      * @property int $id
+     * @property string $api_id
      * @property string $name_en
      * @property string $name_ru
      * @property text $description_en
@@ -34,6 +35,11 @@ class Category extends BaseModel
         $nameField = 'name_' . LocaleHelper::getLocale();
         $categoryName = new CategoryName($this->$nameField);
         return $categoryName;
+    }
+
+    public function getApiId(): string
+    {
+        return $this->api_id;
     }
 
     public function getDescription(): CategoryDescription
@@ -59,17 +65,18 @@ class Category extends BaseModel
     {
         if (!$this->getName()->getValue()) {
             Log::warning(
-                'Отсутствует название у категории с id = ' . $this->getId() . 
-                ' по локали: ' . LocaleHelper::getLocale()
+                'Отсутствует название у категории с id = ' . $this->getId() .
+                    ' по локали: ' . LocaleHelper::getLocale()
             );
             return null;
         } else {
             return new BusinessModelsCategory(
-                id:$this->getId(), 
-                name:$this->getName(), 
-                description:$this->getDescription(), 
-                lang:$this->getLang(), 
-                created_at:$this->getCreatedAt()
+                id: $this->getId(),
+                apiId:$this->getApiId(),
+                name: $this->getName(),
+                description: $this->getDescription(),
+                lang: $this->getLang(),
+                created_at: $this->getCreatedAt()
             );
         }
     }
