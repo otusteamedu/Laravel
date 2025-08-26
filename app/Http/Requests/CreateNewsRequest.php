@@ -22,12 +22,11 @@ class CreateNewsRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['required', 'string', 'min:2', 'max:255'],
-            'text' => ['required', 'string', 'min:2'],
+            'title' => ['required', 'string', 'min:2', 'max:255'],
+            'content' => ['required', 'string', 'min:2'],
             'user_id' => ['integer'],
-            'preview' => ['required', 'string', 'min:2', 'max:255'],
-            'link' => ['required', 'string', 'min:2', 'max:255'],
-            'photo' => ['required', 'string', 'min:2', 'max:255'],
+            'category_id' => ['required', 'integer'],
+            'is_draft' => ['boolean'],
             'published_at' => [  'date', 'after_or_equal:today'],
         ];
     }

@@ -2,78 +2,57 @@
 
 namespace App\Policies;
 
+use App\Domain\News\Repositories\NewsRepositoryInterface;
 use App\Models\News;
 use App\Models\User;
-use App\Services\Repositories\NewsRepositoryInterface;
-use Illuminate\Contracts\Auth\Authenticatable;
+use App\Domain\News\Entities\News as DomainNews;
 
 class NewsPolicy
 {
-    public function __construct(
-        private NewsRepositoryInterface $newsRepository,
-    ) {
-    }
 
-    /**
-     * Determine whether the user can view any models.
-     */
-    public function viewAny(User $user): bool
+    public function __construct(private NewsRepositoryInterface $newsRepository)
     {
-        return $user->getAuthIdentifier() === 1;
-    }
-
-    /**
-     * Determine whether the user can view the model.
-     */
-    public function view(User $user, News $news): bool
-    {
-        return false;
-    }
-
-    /**
-     * Determine whether the user can create models.
-     */
-    public function create(User $user): bool
-    {
-//        return $user->getAuthIdentifier() === 2;
-        return false;
     }
 
     /**
      * Determine whether the user can update the model.
      */
-    public function update(Authenticatable $user, int|string|News $newsOrId): bool
+    public function update(User $user, string|News $newsOrId): bool
     {
-        if (!($newsOrId instanceof News)) {
-            $news = $this->newsRepository->find($newsOrId);
-        } else {
-            $news = $newsOrId;
-        }
+        $domainNews = $this->getDomainNews($newsOrId);
 
-        return $news && ($user->id === $news->user_id);
+        return $this->isAdmin($user) || ($domainNews && ($user->id === $domainNews->getAuthor()->getId()));
     }
 
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(User $user, News $news): bool
+    public function delete(User $user, string|News $newsOrId): bool
     {
-        return false;
+        $domainNews = $this->getDomainNews($newsOrId);
+
+        return $this->isAdmin($user) || ($domainNews && ($user->id === $domainNews->getAuthor()->getId()));
     }
 
     /**
-     * Determine whether the user can restore the model.
+     * @param User $user
+     *
+     * @return bool
      */
-    public function restore(User $user, News $news): bool
-    {
-        return false;
+    private function isAdmin(User $user): bool {
+        return $user->hasRole('admin');
     }
 
     /**
-     * Determine whether the user can permanently delete the model.
+     * @param int|string|News $newsOrId
+     *
+     * @return DomainNews|null
      */
-    public function forceDelete(User $user, News $news): bool
-    {
-        return false;
+    private function getDomainNews(int|string|News $newsOrId): ?DomainNews {
+        if (!($newsOrId instanceof News)) {
+            return $this->newsRepository->find($newsOrId);
+        } else {
+            return $newsOrId;
+        }
     }
 }

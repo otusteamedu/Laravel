@@ -22,8 +22,12 @@ class UpdateNewsRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['required', 'min:10', 'max: 255'],
-            'text' => ['required', 'min:10'],
+            'title' => ['required', 'string', 'min:2', 'max:255'],
+            'content' => ['required', 'string', 'min:2'],
+            'user_id' => ['integer'],
+            'category_id' => ['required', 'integer'],
+            'is_draft' => ['boolean'],
+            'published_at' => ['date', 'after_or_equal:today'],
         ];
     }
 }

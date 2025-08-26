@@ -2,10 +2,10 @@
 
 namespace Database\Factories;
 
-use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Str;
-use Illuminate\Support\Facades\DB;
+use App\Models\Category;
 use App\Models\User;
+use Illuminate\Database\Eloquent\Factories\Factory;
+
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\News>
  */
@@ -16,18 +16,21 @@ class NewsFactory extends Factory
      *
      * @return array<string, mixed>
      */
-    public function definition(){
-        $width=320;
-        $height=250;
-        $name = fake()->name;
+    public function definition(): array
+    {
+        $user = User::inRandomOrder()->first();
+        $authorId = $user->id ?? User::factory()->create()->id;
+
+        $category = Category::inRandomOrder()->first();
+        $categoryId = $category->id ?? Category::factory()->create()->id;
+
         return [
-            'name' => $name,
-            'preview'=> fake()->sentence,
-            'text' => fake()->paragraph,
-            'link'=> Str::slug($name),
-            'user_id'=>User::factory(),
-            'photo'=> fake()->imageUrl($width, $height),
-            'create_at' => fake()->dateTimeBetween('-1 year', 'now')
+            'author_id' => $authorId,
+            'category_id' => $categoryId,
+            'title' => fake()->sentence,
+            'content' => fake()->text,
+            'published_at' => fake()->dateTimeBetween('+1 day', '+1 month'),
+            'is_draft' => fake()->boolean(70),
         ];
     }
 }
