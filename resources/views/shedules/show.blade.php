@@ -17,7 +17,7 @@
         <p>Преподаватель: {!! $shedule->teacher !!}</p>
 
         <div>
-            <a href="{{ route('shedules.edit', ['shedule' => $shedule]) }}">Edit</a>
+            <a href="{{ route('shedules.edit', ['shedule' => $shedule]) }}">Редактировать</a>
         </div>
 
     </div>

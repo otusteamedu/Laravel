@@ -118,6 +118,10 @@ class ShedulesController extends Controller
      */
     public function destroy(Shedule $shedule)
     {
-        //
+        $shedule->delete();
+
+        return redirect()
+            ->route('shedules.index')
+            ->with('success', 'Запись успешно удалена');
     }
 }

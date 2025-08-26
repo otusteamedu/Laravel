@@ -20,8 +20,8 @@
             {{ $date }}
         </div>
         <div class="newscont__action">
-            <a class="" href="{{ route('shedules.show', ['shedule' => $sheduleId]) }}">Read more</a>
-            <a class="" href="{{ route('shedules.edit', ['shedule' => $shedule]) }}">Edit</a>
+            <a class="" href="{{ route('shedules.show', ['shedule' => $sheduleId]) }}">Подробнее</a>
+            <a class="" href="{{ route('shedules.edit', ['shedule' => $shedule]) }}">Редактировать</a>
         </div>
         <div class="newscont__author">
             {{ $author_id }}

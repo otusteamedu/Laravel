@@ -81,9 +81,13 @@
 
             <div>
                 <button type="submit" class="">
-                    {{ isset($sheduleId) ? 'Update' : 'Create' }}
+                    {{ isset($sheduleId) ? 'Редактировать' : 'Создать' }}
                 </button>
             </div>
         </form>
+
+        {{-- <form action="{{ route('shedules.destroy', $sheduleId) }}" method="POST">
+            <button class="">Удалить запись</button>
+        </form> --}}
     </div>
 @endsection
