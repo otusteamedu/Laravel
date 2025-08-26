@@ -2,6 +2,14 @@
 
 namespace App\Infrastructure\EloquentModels;
 
+use App\Domain\BusinessModels\Product as BusinessModelsProduct;
+use App\Domain\BusinessModels\BaseModel as BusinessBaseModel;
+use App\Domain\ValueObjects\Product\ProductDescription;
+use App\Domain\ValueObjects\Product\ProductName;
+use App\Infrastructure\Helpers\LocaleHelper;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Log;
+
 class Product extends BaseModel
 {
     /**
@@ -31,34 +39,49 @@ class Product extends BaseModel
         return $this->hasMany(MeasureProductRecipe::class, 'product_id', 'id');
     }
 
-    public function getNameEn() 
+    public function getName(): ProductName 
     {
-        return $this->name_en;
+        $nameField = 'name_' . LocaleHelper::getLocale();
+        $productName = new ProductName($this->$nameField);
+        return $productName;
     }
 
-    public function getNameRu() 
+    public function getDescription(): ProductDescription 
     {
-        return $this->name_ru;
+        $nameField = 'name_' . LocaleHelper::getLocale();
+        $productDescription = new ProductDescription($this->$nameField);
+        return $productDescription;
     }
 
-    public function getDescriptionEn() 
+    public function getCreatedAt(): string 
     {
-        return $this->description_en;
+        $data = Carbon::createFromDate($this->created_at)->format('d.m.Y');
+        return $data;
     }
 
-    public function getDescriptionRu() 
+    public function getUpdatedAt(): string 
     {
-        return $this->description_ru;
+        $data = Carbon::createFromDate($this->updated_at)->format('d.m.Y');
+        return $data;
     }
 
-    public function getCreatedAt() 
+    public function toBusinessModel(): ?BusinessBaseModel
     {
-        return $this->created_at;
-    }
-
-    public function getUpdatedAt() 
-    {
-        return $this->updated_at;
+        if (!$this->getName()->getValue()) {
+            Log::warning(
+                'Отсутствует название у продукта с id = ' . $this->getId() . 
+                ' по локали: ' . LocaleHelper::getLocale()
+            );
+            return null;
+        } else {
+            return new BusinessModelsProduct(
+                id:$this->getId(), 
+                name:$this->getName(), 
+                descripton:$this->getDescription(),
+                lang:$this->getLang(), 
+                created_at:$this->getCreatedAt()
+            );
+        }
     }
     
     protected static function newFactory()

@@ -76,7 +76,7 @@ class MeasureProductRecipe extends BaseModel
     {
         if (!$this->getName()->getValue()) {
             Log::warning(
-                'Отсутствует название у территории с id = ' . $this->getId() .
+                'Отсутствует название у граммовки с id = ' . $this->getId() .
                     ' по локали: ' . LocaleHelper::getLocale()
             );
             return null;
