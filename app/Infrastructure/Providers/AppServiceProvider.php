@@ -16,7 +16,11 @@ use App\Application\Services\Category\CategoryService;
 use App\Application\Services\Category\CategoryServiceInterface;
 use App\Application\Services\Measure\MeasureService;
 use App\Application\Services\Measure\MeasureServiceInterface;
+use App\Application\Services\Recipe\RecipeRepositoryInterface;
+use App\Application\Services\Recipe\RecipeService;
+use App\Application\Services\Recipe\RecipeServiceInterface;
 use App\Infrastructure\Repositories\Category\CategoryRepository;
+use App\Infrastructure\Repositories\Recipe\RecipeRepository;
 use App\Interfaces\Console\Kernel;
 use Illuminate\Contracts\Console\Kernel as ConsoleKernel;
 use Illuminate\Database\Eloquent\Relations\Relation;
@@ -48,6 +52,15 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(
             CategoryRepositoryInterface::class,
             CategoryRepository::class
+        );
+
+        $this->app->bind(
+            RecipeServiceInterface::class,
+            RecipeService::class
+        );
+        $this->app->bind(
+            RecipeRepositoryInterface::class,
+            RecipeRepository::class
         );
 
         $this->app->bind(

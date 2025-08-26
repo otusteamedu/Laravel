@@ -5,6 +5,7 @@ namespace App\Infrastructure\Repositories\Area;
 use App\Domain\BusinessModels\Area as BusinessModelsArea;
 use App\Infrastructure\EloquentModels\Area;
 use App\Application\Services\Area\AreaRepositoryInterface;
+use App\Domain\ValueObjects\Lang;
 
 class AreaRepository implements AreaRepositoryInterface
 {
@@ -30,6 +31,12 @@ class AreaRepository implements AreaRepositoryInterface
     public function findById(int $id): BusinessModelsArea
     {
         $model = Area::findOrFail($id);
+        return $model->toBusinessModel();
+    }
+    
+    public function findByName(string $name, Lang $lang): BusinessModelsArea
+    {
+        $model = Area::where('name_' . $lang->getValue(), $name);
         return $model->toBusinessModel();
     }
 
@@ -81,19 +88,19 @@ class AreaRepository implements AreaRepositoryInterface
         return $result;
     }
 
-    private function toArrayForEloquent(BusinessModelsArea $model, ?string $lang = null): array 
+    private function toArrayForEloquent(BusinessModelsArea $model, ?string $lang = null): array
     {
-        // if (is_null($model->getId())) {
-            $array = [
-                'name_' . ($lang ?? $model->getLang()->getValue()) => $model->getName()->getValue(),
-            ];
-        // } else {
-        //     $array = [
-        //         'id' => $model->getId(),
-        //         'name_' . ($lang ?? $model->getLang()->getValue()) => $model->getName()->getValue(),
-        //         'created_at' => $model->getCreatedAt(),
-        //     ];
-        // }
+        $array = [
+            'name_' . ($lang ?? $model->getLang()->getValue()) => $model->getName()->getValue(),
+        ];
         return $array;
+    }
+
+    /**
+     * @return array <int, mixed $value>
+     */
+    public function getValueByField(string $field): array
+    {
+        return Area::pluck($field, 'id')->toArray();
     }
 }

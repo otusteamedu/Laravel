@@ -1,20 +1,19 @@
 <?php
 
-namespace App\Infrastructure\Repositories\Category;
+namespace App\Infrastructure\Repositories\Recipe;
 
-use App\Domain\BusinessModels\Category as BusinessModelsCategory;
-use App\Infrastructure\EloquentModels\Category;
-use App\Application\Services\Category\CategoryRepositoryInterface;
-use App\Domain\ValueObjects\Lang;
+use App\Domain\BusinessModels\Recipe as BusinessModelsRecipe;
+use App\Infrastructure\EloquentModels\Recipe;
+use App\Application\Services\Recipe\RecipeRepositoryInterface;
 
-class CategoryRepository implements CategoryRepositoryInterface
+class RecipeRepository implements RecipeRepositoryInterface
 {
     /**
-     * @return array <int, BusinessModelsCategory>
+     * @return array <int, BusinessModelsRecipe>
      */
     // public function getAll(): array
     // {
-    //     $models = Category::all()
+    //     $models = Recipe::all()
     //         ->sortBy('id')
     //         ->map(fn($model) => $model->toBusinessModel())
     //         ->filter()
@@ -23,34 +22,28 @@ class CategoryRepository implements CategoryRepositoryInterface
     //     return $models;
     // }
 
-    public function store(BusinessModelsCategory $model): void
+    public function store(BusinessModelsRecipe $model): void
     {
-        Category::create($this->toArrayForEloquent($model));
+        Recipe::create($this->toArrayForEloquent($model));
     }
 
-    public function findById(int $id): BusinessModelsCategory
-    {
-        $model = Category::findOrFail($id);
-        return $model->toBusinessModel();
-    }
-
-    public function findByName(string $name, Lang $lang): BusinessModelsCategory
-    {
-        $model = Category::where('name_' . $lang->getValue(), $name);
-        return $model->toBusinessModel();
-    }
+    // public function findById(int $id): BusinessModelsRecipe
+    // {
+    //     $model = Recipe::findOrFail($id);
+    //     return $model->toBusinessModel();
+    // }
 
     // public function update(
-    //     BusinessModelsCategory $model,
+    //     BusinessModelsRecipe $model,
     //     ?string $lang = null
     // ): void {
-    //     $modelEloquent = Category::findOrFail($model->getId());
+    //     $modelEloquent = Recipe::findOrFail($model->getId());
     //     $modelEloquent->update($this->toArrayForEloquent($model, $lang));
     // }
 
     // public function delete(int $id): void
     // {
-    //     $model = Category::findOrFail($id);
+    //     $model = Recipe::findOrFail($id);
     //     $model->delete();
     // }
 
@@ -59,7 +52,7 @@ class CategoryRepository implements CategoryRepositoryInterface
      */
     // public function getIdWhereNullField(string $nameField): array
     // {
-    //     $models = Category::whereNull($nameField)
+    //     $models = Recipe::whereNull($nameField)
     //         ->pluck('id')
     //         ->toArray();
     //     return $models;
@@ -70,7 +63,7 @@ class CategoryRepository implements CategoryRepositoryInterface
      */
     // public function findPresenceLangById(int $id): array
     // {
-    //     $model = Category::findOrFail($id);
+    //     $model = Recipe::findOrFail($id);
     //     if (!is_null($model->name_en)) {
     //         $result = [
     //             'lang' => 'en',
@@ -91,12 +84,12 @@ class CategoryRepository implements CategoryRepositoryInterface
     /**
      * @return array <int, mixed $value>
      */
-    public function getValueByField(string $field): array
+    public function getValueByField(string $field): array 
     {
-        return Category::pluck($field, 'id')->toArray();
+        return Recipe::pluck($field)->toArray();
     }
 
-    private function toArrayForEloquent(BusinessModelsCategory $model, ?string $lang = null): array
+    private function toArrayForEloquent(BusinessModelsRecipe $model, ?string $lang = null): array
     {
         $array = [
             'name_' . ($lang ?? $model->getLang()->getValue()) => $model->getName()->getValue(),

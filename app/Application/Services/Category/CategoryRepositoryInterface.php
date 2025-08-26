@@ -3,6 +3,7 @@
 namespace App\Application\Services\Category;
 
 use App\Domain\BusinessModels\Category;
+use App\Domain\ValueObjects\Lang;
 
 interface CategoryRepositoryInterface
 {
@@ -13,7 +14,9 @@ interface CategoryRepositoryInterface
 
     public function store(Category $category): void;
 
-    // public function findById(int $id): Category;
+    public function findById(int $id): Category;
+
+    public function findByName(string $name, Lang $lang): Category;
 
     // public function update(Category $category, ?string $lang = null): void;
 

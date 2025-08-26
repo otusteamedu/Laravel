@@ -2,7 +2,9 @@
 
 namespace App\Infrastructure\EloquentModels;
 
+use App\Domain\BusinessModels\Area;
 use App\Domain\BusinessModels\BaseModel as BusinessBaseModel;
+use App\Domain\BusinessModels\Category;
 use App\Domain\BusinessModels\Recipe as BusinessModelsRecipe;
 use App\Domain\ValueObjects\Recipe\RecipeInstruction;
 use App\Domain\ValueObjects\Recipe\RecipeName;
@@ -75,14 +77,16 @@ class Recipe extends BaseModel
         return $recipeName;
     }
 
-    public function getAlternate():string 
+    public function getAlternate(): string 
     {
         return $this->alternate;
     }
 
-    public function getCategoryId(): int 
+    public function getCategory(): Category 
     {
-        return $this->category_id;
+        $categoryEloquent = $this->category;
+        $category = $categoryEloquent->toBusinessModel();
+        return $category;
     }
 
     public function getInstruction(): RecipeInstruction 
@@ -92,9 +96,11 @@ class Recipe extends BaseModel
         return $recipeInstruction;
     }
 
-    public function getAriaId(): int 
+    public function getAria(): Area 
     {
-        return $this->aria_id;
+        $areaEloquent = $this->area;
+        $area = $areaEloquent->toBusinessModel();
+        return $area;
     }
 
     public function getCreatedAt(): string 
@@ -125,8 +131,8 @@ class Recipe extends BaseModel
                 lang:$this->getLang(), 
                 apiId:$this->getApiId(),
                 alternate:$this->getAlternate(),
-                categoryId:$this->getCategoryId(),
-                areaId:$this->getAriaId(),
+                category:$this->getCategory(),
+                area:$this->getAria(),
                 created_at:$this->getCreatedAt()
             );
         }

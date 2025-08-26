@@ -103,4 +103,16 @@ final readonly class AreaService implements AreaServiceInterface
             throw new ServiceException(previos:$th);
         }
     }
+
+    public function existingAreaFromNameEn(): array 
+    {
+        try {
+            return $this->repository->getValueByField('name_en');
+        } catch (\Throwable $th) {
+            throw new ServiceException(
+                message:'Существующие территории по название не найдены',
+                previos:$th
+            );
+        }
+    }
 }

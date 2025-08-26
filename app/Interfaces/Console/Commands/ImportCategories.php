@@ -4,6 +4,7 @@ namespace App\Interfaces\Console\Commands;
 
 use App\Application\Exceptions\ServiceException;
 use App\Application\Services\Category\CategoryService;
+use App\Infrastructure\Jobs\ProcessImportApiIdRecipeFromCategory;
 use App\Interfaces\Response\WebResponse;
 use Illuminate\Console\Command;
 use Illuminate\Http\Client\Factory as HttpClient;
@@ -24,17 +25,16 @@ class ImportCategories extends Command
         HttpClient $http,
         CategoryService $service,
     ): int {
-        $responseApi = json_decode(file_get_contents(
-            base_path('storage/info/categories.json')
-        ), true);
-        // $url = "https://www.themealdb.com/api/json/v1/1/categories.php";
-        // $response = $http->get($url);
-        // if ($response->failed()) {
-        //     $this->error("Ошибка запроса: {$response->status()}");
-        //     return Command::FAILURE;
-        // }
-        // $responseApi = $response->json();
-        dd($responseApi);
+        // $responseApi = json_decode(file_get_contents(
+        //     base_path('storage/info/categories.json')
+        // ), true);
+        $url = "https://www.themealdb.com/api/json/v1/1/categories.php";
+        $response = $http->get($url);
+        if ($response->failed()) {
+            $this->error("Ошибка запроса: {$response->status()}");
+            return Command::FAILURE;
+        }
+        $responseApi = $response->json();
         $existingCategoryFromApi = $service->existingCategoryFromApi();
         if (!empty($responseApi['categories'])) {
             foreach ($responseApi['categories'] as $category) {
@@ -48,6 +48,7 @@ class ImportCategories extends Command
                         $category['idCategory'], 
                         'en'
                     );
+                    ProcessImportApiIdRecipeFromCategory::dispatch($category['strCategory']);
                 } catch (Throwable $th) {
                     $response = new WebResponse(
                         false,
