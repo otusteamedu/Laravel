@@ -1,3 +1,5 @@
+@use('App\Config')
+
 @php
     /**
      * @var int|null $sheduleId - The ID of the shedule (for edit form)
@@ -16,13 +18,14 @@
     <div class="container mx-auto px-4">
         <div style="text-align:left">
             <h3>Коды языковых групп:</h3>
-            <p> 1 - английский</p>
-            <p>2 - испанский</p>
-            <p>3 - китайский</p>
+            @foreach (Config::LANG as $key=>$value)
+                <p> {{ $key }} - {{ $value }}</p>
+            @endforeach
+
             <h3>Коды возрастных групп:</h3>
-            <p>1 - младшая, 5-9 лет</p>
-            <p>2 - средняя, 9-12 лет</p>
-            <p> 3 - старшая, 12-17 лет</p>
+            @foreach (Config::AGE as $key=>$value)
+                <p> {{ $key }} - {{ $value }}</p>
+            @endforeach
             <p></p>
         </div>
 
