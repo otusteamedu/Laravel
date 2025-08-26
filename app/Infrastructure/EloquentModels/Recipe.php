@@ -2,13 +2,21 @@
 
 namespace App\Infrastructure\EloquentModels;
 
+use App\Domain\BusinessModels\BaseModel as BusinessBaseModel;
+use App\Domain\BusinessModels\Recipe as BusinessModelsRecipe;
+use App\Domain\ValueObjects\Recipe\RecipeInstruction;
+use App\Domain\ValueObjects\Recipe\RecipeName;
+use App\Infrastructure\Helpers\LocaleHelper;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Log;
+
 class Recipe extends BaseModel
 {
     /**
      * Class Recipe
      *
      * @property int $id
-     * @property int $api_id
+     * @property string $api_id
      * @property string $name_en
      * @property string $name_ru
      * @property string $alternate
@@ -55,54 +63,73 @@ class Recipe extends BaseModel
         return $this->hasMany(MeasureProductRecipe::class, 'recipe_id', 'id');
     }
 
-    public function getApiId() 
+    public function getApiId(): string 
     {
         return $this->api_id;
     }
 
-    public function getNameEn() 
+    public function getName(): RecipeName 
     {
-        return $this->name_en;
+        $nameField = 'name_' . LocaleHelper::getLocale();
+        $recipeName = new RecipeName($this->$nameField);
+        return $recipeName;
     }
 
-    public function getNameRu() 
-    {
-        return $this->name_ru;
-    }
-
-    public function getAlternate() 
+    public function getAlternate():string 
     {
         return $this->alternate;
     }
 
-    public function getCategoryId() 
+    public function getCategoryId(): int 
     {
         return $this->category_id;
     }
 
-    public function getinstructionen() 
+    public function getInstruction(): RecipeInstruction 
     {
-        return $this->instruction_en;
+        $nameField = 'instruction_' . LocaleHelper::getLocale();
+        $recipeInstruction = new RecipeInstruction($this->$nameField);
+        return $recipeInstruction;
     }
 
-    public function getInstructionRu() 
-    {
-        return $this->instruction_ru;
-    }
-
-    public function getAriaId() 
+    public function getAriaId(): int 
     {
         return $this->aria_id;
     }
 
-    public function getCreatedAt() 
+    public function getCreatedAt(): string 
     {
-        return $this->created_at;
+        $data = Carbon::createFromDate($this->created_at)->format('d.m.Y');
+        return $data;
     }
 
-    public function getUpdatedAt() 
+    public function getUpdatedAt(): string 
     {
-        return $this->updated_at;
+        $data = Carbon::createFromDate($this->updated_at)->format('d.m.Y');
+        return $data;
+    }
+
+        public function toBusinessModel(): ?BusinessBaseModel
+    {
+        if (!$this->getName()->getValue()) {
+            Log::warning(
+                'Отсутствует название у территории с id = ' . $this->getId() . 
+                ' по локали: ' . LocaleHelper::getLocale()
+            );
+            return null;
+        } else {
+            return new BusinessModelsRecipe(
+                id:$this->getId(), 
+                name:$this->getName(), 
+                instruction:$this->getInstruction(), 
+                lang:$this->getLang(), 
+                apiId:$this->getApiId(),
+                alternate:$this->getAlternate(),
+                categoryId:$this->getCategoryId(),
+                areaId:$this->getAriaId(),
+                created_at:$this->getCreatedAt()
+            );
+        }
     }
     
     protected static function newFactory()

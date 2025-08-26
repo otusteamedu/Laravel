@@ -22,6 +22,7 @@ class Product extends BaseModel implements BusinessModelsInterface
     ) {
         $this->id = $id;
         $this->name = $name;
+        $this->descripton = $descripton;
         $this->lang = $lang;
         $this->created_at = $created_at;
     }
