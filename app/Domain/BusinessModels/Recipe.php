@@ -13,10 +13,10 @@ class Recipe extends BaseModel implements BusinessModelsInterface
 {
     private RecipeName $name;
     private RecipeInstruction $instruction;
-    private string $apiId;
-    private string $alternate;
-    private Category $category;
-    private Area $area;
+    private ?string $apiId;
+    private ?string $alternate;
+    private ?Category $category;
+    private ?Area $area;
     private ?string $created_at;
 
     public function __construct(
@@ -51,22 +51,22 @@ class Recipe extends BaseModel implements BusinessModelsInterface
         return $this->instruction;
     }
 
-    public function getApiId(): string
+    public function getApiId(): ?string
     {
         return $this->apiId;
     }
 
-    public function getAlternate(): string
+    public function getAlternate(): ?string
     {
         return $this->alternate;
     }
 
-    public function getCategory(): Category
+    public function getCategory(): ?Category
     {
         return $this->category;
     }
 
-    public function getArea(): Area
+    public function getArea(): ?Area
     {
         return $this->area;
     }
@@ -89,21 +89,17 @@ class Recipe extends BaseModel implements BusinessModelsInterface
         return $this->created_at;
     }
 
-    public function toArray(?string $lang = null): array
+    public function toArray(): array
     {
-        if (is_null($this->getId())) {
-            $array = [
-                'name_' . $this->getLang()->getValue() => $this->getName()->getValue(),
-                'instruction_' . $this->getLang()->getValue() => $this->getInstruction()->getValue(),
-            ];
-        } else {
-            $array = [
-                'id' => $this->getId(),
-                'name_' . ($lang ?? $this->getLang()->getValue()) => $this->getName()->getValue(),
-                'instruction_' . $this->getLang()->getValue() => $this->getInstruction()->getValue(),
-                'created_at' => $this->getCreatedAt(),
-            ];
-        }
+        $array = [
+            'id' => $this->getId(),
+            'name' => $this->getName()->getValue(),
+            'instruction' => $this->getInstruction()->getValue(),
+            'alternate' => $this->getAlternate(),
+            'category' => $this->getCategory()->toArray(),
+            'area' => $this->getArea()->toArray(),
+            'created_at' => $this->getCreatedAt(),
+        ];
         return $array;
     }
 }

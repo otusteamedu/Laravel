@@ -1,20 +1,20 @@
 <?php
 
-namespace App\Application\Services\Category;
+namespace App\Application\Services\Product;
 
 use App\Application\Exceptions\NotFoundServiceException;
 use App\Application\Exceptions\ServiceException;
-use App\Domain\Factories\Category\CategoryFactory;
-use App\Domain\ValueObjects\Category\CategoryName;
+use App\Domain\Factories\Product\ProductFactory;
+use App\Domain\ValueObjects\Product\ProductName;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Arr;
 
-final readonly class CategoryService implements CategoryServiceInterface
+final readonly class ProductService implements ProductServiceInterface
 {
-    private CategoryRepositoryInterface $repository;
+    private ProductRepositoryInterface $repository;
 
-    public function __construct(CategoryRepositoryInterface $repository)
+    public function __construct(ProductRepositoryInterface $repository)
     {
         $this->repository = $repository;
     }
@@ -31,7 +31,7 @@ final readonly class CategoryService implements CategoryServiceInterface
     //     };
     //     try {
     //         $models = collect($models)->map(function($model) {
-    //             return (new CategoryDTO($model));
+    //             return (new ProductDTO($model));
     //         })->toArray();
     //     } catch (\Throwable $th) {
     //         throw new ServiceException(previos:$th);
@@ -39,24 +39,24 @@ final readonly class CategoryService implements CategoryServiceInterface
     //     return $models;
     // }
 
-    public function store(string $name, string $description, string $apiId, string $lang): void 
+    public function store(string $name, string $lang): void 
     {
         try {
-            $model = CategoryFactory::make($name, $description, $lang, $apiId);
+            $model = ProductFactory::make($name, $lang);
             $this->repository->store($model);
         } catch (\Throwable $th) {
             throw new ServiceException(
-                message:'Запись категории не добавлена',
+                message:'Запись продукта не добавлена',
                 previos:$th
             );
         }
     }
 
-    // public function prepairDataForEdit(int $id): CategoryDTO 
+    // public function prepairDataForEdit(int $id): ProductDTO 
     // {
     //     try {
     //         $model = $this->repository->findById($id);
-    //         return new CategoryDTO($model);
+    //         return new ProductDTO($model);
     //     } catch (ModelNotFoundException $e) {
     //         throw new NotFoundServiceException(
     //             message:'Запись не найдена для редактирования'
@@ -70,7 +70,7 @@ final readonly class CategoryService implements CategoryServiceInterface
     // {
     //     try {
     //         $model = $this->repository->findById($id);
-    //         $newName = new CategoryName($name);
+    //         $newName = new ProductName($name);
     //         $model->rename($newName);
     //         $this->repository->update($model);
     //     } catch (ModelNotFoundException $e) {
@@ -105,13 +105,13 @@ final readonly class CategoryService implements CategoryServiceInterface
     //     }
     // }
 
-    public function existingCategoryFromApi(): array 
+    public function existingProductFromApi(): array 
     {
         try {
             return $this->repository->getValueByField('api_id');
         } catch (\Throwable $th) {
             throw new ServiceException(
-                message:'Существующие категории по API не найдены',
+                message:'Существующие продукты по API не найдены',
                 previos:$th
             );
         }

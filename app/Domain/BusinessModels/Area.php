@@ -41,19 +41,12 @@ class Area extends BaseModel implements BusinessModelsInterface
         return $this->created_at;
     }
 
-    public function toArray(?string $lang = null): array 
+    public function toArray(): array 
     {
-        if (is_null($this->getId())) {
-            $array = [
-                'name_' . $this->getLang()->getValue() => $this->getName()->getValue(),
-            ];
-        } else {
-            $array = [
-                'id' => $this->getId(),
-                'name_' . ($lang ?? $this->getLang()->getValue()) => $this->getName()->getValue(),
-                'created_at' => $this->getCreatedAt(),
-            ];
-        }
+        $array = [
+            'name' => $this->getName()->getValue(),
+            'created_at' => $this->getCreatedAt(),
+        ];
         return $array;
     }
 }

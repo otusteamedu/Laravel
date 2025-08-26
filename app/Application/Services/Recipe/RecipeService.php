@@ -26,7 +26,7 @@ final readonly class RecipeService implements RecipeServiceInterface
         CategoryRepositoryInterface $categoryRepository
     ) {
         $this->recipeRepository = $recipeRepository;
-        $this->recipeRepository = $recipeRepository;
+        $this->areaRepository = $areaRepository;
         $this->categoryRepository = $categoryRepository;
     }
 
@@ -79,7 +79,7 @@ final readonly class RecipeService implements RecipeServiceInterface
             $this->recipeRepository->store($model);
         } catch (\Throwable $th) {
             throw new ServiceException(
-                message: 'Запись не добавлена',
+                message: 'Запись рецепта не добавлена',
                 previos: $th
             );
         }

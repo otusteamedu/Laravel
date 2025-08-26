@@ -40,12 +40,19 @@ class ImportCategories extends Command
             foreach ($responseApi['categories'] as $category) {
                 try {
                     if (in_array($category['idCategory'], $existingCategoryFromApi)) {
-                        throw new ServiceException("Категория с api_id = {$category['idCategory']} уже существует", 200);
+                        $response = new WebResponse(
+                            false,
+                            null,
+                            "Категория с api_id = {$category['idCategory']} уже существует",
+                            [],
+                            200
+                        );
+                        Log::info(__METHOD__ . var_export($response, true));
                     }
                     $service->store(
-                        $category['strCategory'], 
-                        $category['strCategoryDescription'], 
-                        $category['idCategory'], 
+                        $category['strCategory'],
+                        $category['strCategoryDescription'],
+                        $category['idCategory'],
                         'en'
                     );
                     ProcessImportApiIdRecipeFromCategory::dispatch($category['strCategory']);

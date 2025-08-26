@@ -1,20 +1,20 @@
 <?php
 
-namespace App\Infrastructure\Repositories\Measure;
+namespace App\Infrastructure\Repositories\Product;
 
-use App\Domain\BusinessModels\Measure as BusinessModelsMeasure;
-use App\Infrastructure\EloquentModels\Measure;
-use App\Application\Services\Measure\MeasureRepositoryInterface;
+use App\Domain\BusinessModels\Product as BusinessModelsProduct;
+use App\Infrastructure\EloquentModels\Product;
+use App\Application\Services\Product\ProductRepositoryInterface;
 use App\Domain\ValueObjects\Lang;
 
-class MeasureRepository implements MeasureRepositoryInterface
+class ProductRepository implements ProductRepositoryInterface
 {
     /**
-     * @return array <int, BusinessModelsMeasure>
+     * @return array <int, BusinessModelsProduct>
      */
     // public function getAll(): array
     // {
-    //     $models = Measure::all()
+    //     $models = Product::all()
     //         ->sortBy('id')
     //         ->map(fn($model) => $model->toBusinessModel())
     //         ->filter()
@@ -23,34 +23,34 @@ class MeasureRepository implements MeasureRepositoryInterface
     //     return $models;
     // }
 
-    public function store(BusinessModelsMeasure $model): void
+    public function store(BusinessModelsProduct $model): void
     {
-        Measure::firstOrCreate($this->toArrayForEloquent($model));
+        Product::firstOrCreate($this->toArrayForEloquent($model));
     }
 
-    public function findById(int $id): BusinessModelsMeasure
+    public function findById(int $id): BusinessModelsProduct
     {
-        $model = Measure::findOrFail($id);
+        $model = Product::findOrFail($id);
         return $model->toBusinessModel();
     }
 
-    public function findByName(string $name, Lang $lang): BusinessModelsMeasure
+    public function findByName(string $name, Lang $lang): BusinessModelsProduct
     {
-        $model = Measure::where('name_' . $lang->getValue(), $name)->first();
+        $model = Product::where('name_' . $lang->getValue(), $name)->first();
         return $model->toBusinessModel();
     }
 
     // public function update(
-    //     BusinessModelsMeasure $model,
+    //     BusinessModelsProduct $model,
     //     ?string $lang = null
     // ): void {
-    //     $modelEloquent = Measure::findOrFail($model->getId());
+    //     $modelEloquent = Product::findOrFail($model->getId());
     //     $modelEloquent->update($this->toArrayForEloquent($model, $lang));
     // }
 
     // public function delete(int $id): void
     // {
-    //     $model = Measure::findOrFail($id);
+    //     $model = Product::findOrFail($id);
     //     $model->delete();
     // }
 
@@ -59,7 +59,7 @@ class MeasureRepository implements MeasureRepositoryInterface
      */
     // public function getIdWhereNullField(string $nameField): array
     // {
-    //     $models = Measure::whereNull($nameField)
+    //     $models = Product::whereNull($nameField)
     //         ->pluck('id')
     //         ->toArray();
     //     return $models;
@@ -70,7 +70,7 @@ class MeasureRepository implements MeasureRepositoryInterface
      */
     // public function findPresenceLangById(int $id): array
     // {
-    //     $model = Measure::findOrFail($id);
+    //     $model = Product::findOrFail($id);
     //     if (!is_null($model->name_en)) {
     //         $result = [
     //             'lang' => 'en',
@@ -93,10 +93,10 @@ class MeasureRepository implements MeasureRepositoryInterface
      */
     public function getValueByField(string $field): array
     {
-        return Measure::pluck($field, 'id')->toArray();
+        return Product::pluck($field, 'id')->toArray();
     }
 
-    private function toArrayForEloquent(BusinessModelsMeasure $model, ?string $lang = null): array
+    private function toArrayForEloquent(BusinessModelsProduct $model, ?string $lang = null): array
     {
         $array = [
             'name_' . ($lang ?? $model->getLang()->getValue()) => $model->getName()->getValue(),

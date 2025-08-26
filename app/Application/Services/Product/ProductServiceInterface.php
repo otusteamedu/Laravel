@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Application\Services\Measure;
+namespace App\Application\Services\Product;
 
-interface MeasureServiceInterface 
+interface ProductServiceInterface 
 {
     /**
-     * @return array <int, MeasureDTO>
+     * @return array <int, ProductDTO>
      * @throws NotFoundServiceException
      * @throws ServiceException
      */
@@ -20,7 +20,7 @@ interface MeasureServiceInterface
      * @throws NotFoundServiceException
      * @throws ServiceException
      */
-    // public function prepairDataForEdit(int $id): MeasureDTO;
+    // public function prepairDataForEdit(int $id): ProductDTO;
     
     /**
      * @throws NotFoundServiceException

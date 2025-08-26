@@ -79,27 +79,11 @@ class Video extends BaseModel implements BusinessModelsInterface
         return $this->created_at;
     }
 
-    public function toArray(?string $lang = null): array
+    public function toArray(): array
     {
-        if (is_null($this->getId())) {
-            $array = [
-                'url' => $this->getUrl()->getValue(),
-                'path' => $this->getPath()->getValue(),
-                'is_preview' => $this->getIsPreview(),
-                'photo_type' => $this->getPhotoType(),
-                'photo_id' => $this->getPhotoId(),
-            ];
-        } else {
-            $array = [
-                'id' => $this->getId(),
-                'url' => $this->getUrl()->getValue(),
-                'path' => $this->getPath()->getValue(),
-                'is_preview' => $this->getIsPreview(),
-                'photo_type' => $this->getPhotoType(),
-                'photo_id' => $this->getPhotoId(),
-                'created_at' => $this->getCreatedAt(),
-            ];
-        }
+        $array = [
+
+        ];
         return $array;
     }
 }

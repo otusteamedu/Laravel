@@ -24,7 +24,7 @@ class RecipeRepository implements RecipeRepositoryInterface
 
     public function store(BusinessModelsRecipe $model): void
     {
-        Recipe::create($this->toArrayForEloquent($model));
+        Recipe::firstOrCreate($this->toArrayForEloquent($model));
     }
 
     // public function findById(int $id): BusinessModelsRecipe
@@ -32,6 +32,12 @@ class RecipeRepository implements RecipeRepositoryInterface
     //     $model = Recipe::findOrFail($id);
     //     return $model->toBusinessModel();
     // }
+
+    public function findByApiId(string $apiId): BusinessModelsRecipe
+    {
+        $model = Recipe::where('api_id', $apiId)->first();
+        return $model->toBusinessModel();
+    }
 
     // public function update(
     //     BusinessModelsRecipe $model,
@@ -84,18 +90,30 @@ class RecipeRepository implements RecipeRepositoryInterface
     /**
      * @return array <int, mixed $value>
      */
-    public function getValueByField(string $field): array 
+    public function getValueByField(string $field): array
     {
         return Recipe::pluck($field)->toArray();
     }
 
-    private function toArrayForEloquent(BusinessModelsRecipe $model, ?string $lang = null): array
-    {
+    private function toArrayForEloquent(
+        BusinessModelsRecipe $model,
+        ?string $lang = null
+    ): array {
         $array = [
             'name_' . ($lang ?? $model->getLang()->getValue()) => $model->getName()->getValue(),
-            'description_' . ($lang ?? $model->getLang()->getValue()) => $model->getName()->getValue(),
+            'instruction_' . ($lang ?? $model->getLang()->getValue()) => $model->getName()->getValue(),
             'api_id' => $model->getApiId(),
         ];
+        if (!is_null($model->getCategory())) {
+            $array = array_merge($array, [
+                'category_id' => $model->getCategory()->getId(),
+            ]);
+        }
+        if (!is_null($model->getArea())) {
+            $array = array_merge($array, [
+                'area_id' => $model->getArea()->getId(),
+            ]);
+        }
         return $array;
     }
 }

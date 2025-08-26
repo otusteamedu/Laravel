@@ -6,14 +6,14 @@ use App\Domain\Exceptions\NotValidItemDomainException;
 
 class MeasureProductRecipeValue 
 {
-    private string $value;
+    private ?string $value = null;
 
-    public function __construct(string|int $value) 
+    public function __construct(?string $value = null) 
     {
         $this->value = $value;
     }
 
-    public function getValue(): string 
+    public function getValue(): ?string 
     {
         return $this->value;
     }

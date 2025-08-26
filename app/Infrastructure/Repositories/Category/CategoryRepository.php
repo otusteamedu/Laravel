@@ -25,7 +25,7 @@ class CategoryRepository implements CategoryRepositoryInterface
 
     public function store(BusinessModelsCategory $model): void
     {
-        Category::create($this->toArrayForEloquent($model));
+        Category::firstOrCreate($this->toArrayForEloquent($model));
     }
 
     public function findById(int $id): BusinessModelsCategory
@@ -36,7 +36,7 @@ class CategoryRepository implements CategoryRepositoryInterface
 
     public function findByName(string $name, Lang $lang): BusinessModelsCategory
     {
-        $model = Category::where('name_' . $lang->getValue(), $name);
+        $model = Category::where('name_' . $lang->getValue(), $name)->first();
         return $model->toBusinessModel();
     }
 

@@ -8,6 +8,8 @@ use App\Domain\BusinessModels\Category;
 use App\Domain\BusinessModels\Recipe as BusinessModelsRecipe;
 use App\Domain\ValueObjects\Recipe\RecipeInstruction;
 use App\Domain\ValueObjects\Recipe\RecipeName;
+use App\Infrastructure\EloquentModels\Area as EloquentModelsArea;
+use App\Infrastructure\EloquentModels\Category as EloquentModelsCategory;
 use App\Infrastructure\Helpers\LocaleHelper;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Log;
@@ -32,12 +34,12 @@ class Recipe extends BaseModel
 
     public function area()
     {
-        return $this->belongsTo(Area::class, 'area_id', 'id');
+        return $this->belongsTo(EloquentModelsArea::class, 'area_id', 'id');
     }
 
     public function category()
     {
-        return $this->belongsTo(Category::class, 'category_id', 'id');
+        return $this->belongsTo(EloquentModelsCategory::class, 'category_id', 'id');
     }
 
     public function photos()
@@ -60,84 +62,84 @@ class Recipe extends BaseModel
         return $this->belongsToMany(Product::class, 'product_recipe');
     }
 
-    public function measureProductRecipes() 
+    public function measureProductRecipes()
     {
         return $this->hasMany(MeasureProductRecipe::class, 'recipe_id', 'id');
     }
 
-    public function getApiId(): string 
+    public function getApiId(): string
     {
         return $this->api_id;
     }
 
-    public function getName(): RecipeName 
+    public function getName(): RecipeName
     {
         $nameField = 'name_' . LocaleHelper::getLocale();
         $recipeName = new RecipeName($this->$nameField);
         return $recipeName;
     }
 
-    public function getAlternate(): string 
+    public function getAlternate(): ?string
     {
         return $this->alternate;
     }
 
-    public function getCategory(): Category 
+    public function getCategory(): ?Category
     {
         $categoryEloquent = $this->category;
         $category = $categoryEloquent->toBusinessModel();
         return $category;
     }
 
-    public function getInstruction(): RecipeInstruction 
+    public function getInstruction(): RecipeInstruction
     {
         $nameField = 'instruction_' . LocaleHelper::getLocale();
         $recipeInstruction = new RecipeInstruction($this->$nameField);
         return $recipeInstruction;
     }
 
-    public function getAria(): Area 
+    public function getArea(): ?Area
     {
         $areaEloquent = $this->area;
         $area = $areaEloquent->toBusinessModel();
         return $area;
     }
 
-    public function getCreatedAt(): string 
+    public function getCreatedAt(): string
     {
         $data = Carbon::createFromDate($this->created_at)->format('d.m.Y');
         return $data;
     }
 
-    public function getUpdatedAt(): string 
+    public function getUpdatedAt(): string
     {
         $data = Carbon::createFromDate($this->updated_at)->format('d.m.Y');
         return $data;
     }
 
-        public function toBusinessModel(): ?BusinessBaseModel
+    public function toBusinessModel(): ?BusinessBaseModel
     {
         if (!$this->getName()->getValue()) {
             Log::warning(
-                'Отсутствует название у территории с id = ' . $this->getId() . 
-                ' по локали: ' . LocaleHelper::getLocale()
+                'Отсутствует название у территории с id = ' . $this->getId() .
+                    ' по локали: ' . LocaleHelper::getLocale()
             );
             return null;
         } else {
             return new BusinessModelsRecipe(
-                id:$this->getId(), 
-                name:$this->getName(), 
-                instruction:$this->getInstruction(), 
-                lang:$this->getLang(), 
-                apiId:$this->getApiId(),
-                alternate:$this->getAlternate(),
-                category:$this->getCategory(),
-                area:$this->getAria(),
-                created_at:$this->getCreatedAt()
+                id: $this->getId(),
+                name: $this->getName(),
+                instruction: $this->getInstruction(),
+                lang: $this->getLang(),
+                apiId: $this->getApiId(),
+                alternate: $this->getAlternate(),
+                category: $this->getCategory(),
+                area: $this->getArea(),
+                created_at: $this->getCreatedAt()
             );
         }
     }
-    
+
     protected static function newFactory()
     {
         return \Database\Factories\RecipeFactory::new();

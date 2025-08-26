@@ -26,6 +26,14 @@ class RecipeFactory
         $recipeInstruction = new RecipeInstruction($instruction);
         $lang = new Lang($lang);
 
-        return new Recipe($recipeName, $recipeInstruction, $lang);
+        return new Recipe(
+            $recipeName, 
+            $recipeInstruction, 
+            $lang,
+            $apiId,
+            $alternate,
+            $category,
+            $area
+        );
     }
 }

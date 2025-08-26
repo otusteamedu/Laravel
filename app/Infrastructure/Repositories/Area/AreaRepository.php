@@ -25,7 +25,7 @@ class AreaRepository implements AreaRepositoryInterface
 
     public function store(BusinessModelsArea $model): void
     {
-        Area::create($this->toArrayForEloquent($model));
+        Area::firstOrCreate($this->toArrayForEloquent($model));
     }
 
     public function findById(int $id): BusinessModelsArea
@@ -36,7 +36,7 @@ class AreaRepository implements AreaRepositoryInterface
     
     public function findByName(string $name, Lang $lang): BusinessModelsArea
     {
-        $model = Area::where('name_' . $lang->getValue(), $name);
+        $model = Area::where('name_' . $lang->getValue(), $name)->first();
         return $model->toBusinessModel();
     }
 

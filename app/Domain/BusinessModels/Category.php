@@ -62,21 +62,13 @@ class Category extends BaseModel implements BusinessModelsInterface
         return $this->created_at;
     }
 
-    public function toArray(?string $lang = null): array
+    public function toArray(): array
     {
-        if (is_null($this->getId())) {
-            $array = [
-                'name_' . $this->getLang()->getValue() => $this->getName()->getValue(),
-                'description_' . $this->getLang()->getValue() => $this->getDescription()->getValue(),
-            ];
-        } else {
-            $array = [
-                'id' => $this->getId(),
-                'name_' . ($lang ?? $this->getLang()->getValue()) => $this->getName()->getValue(),
-                'description_' . ($lang ?? $this->getLang()->getValue()) => $this->getDescription()->getValue(),
-                'created_at' => $this->getCreatedAt(),
-            ];
-        }
+        $array = [
+            'name' => $this->getName()->getValue(),
+            'description' => $this->getDescription()->getValue(),
+            'created_at' => $this->getCreatedAt(),
+        ];
         return $array;
     }
 }

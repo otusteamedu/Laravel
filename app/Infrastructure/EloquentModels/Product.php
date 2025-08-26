@@ -4,7 +4,6 @@ namespace App\Infrastructure\EloquentModels;
 
 use App\Domain\BusinessModels\Product as BusinessModelsProduct;
 use App\Domain\BusinessModels\BaseModel as BusinessBaseModel;
-use App\Domain\ValueObjects\Product\ProductDescription;
 use App\Domain\ValueObjects\Product\ProductName;
 use App\Infrastructure\Helpers\LocaleHelper;
 use Carbon\Carbon;
@@ -18,8 +17,6 @@ class Product extends BaseModel
      * @property int $id
      * @property string $name_en
      * @property string $name_ru
-     * @property text $description_en
-     * @property text $description_ru
      * @property \Illuminate\Support\Carbon $created_at
      * @property \Illuminate\Support\Carbon $updated_at
      */
@@ -46,13 +43,6 @@ class Product extends BaseModel
         return $productName;
     }
 
-    public function getDescription(): ProductDescription 
-    {
-        $nameField = 'name_' . LocaleHelper::getLocale();
-        $productDescription = new ProductDescription($this->$nameField);
-        return $productDescription;
-    }
-
     public function getCreatedAt(): string 
     {
         $data = Carbon::createFromDate($this->created_at)->format('d.m.Y');
@@ -77,7 +67,6 @@ class Product extends BaseModel
             return new BusinessModelsProduct(
                 id:$this->getId(), 
                 name:$this->getName(), 
-                descripton:$this->getDescription(),
                 lang:$this->getLang(), 
                 created_at:$this->getCreatedAt()
             );

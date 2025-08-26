@@ -4,6 +4,9 @@ namespace App\Infrastructure\Jobs;
 
 use App\Application\Exceptions\ServiceException;
 use App\Application\Services\Area\AreaService;
+use App\Application\Services\Measure\MeasureService;
+use App\Application\Services\MeasureProductRecipe\MeasureProductRecipeService;
+use App\Application\Services\Product\ProductService;
 use App\Application\Services\Recipe\RecipeService;
 use App\Interfaces\Response\WebResponse;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -12,7 +15,7 @@ use Illuminate\Http\Client\Factory as HttpClient;
 use Illuminate\Support\Facades\Log;
 use Throwable;
 
-class ProcessImportAreaAndRecipe implements ShouldQueue
+class ProcessImportAreaAndRecipeAndProductAndMeasure implements ShouldQueue
 {
     use Queueable;
 
@@ -41,7 +44,7 @@ class ProcessImportAreaAndRecipe implements ShouldQueue
     {
         $this->apiId = $apiIdRecipe;
         $this->url = 'https://www.themealdb.com/api/json/v1/1/lookup.php?i=' . $apiIdRecipe;
-        $this->onQueue('ProcessImportRecipe');
+        $this->onQueue('importAreaAndRecipeAndProductAndMeasure');
     }
 
     /**
@@ -50,12 +53,16 @@ class ProcessImportAreaAndRecipe implements ShouldQueue
      * @param HttpClient $http
      * @param AreaService $areaService
      * @param RecipeService $recipeService
+     * @param ProductService $productService
      * @return void
      */
     public function handle(
         HttpClient $http,
         AreaService $areaService,
         RecipeService $recipeService,
+        ProductService $productService,
+        MeasureService $measureService,
+        MeasureProductRecipeService $measureProductRecipeService,
     ): void {
         $response = $http->get($this->url);
         if ($response->failed()) {
@@ -75,7 +82,15 @@ class ProcessImportAreaAndRecipe implements ShouldQueue
             foreach ($responseApi['meals'] as $recipe) {
                 try {
                     if (in_array($recipe['idMeal'], $existingRecipeFromApi)) {
-                        throw new ServiceException("Рецепт с api_id = {$recipe['idCategory']} уже существует", 200);
+                        $response = new WebResponse(
+                            false,
+                            null,
+                            "Рецепт с api_id = {$recipe['idMeal']} уже существует",
+                            [],
+                            200
+                        );
+                        Log::info(__METHOD__ . var_export($response, true));
+                        continue;
                     }
                     if (!in_array($recipe['strArea'], $existingAreaFromApi)) {
                         $areaService->store($recipe['strArea'], 'en');
@@ -84,11 +99,35 @@ class ProcessImportAreaAndRecipe implements ShouldQueue
                         $recipe['strMeal'],
                         $recipe['strInstructions'],
                         'en',
-                        $recipe['idMeal'], 
+                        $recipe['idMeal'],
                         $recipe['strMealAlternate'],
-                        $recipe['strCategory'], 
+                        $recipe['strCategory'],
                         $recipe['strArea'],
                     );
+                    for ($i = 1; $i < 21; $i++) {
+                        if (!empty($recipe["strIngredient{$i}"])) {
+                            $productService->store(
+                                $recipe["strIngredient{$i}"],
+                                'en'
+                            );
+                        }
+                        if (!empty($recipe["strMeasure{$i}"])) {
+                            $measureAndValue = $this->parseMeasure($recipe["strMeasure{$i}"]);
+                            $measureService->store(
+                                $measureAndValue['measure'],
+                                'en'
+                            );
+                        };
+                        if (!empty($recipe["strIngredient{$i}"]) && !empty($recipe["strMeasure{$i}"])) {
+                            $measureProductRecipeService->store(
+                                $recipe['idMeal'],
+                                $recipe["strIngredient{$i}"],
+                                $measureAndValue['measure'],
+                                $measureAndValue['value'],
+                                'en'
+                            );
+                        }
+                    }
                 } catch (Throwable $th) {
                     $response = new WebResponse(
                         false,
@@ -100,7 +139,7 @@ class ProcessImportAreaAndRecipe implements ShouldQueue
                     Log::error(__METHOD__ . var_export($response, true));
                 }
             }
-            sleep(60);
+            // sleep(60);
         } else {
             $response = new WebResponse(
                 false,
@@ -111,5 +150,20 @@ class ProcessImportAreaAndRecipe implements ShouldQueue
             );
             Log::error(__METHOD__ . var_export($response, true));
         }
+    }
+
+    private function parseMeasure(string $measure): array
+    {
+        $measure = trim($measure);
+        if (preg_match('/^(\d+(?:[\/\.\-]\d+)?)\s*(.*)$/u', $measure, $matches) && !empty($matches[2])) {
+            return [
+                'value' => $matches[1], 
+                'measure' => trim($matches[2]),
+            ];
+        }
+        return [
+            'value' => '',
+            'measure' => $measure,
+        ];
     }
 }

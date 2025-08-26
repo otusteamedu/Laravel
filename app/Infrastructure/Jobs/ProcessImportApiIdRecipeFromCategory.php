@@ -62,10 +62,9 @@ class ProcessImportApiIdRecipeFromCategory implements ShouldQueue
         }
         $responseApi = $response->json();
         if (!empty($responseApi['meals'])) {
-            foreach ($responseApi as $recipe) {
-                ProcessImportAreaAndRecipe::dispatch($recipe['idMeal']);
+            foreach ($responseApi['meals'] as $recipe) {
+                ProcessImportAreaAndRecipeAndProductAndMeasure::dispatch($recipe['idMeal']);
             }
-            sleep(300);
         } else {
             $response = new WebResponse(
                 false,

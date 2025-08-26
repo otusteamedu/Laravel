@@ -45,7 +45,7 @@ final readonly class AreaService implements AreaServiceInterface
             $this->repository->store($model);
         } catch (\Throwable $th) {
             throw new ServiceException(
-                message:'Запись не добавлена',
+                message:'Запись  территории не добавлена',
                 previos:$th
             );
         }

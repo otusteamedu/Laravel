@@ -21,8 +21,6 @@ class ProductFactory extends Factory
     {
         return [
             'name_ru' => $this->faker->word(),
-            'description_en' => $this->faker->text(),
-            
         ];
     }
 }
