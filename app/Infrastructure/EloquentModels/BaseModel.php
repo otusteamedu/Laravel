@@ -13,7 +13,7 @@ class BaseModel extends Model
 
     protected $guarded = [];
 
-    public function getId()
+    public function getId(): int
     {
         return $this->id;
     }

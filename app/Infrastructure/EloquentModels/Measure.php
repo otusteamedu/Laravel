@@ -33,13 +33,13 @@ class Measure extends BaseModel
         return $measureName;
     }
 
-    public function getCreatedAt() 
+    public function getCreatedAt(): string  
     {
         $data = Carbon::createFromDate($this->created_at)->format('d.m.Y');
         return $data;
     }
 
-    public function getUpdatedAt() 
+    public function getUpdatedAt(): string 
     {
         $data = Carbon::createFromDate($this->updated_at)->format('d.m.Y');
         return $data;

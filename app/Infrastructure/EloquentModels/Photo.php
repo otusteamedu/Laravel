@@ -6,9 +6,7 @@ use App\Domain\BusinessModels\Photo as BusinessModelsPhoto;
 use App\Domain\BusinessModels\BaseModel as BusinessBaseModel;
 use App\Domain\ValueObjects\Photo\PhotoPath;
 use App\Domain\ValueObjects\Photo\PhotoUrl;
-use App\Infrastructure\Helpers\LocaleHelper;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\Log;
 
 class Photo extends BaseModel
 {
@@ -35,27 +33,27 @@ class Photo extends BaseModel
         return $this->morphTo('photo');
     }
 
-    public function getURL()
+    public function getURL(): PhotoUrl
     {
         return new PhotoUrl($this->url);
     }
 
-    public function getPath()
+    public function getPath(): PhotoPath
     {
         return new PhotoPath($this->path);
     }
 
-    public function getIsPreview()
+    public function getIsPreview(): bool
     {
         return $this->is_preview;
     }
 
-    public function getPhotoType()
+    public function getPhotoType(): string
     {
         return $this->photo_type;
     }
 
-    public function getPhotoId()
+    public function getPhotoId(): int
     {
         return $this->photo_id;
     }

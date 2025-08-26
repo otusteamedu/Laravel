@@ -40,22 +40,22 @@ class MeasureProductRecipe extends BaseModel
         return $this->belongsTo(Measure::class, 'measure_id', 'id');
     }
 
-    public function getRecipeId()
+    public function getRecipeId(): int
     {
         return $this->recipe_id;
     }
 
-    public function getProductId()
+    public function getProductId(): int
     {
         return $this->product_id;
     }
 
-    public function getMeasureId()
+    public function getMeasureId(): int
     {
         return $this->measure_id;
     }
 
-    public function getValue()
+    public function getValue(): MeasureProductRecipeValue
     {
         return new MeasureProductRecipeValue($this->value);
     }
