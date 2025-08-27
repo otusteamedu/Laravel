@@ -15,7 +15,7 @@ use Illuminate\Http\Client\Factory as HttpClient;
 use Illuminate\Support\Facades\Log;
 use Throwable;
 
-class ProcessImportAreaAndRecipeAndProductAndMeasure implements ShouldQueue
+class ProcessImport implements ShouldQueue
 {
     use Queueable;
 
