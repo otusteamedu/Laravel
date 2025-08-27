@@ -5,7 +5,7 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title>Olga Lukianova's project</title>
+        <title>Olukianova-LangSpace</title>
 
         @yield('head')
 
