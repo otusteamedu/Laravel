@@ -12,4 +12,16 @@ interface CartRepositoryInterface
     public function save(Cart $cart): Cart;
     public function delete(string $cartId): void;
     public function cleanupExpired(): void;
+
+    /**
+     * Count expired carts before specific date
+     */
+    public function countExpiredBefore(\DateTimeInterface $date): int;
+
+    /**
+     * Find expired carts before specific date
+     *
+     * @return Cart[]
+     */
+    public function findExpiredBefore(\DateTimeInterface $date): array;
 }

@@ -7,6 +7,7 @@ use App\Domain\Cart\Model\CartItem;
 use App\Domain\Cart\Repositories\CartRepositoryInterface;
 use App\Infrastructure\Eloquent\Models\Cart as EloquentCart;
 use App\Infrastructure\Eloquent\Models\CartItem as EloquentCartItem;
+use DateTimeInterface;
 
 class CartRepository implements CartRepositoryInterface
 {
@@ -88,10 +89,6 @@ class CartRepository implements CartRepositoryInterface
         EloquentCart::destroy($cartId);
     }
 
-    public function cleanupExpired(): void
-    {
-        EloquentCart::where('expires_at', '<=', now())->delete();
-    }
 
     private function toEntity(EloquentCart $model): Cart
     {
@@ -117,5 +114,24 @@ class CartRepository implements CartRepositoryInterface
             $model->created_at,
             $model->updated_at
         );
+    }
+
+    public function cleanupExpired(): void
+    {
+        EloquentCart::where('expires_at', '<=', now())->delete();
+    }
+
+    public function countExpiredBefore(DateTimeInterface $date): int
+    {
+        return EloquentCart::where('expires_at', '<=', $date)->count();
+    }
+
+    public function findExpiredBefore(DateTimeInterface $date): array
+    {
+        return EloquentCart::with('items')
+            ->where('expires_at', '<=', $date)
+            ->get()
+            ->map(fn($model) => $this->toEntity($model))
+            ->toArray();
     }
 }

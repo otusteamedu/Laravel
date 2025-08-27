@@ -3,6 +3,7 @@
 namespace App\Application\Services;
 
 use App\Domain\Cart\Model\Cart;
+use App\Domain\Cart\Repositories\CartRepositoryInterface;
 use App\Domain\Cart\Services\CartService as DomainCartService;
 use App\Domain\Product\Repositories\ProductRepositoryInterface;
 
@@ -10,7 +11,8 @@ class CartAppService
 {
     public function __construct(
         private DomainCartService $cartService,
-        private ProductRepositoryInterface $productRepository
+        private ProductRepositoryInterface $productRepository,
+        private CartRepositoryInterface $cartRepository
     ) {}
 
     public function createUserCart(int $userId): Cart
@@ -146,5 +148,22 @@ class CartAppService
 
         // Если у пользователя нет корзины, просто привязываем гостевую
         return $this->cartService->assignCartToUser($guestCart, $userId);
+    }
+
+    public function cleanupExpiredCarts(): void
+    {
+        $this->cartService->cleanupExpiredCarts();
+    }
+
+    public function getExpiredCartsCount(int $days = 30): int
+    {
+        $expirationDate = now()->subDays($days);
+        return $this->cartRepository->countExpiredBefore($expirationDate);
+    }
+
+    public function getExpiredCarts(int $days = 30): array
+    {
+        $expirationDate = now()->subDays($days);
+        return $this->cartRepository->findExpiredBefore($expirationDate);
     }
 }
