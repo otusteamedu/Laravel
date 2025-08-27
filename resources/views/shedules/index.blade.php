@@ -23,25 +23,25 @@
          <div class="newscont__id">
             №
         </div>
-        <div class="newscont__title">
+        <div class="newscont__column">
             Язык
         </div>
-                <div class="newscont__title">
+                <div class="newscont__column">
             Группа
         </div>
-                <div class="newscont__title">
+                <div class="newscont__column">
             Дни проведения
         </div>
-                <div class="newscont__title">
+                <div class="newscont__column">
             Преподаватель
         </div>
-        <div class="newscont__date">
+        <div class="newscont__column">
             Дата создания
         </div>
-        <div class="newscont__action">
+        <div class="newscont__column">
             Действие
         </div>
-        <div class="newscont__author">
+        <div class="newscont__column">
             Кто создал
         </div>
     </div>
