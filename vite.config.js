@@ -21,7 +21,8 @@ export default defineConfig({
                 //'resources/js/jquery_3.7.1_compressed.js',
                 //'resources/js/plugins/jquery-ui-1.14.1.base/jquery-ui.js',
 
-                //стиль для главной страницы (основное приложение)
+    //модуль со старой структурой
+    /*            //стиль для главной страницы (основное приложение)
                 'resources/css/mainAppPageStyle.css',
 
                 //общие стили для ISS
@@ -51,6 +52,39 @@ export default defineConfig({
                 'app/Modules/ISS/public/css/adminInterface/issSharedStyle.css',
                 'app/Modules/ISS/public/css/adminInterface/issPointListStyle.css',
                 'app/Modules/ISS/public/css/adminInterface/issRoutePointCreateOrEditStyle.css',
+    */
+
+                //модуль с новой структурой
+                            //стиль для главной страницы (основное приложение)
+                            'resources/css/mainAppPageStyle.css',
+
+                            //общие стили для ISS
+                            'Modules/ISS/public/css/issSharedStyle.css',
+
+                            //стиль для главной страницы Модуля ISS
+                            'Modules/ISS/public/css/issMainPageStyle.css',
+
+                            //стили и скрипты для страницы точки обучающего маршрута Модуля ISS
+                            'Modules/ISS/public/css/issNodePageStyle.css', //Vite выдает ошибку на слово !important в стилях
+                            //'app/Modules/ISS/public/js/issNodePage.js',
+
+                            //стили и скрипты для страницы Пользователя Модуля ISS
+                            'Modules/ISS/public/css/issUserPageStyle.css',
+                            //'app/Modules/ISS/public/js/Chartjs4-4-9.js',
+                            //'app/Modules/ISS/public/js/issUserPage.js',
+
+                            //стили и скрипты для страницы Форма ввода результатов проверки для преподавателя
+                            'Modules/ISS/public/css/issExamCheckPageStyle.css',
+
+                            //стили для компонентов
+                            'Modules/ISS/public/css/components/iss-messages-Style.css',
+
+                            //стили для интерфейса администратора ИОС
+                            'Modules/ISS/public/css/adminInterface/issUserListStyle.css',
+                            'Modules/ISS/public/css/adminInterface/issUserCreateOrEdit.css',
+                            'Modules/ISS/public/css/adminInterface/issSharedStyle.css',
+                            'Modules/ISS/public/css/adminInterface/issPointListStyle.css',
+                            'Modules/ISS/public/css/adminInterface/issRoutePointCreateOrEditStyle.css',
 
 
 

@@ -45,4 +45,9 @@ Route::get('/ttt', function () { //проверка работы модуля в
 
 Route::get('apiTest', [\App\Http\Controllers\ApiTestController::class, 'apitest']);
 
+//Route::get('testExamDate', function () { //проверка планировщик что он оповещает пользователей о приближ-я экзамене
+//    App\Modules\ISS\src\Events\CheckExamDates\CheckExamDates::dispatch(
+//        new App\Modules\ISS\src\Events\CheckExamDates\CheckExamDatesDTO(currentDate: date('Y-m-d')));
+//});
+
 require __DIR__.'/auth.php';

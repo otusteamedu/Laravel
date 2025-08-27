@@ -19,8 +19,13 @@ return Application::configure(basePath: dirname(__DIR__))
 
                 'packHeaders' => My\PackageWithPackages\Http\Middleware\PackHeaders::class,
 
-                'issAuthAdmin' => \App\Modules\ISS\src\Http\Middleware\IssAuthAdmin::class,
-                'issAuthUser' => \App\Modules\ISS\src\Http\Middleware\IssAuthUser::class
+                //старая структура
+                //'issAuthAdmin' => \App\Modules\ISS\src\Http\Middleware\IssAuthAdmin::class,
+                //'issAuthUser' => \App\Modules\ISS\src\Http\Middleware\IssAuthUser::class
+
+                //новая структура
+                'issAuthAdmin' => ISS\App\Presentation\Http\Middleware\IssAuthAdmin::class,
+                'issAuthUser' => ISS\App\Presentation\Http\Middleware\IssAuthUser::class
             ]
         );
 

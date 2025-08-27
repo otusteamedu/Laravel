@@ -8,6 +8,9 @@
         <testsuite name="ISS">
             <directory>app/Modules/ISS/tests</directory>
         </testsuite>
+        <testsuite name="ISS2">
+            <directory>Modules/ISS/tests</directory>
+        </testsuite>
         <testsuite name="Unit">
             <directory>tests/Unit</directory>
         </testsuite>

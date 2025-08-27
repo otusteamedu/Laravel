@@ -1,0 +1,32 @@
+<?php
+
+namespace ISS\App\Application\Services\EducationMaterial\DownloadFile;
+
+use Illuminate\Support\Facades\Storage;
+use ISS\App\Application\Services\EducationMaterial\DownloadFile\InputDTO;
+use ISS\App\Application\Services\EducationMaterial\DownloadFile\OutputDTO;
+
+class DownloadFile
+{
+    /**
+     * Загрузить клиенту выбранный файл учебных материалов
+     * @param InputDTO
+     * @return ?OutputDTO
+     */
+    public function __invoke(InputDTO $inputData): ?OutputDTO
+    {
+        //каждый тип файлов учебных материалов находится в отдельной папке на диске iss,
+        //имя папки совпадает с именем типа файлов
+        try {
+            return new OutputDTO(fileStream:
+            Storage::disk('iss')
+                ->download(
+                    '/private/' . $inputData->fileType . '/' . $inputData->fileName,
+                    $inputData->fileType . '_instruction' . '.' . $inputData->fileType
+                )
+            );
+        } catch (\Error | \Exception $e) {
+            return null;
+        }
+    }
+}

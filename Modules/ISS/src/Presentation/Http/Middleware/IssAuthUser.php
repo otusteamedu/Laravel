@@ -1,0 +1,70 @@
+<?php
+
+namespace ISS\App\Presentation\Http\Middleware;
+
+use Closure;
+use Illuminate\Auth\Middleware\Authenticate;
+use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Cache;
+use ISS\App\Application\Services\IssUser\IssUser;
+use ISS\App\Application\Services\IssUser\FetchIssUserWebToken\FetchIssUserWebToken;
+use ISS\App\Application\Services\IssUser\FetchIssUserWebToken\InputDTO as fetchTokenDTO;
+
+/**
+ * Посредник ограничивает вход в группу маршрутов пользователя ИОС
+ */
+
+class IssAuthUser
+{
+    private IssUser|null $issUser;
+    private string|null $approvedToken;
+
+    public function __construct(
+        FetchIssUserWebToken $fetchIssUserWebToken,
+    )
+    {
+        if (session()->has('issUser')) {
+            $this->issUser = session('issUser');
+
+            if (isset($this->issUser->issUserId)) {
+                $this->approvedToken =
+                    ($fetchIssUserWebToken(new fetchTokenDTO(issUserId: $this->issUser->issUserId)))->issUserWebToken;
+            }
+        } else {
+            $this->issUser = null;
+        }
+    }
+
+    /**
+     * Handle an incoming request.
+     *
+     * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
+     */
+    public function handle(Request $request, Closure $next): Response
+    {
+        //если пользователь не авторизовался в ИОС то запрещаем доступ
+        if (is_null($this->issUser) ||
+            !isset($this->issUser->issUserId) ||
+            $this->issUser->webToken != $this->approvedToken
+        ) {
+            abort(403, __('iss::issMiddleware.accessUserDenied'));
+        }
+
+        //если пользователь не админ, то запрещаем ему просмотр страниц других пользователей
+        if ((isset($request->issUserId) && $this->issUser->issUserId != $request->issUserId) &&
+            $this->issUser->issUserRole != config('iss.ROLE_ADMIN')
+        ) {
+            abort(403, 'iss::issMiddleware.accessAnotherUserDenied');
+        } else {
+            Cache::tags(['diagram', 'managerDiagram'])->forget('managerDiagram_' . $request->issUserId);
+        }
+
+
+        $response = $next($request);
+
+        return $response;
+    }
+}

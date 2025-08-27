@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+ <head>
+  <meta charset="UTF-8">
+  <title>Dashboard for /var/www/html/app/Modules/ISS/tests</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="../../../_css/bootstrap.min.css?v=11.0.9" rel="stylesheet" type="text/css">
+  <link href="../../../_css/nv.d3.min.css?v=11.0.9" rel="stylesheet" type="text/css">
+  <link href="../../../_css/style.css?v=11.0.9" rel="stylesheet" type="text/css">
+  <link href="../../../_css/custom.css" rel="stylesheet" type="text/css">
+ </head>
+ <body>
+  <header>
+   <div class="container-fluid">
+    <div class="row">
+     <div class="col-md-12">
+      <nav aria-label="breadcrumb">
+       <ol class="breadcrumb">
+         <li class="breadcrumb-item"><a href="../../../index.html">/var/www/html/app</a></li>
+         <li class="breadcrumb-item"><a href="../../index.html">Modules</a></li>
+         <li class="breadcrumb-item"><a href="../index.html">ISS</a></li>
+         <li class="breadcrumb-item"><a href="index.html">tests</a></li>
+         <li class="breadcrumb-item active">(Dashboard)</li>
+
+       </ol>
+      </nav>
+     </div>
+    </div>
+   </div>
+  </header>
+  <div class="container-fluid">
+   <div class="row">
+    <div class="col-md-12">
+     <h2>Classes</h2>
+    </div>
+   </div>
+   <div class="row">
+    <div class="col-md-6">
+     <h3>Coverage Distribution</h3>
+     <div id="classCoverageDistribution" style="height: 300px;">
+       <svg></svg>
+     </div>
+    </div>
+    <div class="col-md-6">
+     <h3>Complexity</h3>
+     <div id="classComplexity" style="height: 300px;">
+       <svg></svg>
+     </div>
+    </div>
+   </div>
+   <div class="row">
+    <div class="col-md-6">
+     <h3>Insufficient Coverage</h3>
+     <div class="scrollbox">
+      <table class="table">
+       <thead>
+        <tr>
+         <th>Class</th>
+         <th class="text-right">Coverage</th>
+        </tr>
+       </thead>
+       <tbody>
+       <tr><td><a href="Feature/issControllers/issStartPageControllerTest.php.html#25">App\Modules\ISS\tests\Feature\issControllers\issStartPageControllerTest</a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Unit/issServices/EducationMaterialTest.php.html#10">App\Modules\ISS\tests\Unit\issServices\EducationMaterialTest</a></td><td class="text-right">0%</td></tr>
+
+       </tbody>
+      </table>
+     </div>
+    </div>
+    <div class="col-md-6">
+     <h3>Project Risks</h3>
+     <div class="scrollbox">
+      <table class="table">
+       <thead>
+        <tr>
+         <th>Class</th>
+         <th class="text-right"><abbr title="Change Risk Anti-Patterns (CRAP) Index">CRAP</abbr></th>
+        </tr>
+       </thead>
+       <tbody>
+
+       </tbody>
+      </table>
+     </div>
+    </div>
+   </div>
+   <div class="row">
+    <div class="col-md-12">
+     <h2>Methods</h2>
+    </div>
+   </div>
+   <div class="row">
+    <div class="col-md-6">
+     <h3>Coverage Distribution</h3>
+     <div id="methodCoverageDistribution" style="height: 300px;">
+       <svg></svg>
+     </div>
+    </div>
+    <div class="col-md-6">
+     <h3>Complexity</h3>
+     <div id="methodComplexity" style="height: 300px;">
+       <svg></svg>
+     </div>
+    </div>
+   </div>
+   <div class="row">
+    <div class="col-md-6">
+     <h3>Insufficient Coverage</h3>
+     <div class="scrollbox">
+      <table class="table">
+       <thead>
+        <tr>
+         <th>Method</th>
+         <th class="text-right">Coverage</th>
+        </tr>
+       </thead>
+       <tbody>
+       <tr><td><a href="Feature/issAPI/v1/EducationRouteControllerTest.php.html#121"><abbr title="App\Modules\ISS\tests\Feature\issAPI\v1\EducationRouteControllerTest::refRoutesToShow">refRoutesToShow</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Feature/issControllers/issStartPageControllerTest.php.html#32"><abbr title="App\Modules\ISS\tests\Feature\issControllers\issStartPageControllerTest::setUp">setUp</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Feature/issControllers/issStartPageControllerTest.php.html#40"><abbr title="App\Modules\ISS\tests\Feature\issControllers\issStartPageControllerTest::tearDown">tearDown</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Feature/issControllers/issStartPageControllerTest.php.html#52"><abbr title="App\Modules\ISS\tests\Feature\issControllers\issStartPageControllerTest::test_authorized_in_main_app_but_iss_unregistered_user_can_enter_index">test_authorized_in_main_app_but_iss_unregistered_user_can_enter_index</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Feature/issControllers/issStartPageControllerTest.php.html#99"><abbr title="App\Modules\ISS\tests\Feature\issControllers\issStartPageControllerTest::test_authorized_in_main_and_iss_registered_user_can_enter_index">test_authorized_in_main_and_iss_registered_user_can_enter_index</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Unit/issServices/EducationExamTest.php.html#219"><abbr title="App\Modules\ISS\tests\Unit\issServices\EducationExamTest::test_is_exam_can_be_passed_service">test_is_exam_can_be_passed_service</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Unit/issServices/EducationMaterialTest.php.html#12"><abbr title="App\Modules\ISS\tests\Unit\issServices\EducationMaterialTest::setUp">setUp</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Unit/issServices/EducationMaterialTest.php.html#17"><abbr title="App\Modules\ISS\tests\Unit\issServices\EducationMaterialTest::tearDown">tearDown</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Unit/issServices/EducationMaterialTest.php.html#25"><abbr title="App\Modules\ISS\tests\Unit\issServices\EducationMaterialTest::test_download_file_service">test_download_file_service</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Unit/issServices/EducationMaterialTest.php.html#34"><abbr title="App\Modules\ISS\tests\Unit\issServices\EducationMaterialTest::test_open_file_service">test_open_file_service</abbr></a></td><td class="text-right">0%</td></tr>
+
+       </tbody>
+      </table>
+     </div>
+    </div>
+    <div class="col-md-6">
+     <h3>Project Risks</h3>
+     <div class="scrollbox">
+      <table class="table">
+       <thead>
+        <tr>
+         <th>Method</th>
+         <th class="text-right"><abbr title="Change Risk Anti-Patterns (CRAP) Index">CRAP</abbr></th>
+        </tr>
+       </thead>
+       <tbody>
+
+       </tbody>
+      </table>
+     </div>
+    </div>
+   </div>
+   <footer>
+    <hr/>
+    <p>
+     <small>Generated by <a href="https://github.com/sebastianbergmann/php-code-coverage" target="_top">php-code-coverage 11.0.9</a> using <a href="https://www.php.net/" target="_top">PHP 8.4.6</a> and <a href="https://phpunit.de/">PHPUnit 11.5.19</a> at Tue Aug 5 6:00:03 UTC 2025.</small>
+    </p>
+   </footer>
+  </div>
+  <script src="../../../_js/jquery.min.js?v=11.0.9" type="text/javascript"></script>
+  <script src="../../../_js/d3.min.js?v=11.0.9" type="text/javascript"></script>
+  <script src="../../../_js/nv.d3.min.js?v=11.0.9" type="text/javascript"></script>
+  <script type="text/javascript">
+$(document).ready(function() {
+  nv.addGraph(function() {
+    var chart = nv.models.multiBarChart();
+    chart.tooltips(false)
+      .showControls(false)
+      .showLegend(false)
+      .reduceXTicks(false)
+      .staggerLabels(true)
+      .yAxis.tickFormat(d3.format('d'));
+
+    d3.select('#classCoverageDistribution svg')
+      .datum(getCoverageDistributionData([2,0,0,0,0,0,0,0,0,0,2,6], "Class Coverage"))
+      .transition().duration(500).call(chart);
+
+    nv.utils.windowResize(chart.update);
+
+    return chart;
+  });
+
+  nv.addGraph(function() {
+    var chart = nv.models.multiBarChart();
+    chart.tooltips(false)
+      .showControls(false)
+      .showLegend(false)
+      .reduceXTicks(false)
+      .staggerLabels(true)
+      .yAxis.tickFormat(d3.format('d'));
+
+    d3.select('#methodCoverageDistribution svg')
+      .datum(getCoverageDistributionData([10,0,0,0,0,0,0,0,0,0,0,56], "Method Coverage"))
+      .transition().duration(500).call(chart);
+
+    nv.utils.windowResize(chart.update);
+
+    return chart;
+  });
+
+  function getCoverageDistributionData(data, label) {
+    var labels = [
+      '0%',
+      '0-10%',
+      '10-20%',
+      '20-30%',
+      '30-40%',
+      '40-50%',
+      '50-60%',
+      '60-70%',
+      '70-80%',
+      '80-90%',
+      '90-100%',
+      '100%'
+    ];
+    var values = [];
+    $.each(labels, function(key) {
+      values.push({x: labels[key], y: data[key]});
+    });
+
+    return [
+      {
+        key: label,
+        values: values,
+        color: "#4572A7"
+      }
+    ];
+  }
+  nv.addGraph(function() {
+    var chart = nv.models.scatterChart()
+      .showDistX(true)
+      .showDistY(true)
+      .showLegend(false)
+      .forceX([0, 100]);
+    chart.tooltipContent(function(graph) {
+      return '<p>' + graph.point.class + '</p>';
+    });
+
+    chart.xAxis.axisLabel('Code Coverage (in percent)');
+    chart.yAxis.axisLabel('Cyclomatic Complexity');
+
+    d3.select('#classComplexity svg')
+      .datum(getComplexityData([[99.04761904761905,19,"<a href=\"Feature\/issAPI\/v1\/EducationRouteControllerTest.php.html#20\">App\\Modules\\ISS\\tests\\Feature\\issAPI\\v1\\EducationRouteControllerTest<\/a>"],[0,4,"<a href=\"Feature\/issControllers\/issStartPageControllerTest.php.html#25\">App\\Modules\\ISS\\tests\\Feature\\issControllers\\issStartPageControllerTest<\/a>"],[100,0,"<a href=\"TestCase.php.html#7\">App\\Modules\\ISS\\tests\\TestCase<\/a>"],[100,4,"<a href=\"Unit\/issOrmModels\/IssOrmModelTest.php.html#22\">App\\Modules\\ISS\\tests\\Unit\\issOrmModels\\IssOrmModelTest<\/a>"],[95.04424778761062,16,"<a href=\"Unit\/issServices\/EducationExamTest.php.html#55\">App\\Modules\\ISS\\tests\\Unit\\issServices\\EducationExamTest<\/a>"],[0,4,"<a href=\"Unit\/issServices\/EducationMaterialTest.php.html#10\">App\\Modules\\ISS\\tests\\Unit\\issServices\\EducationMaterialTest<\/a>"],[100,6,"<a href=\"Unit\/issServices\/EducationRoutePointTest.php.html#16\">App\\Modules\\ISS\\tests\\Unit\\issServices\\EducationRoutePointTest<\/a>"],[100,9,"<a href=\"Unit\/issServices\/EducationRouteTest.php.html#17\">App\\Modules\\ISS\\tests\\Unit\\issServices\\EducationRouteTest<\/a>"],[100,16,"<a href=\"Unit\/issServices\/IssUserTest.php.html#41\">App\\Modules\\ISS\\tests\\Unit\\issServices\\IssUserTest<\/a>"],[100,3,"<a href=\"Unit\/issServices\/NotifyServiceTest.php.html#17\">App\\Modules\\ISS\\tests\\Unit\\issServices\\NotifyServiceTest<\/a>"]], 'Class Complexity'))
+      .transition()
+      .duration(500)
+      .call(chart);
+
+    nv.utils.windowResize(chart.update);
+
+    return chart;
+  });
+
+  nv.addGraph(function() {
+    var chart = nv.models.scatterChart()
+      .showDistX(true)
+      .showDistY(true)
+      .showLegend(false)
+      .forceX([0, 100]);
+    chart.tooltipContent(function(graph) {
+      return '<p>' + graph.point.class + '</p>';
+    });
+
+    chart.xAxis.axisLabel('Code Coverage (in percent)');
+    chart.yAxis.axisLabel('Method Complexity');
+
+    d3.select('#methodComplexity svg')
+      .datum(getComplexityData([[100,1,"<a href=\"Feature\/issAPI\/v1\/EducationRouteControllerTest.php.html#26\">App\\Modules\\ISS\\tests\\Feature\\issAPI\\v1\\EducationRouteControllerTest::setUp<\/a>"],[100,1,"<a href=\"Feature\/issAPI\/v1\/EducationRouteControllerTest.php.html#46\">App\\Modules\\ISS\\tests\\Feature\\issAPI\\v1\\EducationRouteControllerTest::tearDown<\/a>"],[100,1,"<a href=\"Feature\/issAPI\/v1\/EducationRouteControllerTest.php.html#55\">App\\Modules\\ISS\\tests\\Feature\\issAPI\\v1\\EducationRouteControllerTest::test_index_success<\/a>"],[100,1,"<a href=\"Feature\/issAPI\/v1\/EducationRouteControllerTest.php.html#68\">App\\Modules\\ISS\\tests\\Feature\\issAPI\\v1\\EducationRouteControllerTest::test_index_unauthorized<\/a>"],[100,1,"<a href=\"Feature\/issAPI\/v1\/EducationRouteControllerTest.php.html#83\">App\\Modules\\ISS\\tests\\Feature\\issAPI\\v1\\EducationRouteControllerTest::test_store_success<\/a>"],[100,1,"<a href=\"Feature\/issAPI\/v1\/EducationRouteControllerTest.php.html#98\">App\\Modules\\ISS\\tests\\Feature\\issAPI\\v1\\EducationRouteControllerTest::test_store_param_error<\/a>"],[100,1,"<a href=\"Feature\/issAPI\/v1\/EducationRouteControllerTest.php.html#111\">App\\Modules\\ISS\\tests\\Feature\\issAPI\\v1\\EducationRouteControllerTest::test_store_unauthorized<\/a>"],[0,1,"<a href=\"Feature\/issAPI\/v1\/EducationRouteControllerTest.php.html#121\">App\\Modules\\ISS\\tests\\Feature\\issAPI\\v1\\EducationRouteControllerTest::refRoutesToShow<\/a>"],[100,1,"<a href=\"Feature\/issAPI\/v1\/EducationRouteControllerTest.php.html#129\">App\\Modules\\ISS\\tests\\Feature\\issAPI\\v1\\EducationRouteControllerTest::test_show_success<\/a>"],[100,1,"<a href=\"Feature\/issAPI\/v1\/EducationRouteControllerTest.php.html#158\">App\\Modules\\ISS\\tests\\Feature\\issAPI\\v1\\EducationRouteControllerTest::test_show_unauthorized<\/a>"],[100,1,"<a href=\"Feature\/issAPI\/v1\/EducationRouteControllerTest.php.html#175\">App\\Modules\\ISS\\tests\\Feature\\issAPI\\v1\\EducationRouteControllerTest::test_show_not_found<\/a>"],[100,1,"<a href=\"Feature\/issAPI\/v1\/EducationRouteControllerTest.php.html#196\">App\\Modules\\ISS\\tests\\Feature\\issAPI\\v1\\EducationRouteControllerTest::test_update_success<\/a>"],[100,1,"<a href=\"Feature\/issAPI\/v1\/EducationRouteControllerTest.php.html#217\">App\\Modules\\ISS\\tests\\Feature\\issAPI\\v1\\EducationRouteControllerTest::test_update_not_found<\/a>"],[100,1,"<a href=\"Feature\/issAPI\/v1\/EducationRouteControllerTest.php.html#235\">App\\Modules\\ISS\\tests\\Feature\\issAPI\\v1\\EducationRouteControllerTest::test_update_error<\/a>"],[100,1,"<a href=\"Feature\/issAPI\/v1\/EducationRouteControllerTest.php.html#256\">App\\Modules\\ISS\\tests\\Feature\\issAPI\\v1\\EducationRouteControllerTest::test_update_unauthorized<\/a>"],[100,1,"<a href=\"Feature\/issAPI\/v1\/EducationRouteControllerTest.php.html#274\">App\\Modules\\ISS\\tests\\Feature\\issAPI\\v1\\EducationRouteControllerTest::test_delete_success<\/a>"],[100,1,"<a href=\"Feature\/issAPI\/v1\/EducationRouteControllerTest.php.html#293\">App\\Modules\\ISS\\tests\\Feature\\issAPI\\v1\\EducationRouteControllerTest::test_delete_unauthorized<\/a>"],[100,1,"<a href=\"Feature\/issAPI\/v1\/EducationRouteControllerTest.php.html#308\">App\\Modules\\ISS\\tests\\Feature\\issAPI\\v1\\EducationRouteControllerTest::test_delete_not_found<\/a>"],[100,1,"<a href=\"Feature\/issAPI\/v1\/EducationRouteControllerTest.php.html#329\">App\\Modules\\ISS\\tests\\Feature\\issAPI\\v1\\EducationRouteControllerTest::test_delete_error<\/a>"],[0,1,"<a href=\"Feature\/issControllers\/issStartPageControllerTest.php.html#32\">App\\Modules\\ISS\\tests\\Feature\\issControllers\\issStartPageControllerTest::setUp<\/a>"],[0,1,"<a href=\"Feature\/issControllers\/issStartPageControllerTest.php.html#40\">App\\Modules\\ISS\\tests\\Feature\\issControllers\\issStartPageControllerTest::tearDown<\/a>"],[0,1,"<a href=\"Feature\/issControllers\/issStartPageControllerTest.php.html#52\">App\\Modules\\ISS\\tests\\Feature\\issControllers\\issStartPageControllerTest::test_authorized_in_main_app_but_iss_unregistered_user_can_enter_index<\/a>"],[0,1,"<a href=\"Feature\/issControllers\/issStartPageControllerTest.php.html#99\">App\\Modules\\ISS\\tests\\Feature\\issControllers\\issStartPageControllerTest::test_authorized_in_main_and_iss_registered_user_can_enter_index<\/a>"],[100,1,"<a href=\"Unit\/issOrmModels\/IssOrmModelTest.php.html#26\">App\\Modules\\ISS\\tests\\Unit\\issOrmModels\\IssOrmModelTest::setUp<\/a>"],[100,1,"<a href=\"Unit\/issOrmModels\/IssOrmModelTest.php.html#31\">App\\Modules\\ISS\\tests\\Unit\\issOrmModels\\IssOrmModelTest::tearDown<\/a>"],[100,1,"<a href=\"Unit\/issOrmModels\/IssOrmModelTest.php.html#40\">App\\Modules\\ISS\\tests\\Unit\\issOrmModels\\IssOrmModelTest::test_check_orm_model_creation<\/a>"],[100,1,"<a href=\"Unit\/issOrmModels\/IssOrmModelTest.php.html#85\">App\\Modules\\ISS\\tests\\Unit\\issOrmModels\\IssOrmModelTest::test_check_orm_model_relations<\/a>"],[100,1,"<a href=\"Unit\/issServices\/EducationExamTest.php.html#57\">App\\Modules\\ISS\\tests\\Unit\\issServices\\EducationExamTest::setUp<\/a>"],[100,1,"<a href=\"Unit\/issServices\/EducationExamTest.php.html#62\">App\\Modules\\ISS\\tests\\Unit\\issServices\\EducationExamTest::tearDown<\/a>"],[100,1,"<a href=\"Unit\/issServices\/EducationExamTest.php.html#70\">App\\Modules\\ISS\\tests\\Unit\\issServices\\EducationExamTest::test_is_exam_complicated_service<\/a>"],[100,1,"<a href=\"Unit\/issServices\/EducationExamTest.php.html#112\">App\\Modules\\ISS\\tests\\Unit\\issServices\\EducationExamTest::test_choose_check_type_service<\/a>"],[100,3,"<a href=\"Unit\/issServices\/EducationExamTest.php.html#154\">App\\Modules\\ISS\\tests\\Unit\\issServices\\EducationExamTest::test_get_exam_questions_service<\/a>"],[0,1,"<a href=\"Unit\/issServices\/EducationExamTest.php.html#219\">App\\Modules\\ISS\\tests\\Unit\\issServices\\EducationExamTest::test_is_exam_can_be_passed_service<\/a>"],[100,1,"<a href=\"Unit\/issServices\/EducationExamTest.php.html#273\">App\\Modules\\ISS\\tests\\Unit\\issServices\\EducationExamTest::test_check_simple_exam_service<\/a>"],[100,1,"<a href=\"Unit\/issServices\/EducationExamTest.php.html#468\">App\\Modules\\ISS\\tests\\Unit\\issServices\\EducationExamTest::test_mark_exam_passed_for_user_service<\/a>"],[100,1,"<a href=\"Unit\/issServices\/EducationExamTest.php.html#513\">App\\Modules\\ISS\\tests\\Unit\\issServices\\EducationExamTest::test_choose_exam_check_teacher_service<\/a>"],[100,1,"<a href=\"Unit\/issServices\/EducationExamTest.php.html#611\">App\\Modules\\ISS\\tests\\Unit\\issServices\\EducationExamTest::test_get_user_and_point_data_by_check_code_service<\/a>"],[100,1,"<a href=\"Unit\/issServices\/EducationExamTest.php.html#656\">App\\Modules\\ISS\\tests\\Unit\\issServices\\EducationExamTest::test_get_check_code_by_userId_and_realPointId_service<\/a>"],[100,1,"<a href=\"Unit\/issServices\/EducationExamTest.php.html#697\">App\\Modules\\ISS\\tests\\Unit\\issServices\\EducationExamTest::test_del_check_code_service<\/a>"],[100,1,"<a href=\"Unit\/issServices\/EducationExamTest.php.html#726\">App\\Modules\\ISS\\tests\\Unit\\issServices\\EducationExamTest::test_make_check_code_service<\/a>"],[100,1,"<a href=\"Unit\/issServices\/EducationExamTest.php.html#755\">App\\Modules\\ISS\\tests\\Unit\\issServices\\EducationExamTest::test_process_teacher_feedback_service<\/a>"],[0,1,"<a href=\"Unit\/issServices\/EducationMaterialTest.php.html#12\">App\\Modules\\ISS\\tests\\Unit\\issServices\\EducationMaterialTest::setUp<\/a>"],[0,1,"<a href=\"Unit\/issServices\/EducationMaterialTest.php.html#17\">App\\Modules\\ISS\\tests\\Unit\\issServices\\EducationMaterialTest::tearDown<\/a>"],[0,1,"<a href=\"Unit\/issServices\/EducationMaterialTest.php.html#25\">App\\Modules\\ISS\\tests\\Unit\\issServices\\EducationMaterialTest::test_download_file_service<\/a>"],[0,1,"<a href=\"Unit\/issServices\/EducationMaterialTest.php.html#34\">App\\Modules\\ISS\\tests\\Unit\\issServices\\EducationMaterialTest::test_open_file_service<\/a>"],[100,1,"<a href=\"Unit\/issServices\/EducationRoutePointTest.php.html#18\">App\\Modules\\ISS\\tests\\Unit\\issServices\\EducationRoutePointTest::setUp<\/a>"],[100,1,"<a href=\"Unit\/issServices\/EducationRoutePointTest.php.html#23\">App\\Modules\\ISS\\tests\\Unit\\issServices\\EducationRoutePointTest::tearDown<\/a>"],[100,3,"<a href=\"Unit\/issServices\/EducationRoutePointTest.php.html#32\">App\\Modules\\ISS\\tests\\Unit\\issServices\\EducationRoutePointTest::test_get_files_of_real_point_data_service<\/a>"],[100,1,"<a href=\"Unit\/issServices\/EducationRoutePointTest.php.html#76\">App\\Modules\\ISS\\tests\\Unit\\issServices\\EducationRoutePointTest::test_get_real_point_main_data_service<\/a>"],[100,1,"<a href=\"Unit\/issServices\/EducationRouteTest.php.html#19\">App\\Modules\\ISS\\tests\\Unit\\issServices\\EducationRouteTest::setUp<\/a>"],[100,1,"<a href=\"Unit\/issServices\/EducationRouteTest.php.html#24\">App\\Modules\\ISS\\tests\\Unit\\issServices\\EducationRouteTest::tearDown<\/a>"],[100,2,"<a href=\"Unit\/issServices\/EducationRouteTest.php.html#33\">App\\Modules\\ISS\\tests\\Unit\\issServices\\EducationRouteTest::test_get_all_education_routes_of_users_with_points<\/a>"],[100,5,"<a href=\"Unit\/issServices\/EducationRouteTest.php.html#107\">App\\Modules\\ISS\\tests\\Unit\\issServices\\EducationRouteTest::test_get_route_ready_percent_for_users_of_firm<\/a>"],[100,1,"<a href=\"Unit\/issServices\/IssUserTest.php.html#50\">App\\Modules\\ISS\\tests\\Unit\\issServices\\IssUserTest::setUp<\/a>"],[100,1,"<a href=\"Unit\/issServices\/IssUserTest.php.html#95\">App\\Modules\\ISS\\tests\\Unit\\issServices\\IssUserTest::tearDown<\/a>"],[100,1,"<a href=\"Unit\/issServices\/IssUserTest.php.html#105\">App\\Modules\\ISS\\tests\\Unit\\issServices\\IssUserTest::test_create_iss_user_web_token_service<\/a>"],[100,1,"<a href=\"Unit\/issServices\/IssUserTest.php.html#132\">App\\Modules\\ISS\\tests\\Unit\\issServices\\IssUserTest::test_delete_iss_user_web_token_service<\/a>"],[100,1,"<a href=\"Unit\/issServices\/IssUserTest.php.html#159\">App\\Modules\\ISS\\tests\\Unit\\issServices\\IssUserTest::test_fetch_iss_user_web_token_service<\/a>"],[100,6,"<a href=\"Unit\/issServices\/IssUserTest.php.html#187\">App\\Modules\\ISS\\tests\\Unit\\issServices\\IssUserTest::test_get_all_users_service<\/a>"],[100,1,"<a href=\"Unit\/issServices\/IssUserTest.php.html#290\">App\\Modules\\ISS\\tests\\Unit\\issServices\\IssUserTest::test_get_user_data_service<\/a>"],[100,2,"<a href=\"Unit\/issServices\/IssUserTest.php.html#345\">App\\Modules\\ISS\\tests\\Unit\\issServices\\IssUserTest::test_get_users_related_to_manager_service<\/a>"],[100,1,"<a href=\"Unit\/issServices\/IssUserTest.php.html#441\">App\\Modules\\ISS\\tests\\Unit\\issServices\\IssUserTest::test_load_user_data_from_main_app_service<\/a>"],[100,1,"<a href=\"Unit\/issServices\/IssUserTest.php.html#529\">App\\Modules\\ISS\\tests\\Unit\\issServices\\IssUserTest::test_delete_iss_user_service<\/a>"],[100,1,"<a href=\"Unit\/issServices\/NotifyServiceTest.php.html#19\">App\\Modules\\ISS\\tests\\Unit\\issServices\\NotifyServiceTest::setUp<\/a>"],[100,1,"<a href=\"Unit\/issServices\/NotifyServiceTest.php.html#24\">App\\Modules\\ISS\\tests\\Unit\\issServices\\NotifyServiceTest::tearDown<\/a>"],[100,1,"<a href=\"Unit\/issServices\/NotifyServiceTest.php.html#33\">App\\Modules\\ISS\\tests\\Unit\\issServices\\NotifyServiceTest::test_get_data_for_exam_status_notify<\/a>"]], 'Method Complexity'))
+      .transition()
+      .duration(500)
+      .call(chart);
+
+    nv.utils.windowResize(chart.update);
+
+    return chart;
+  });
+
+  function getComplexityData(data, label) {
+    var values = [];
+    $.each(data, function(key) {
+      var value = Math.round(data[key][0]*100) / 100;
+      values.push({
+        x: value,
+        y: data[key][1],
+        class: data[key][2],
+        size: 0.05,
+        shape: 'diamond'
+      });
+    });
+
+    return [
+      {
+        key: label,
+        values: values,
+        color: "#4572A7"
+      }
+    ];
+  }
+});
+  </script>
+ </body>
+</html>

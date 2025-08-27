@@ -65,10 +65,27 @@ return [
     ],
 
     'EXAM_ERRORS_ALLOWED_PERCENT' => 30,                         //допустимый процент ошибок в экзамене (для авто проверки)
+    'EXAM_COME_SOON_INTERVAL'     => 3,
 
     'REAL_ROUTE_POINT_STATE' => [                                 //название статусов реальной точки обучающего маршрута
         'passed'  => 'passed',                                          //пройдена
         'wait'    => 'wait',                                            //ожидает сдачи экзамена
         'expired' => 'expired',                                         //сдача экзамена просрочена
+    ],
+
+
+
+    'ISS_USER_ACTION' => [                                        //интерфейс администратора, действия над пользователями
+        'create' => 'create',
+        'edit' => 'edit'
+    ],
+
+    'ISS_USER_PARAMETERS' => [
+        'defaultAvatar' => 'defaultUserAvatar.png',
+    ],
+
+    'ISS_REF_ROUTE_POINT_ACTION' => [                            //интерфейс администратора, действия над справочной точкой маршрута
+        'create' => 'create',
+        'edit' => 'edit'
     ],
 ];
