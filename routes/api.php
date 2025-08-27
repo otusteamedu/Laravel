@@ -127,12 +127,12 @@ Route::post('/webhook', function () {
             $telegram->sendMessage(['chat_id' => $chat, 'text' => $message]);
             break;
         case '/help':
-            $message = 'Список доступных команд:
-                        /start - начало работы с ботом
-                        /teachers - преподаватели
-                        /cost - информация о стоимости занятий
-                        /schedule - информация о стоимости занятий
-                        /help - выводит данный список';
+            $message = 'Список доступных команд:'.PHP_EOL.
+                        '/start - начало работы с ботом'.PHP_EOL.
+                        '/teachers - преподаватели'.PHP_EOL.
+                        '/cost - информация о стоимости занятий'.PHP_EOL.
+                        '/schedule - информация о стоимости занятий'.PHP_EOL.
+                        '/help - выводит данный список';
             $telegram->sendMessage(['chat_id' => $chat, 'text' => $message]);
             break;
         default:
