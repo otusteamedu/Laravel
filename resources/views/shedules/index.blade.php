@@ -16,7 +16,7 @@
     <div class="flex items-center justify-between">
         <h1>Расписание занятий</h1>
         <button class="mb-40">
-            <a href="{{ route('shedules.create') }}">Добавить новую запись</a>
+            <a href="{{ route('shedules.create') }}" class="actionbtn">Добавить новую запись</a>
         </button>
     </div>
     <div class="newscont">

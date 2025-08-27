@@ -80,14 +80,25 @@
             <input type="hidden" name="author_id" id="author_id" value="{{ Auth::user()->id  }}" />
 
             <div>
-                <button type="submit" class="">
+                <button type="submit" class="actionbtn">
                     {{ isset($sheduleId) ? 'Редактировать' : 'Создать' }}
                 </button>
             </div>
         </form>
 
-        {{-- <form action="{{ route('shedules.destroy', $sheduleId) }}" method="POST">
-            <button class="">Удалить запись</button>
-        </form> --}}
+        @if (isset($sheduleId))
+        <form action="{{ route('shedules.destroy', $sheduleId)  }}" method="POST">
+            @csrf
+            @if (isset($sheduleId))
+                @method('DELETE')
+            @endif
+
+                <button type="submit" class="actionbtn">
+                    Удалить запись
+                </button>
+        </form>
+
+        @endif
+
     </div>
 @endsection
