@@ -23,7 +23,7 @@ Route::post('/webhook', function () {
         case '/teachers':
             $message = 'Английский - Новикова Н.Н.,'.PHP_EOL.
                         'Китайский - Сюэ Шень,'.PHP_EOL.
-                        'Испанский - Антонова А.А.';
+                        'Испанский - Мерседес Гарсиа';
             $telegram->sendMessage(['chat_id' => $chat, 'text' => $message]);
             break;
         case '/cost':
