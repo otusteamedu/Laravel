@@ -25,10 +25,10 @@ class StoreTaskRequest extends FormRequest
             'title' => ['required', 'string', 'max:255'],
             'description' => ['nullable', 'string'],
             'status' => ['nullable', 'string', 'in:новая,в работе,выполнена,отменена'],
-            'due_date' => ['nullable', 'date', 'after:now'],
+            'due_date' => ['nullable', 'date', 'after:today'],
             'priority_id' => ['required', 'exists:priorities,id'],
             'category_id' => ['required', 'exists:categories,id'],
-            'executor_id' => ['nullable', 'exists:users,id'],
+            'executor_id' => ['required', 'exists:users,id'],
         ];
     }
 
