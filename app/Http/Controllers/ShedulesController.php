@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Config;
 use App\Http\Requests\UpdateSheduleRequest;
 use App\Models\Shedule;
 use Illuminate\Contracts\Auth\Access\Gate;
@@ -39,8 +40,8 @@ class ShedulesController extends Controller
         \Illuminate\Contracts\Auth\Factory $auth
     ): RedirectResponse {
         $validator = $validationFactory->make(request()->all(), [
-            'language_code' => ['required', 'numeric', 'min:1', 'max:3'],
-            'group_code' => ['required', 'numeric', 'min:1', 'max:3'],
+            'language_code' => ['required', 'numeric', 'min:1', 'max:'.count(Config::LANG)],
+            'group_code' => ['required', 'numeric', 'min:1', 'max:'.count(Config::AGE)],
             'date' => ['required', 'min:5'],
             'teacher' => ['required', 'min:5'],
         ]);
