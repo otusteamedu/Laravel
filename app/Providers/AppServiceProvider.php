@@ -117,7 +117,8 @@ class AppServiceProvider extends ServiceProvider
         $this->app->singleton(CartAppService::class, function ($app) {
             return new CartAppService(
                 $app->make(CartService::class),
-                $app->make(ProductRepositoryInterface::class)
+                $app->make(ProductRepositoryInterface::class),
+                $app->make(CartRepositoryInterface::class)
             );
         });
 
