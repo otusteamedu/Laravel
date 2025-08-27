@@ -12,16 +12,17 @@ class ProductRepository implements ProductRepositoryInterface
     /**
      * @return array <int, BusinessModelsProduct>
      */
-    // public function getAll(): array
-    // {
-    //     $models = Product::all()
-    //         ->sortBy('id')
-    //         ->map(fn($model) => $model->toBusinessModel())
-    //         ->filter()
-    //         ->values()
-    //         ->all();
-    //     return $models;
-    // }
+    public function getAll(): array
+    {
+        $models = Product::all()
+            ->sortBy('id')
+            ->map(fn($model) => $model->toBusinessModel())
+            ->filter()
+            ->values()
+            ->all();
+        dd($models);
+        return $models;
+    }
 
     public function store(BusinessModelsProduct $model): void
     {
@@ -40,13 +41,13 @@ class ProductRepository implements ProductRepositoryInterface
         return $model->toBusinessModel();
     }
 
-    // public function update(
-    //     BusinessModelsProduct $model,
-    //     ?string $lang = null
-    // ): void {
-    //     $modelEloquent = Product::findOrFail($model->getId());
-    //     $modelEloquent->update($this->toArrayForEloquent($model, $lang));
-    // }
+    public function update(
+        BusinessModelsProduct $model,
+        ?string $lang = null
+    ): void {
+        $modelEloquent = Product::findOrFail($model->getId());
+        $modelEloquent->update($this->toArrayForEloquent($model, $lang));
+    }
 
     // public function delete(int $id): void
     // {
@@ -57,36 +58,36 @@ class ProductRepository implements ProductRepositoryInterface
     /**
      * @return array <int, int $model_id>
      */
-    // public function getIdWhereNullField(string $nameField): array
-    // {
-    //     $models = Product::whereNull($nameField)
-    //         ->pluck('id')
-    //         ->toArray();
-    //     return $models;
-    // }
+    public function getIdWhereNullField(string $nameField): array
+    {
+        $models = Product::whereNull($nameField)
+            ->pluck('id')
+            ->toArray();
+        return $models;
+    }
 
     /**
      * @return array <string $lang, string $value, string $created_at>
      */
-    // public function findPresenceLangById(int $id): array
-    // {
-    //     $model = Product::findOrFail($id);
-    //     if (!is_null($model->name_en)) {
-    //         $result = [
-    //             'lang' => 'en',
-    //             'value' => $model->name_en,
-    //             'created_at' => $model->created_at
-    //         ];
-    //     }
-    //     if (!is_null($model->name_ru)) {
-    //         $result = [
-    //             'lang' => 'ru',
-    //             'value' => $model->name_ru,
-    //             'created_at' => $model->created_at
-    //         ];
-    //     }
-    //     return $result;
-    // }
+    public function findPresenceLangById(int $id): array
+    {
+        $model = Product::findOrFail($id);
+        if (!is_null($model->name_en)) {
+            $result = [
+                'lang' => 'en',
+                'value' => $model->name_en,
+                'created_at' => $model->created_at
+            ];
+        }
+        if (!is_null($model->name_ru)) {
+            $result = [
+                'lang' => 'ru',
+                'value' => $model->name_ru,
+                'created_at' => $model->created_at
+            ];
+        }
+        return $result;
+    }
 
     /**
      * @return array <int, mixed $value>

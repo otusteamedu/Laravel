@@ -40,13 +40,13 @@ class MeasureRepository implements MeasureRepositoryInterface
         return $model->toBusinessModel();
     }
 
-    // public function update(
-    //     BusinessModelsMeasure $model,
-    //     ?string $lang = null
-    // ): void {
-    //     $modelEloquent = Measure::findOrFail($model->getId());
-    //     $modelEloquent->update($this->toArrayForEloquent($model, $lang));
-    // }
+    public function update(
+        BusinessModelsMeasure $model,
+        ?string $lang = null
+    ): void {
+        $modelEloquent = Measure::findOrFail($model->getId());
+        $modelEloquent->update($this->toArrayForEloquent($model, $lang));
+    }
 
     // public function delete(int $id): void
     // {
@@ -57,36 +57,36 @@ class MeasureRepository implements MeasureRepositoryInterface
     /**
      * @return array <int, int $model_id>
      */
-    // public function getIdWhereNullField(string $nameField): array
-    // {
-    //     $models = Measure::whereNull($nameField)
-    //         ->pluck('id')
-    //         ->toArray();
-    //     return $models;
-    // }
+    public function getIdWhereNullField(string $nameField): array
+    {
+        $models = Measure::whereNull($nameField)
+            ->pluck('id')
+            ->toArray();
+        return $models;
+    }
 
     /**
      * @return array <string $lang, string $value, string $created_at>
      */
-    // public function findPresenceLangById(int $id): array
-    // {
-    //     $model = Measure::findOrFail($id);
-    //     if (!is_null($model->name_en)) {
-    //         $result = [
-    //             'lang' => 'en',
-    //             'value' => $model->name_en,
-    //             'created_at' => $model->created_at
-    //         ];
-    //     }
-    //     if (!is_null($model->name_ru)) {
-    //         $result = [
-    //             'lang' => 'ru',
-    //             'value' => $model->name_ru,
-    //             'created_at' => $model->created_at
-    //         ];
-    //     }
-    //     return $result;
-    // }
+    public function findPresenceLangById(int $id): array
+    {
+        $model = Measure::findOrFail($id);
+        if (!is_null($model->name_en)) {
+            $result = [
+                'lang' => 'en',
+                'value' => $model->name_en,
+                'created_at' => $model->created_at
+            ];
+        }
+        if (!is_null($model->name_ru)) {
+            $result = [
+                'lang' => 'ru',
+                'value' => $model->name_ru,
+                'created_at' => $model->created_at
+            ];
+        }
+        return $result;
+    }
 
     /**
      * @return array <int, mixed $value>

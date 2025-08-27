@@ -10,7 +10,7 @@ interface ProductRepositoryInterface
     /**
      * @return array <int, Product>
      */
-    // public function getAll(): array;
+    public function getAll(): array;
 
     public function store(Product $model): void;
 

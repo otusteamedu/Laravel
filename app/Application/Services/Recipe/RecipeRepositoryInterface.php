@@ -13,7 +13,7 @@ interface RecipeRepositoryInterface
 
     public function store(Recipe $category): void;
 
-    // public function findById(int $id): Recipe;
+    public function findById(int $id): Recipe;
 
     // public function update(Recipe $category, ?string $lang = null): void;
 

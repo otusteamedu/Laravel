@@ -27,11 +27,11 @@ class RecipeRepository implements RecipeRepositoryInterface
         Recipe::firstOrCreate($this->toArrayForEloquent($model));
     }
 
-    // public function findById(int $id): BusinessModelsRecipe
-    // {
-    //     $model = Recipe::findOrFail($id);
-    //     return $model->toBusinessModel();
-    // }
+    public function findById(int $id): BusinessModelsRecipe
+    {
+        $model = Recipe::findOrFail($id);
+        return $model->toBusinessModel();
+    }
 
     public function findByApiId(string $apiId): BusinessModelsRecipe
     {
@@ -39,13 +39,13 @@ class RecipeRepository implements RecipeRepositoryInterface
         return $model->toBusinessModel();
     }
 
-    // public function update(
-    //     BusinessModelsRecipe $model,
-    //     ?string $lang = null
-    // ): void {
-    //     $modelEloquent = Recipe::findOrFail($model->getId());
-    //     $modelEloquent->update($this->toArrayForEloquent($model, $lang));
-    // }
+    public function update(
+        BusinessModelsRecipe $model,
+        ?string $lang = null
+    ): void {
+        $modelEloquent = Recipe::findOrFail($model->getId());
+        $modelEloquent->update($this->toArrayForEloquent($model, $lang));
+    }
 
     // public function delete(int $id): void
     // {
@@ -56,36 +56,36 @@ class RecipeRepository implements RecipeRepositoryInterface
     /**
      * @return array <int, int $model_id>
      */
-    // public function getIdWhereNullField(string $nameField): array
-    // {
-    //     $models = Recipe::whereNull($nameField)
-    //         ->pluck('id')
-    //         ->toArray();
-    //     return $models;
-    // }
+    public function getIdWhereNullField(string $nameField): array
+    {
+        $models = Recipe::whereNull($nameField)
+            ->pluck('id')
+            ->toArray();
+        return $models;
+    }
 
     /**
      * @return array <string $lang, string $value, string $created_at>
      */
-    // public function findPresenceLangById(int $id): array
-    // {
-    //     $model = Recipe::findOrFail($id);
-    //     if (!is_null($model->name_en)) {
-    //         $result = [
-    //             'lang' => 'en',
-    //             'value' => $model->name_en,
-    //             'created_at' => $model->created_at
-    //         ];
-    //     }
-    //     if (!is_null($model->name_ru)) {
-    //         $result = [
-    //             'lang' => 'ru',
-    //             'value' => $model->name_ru,
-    //             'created_at' => $model->created_at
-    //         ];
-    //     }
-    //     return $result;
-    // }
+    public function findPresenceLangById(int $id): array
+    {
+        $model = Recipe::findOrFail($id);
+        if (!is_null($model->name_en)) {
+            $result = [
+                'lang' => 'en',
+                'value' => $model->name_en,
+                'created_at' => $model->created_at
+            ];
+        }
+        if (!is_null($model->name_ru)) {
+            $result = [
+                'lang' => 'ru',
+                'value' => $model->name_ru,
+                'created_at' => $model->created_at
+            ];
+        }
+        return $result;
+    }
 
     /**
      * @return array <int, mixed $value>
