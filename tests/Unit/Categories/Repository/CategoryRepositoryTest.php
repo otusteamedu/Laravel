@@ -5,17 +5,40 @@ namespace Tests\Unit\Categories\Repository;
 use Tests\TestCase;
 use App\Models\Category;
 use App\Repositories\Categories\CategoryRepository;
+use App\Services\Cache\CacheServiceInterface;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Mockery;
 
 class CategoryRepositoryTest extends TestCase {
     use RefreshDatabase;
 
     private CategoryRepository $repository;
+    private CacheServiceInterface $cacheService;
 
     protected function setUp(): void
     {
         parent::setUp();
-        $this->repository = new CategoryRepository();
+        
+        // Создаем мок для CacheServiceInterface
+        $this->cacheService = Mockery::mock(CacheServiceInterface::class);
+        
+        // Настраиваем мок для возврата реальных данных без кэширования
+        $this->cacheService->shouldReceive('generateKey')
+            ->andReturnUsing(fn($key) => $key);
+            
+        $this->cacheService->shouldReceive('tags')
+            ->andReturnSelf();
+            
+        $this->cacheService->shouldReceive('remember')
+            ->andReturnUsing(fn($key, $callback, $ttl = null) => $callback());
+            
+        $this->cacheService->shouldReceive('forget')
+            ->andReturn(true);
+            
+        $this->cacheService->shouldReceive('flush')
+            ->andReturn(true);
+        
+        $this->repository = new CategoryRepository($this->cacheService);
     }
 
 

@@ -115,7 +115,7 @@ class TaskController extends Controller
                 categoryId: (int) $request->category_id,
                 priorityId: (int) $request->priority_id,
                 creatorId: auth('api')->id(),
-                status: $request->status,
+                status: $request->status ?? 'новая',
                 dueDate: $request->due_date
             );
 
