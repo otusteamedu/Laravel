@@ -1,0 +1,243 @@
+@host = http://localhost
+@token = eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vbG9jYWxob3N0L2FwaS9hdXRoL3JlZnJlc2gtdG9rZW4iLCJpYXQiOjE3NTYzMDg0ODEsImV4cCI6MTc1NjMwOTM4MSwibmJmIjoxNzU2MzA4NDgxLCJqdGkiOiJNZktyeFd3a0ljMWlFckdCIiwic3ViIjoiMSIsInBydiI6IjQ1NTk0ZGNmZjk5NjhlODllOWZhNzg3NTE2MGNjOTUyOGI5Njc5MTkiLCJyb2xlcyI6WzFdLCJlbWFpbCI6ImFkbWluQGV4YW1wbGUuY29tIiwibmFtZSI6IkFkbWluIFVzZXIifQ.dS9IlJiQP661rjYZ2m1nZ10goFJAf6VOeNy8GD1ppYA
+@tokenbasket = CbAXTwihOT4p3IqEQRkSRv2RGyBTxeI8K9jHUMzHDwblio1GmBkyR6ckrv5LAZ0I
+
+### User login
+POST {{host}}/api/auth/login
+Accept: application/json
+Content-Type: application/json
+
+{
+    "email": "admin@example.com",
+    "password": "password"
+}
+
+### Refresh token
+POST {{host}}/api/auth/refresh-token
+Accept: application/json
+Content-Type: application/json
+
+{
+    "refresh_token": "RZc4Ju6Ya316coaEx22ogvksTQeHfsfH8gS4YlGDPIc45qtuqWVNqc5JI5r5xTAo"
+}
+
+### User profile
+GET {{host}}/api/v1/personal-cabinet
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+### Get all products (paginated)
+GET {{host}}/api/v1/products
+Authorization: Bearer {{token}}
+Accept: application/json
+Content-Type: application/json
+
+### Get products with filters
+GET {{host}}/api/v1/products?category_id=1&is_sale=1&sort=price&direction=desc&per_page=5
+Authorization: Bearer {{token}}
+Accept: application/json
+Content-Type: application/json
+
+### Get single product by ID
+GET {{host}}/api/v1/products/1
+Authorization: Bearer {{token}}
+Accept: application/json
+Content-Type: application/json
+
+### Update product
+PUT {{host}}/api/v1/products/1
+Authorization: Bearer {{token}}
+Accept: application/json
+Content-Type: application/json
+
+{
+    "title": "Updated Product Name7",
+    "price": 109.99,
+    "categories": [1, 3]
+}
+
+### Create new product
+POST {{host}}/api/v1/products
+Authorization: Bearer {{token}}
+Accept: application/json
+Content-Type: application/json
+
+{
+    "title": "New Product55",
+    "price": 99.99,
+    "published": true,
+    "categories": [1, 2],
+    "image": "product.jpg",
+    "is_sale": true,
+    "order": 100
+}
+
+### Delete product
+DELETE {{host}}/api/v1/products/75
+Authorization: Bearer {{token}}
+Accept: application/json
+Content-Type: application/json
+
+### Get all categories (paginated)
+GET {{host}}/api/v1/categories
+Authorization: Bearer {{token}}
+Accept: application/json
+Content-Type: application/json
+
+
+### Get single category by ID
+GET {{host}}/api/v1/categories/1
+Authorization: Bearer {{token}}
+Accept: application/json
+Content-Type: application/json
+
+### Create new category
+POST {{host}}/api/v1/categories
+Authorization: Bearer {{token}}
+Accept: application/json
+Content-Type: application/json
+
+{
+    "title": "New Category",
+    "published": true,
+    "order": 5
+}
+
+### Update category
+PUT {{host}}/api/v1/categories/1
+Authorization: Bearer {{token}}
+Accept: application/json
+Content-Type: application/json
+
+{
+    "title": "Updated Category Name",
+    "published": false
+}
+
+### Delete category
+DELETE {{host}}/api/v1/categories/6
+Authorization: Bearer {{token}}
+Accept: application/json
+Content-Type: application/json
+
+
+### add basket
+POST {{host}}/api/v1/cart/items
+X-Guest-Token: {{tokenbasket}}
+Accept: application/json
+Content-Type: application/json
+
+{
+    "product_id": "1",
+    "quantity": 4
+}
+
+### get basket
+GET {{host}}/api/v1/cart/
+X-Guest-Token: {{tokenbasket}}
+Accept: application/json
+Content-Type: application/json
+
+
+### update item basket
+PUT {{host}}/api/v1/cart/items/1
+X-Guest-Token: {{tokenbasket}}
+Accept: application/json
+Content-Type: application/json
+
+{
+    "quantity": 5
+}
+
+
+### remove item basket
+DELETE {{host}}/api/v1/cart/items/1
+X-Guest-Token: {{tokenbasket}}
+Accept: application/json
+Content-Type: application/json
+
+### clear basket
+DELETE {{host}}/api/v1/cart/clear/
+X-Guest-Token: {{tokenbasket}}
+Accept: application/json
+Content-Type: application/json
+
+### transfer-to-user basket
+POST {{host}}/api/v1/cart/transfer-to-user/
+Authorization: Bearer {{token}}
+X-Guest-Token: {{tokenbasket}}
+Accept: application/json
+Content-Type: application/json
+
+### get basket user
+GET {{host}}/api/v1/cart/
+Authorization: Bearer {{token}}
+X-Guest-Token: {{tokenbasket}}
+Accept: application/json
+Content-Type: application/json
+
+
+### add basket user
+POST {{host}}/api/v1/cart/items
+X-Guest-Token: {{tokenbasket}}
+Authorization: Bearer {{token}}
+Accept: application/json
+Content-Type: application/json
+
+{
+    "product_id": "1",
+    "quantity": 2
+}
+
+
+### create order
+POST {{host}}/api/v1/orders/
+X-Guest-Token: {{tokenbasket}}
+Accept: application/json
+Content-Type: application/json
+
+{
+    "name": "Админ",
+    "email": "admin@example.com",
+    "phone": "4564645654747",
+    "shipping_address": "Тестовый адрес",
+    "customer_note": "Тестовый коммент"
+}
+
+### create order user
+POST {{host}}/api/v1/orders/
+Authorization: Bearer {{token}}
+X-Guest-Token: {{tokenbasket}}
+Accept: application/json
+Content-Type: application/json
+
+{
+    "name": "Админ",
+    "email": "admin@example.com",
+    "phone": "4564645654747",
+    "shipping_address": "Тестовый адрес",
+    "customer_note": "Тестовый коммент"
+}
+
+
+### show order
+GET {{host}}/api/v1/orders/3
+Authorization: Bearer {{token}}
+X-Guest-Token: {{tokenbasket}}
+Accept: application/json
+Content-Type: application/json
+
+### show orders user
+GET {{host}}/api/v1/orders
+Authorization: Bearer {{token}}
+X-Guest-Token: {{tokenbasket}}
+Accept: application/json
+Content-Type: application/json
+
+
+### Cancel order
+PATCH {{host}}/api/v1/orders/3/cancel
+Authorization: Bearer {{token}}
+Accept: application/json
+Content-Type: application/json
