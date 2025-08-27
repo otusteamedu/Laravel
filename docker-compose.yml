@@ -134,6 +134,29 @@ services:
             sh -c "sleep 10 &&
                    php artisan queue:work redis --queue=default,notifications --sleep=3 --tries=3 --max-time=3600 --memory=512"
         restart: unless-stopped
+    
+    laravel-scheduler:
+        build:
+            context: './vendor/laravel/sail/runtimes/8.4'
+            dockerfile: Dockerfile
+            args:
+                WWWGROUP: '${WWWGROUP}'
+        image: 'sail-8.4/app'
+        environment:
+            WWWUSER: '${WWWUSER}'
+            LARAVEL_SAIL: 1
+            TZ: 'Europe/Moscow'
+        volumes:
+            - '.:/var/www/html'
+        networks:
+            - sail
+        depends_on:
+            - mysql
+            - redis
+        command: >
+            sh -c "sleep 15 &&
+                   php artisan schedule:work --verbose"
+        restart: unless-stopped
 networks:
     sail:
         driver: bridge
