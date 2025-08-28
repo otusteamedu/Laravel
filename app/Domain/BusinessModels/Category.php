@@ -23,6 +23,7 @@ class Category extends BaseModel implements BusinessModelsInterface
         ?string $created_at = null,
     ) {
         $this->id = $id;
+        $this->description = $description;
         $this->name = $name;
         $this->lang = $lang;
         $this->apiId = $apiId;
