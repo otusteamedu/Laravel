@@ -5,6 +5,7 @@ namespace App\Infrastructure\Repositories\Recipe;
 use App\Domain\BusinessModels\Recipe as BusinessModelsRecipe;
 use App\Infrastructure\EloquentModels\Recipe;
 use App\Application\Services\Recipe\RecipeRepositoryInterface;
+use App\Infrastructure\EloquentModels\MeasureProductRecipe;
 
 class RecipeRepository implements RecipeRepositoryInterface
 {
@@ -93,6 +94,18 @@ class RecipeRepository implements RecipeRepositoryInterface
     public function getValueByField(string $field): array
     {
         return Recipe::pluck($field)->toArray();
+    }
+
+    public function getRecipeByProductIdAndMeasureId(
+        array $productIds,
+        array $measureIds
+    ): array {
+        $recipe = MeasureProductRecipe::whereIn('product_id', $productIds)
+            ->whereIn('measure_id', $measureIds)
+            ->get()
+            ->map(fn($model) => $model->toBusinessModel())
+            ->toArray();
+        return $recipe;
     }
 
     private function toArrayForEloquent(

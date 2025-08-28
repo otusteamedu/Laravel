@@ -20,7 +20,6 @@ class ProductRepository implements ProductRepositoryInterface
             ->filter()
             ->values()
             ->all();
-        dd($models);
         return $models;
     }
 

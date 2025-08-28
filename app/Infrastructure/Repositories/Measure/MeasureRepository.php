@@ -6,6 +6,7 @@ use App\Domain\BusinessModels\Measure as BusinessModelsMeasure;
 use App\Infrastructure\EloquentModels\Measure;
 use App\Application\Services\Measure\MeasureRepositoryInterface;
 use App\Domain\ValueObjects\Lang;
+use App\Infrastructure\EloquentModels\MeasureProductRecipe;
 
 class MeasureRepository implements MeasureRepositoryInterface
 {
@@ -94,6 +95,18 @@ class MeasureRepository implements MeasureRepositoryInterface
     public function getValueByField(string $field): array
     {
         return Measure::pluck($field, 'id')->toArray();
+    }
+
+    public function getMeaureByProductId(int $productId, Lang $lang): array
+    {
+        $nameField = 'name_' . $lang->getValue();
+        $measure = MeasureProductRecipe::where('product_id', $productId)
+            ->with('measure')
+            ->get();
+        $result = $measure->mapWithKeys(function ($item) use ($nameField) {
+            return [$item->measure->id => $item->measure->$nameField];
+        })->toArray();
+        return $result;
     }
 
     private function toArrayForEloquent(BusinessModelsMeasure $model, ?string $lang = null): array

@@ -4,10 +4,11 @@ namespace App\Infrastructure\EloquentModels;
 
 use App\Domain\BusinessModels\MeasureProductRecipe as BusinessModelMeasureProductRecipe;
 use App\Domain\BusinessModels\BaseModel as BusinessBaseModel;
+use App\Domain\BusinessModels\Measure as BusinessModelMeasure;
+use App\Domain\BusinessModels\Product as BusinessModelProduct;
+use App\Domain\BusinessModels\Recipe as BusinessModelRecipe;
 use App\Domain\ValueObjects\MeasureProductRecipe\MeasureProductRecipeValue;
-use App\Infrastructure\Helpers\LocaleHelper;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\Log;
 
 class MeasureProductRecipe extends BaseModel
 {
@@ -40,19 +41,25 @@ class MeasureProductRecipe extends BaseModel
         return $this->belongsTo(Measure::class, 'measure_id', 'id');
     }
 
-    public function getRecipeId(): int
+    public function getRecipe(): BusinessModelRecipe
     {
-        return $this->recipe_id;
+        $recipeEloquent = $this->recipe;
+        $recipe = $recipeEloquent->toBusinessModel();
+        return $recipe;
     }
 
-    public function getProductId(): int
+    public function getProduct(): BusinessModelProduct
     {
-        return $this->product_id;
+        $productEloquent = $this->product;
+        $product = $productEloquent->toBusinessModel();
+        return $product;
     }
 
-    public function getMeasureId(): int
+    public function getMeasure(): BusinessModelMeasure
     {
-        return $this->measure_id;
+        $measureEloquent = $this->measure;
+        $measure = $measureEloquent->toBusinessModel();
+        return $measure;
     }
 
     public function getValue(): MeasureProductRecipeValue
@@ -74,19 +81,14 @@ class MeasureProductRecipe extends BaseModel
 
     public function toBusinessModel(): ?BusinessBaseModel
     {
-        if (!$this->getName()->getValue()) {
-            Log::warning(
-                'Отсутствует название у граммовки с id = ' . $this->getId() .
-                    ' по локали: ' . LocaleHelper::getLocale()
-            );
-            return null;
-        } else {
-            return new BusinessModelMeasureProductRecipe(
-                id: $this->getId(),
-                value: $this->getValue(),
-                created_at: $this->getCreatedAt()
-            );
-        }
+        return new BusinessModelMeasureProductRecipe(
+            recipe: $this->getRecipe(),
+            product: $this->getProduct(),
+            measure: $this->getMeasure(),
+            value: $this->getValue(),
+            id: $this->getId(),
+            created_at: $this->getCreatedAt()
+        );
     }
 
     protected static function newFactory()

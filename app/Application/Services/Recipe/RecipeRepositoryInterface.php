@@ -23,4 +23,7 @@ interface RecipeRepositoryInterface
      * @return array <int, mixed $value>
      */
     public function getValueByField(string $field): array;
+
+    public function getRecipeByProductIdAndMeasureId(array $productIds, array $measureIds): array;
+
 }

@@ -119,25 +119,17 @@ class Recipe extends BaseModel
 
     public function toBusinessModel(): ?BusinessBaseModel
     {
-        if (!$this->getName()->getValue()) {
-            Log::warning(
-                'Отсутствует название у территории с id = ' . $this->getId() .
-                    ' по локали: ' . LocaleHelper::getLocale()
-            );
-            return null;
-        } else {
-            return new BusinessModelsRecipe(
-                id: $this->getId(),
-                name: $this->getName(),
-                instruction: $this->getInstruction(),
-                lang: $this->getLang(),
-                apiId: $this->getApiId(),
-                alternate: $this->getAlternate(),
-                category: $this->getCategory(),
-                area: $this->getArea(),
-                created_at: $this->getCreatedAt()
-            );
-        }
+        return new BusinessModelsRecipe(
+            id: $this->getId(),
+            name: $this->getName(),
+            instruction: $this->getInstruction(),
+            lang: $this->getLang(),
+            apiId: $this->getApiId(),
+            alternate: $this->getAlternate(),
+            category: $this->getCategory(),
+            area: $this->getArea(),
+            created_at: $this->getCreatedAt()
+        );
     }
 
     protected static function newFactory()

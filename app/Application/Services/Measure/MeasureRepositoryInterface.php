@@ -26,4 +26,6 @@ interface MeasureRepositoryInterface
      * @return array <int, mixed $value>
      */
     public function getValueByField(string $field): array;
+
+    public function getMeaureByProductId(int $productId, Lang $lang): array;
 }

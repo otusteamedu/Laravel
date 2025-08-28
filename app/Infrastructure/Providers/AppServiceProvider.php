@@ -13,6 +13,8 @@ use App\Application\Services\Area\AreaServiceInterface;
 use App\Application\Services\Category\CategoryRepositoryInterface;
 use App\Application\Services\Category\CategoryService;
 use App\Application\Services\Category\CategoryServiceInterface;
+use App\Application\Services\Home\HomeService;
+use App\Application\Services\Home\HomeServiceInterface;
 use App\Application\Services\Measure\MeasureRepositoryInterface;
 use App\Application\Services\Measure\MeasureService;
 use App\Application\Services\Measure\MeasureServiceInterface;
@@ -96,6 +98,11 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(
             MeasureProductRecipeRepositoryInterface::class,
             MeasureProductRecipeRepository::class
+        );
+
+        $this->app->bind(
+            HomeServiceInterface::class,
+            HomeService::class
         );
 
         $this->app->singleton(
