@@ -13,20 +13,23 @@ class Comment extends Model
     */
     function author()
     {
-        return $this->belongsTo(User::class, "user_id");
+        $class = Relation::getMorphedModel('user');
+        return $this->belongsTo($class, "user_id");
     }
     /**
     @return BelongsTo<News>
     */
     function news()
     {
-        return $this->belongsTo(News::class);
+        $class = Relation::getMorphedModel('news');
+        return $this->belongsTo($class);
     }
     /**
     @return morphMany<Like,string>
     */
     public function likes()
     {
-        return $this->morphMany(Like::class, 'liked');
+        $class = Relation::getMorphedModel('like');
+        return $this->morphMany($class, 'liked');
     }
 }

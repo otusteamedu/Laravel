@@ -3,9 +3,7 @@ declare(strict_types=1);
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
-use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\Relation;
 
 class News extends BaseModel
 {
@@ -31,27 +29,31 @@ class News extends BaseModel
     */
     function preview()
     {
-        return $this->hasOne(NewsPreview::class);
+        $class = Relation::getMorphedModel('newsPreview');
+        return $this->hasOne($class);
     }
     /**
     @return hasMany<Comment>
     */
     public function comments()
     {
-        return $this->hasMany(Comment::class);
+        $class = Relation::getMorphedModel('comment');
+        return $this->hasMany($class);
     }
     /**
     @return morphMany<Like,string>
     */
     public function likes()
     {
-        return $this->morphMany(Like::class, 'liked');
+        $class = Relation::getMorphedModel('like');
+        return $this->morphMany($class, 'liked');
     }
     /**
     @return belongsTo<User,string>
     */
     public function author()
     {
-        return $this->belongsTo(User::class, 'user_id');
+        $class = Relation::getMorphedModel('user');
+        return $this->belongsTo($class, 'user_id');
     }    
 }

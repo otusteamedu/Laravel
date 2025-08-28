@@ -26,6 +26,7 @@ class Like extends Model
     */
     public function author()
     {
-        return $this->belongsTo(User::class, "user_id");
+        $class = Relation::getMorphedModel('user');
+        return $this->belongsTo($class, "user_id");
     }
 }
