@@ -5,8 +5,10 @@ namespace App\Interface\Http\API\V1;
 use App\Application\Services\OrderAppService;
 use App\Application\Services\CartAppService;
 use App\Interface\Http\Controllers\Controller;
+use App\Interface\Mail\OrderConfirmationMail;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 
 class OrderController extends Controller
@@ -309,6 +311,14 @@ class OrderController extends Controller
                 $request->customer_note,
 
             );
+
+            // Send confirmation email
+            try {
+                Mail::to($order->getEmail())->send(new OrderConfirmationMail($order));
+            } catch (\Exception $e) {
+                // Log email sending error but don't fail the order creation
+                \Log::error('Failed to send order confirmation email: ' . $e->getMessage());
+            }
 
             return response()->json([
                 'data' => $order->toArray()

@@ -14,8 +14,19 @@ use Illuminate\Validation\Rule;
 
 /**
  * @OA\Tag(
- *     name="Categories V1",
- *     description="API Endpoints for Category Management (Version 1)"
+ * name="Categories V1",
+ * description="API Endpoints for Category Management (Version 1)"
+ * )
+ *
+ * @OA\Schema(
+ * schema="CategoryRequest",
+ * title="Category Request",
+ * description="Data structure for creating or updating a category",
+ * @OA\Property(property="title", type="string", description="Title of the category", example="Electronics"),
+ * @OA\Property(property="alias", type="string", description="Unique URL alias for the category", example="electronics"),
+ * @OA\Property(property="text", type="string", description="Category description", nullable=true, example="A wide range of electronic devices."),
+ * @OA\Property(property="published", type="boolean", description="Publication status of the category", nullable=true, example="true"),
+ * @OA\Property(property="order", type="integer", description="Display order of the category", nullable=true, example="10"),
  * )
  */
 class CategoryController extends Controller
@@ -25,66 +36,48 @@ class CategoryController extends Controller
     ) {}
     /**
      * @OA\Get(
-     *     path="/api/v1/categories",
-     *     operationId="getCategoriesListV1",
-     *     tags={"Categories V1"},
-     *     summary="Get all categories",
-     *     description="Returns paginated list of categories with optional products",
-     *     @OA\Parameter(
-     *         name="page",
-     *         in="query",
-     *         description="Page number",
-     *         required=false,
-     *         @OA\Schema(type="integer", default=1)
-     *     ),
-     *     @OA\Parameter(
-     *         name="per_page",
-     *         in="query",
-     *         description="Items per page",
-     *         required=false,
-     *         @OA\Schema(type="integer", default=15)
-     *     ),
-     *     @OA\Parameter(
-     *         name="with_products",
-     *         in="query",
-     *         description="Include products in response",
-     *         required=false,
-     *         @OA\Schema(type="boolean", default=false)
-     *     ),
-     *     @OA\Parameter(
-     *         name="published",
-     *         in="query",
-     *         description="Filter by published status",
-     *         required=false,
-     *         @OA\Schema(type="boolean")
-     *     ),
-     *     @OA\Parameter(
-     *         name="sort",
-     *         in="query",
-     *         description="Sort field (order, title, created_at)",
-     *         required=false,
-     *         @OA\Schema(type="string", default="order")
-     *     ),
-     *     @OA\Parameter(
-     *         name="direction",
-     *         in="query",
-     *         description="Sort direction (asc, desc)",
-     *         required=false,
-     *         @OA\Schema(type="string", default="asc")
-     *     ),
-     *     @OA\Response(
-     *         response=200,
-     *         description="Successful operation",
-     *         @OA\JsonContent(ref="#/components/schemas/CategoryCollection")
-     *     ),
-     *     @OA\Response(
-     *         response=422,
-     *         description="Validation error",
-     *         @OA\JsonContent(
-     *             @OA\Property(property="message", type="string"),
-     *             @OA\Property(property="errors", type="object")
-     *         )
-     *     )
+     * path="/api/v1/categories",
+     * operationId="getCategoriesListV1",
+     * tags={"Categories V1"},
+     * summary="Get all categories",
+     * description="Returns paginated list of categories with optional products",
+     * @OA\Parameter(
+     * name="page",
+     * in="query",
+     * description="Page number",
+     * required=false,
+     * @OA\Schema(type="integer", default=1)
+     * ),
+     * @OA\Parameter(
+     * name="per_page",
+     * in="query",
+     * description="Items per page",
+     * required=false,
+     * @OA\Schema(type="integer", default=15)
+     * ),
+     * @OA\Parameter(
+     * name="with_products",
+     * in="query",
+     * description="Include products with categories",
+     * required=false,
+     * @OA\Schema(type="boolean", default=false)
+     * ),
+     * @OA\Response(
+     * response=200,
+     * description="Successful operation",
+     * @OA\JsonContent(
+     * type="object",
+     * @OA\Property(
+     * property="data",
+     * type="array",
+     * @OA\Items(ref="#/components/schemas/Category")
+     * )
+     * )
+     * ),
+     * @OA\Response(
+     * response=401,
+     * description="Unauthenticated"
+     * )
      * )
      */
     public function index(Request $request)
@@ -130,29 +123,29 @@ class CategoryController extends Controller
 
     /**
      * @OA\Post(
-     *     path="/api/v1/categories",
-     *     operationId="createCategoryV1",
-     *     tags={"Categories V1"},
-     *     summary="Create new category",
-     *     description="Creates a new category",
-     *     security={{"bearerAuth": {}}},
-     *     @OA\RequestBody(
-     *         required=true,
-     *         @OA\JsonContent(ref="#/components/schemas/CategoryRequest")
-     *     ),
-     *     @OA\Response(
-     *         response=201,
-     *         description="Category created successfully",
-     *         @OA\JsonContent(ref="#/components/schemas/Category")
-     *     ),
-     *     @OA\Response(
-     *         response=422,
-     *         description="Validation error"
-     *     ),
-     *     @OA\Response(
-     *         response=401,
-     *         description="Unauthenticated"
-     *     )
+     * path="/api/v1/categories",
+     * operationId="createCategoryV1",
+     * tags={"Categories V1"},
+     * summary="Create new category",
+     * description="Creates a new category record",
+     * security={{"bearerAuth": {}}},
+     * @OA\RequestBody(
+     * required=true,
+     * @OA\JsonContent(ref="#/components/schemas/CategoryRequest")
+     * ),
+     * @OA\Response(
+     * response=201,
+     * description="Category created successfully",
+     * @OA\JsonContent(ref="#/components/schemas/Category")
+     * ),
+     * @OA\Response(
+     * response=422,
+     * description="Validation error"
+     * ),
+     * @OA\Response(
+     * response=401,
+     * description="Unauthenticated"
+     * )
      * )
      */
     public function store(Request $request)
@@ -199,34 +192,27 @@ class CategoryController extends Controller
 
     /**
      * @OA\Get(
-     *     path="/api/v1/categories/{id}",
-     *     operationId="getCategoryByIdV1",
-     *     tags={"Categories V1"},
-     *     summary="Get category details",
-     *     description="Returns category data with optional products",
-     *     @OA\Parameter(
-     *         name="id",
-     *         in="path",
-     *         description="Category ID",
-     *         required=true,
-     *         @OA\Schema(type="integer")
-     *     ),
-     *     @OA\Parameter(
-     *         name="with_products",
-     *         in="query",
-     *         description="Include products in response",
-     *         required=false,
-     *         @OA\Schema(type="boolean", default=false)
-     *     ),
-     *     @OA\Response(
-     *         response=200,
-     *         description="Successful operation",
-     *         @OA\JsonContent(ref="#/components/schemas/Category")
-     *     ),
-     *     @OA\Response(
-     *         response=404,
-     *         description="Category not found"
-     *     )
+     * path="/api/v1/categories/{id}",
+     * operationId="getCategoryByIdV1",
+     * tags={"Categories V1"},
+     * summary="Get category by ID",
+     * description="Returns a single category record",
+     * @OA\Parameter(
+     * name="id",
+     * in="path",
+     * description="Category ID",
+     * required=true,
+     * @OA\Schema(type="integer")
+     * ),
+     * @OA\Response(
+     * response=200,
+     * description="Successful operation",
+     * @OA\JsonContent(ref="#/components/schemas/Category")
+     * ),
+     * @OA\Response(
+     * response=404,
+     * description="Category not found"
+     * )
      * )
      */
     public function show($id)
@@ -244,40 +230,40 @@ class CategoryController extends Controller
 
     /**
      * @OA\Put(
-     *     path="/api/v1/categories/{id}",
-     *     operationId="updateCategoryV1",
-     *     tags={"Categories V1"},
-     *     summary="Update existing category",
-     *     description="Updates category record",
-     *     security={{"bearerAuth": {}}},
-     *     @OA\Parameter(
-     *         name="id",
-     *         in="path",
-     *         description="Category ID",
-     *         required=true,
-     *         @OA\Schema(type="integer")
-     *     ),
-     *     @OA\RequestBody(
-     *         required=true,
-     *         @OA\JsonContent(ref="#/components/schemas/CategoryRequest")
-     *     ),
-     *     @OA\Response(
-     *         response=200,
-     *         description="Category updated successfully",
-     *         @OA\JsonContent(ref="#/components/schemas/Category")
-     *     ),
-     *     @OA\Response(
-     *         response=404,
-     *         description="Category not found"
-     *     ),
-     *     @OA\Response(
-     *         response=422,
-     *         description="Validation error"
-     *     ),
-     *     @OA\Response(
-     *         response=401,
-     *         description="Unauthenticated"
-     *     )
+     * path="/api/v1/categories/{id}",
+     * operationId="updateCategoryV1",
+     * tags={"Categories V1"},
+     * summary="Update existing category",
+     * description="Updates an existing category record by ID",
+     * security={{"bearerAuth": {}}},
+     * @OA\Parameter(
+     * name="id",
+     * in="path",
+     * description="Category ID",
+     * required=true,
+     * @OA\Schema(type="integer")
+     * ),
+     * @OA\RequestBody(
+     * required=true,
+     * @OA\JsonContent(ref="#/components/schemas/CategoryRequest")
+     * ),
+     * @OA\Response(
+     * response=200,
+     * description="Category updated successfully",
+     * @OA\JsonContent(ref="#/components/schemas/Category")
+     * ),
+     * @OA\Response(
+     * response=422,
+     * description="Validation error"
+     * ),
+     * @OA\Response(
+     * response=404,
+     * description="Category not found"
+     * ),
+     * @OA\Response(
+     * response=401,
+     * description="Unauthenticated"
+     * )
      * )
      */
     public function update(Request $request, $id)
@@ -330,31 +316,31 @@ class CategoryController extends Controller
 
     /**
      * @OA\Delete(
-     *     path="/api/v1/categories/{id}",
-     *     operationId="deleteCategoryV1",
-     *     tags={"Categories V1"},
-     *     summary="Delete category",
-     *     description="Deletes category record",
-     *     security={{"bearerAuth": {}}},
-     *     @OA\Parameter(
-     *         name="id",
-     *         in="path",
-     *         description="Category ID",
-     *         required=true,
-     *         @OA\Schema(type="integer")
-     *     ),
-     *     @OA\Response(
-     *         response=204,
-     *         description="Category deleted successfully"
-     *     ),
-     *     @OA\Response(
-     *         response=404,
-     *         description="Category not found"
-     *     ),
-     *     @OA\Response(
-     *         response=401,
-     *         description="Unauthenticated"
-     *     )
+     * path="/api/v1/categories/{id}",
+     * operationId="deleteCategoryV1",
+     * tags={"Categories V1"},
+     * summary="Delete category",
+     * description="Deletes category record",
+     * security={{"bearerAuth": {}}},
+     * @OA\Parameter(
+     * name="id",
+     * in="path",
+     * description="Category ID",
+     * required=true,
+     * @OA\Schema(type="integer")
+     * ),
+     * @OA\Response(
+     * response=204,
+     * description="Category deleted successfully"
+     * ),
+     * @OA\Response(
+     * response=404,
+     * description="Category not found"
+     * ),
+     * @OA\Response(
+     * response=401,
+     * description="Unauthenticated"
+     * )
      * )
      */
     public function destroy(Category $category)

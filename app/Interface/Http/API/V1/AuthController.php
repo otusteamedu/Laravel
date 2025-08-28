@@ -2,7 +2,6 @@
 
 namespace App\Interface\Http\API\V1;
 
-
 use App\Infrastructure\Eloquent\Models\RefreshToken;
 use App\Interface\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -10,7 +9,50 @@ use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Str;
 
-
+/**
+ * @OA\Tag(
+ * name="Auth",
+ * description="API Endpoints for Authentication"
+ * )
+ *
+ * @OA\SecurityScheme(
+ * securityScheme="bearerAuth",
+ * in="header",
+ * name="Authorization",
+ * type="http",
+ * scheme="bearer",
+ * bearerFormat="JWT",
+ * )
+ *
+ * @OA\Schema(
+ * schema="User",
+ * title="User Model",
+ * description="User data",
+ * @OA\Property(property="id", type="integer", readOnly="true", example="1"),
+ * @OA\Property(property="name", type="string", description="User's name", example="John Doe"),
+ * @OA\Property(property="email", type="string", format="email", description="User's email address", example="john@example.com"),
+ * @OA\Property(property="created_at", type="string", format="date-time", readOnly="true"),
+ * @OA\Property(property="updated_at", type="string", format="date-time", readOnly="true"),
+ * )
+ *
+ * @OA\Schema(
+ * schema="Tokens",
+ * title="Tokens Response",
+ * @OA\Property(property="access_token", type="string", example="eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9..."),
+ * @OA\Property(property="refresh_token", type="string", example="some_long_random_string..."),
+ * @OA\Property(property="token_type", type="string", example="bearer"),
+ * @OA\Property(property="expires_in", type="integer", example="3600"),
+ * @OA\Property(property="refresh_expires_in", type="integer", example="604800"),
+ * )
+ *
+ * @OA\Schema(
+ * schema="AccessToken",
+ * title="Access Token Response",
+ * @OA\Property(property="access_token", type="string", example="eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9..."),
+ * @OA\Property(property="token_type", type="string", example="bearer"),
+ * @OA\Property(property="expires_in", type="integer", example="3600"),
+ * )
+ */
 class AuthController extends Controller implements HasMiddleware
 {
 
@@ -18,14 +60,37 @@ class AuthController extends Controller implements HasMiddleware
     {
 
         return [
-            new Middleware('auth:jwt', except:  ['login', 'refreshToken']),
+            new Middleware('auth:jwt', except: ['login', 'refreshToken']),
         ];
     }
 
     /**
-     * Get a JWT via given credentials.
-     *
-     * @return \Illuminate\Http\JsonResponse
+     * @OA\Post(
+     * path="/api/v1/auth/login",
+     * operationId="login",
+     * tags={"Auth"},
+     * summary="Get a JWT via given credentials",
+     * @OA\RequestBody(
+     * required=true,
+     * @OA\JsonContent(
+     * required={"email", "password"},
+     * @OA\Property(property="email", type="string", format="email", example="user@example.com"),
+     * @OA\Property(property="password", type="string", format="password", example="secret"),
+     * )
+     * ),
+     * @OA\Response(
+     * response=200,
+     * description="Successful login",
+     * @OA\JsonContent(ref="#/components/schemas/Tokens")
+     * ),
+     * @OA\Response(
+     * response=401,
+     * description="Unauthorized",
+     * @OA\JsonContent(
+     * @OA\Property(property="error", type="string", example="Unauthorized")
+     * )
+     * )
+     * )
      */
     public function login()
     {
@@ -43,9 +108,22 @@ class AuthController extends Controller implements HasMiddleware
     }
 
     /**
-     * Get the authenticated User.
-     *
-     * @return \Illuminate\Http\JsonResponse
+     * @OA\Post(
+     * path="/api/v1/auth/me",
+     * operationId="me",
+     * tags={"Auth"},
+     * summary="Get the authenticated User",
+     * security={{"bearerAuth": {}}},
+     * @OA\Response(
+     * response=200,
+     * description="Successful operation",
+     * @OA\JsonContent(ref="#/components/schemas/User")
+     * ),
+     * @OA\Response(
+     * response=401,
+     * description="Unauthorized"
+     * )
+     * )
      */
     public function me()
     {
@@ -53,9 +131,24 @@ class AuthController extends Controller implements HasMiddleware
     }
 
     /**
-     * Log the user out (Invalidate the token).
-     *
-     * @return \Illuminate\Http\JsonResponse
+     * @OA\Post(
+     * path="/api/v1/auth/logout",
+     * operationId="logout",
+     * tags={"Auth"},
+     * summary="Log the user out (Invalidate the token)",
+     * security={{"bearerAuth": {}}},
+     * @OA\Response(
+     * response=200,
+     * description="Successfully logged out",
+     * @OA\JsonContent(
+     * @OA\Property(property="message", type="string", example="Successfully logged out")
+     * )
+     * ),
+     * @OA\Response(
+     * response=401,
+     * description="Unauthorized"
+     * )
+     * )
      */
     public function logout()
     {
@@ -65,9 +158,35 @@ class AuthController extends Controller implements HasMiddleware
     }
 
     /**
-     * Refresh access token using refresh token.
-     *
-     * @return \Illuminate\Http\JsonResponse
+     * @OA\Post(
+     * path="/api/v1/auth/refresh-token",
+     * operationId="refreshToken",
+     * tags={"Auth"},
+     * summary="Refresh access token using refresh token",
+     * @OA\RequestBody(
+     * required=true,
+     * @OA\JsonContent(
+     * required={"refresh_token"},
+     * @OA\Property(property="refresh_token", type="string", example="some_long_random_string...")
+     * )
+     * ),
+     * @OA\Response(
+     * response=200,
+     * description="Successfully refreshed tokens",
+     * @OA\JsonContent(ref="#/components/schemas/Tokens")
+     * ),
+     * @OA\Response(
+     * response=401,
+     * description="Invalid or expired refresh token",
+     * @OA\JsonContent(
+     * @OA\Property(property="error", type="string", example="Invalid or expired refresh token")
+     * )
+     * ),
+     * @OA\Response(
+     * response=422,
+     * description="Validation error",
+     * )
+     * )
      */
     public function refreshToken(Request $request)
     {
@@ -75,8 +194,6 @@ class AuthController extends Controller implements HasMiddleware
         $request->validate([
             'refresh_token' => 'required|string',
         ]);
-
-        //$credentials = request(['email', 'password']);
 
         $refreshTokenModel = RefreshToken::where('token', $request->refresh_token)
             ->where('expires_at', '>', now())
@@ -88,21 +205,31 @@ class AuthController extends Controller implements HasMiddleware
 
         $user = $refreshTokenModel->user;
 
-        // Генерируем новый access token
         $newAccessToken = auth('jwt')->login($user);
 
-        // Создаем новый refresh token (опционально - можно переиспользовать старый)
-        $refreshTokenModel->delete(); // Удаляем старый
+        $refreshTokenModel->delete();
         $newRefreshToken = $this->createRefreshToken($user);
 
         return $this->respondWithTokens($newAccessToken, $newRefreshToken);
     }
 
-
     /**
-     * Refresh a token.
-     *
-     * @return \Illuminate\Http\JsonResponse
+     * @OA\Post(
+     * path="/api/v1/auth/refresh",
+     * operationId="refresh",
+     * tags={"Auth"},
+     * summary="Refresh a token",
+     * security={{"bearerAuth": {}}},
+     * @OA\Response(
+     * response=200,
+     * description="Successfully refreshed access token",
+     * @OA\JsonContent(ref="#/components/schemas/AccessToken")
+     * ),
+     * @OA\Response(
+     * response=401,
+     * description="Unauthorized",
+     * )
+     * )
      */
     public function refresh()
     {
@@ -110,33 +237,19 @@ class AuthController extends Controller implements HasMiddleware
         return $this->respondWithToken($newToken);
     }
 
-    /**
-     * Create refresh token for user.
-     *
-     * @param \App\Infrastructure\Eloquent\Models\User $user
-     * @return string
-     */
     protected function createRefreshToken($user)
     {
-        // Удаляем старые refresh токены пользователя
         RefreshToken::where('user_id', $user->id)->delete();
 
         $refreshToken = RefreshToken::create([
             'user_id' => $user->id,
             'token' => Str::random(64),
-            'expires_at' => now()->addDays(7), // 7 дней
+            'expires_at' => now()->addDays(7),
         ]);
 
         return $refreshToken->token;
     }
 
-    /**
-     * Get the token array structure with refresh token.
-     *
-     * @param string $accessToken
-     * @param string $refreshToken
-     * @return \Illuminate\Http\JsonResponse
-     */
     protected function respondWithTokens($accessToken, $refreshToken)
     {
         return response()->json([
@@ -144,16 +257,10 @@ class AuthController extends Controller implements HasMiddleware
             'refresh_token' => $refreshToken,
             'token_type' => 'bearer',
             'expires_in' => auth('jwt')->factory()->getTTL() * 60,
-            'refresh_expires_in' => 7 * 24 * 60 * 60, // 7 дней в секундах
+            'refresh_expires_in' => 7 * 24 * 60 * 60,
         ]);
     }
 
-    /**
-     * Get the token array structure (старый метод).
-     *
-     * @param string $token
-     * @return \Illuminate\Http\JsonResponse
-     */
     protected function respondWithToken($token)
     {
         return response()->json([

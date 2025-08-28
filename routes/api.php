@@ -1,4 +1,10 @@
 <?php
+/**
+ * @OA\Info(
+ *     title="API Documentation",
+ *     version="1.0.0"
+ * )
+ */
 
 use App\Interface\Http\API\V1\AuthController;
 use App\Interface\Http\API\V1\CartController;
@@ -24,6 +30,14 @@ Route::group([
 
 });
 
+Route::group([
+    'prefix' => 'v1',
+    'name' => 'v1',
+    'middleware' => ['auth:jwt'],
+], function(){
+    Route::apiResource('/products', ProductsController::class);
+    Route::apiResource('/categories', CategoryController::class);
+});
 
 Route::prefix('v1')->group(function () {
     Route::prefix('cart')->group(function () {

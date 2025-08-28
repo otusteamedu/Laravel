@@ -9,6 +9,39 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
+/**
+ * @OA\Tag(
+ * name="Products",
+ * description="API Endpoints for Product Management"
+ * )
+ *
+ * @OA\Schema(
+ * schema="ProductRequest",
+ * title="Product Request",
+ * description="Data structure for creating a new product",
+ * @OA\Property(property="title", type="string", description="Product title", example="Premium Headphones"),
+ * @OA\Property(property="text", type="string", description="Product description", nullable=true, example="High quality headphones with noise cancellation."),
+ * @OA\Property(property="image", type="string", description="Main image URL for the product", nullable=true, example="image.jpg"),
+ * @OA\Property(
+ * property="images",
+ * type="array",
+ * description="Array of additional image URLs for the product",
+ * nullable=true,
+ * @OA\Items(type="string", example="image1.jpg")
+ * ),
+ * @OA\Property(property="is_sale", type="boolean", description="Indicates if the product is on sale", example=false),
+ * @OA\Property(property="published", type="boolean", description="Publication status of the product", example=true),
+ * @OA\Property(property="order", type="integer", description="Display order of the product", example=1),
+ * @OA\Property(property="price", type="number", format="float", description="Price of the product", example=199.99),
+ * @OA\Property(property="user_id", type="integer", description="ID of the user who created the product", example=1),
+ * @OA\Property(
+ * property="category_ids",
+ * type="array",
+ * description="An array of category IDs the product belongs to",
+ * @OA\Items(type="integer", example=1)
+ * ),
+ * )
+ */
 class ProductsController extends Controller
 {
     public function __construct(
@@ -17,80 +50,61 @@ class ProductsController extends Controller
 
     /**
      * @OA\Get(
-     *     path="/api/v1/products",
-     *     operationId="getProductsList",
-     *     tags={"Products"},
-     *     summary="Get list of products",
-     *     description="Returns paginated list of products with filtering and sorting options",
-     *     @OA\Parameter(
-     *         name="page",
-     *         in="query",
-     *         description="Page number",
-     *         required=false,
-     *         @OA\Schema(type="integer", default=1)
-     *     ),
-     *     @OA\Parameter(
-     *         name="per_page",
-     *         in="query",
-     *         description="Items per page",
-     *         required=false,
-     *         @OA\Schema(type="integer", default=15)
-     *     ),
-     *     @OA\Parameter(
-     *         name="category_id",
-     *         in="query",
-     *         description="Filter by category ID",
-     *         required=false,
-     *         @OA\Schema(type="integer")
-     *     ),
-     *     @OA\Parameter(
-     *         name="is_sale",
-     *         in="query",
-     *         description="Filter by sale status",
-     *         required=false,
-     *         @OA\Schema(type="boolean")
-     *     ),
-     *     @OA\Parameter(
-     *         name="published",
-     *         in="query",
-     *         description="Filter by published status",
-     *         required=false,
-     *         @OA\Schema(type="boolean")
-     *     ),
-     *     @OA\Parameter(
-     *         name="sort",
-     *         in="query",
-     *         description="Sort field",
-     *         required=false,
-     *         @OA\Schema(type="string", enum={"price", "order", "created_at", "title"}, default="order")
-     *     ),
-     *     @OA\Parameter(
-     *         name="direction",
-     *         in="query",
-     *         description="Sort direction",
-     *         required=false,
-     *         @OA\Schema(type="string", enum={"asc", "desc"}, default="asc")
-     *     ),
-     *     @OA\Response(
-     *         response=200,
-     *         description="Successful operation",
-     *         @OA\JsonContent(
-     *             @OA\Property(property="data", type="array", @OA\Items(ref="#/components/schemas/Product")),
-     *             @OA\Property(property="meta", type="object",
-     *                 @OA\Property(property="current_page", type="integer"),
-     *                 @OA\Property(property="per_page", type="integer"),
-     *                 @OA\Property(property="total", type="integer"),
-     *                 @OA\Property(property="last_page", type="integer")
-     *             )
-     *         )
-     *     ),
-     *     @OA\Response(
-     *         response=422,
-     *         description="Validation error",
-     *         @OA\JsonContent(
-     *             @OA\Property(property="errors", type="object")
-     *         )
-     *     )
+     * path="/api/v1/products",
+     * operationId="getProductsList",
+     * tags={"Products"},
+     * summary="Get list of products",
+     * description="Returns paginated list of products with filtering and sorting options",
+     * @OA\Parameter(
+     * name="page",
+     * in="query",
+     * description="Page number",
+     * required=false,
+     * @OA\Schema(type="integer", default=1)
+     * ),
+     * @OA\Parameter(
+     * name="per_page",
+     * in="query",
+     * description="Items per page",
+     * required=false,
+     * @OA\Schema(type="integer", default=15)
+     * ),
+     * @OA\Parameter(
+     * name="category_id",
+     * in="query",
+     * description="Filter by category ID",
+     * required=false,
+     * @OA\Schema(type="integer")
+     * ),
+     * @OA\Parameter(
+     * name="on_sale",
+     * in="query",
+     * description="Filter by sale status",
+     * required=false,
+     * @OA\Schema(type="boolean")
+     * ),
+     * @OA\Parameter(
+     * name="sort_by",
+     * in="query",
+     * description="Sort by field (e.g., price, created_at)",
+     * required=false,
+     * @OA\Schema(type="string")
+     * ),
+     * @OA\Parameter(
+     * name="sort_order",
+     * in="query",
+     * description="Sort order (asc or desc)",
+     * required=false,
+     * @OA\Schema(type="string", enum={"asc", "desc"})
+     * ),
+     * @OA\Response(
+     * response=200,
+     * description="Successful operation",
+     * @OA\JsonContent(
+     * type="object",
+     * @OA\Property(property="data", type="array", @OA\Items(ref="#/components/schemas/Product"))
+     * )
+     * )
      * )
      */
     public function index(Request $request)
@@ -136,30 +150,27 @@ class ProductsController extends Controller
 
     /**
      * @OA\Get(
-     *     path="/api/v1/products/{id}",
-     *     operationId="getProductById",
-     *     tags={"Products"},
-     *     summary="Get product details",
-     *     description="Returns product data with categories",
-     *     @OA\Parameter(
-     *         name="id",
-     *         in="path",
-     *         description="Product ID",
-     *         required=true,
-     *         @OA\Schema(type="integer")
-     *     ),
-     *     @OA\Response(
-     *         response=200,
-     *         description="Successful operation",
-     *         @OA\JsonContent(ref="#/components/schemas/Product")
-     *     ),
-     *     @OA\Response(
-     *         response=404,
-     *         description="Product not found",
-     *         @OA\JsonContent(
-     *             @OA\Property(property="message", type="string")
-     *         )
-     *     )
+     * path="/api/v1/products/{id}",
+     * operationId="getProductById",
+     * tags={"Products"},
+     * summary="Get product by ID",
+     * description="Returns a single product record",
+     * @OA\Parameter(
+     * name="id",
+     * in="path",
+     * description="Product ID",
+     * required=true,
+     * @OA\Schema(type="integer")
+     * ),
+     * @OA\Response(
+     * response=200,
+     * description="Successful operation",
+     * @OA\JsonContent(ref="#/components/schemas/Product")
+     * ),
+     * @OA\Response(
+     * response=404,
+     * description="Product not found"
+     * )
      * )
      */
     public function show($id)
@@ -177,44 +188,29 @@ class ProductsController extends Controller
 
     /**
      * @OA\Post(
-     *     path="/api/v1/products",
-     *     operationId="createProduct",
-     *     tags={"Products"},
-     *     summary="Create new product",
-     *     description="Creates a new product with categories",
-     *     security={{"bearerAuth": {}}},
-     *     @OA\RequestBody(
-     *         required=true,
-     *         @OA\JsonContent(
-     *             required={"title", "price"},
-     *             @OA\Property(property="title", type="string", example="Premium Headphones"),
-     *             @OA\Property(property="alias", type="string", example="premium-headphones"),
-     *             @OA\Property(property="text", type="string", example="High quality headphones with noise cancellation"),
-     *             @OA\Property(property="image", type="string", example="headphones.jpg"),
-     *             @OA\Property(property="images", type="array", @OA\Items(type="string", example="image1.jpg")),
-     *             @OA\Property(property="is_sale", type="boolean", example=true),
-     *             @OA\Property(property="published", type="boolean", example=true),
-     *             @OA\Property(property="order", type="integer", example=1),
-     *             @OA\Property(property="price", type="number", format="float", example=199.99),
-     *             @OA\Property(property="categories", type="array", @OA\Items(type="integer", example=1))
-     *         )
-     *     ),
-     *     @OA\Response(
-     *         response=201,
-     *         description="Product created successfully",
-     *         @OA\JsonContent(ref="#/components/schemas/Product")
-     *     ),
-     *     @OA\Response(
-     *         response=422,
-     *         description="Validation error",
-     *         @OA\JsonContent(
-     *             @OA\Property(property="errors", type="object")
-     *         )
-     *     ),
-     *     @OA\Response(
-     *         response=401,
-     *         description="Unauthorized"
-     *     )
+     * path="/api/v1/products",
+     * operationId="createProduct",
+     * tags={"Products"},
+     * summary="Create new product",
+     * description="Creates a new product record",
+     * security={{"bearerAuth": {}}},
+     * @OA\RequestBody(
+     * required=true,
+     * @OA\JsonContent(ref="#/components/schemas/ProductRequest")
+     * ),
+     * @OA\Response(
+     * response=201,
+     * description="Product created successfully",
+     * @OA\JsonContent(ref="#/components/schemas/Product")
+     * ),
+     * @OA\Response(
+     * response=422,
+     * description="Validation error"
+     * ),
+     * @OA\Response(
+     * response=401,
+     * description="Unauthenticated"
+     * )
      * )
      */
     public function store(Request $request): JsonResponse
@@ -271,57 +267,40 @@ class ProductsController extends Controller
 
     /**
      * @OA\Put(
-     *     path="/api/v1/products/{id}",
-     *     operationId="updateProduct",
-     *     tags={"Products"},
-     *     summary="Update existing product",
-     *     description="Updates product and its categories",
-     *     security={{"bearerAuth": {}}},
-     *     @OA\Parameter(
-     *         name="id",
-     *         in="path",
-     *         description="Product ID",
-     *         required=true,
-     *         @OA\Schema(type="integer")
-     *     ),
-     *     @OA\RequestBody(
-     *         required=true,
-     *         @OA\JsonContent(
-     *             @OA\Property(property="title", type="string", example="Updated Product Name"),
-     *             @OA\Property(property="alias", type="string", example="updated-product"),
-     *             @OA\Property(property="text", type="string", example="Updated description"),
-     *             @OA\Property(property="image", type="string", example="new-image.jpg"),
-     *             @OA\Property(property="images", type="array", @OA\Items(type="string")),
-     *             @OA\Property(property="is_sale", type="boolean", example=false),
-     *             @OA\Property(property="published", type="boolean", example=true),
-     *             @OA\Property(property="order", type="integer", example=2),
-     *             @OA\Property(property="price", type="number", format="float", example=179.99),
-     *             @OA\Property(property="categories", type="array", @OA\Items(type="integer"))
-     *         )
-     *     ),
-     *     @OA\Response(
-     *         response=200,
-     *         description="Product updated successfully",
-     *         @OA\JsonContent(ref="#/components/schemas/Product")
-     *     ),
-     *     @OA\Response(
-     *         response=404,
-     *         description="Product not found",
-     *         @OA\JsonContent(
-     *             @OA\Property(property="message", type="string")
-     *         )
-     *     ),
-     *     @OA\Response(
-     *         response=422,
-     *         description="Validation error",
-     *         @OA\JsonContent(
-     *             @OA\Property(property="errors", type="object")
-     *         )
-     *     ),
-     *     @OA\Response(
-     *         response=401,
-     *         description="Unauthorized"
-     *     )
+     * path="/api/v1/products/{id}",
+     * operationId="updateProduct",
+     * tags={"Products"},
+     * summary="Update existing product",
+     * description="Updates an existing product record by ID",
+     * security={{"bearerAuth": {}}},
+     * @OA\Parameter(
+     * name="id",
+     * in="path",
+     * description="Product ID",
+     * required=true,
+     * @OA\Schema(type="integer")
+     * ),
+     * @OA\RequestBody(
+     * required=true,
+     * @OA\JsonContent(ref="#/components/schemas/ProductRequest")
+     * ),
+     * @OA\Response(
+     * response=200,
+     * description="Product updated successfully",
+     * @OA\JsonContent(ref="#/components/schemas/Product")
+     * ),
+     * @OA\Response(
+     * response=422,
+     * description="Validation error"
+     * ),
+     * @OA\Response(
+     * response=404,
+     * description="Product not found"
+     * ),
+     * @OA\Response(
+     * response=401,
+     * description="Unauthenticated"
+     * )
      * )
      */
     public function update(Request $request, $id)
@@ -381,34 +360,31 @@ class ProductsController extends Controller
 
     /**
      * @OA\Delete(
-     *     path="/api/v1/products/{id}",
-     *     operationId="deleteProduct",
-     *     tags={"Products"},
-     *     summary="Delete product",
-     *     description="Deletes a product",
-     *     security={{"bearerAuth": {}}},
-     *     @OA\Parameter(
-     *         name="id",
-     *         in="path",
-     *         description="Product ID",
-     *         required=true,
-     *         @OA\Schema(type="integer")
-     *     ),
-     *     @OA\Response(
-     *         response=204,
-     *         description="Product deleted successfully"
-     *     ),
-     *     @OA\Response(
-     *         response=404,
-     *         description="Product not found",
-     *         @OA\JsonContent(
-     *             @OA\Property(property="message", type="string")
-     *         )
-     *     ),
-     *     @OA\Response(
-     *         response=401,
-     *         description="Unauthorized"
-     *     )
+     * path="/api/v1/products/{id}",
+     * operationId="deleteProduct",
+     * tags={"Products"},
+     * summary="Delete product",
+     * description="Deletes a product record",
+     * security={{"bearerAuth": {}}},
+     * @OA\Parameter(
+     * name="id",
+     * in="path",
+     * description="Product ID",
+     * required=true,
+     * @OA\Schema(type="integer")
+     * ),
+     * @OA\Response(
+     * response=204,
+     * description="Product deleted successfully"
+     * ),
+     * @OA\Response(
+     * response=404,
+     * description="Product not found"
+     * ),
+     * @OA\Response(
+     * response=401,
+     * description="Unauthenticated"
+     * )
      * )
      */
     public function destroy($id): JsonResponse
@@ -427,46 +403,46 @@ class ProductsController extends Controller
 
     /**
      * @OA\Get(
-     *     path="/api/v1/products/search",
-     *     operationId="searchProducts",
-     *     tags={"Products"},
-     *     summary="Search products",
-     *     description="Search products by various criteria",
-     *     @OA\Parameter(
-     *         name="q",
-     *         in="query",
-     *         description="Search query",
-     *         required=false,
-     *         @OA\Schema(type="string")
-     *     ),
-     *     @OA\Parameter(
-     *         name="min_price",
-     *         in="query",
-     *         description="Minimum price",
-     *         required=false,
-     *         @OA\Schema(type="number")
-     *     ),
-     *     @OA\Parameter(
-     *         name="max_price",
-     *         in="query",
-     *         description="Maximum price",
-     *         required=false,
-     *         @OA\Schema(type="number")
-     *     ),
-     *     @OA\Parameter(
-     *         name="on_sale",
-     *         in="query",
-     *         description="Filter by sale status",
-     *         required=false,
-     *         @OA\Schema(type="boolean")
-     *     ),
-     *     @OA\Response(
-     *         response=200,
-     *         description="Successful operation",
-     *         @OA\JsonContent(
-     *             @OA\Property(property="data", type="array", @OA\Items(ref="#/components/schemas/Product"))
-     *         )
-     *     )
+     * path="/api/v1/products/search",
+     * operationId="searchProducts",
+     * tags={"Products"},
+     * summary="Search for products",
+     * description="Returns a list of products based on search criteria",
+     * @OA\Parameter(
+     * name="q",
+     * in="query",
+     * description="Search query for product title",
+     * required=false,
+     * @OA\Schema(type="string")
+     * ),
+     * @OA\Parameter(
+     * name="min_price",
+     * in="query",
+     * description="Filter by minimum price",
+     * required=false,
+     * @OA\Schema(type="number")
+     * ),
+     * @OA\Parameter(
+     * name="max_price",
+     * in="query",
+     * description="Filter by maximum price",
+     * required=false,
+     * @OA\Schema(type="number")
+     * ),
+     * @OA\Parameter(
+     * name="on_sale",
+     * in="query",
+     * description="Filter by sale status",
+     * required=false,
+     * @OA\Schema(type="boolean")
+     * ),
+     * @OA\Response(
+     * response=200,
+     * description="Successful operation",
+     * @OA\JsonContent(
+     * @OA\Property(property="data", type="array", @OA\Items(ref="#/components/schemas/Product"))
+     * )
+     * )
      * )
      */
     public function search(Request $request): JsonResponse
