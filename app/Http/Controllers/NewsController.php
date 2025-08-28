@@ -66,7 +66,7 @@ class NewsController extends Controller
         $news->preview = Str::limit($request->input('text'), 20, '...');
         $news->user_id = $auth->guard()->id();
         $news->create_at = Carbon::now()->format('Y-m-d');
-        $news->save();
+        $news->save();        
         return redirect()->route('news.index')->with('success', 'Новость успешно создана');
     }
 

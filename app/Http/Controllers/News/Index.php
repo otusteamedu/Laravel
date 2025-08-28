@@ -20,9 +20,7 @@ class Index
      */
     public function __invoke(AuthManager $auth): View|RedirectResponse
     {
-        if (!$auth->check()) {
-            return redirect()->route('login');
-        }
+        
         $news = News::skip(0)->take($this->count)->get();
         $count = ceil(News::count()/$this->count);
         $pagination = ['count'=>$count,'page'=>0];
