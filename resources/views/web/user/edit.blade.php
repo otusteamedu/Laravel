@@ -3,10 +3,29 @@
 @section('title', 'Редактирование профиля')
 
 @section('content')
-    <h1>{{$name}}</h1>
-    <h2>Дата рождения: {{ $date }}</h2>
-    <h2>Группа: {{ $group }}</h2>
-    <p>{{$text}}</p>
+    <form method="POST" action="/register/">
+        @csrf
+
+        <!-- Name -->
+        <div>
+            <x-input-label for="name" :value="__('Name')" />
+            <x-text-input id="name" class="block mt-1 w-full" type="text" name="name" value="{{$name}}" required autofocus autocomplete="name" />
+            <x-input-error :messages="$errors->get('name')" class="mt-2" />
+        </div>
+
+        <!-- Date -->
+        <div class="mt-4">
+            <x-input-label for="date" :value="__('Date')" />
+            <x-text-input id="date" class="block mt-1 w-full" type="date" name="date" value="{{$date}}" required />
+            <x-input-error :messages="$errors->get('date')" class="mt-2" />
+        </div>
+        <!-- Text -->
+        <div class="mt-4">
+            <x-input-label for="text" :value="__('Text')" />
+            <x-text-input id="text" class="block mt-1 w-full" type="text" name="text" value="{{$text}}" required />
+            <x-input-error :messages="$errors->get('text')" class="mt-2" />
+        </div>
+    </form>
 @endsection
 
 @section('styles')
