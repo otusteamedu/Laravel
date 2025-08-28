@@ -23,7 +23,7 @@ return new class extends Migration
             $table->string('status', 20)
                 ->default('pending')
                 ->index();
-            $table->decimal('total_amount', 10, 2)
+            $table->decimal('total_amount', 20, 2)
                 ->default(0);
             $table->text('shipping_address')
                 ->nullable();

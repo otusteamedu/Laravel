@@ -1,5 +1,5 @@
 @host = http://localhost
-@token = eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vbG9jYWxob3N0L2FwaS9hdXRoL3JlZnJlc2gtdG9rZW4iLCJpYXQiOjE3NTYzMDg0ODEsImV4cCI6MTc1NjMwOTM4MSwibmJmIjoxNzU2MzA4NDgxLCJqdGkiOiJNZktyeFd3a0ljMWlFckdCIiwic3ViIjoiMSIsInBydiI6IjQ1NTk0ZGNmZjk5NjhlODllOWZhNzg3NTE2MGNjOTUyOGI5Njc5MTkiLCJyb2xlcyI6WzFdLCJlbWFpbCI6ImFkbWluQGV4YW1wbGUuY29tIiwibmFtZSI6IkFkbWluIFVzZXIifQ.dS9IlJiQP661rjYZ2m1nZ10goFJAf6VOeNy8GD1ppYA
+@token = eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vbG9jYWxob3N0L2FwaS9hdXRoL2xvZ2luIiwiaWF0IjoxNzU2NDAyODc0LCJleHAiOjE3NTY0MDM3NzQsIm5iZiI6MTc1NjQwMjg3NCwianRpIjoiZjJxZDVSOGdISmRFZ0E5biIsInN1YiI6IjEiLCJwcnYiOiI0NTU5NGRjZmY5OTY4ZTg5ZTlmYTc4NzUxNjBjYzk1MjhiOTY3OTE5Iiwicm9sZXMiOlsxXSwiZW1haWwiOiJhZG1pbkBleGFtcGxlLmNvbSIsIm5hbWUiOiJBZG1pbiBVc2VyIn0.pE8IKHPxU2bavUKslSX1nlafZetUXwgq8pGa93gVWf0
 @tokenbasket = CbAXTwihOT4p3IqEQRkSRv2RGyBTxeI8K9jHUMzHDwblio1GmBkyR6ckrv5LAZ0I
 
 ### User login
@@ -18,14 +18,9 @@ Accept: application/json
 Content-Type: application/json
 
 {
-    "refresh_token": "RZc4Ju6Ya316coaEx22ogvksTQeHfsfH8gS4YlGDPIc45qtuqWVNqc5JI5r5xTAo"
+    "refresh_token": "qppUw7ylX56LFYenE5dUavdb1rYvAmgGm1Rc5bkIksOPLD2qnGgL8owHYpNYnTW5"
 }
 
-### User profile
-GET {{host}}/api/v1/personal-cabinet
-Accept: application/json
-Content-Type: application/json
-Authorization: Bearer {{token}}
 
 ### Get all products (paginated)
 GET {{host}}/api/v1/products
@@ -186,7 +181,7 @@ Accept: application/json
 Content-Type: application/json
 
 {
-    "product_id": "1",
+    "product_id": "2",
     "quantity": 2
 }
 
@@ -222,7 +217,7 @@ Content-Type: application/json
 
 
 ### show order
-GET {{host}}/api/v1/orders/3
+GET {{host}}/api/v1/orders/1
 Authorization: Bearer {{token}}
 X-Guest-Token: {{tokenbasket}}
 Accept: application/json
@@ -237,7 +232,7 @@ Content-Type: application/json
 
 
 ### Cancel order
-PATCH {{host}}/api/v1/orders/3/cancel
+PATCH {{host}}/api/v1/orders/1/cancel
 Authorization: Bearer {{token}}
 Accept: application/json
 Content-Type: application/json

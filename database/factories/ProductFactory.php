@@ -28,7 +28,7 @@ class ProductFactory extends Factory
             'is_sale' => fake()->boolean(70),
             'published' => 1,
             'order' => fake()->numberBetween(0, 1000),
-            'price' => fake()->randomFloat(100, 100000),
+            'price' => fake()->randomFloat(2, 100, 100000),
             'user_id' => User::factory(),
         ];
     }
