@@ -1,20 +1,14 @@
 <?php
 
-use App\Http\Controllers\NewsController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\LocaleController;
 use App\Http\Controllers\WithdrawController;
 use App\Models\News;
 use App\Http\Controllers;
 use App\Models\User;
-use App\Models\NewsPreview;
-use App\Queries\UserQueries;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
-use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Storage;
-use Monolog\Handler\TelegramBotHandler;
 use App\Http\Middleware\CheckLocale;
 use App\Services\JobService;
 use Illuminate\Http\Response as HttpResponse;

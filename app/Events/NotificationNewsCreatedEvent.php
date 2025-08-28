@@ -4,23 +4,21 @@ namespace App\Events;
 
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
-use Illuminate\Broadcasting\PresenceChannel;
 use Illuminate\Broadcasting\PrivateChannel;
-use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
-use App\Models\News;
 
-class NotificationEvent
+
+class NotificationNewsCreatedEvent
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
-    public $news;
+    public int $newsId;
     /**
      * Create a new event instance.
      */
-    public function __construct(News $news)
+    public function __construct(int $id)
     {
-        $this->news = $news;
+        $this->newsId = $id;
     }
 
     /**
