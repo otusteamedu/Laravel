@@ -7,6 +7,7 @@
     "license": "MIT",
     "require": {
         "php": "^8.2",
+        "darkaonline/l5-swagger": "^9.0",
         "dedoc/scramble": "^0.12.30",
         "fakerphp/faker": "^1.24",
         "illuminate/support": "*",
@@ -18,6 +19,8 @@
         "lcobucci/jwt": "^4.3",
         "league/event": "^2.3.0",
         "prog-time/tg-logger": "^1.0",
+        "psr/http-server-handler": "^1.0",
+        "psr/http-server-middleware": "^1.0",
         "tymon/jwt-auth": "^2.1",
         "vagrant/ascii": "@dev",
         "watson/rememberable": "^7.0"
