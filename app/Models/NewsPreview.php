@@ -3,7 +3,7 @@ declare(strict_types=1);
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-
+use Illuminate\Database\Eloquent\Relations\Relation;
 class NewsPreview extends Model
 {
     public bool $timestamps = false;
@@ -12,6 +12,7 @@ class NewsPreview extends Model
     */
     public function news()
     {
-        return $this->belongsTo(News::class);
+        $class = Relation::getMorphedModel('news');
+        return $this->belongsTo($class);
     }
 }
