@@ -1,0 +1,20 @@
+<?php
+
+namespace Database\Factories;
+
+use App\Models\Category;
+use Illuminate\Database\Eloquent\Factories\Factory;
+
+class CategoryFactory extends Factory
+{
+    protected $model = Category::class;
+
+    public function definition(): array
+    {
+        return [
+            'color' => $this->faker->hexColor(),
+            'name' => $this->faker->sentence(rand(1, 3)),
+            'description' => $this->faker->paragraph(),
+        ];
+    }
+}
