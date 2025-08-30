@@ -3,12 +3,15 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
+// use App\Models\Shedule;
+// use Illuminate\Support\Facades\DB;
+
 // Route::get('/', function () {
 //     return view('welcome');
 // });
 
 Route::get('/', function () {
-    return redirect('/blogs');
+    return redirect('/shedules');
 });
 
 Route::get('/dashboard', function () {
@@ -21,6 +24,6 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::resource('blogs', \App\Http\Controllers\BlogsController::class)->middleware('auth');
+Route::resource('shedules', \App\Http\Controllers\ShedulesController::class)->middleware('auth');
 
 require __DIR__.'/auth.php';

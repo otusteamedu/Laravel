@@ -5,19 +5,21 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 
 /*
-    @property string $title
-    @property string $preview
-    @property string $text
+    @property string $language_code
+    @property string $group_code
+    @property string $date
+    @property string $teacher
     @property string $created_at
     @property string $updated_at
 */
 
-class Blog extends Model
+class Shedule extends Model
 {
     protected $fillable = [
-        'title',
-        'preview',
-        'text',
+        'language_code',
+        'group_code',
+        'date',
+        'teacher',
         'author_id',
         'created_at',
         'updated_at',

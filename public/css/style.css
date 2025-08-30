@@ -69,12 +69,18 @@ img {
 }
 
 .newscont__id {
-    width: 5%;
+    width: 7%;
     text-align: left;
 }
 
 .newscont__title {
     width: 50%;
+    text-align: left;
+    padding-left: 20px;
+}
+
+.newscont__column {
+    width: 13%;
     text-align: left;
     padding-left: 20px;
 }
@@ -157,6 +163,11 @@ img {
 .topmenu__col2 {
     width: 50%;
     text-align: right;
+}
+
+.actionbtn {
+    margin-bottom: 20px;
+    padding: 10px 50px;
 }
 
 /* ====================       450px       ====================================== */
