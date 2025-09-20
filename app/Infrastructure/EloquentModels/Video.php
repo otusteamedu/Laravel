@@ -2,6 +2,12 @@
 
 namespace App\Infrastructure\EloquentModels;
 
+use App\Domain\BusinessModels\BaseModel as BusinessBaseModel;
+use App\Domain\BusinessModels\Video as BusinessModelsVideo;
+use App\Domain\ValueObjects\Video\VideoPath;
+use App\Domain\ValueObjects\Video\VideoUrl;
+use Carbon\Carbon;
+
 class Video extends BaseModel
 {
     /**
@@ -22,36 +28,56 @@ class Video extends BaseModel
         return $this->morphTo('video');
     }
 
-    public function getURL() 
+    public function getURL(): VideoUrl
     {
-        return $this->url;
+        return new VideoUrl($this->url);
     }
 
-    public function getPath() 
+    public function getPath(): VideoPath
     {
-        return $this->path;
+        return new VideoPath($this->path);
     }
 
-    public function getVideoType() 
+    public function getIsPreview(): bool
+    {
+        return $this->is_preview;
+    }
+
+    public function getVideoType(): string
     {
         return $this->photo_type;
     }
 
-    public function getVideoId() 
+    public function getVideoId(): int
     {
         return $this->photo_id;
     }
 
-    public function getCreatedAt() 
+    public function getCreatedAt(): string
     {
-        return $this->created_at;
+        $data = Carbon::createFromDate($this->created_at)->format('d.m.Y');
+        return $data;
     }
 
-    public function getUpdatedAt() 
+    public function getUpdatedAt(): string
     {
-        return $this->updated_at;
+        $data = Carbon::createFromDate($this->updated_at)->format('d.m.Y');
+        return $data;
     }
-    
+
+    public function toBusinessModel(): ?BusinessBaseModel
+    {
+        return new BusinessModelsVideo(
+            id: $this->getId(),
+            url: $this->getURL(),
+            path: $this->getPat(),
+            is_preview: $this->getIsPreview(),
+            photo_type: $this->getPhotoType(),
+            photo_id: $this->getPhotoId(),
+            created_at: $this->getCreatedAt()
+        );
+    }
+
     protected static function newFactory()
     {
         return \Database\Factories\VideoFactory::new();

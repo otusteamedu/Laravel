@@ -2,12 +2,21 @@
 
 namespace App\Infrastructure\EloquentModels;
 
+use App\Domain\BusinessModels\BaseModel as BusinessBaseModel;
+use App\Domain\BusinessModels\Category as BusinessModelsCategory;
+use App\Domain\ValueObjects\Category\CategoryDescription;
+use App\Domain\ValueObjects\Category\CategoryName;
+use App\Infrastructure\Helpers\LocaleHelper;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Log;
+
 class Category extends BaseModel
 {
     /**
      * Class Category
      *
      * @property int $id
+     * @property string $api_id
      * @property string $name_en
      * @property string $name_ru
      * @property text $description_en
@@ -16,39 +25,60 @@ class Category extends BaseModel
      * @property \Illuminate\Support\Carbon $updated_at
      */
 
-    public function recipes() 
+    public function recipes()
     {
         return $this->hasMany(Recipe::class, 'category_id', 'id');
     }
 
-    public function getNameEn() 
+    public function getName(): CategoryName
     {
-        return $this->name_en;
+        $nameField = 'name_' . LocaleHelper::getLocale();
+        $categoryName = new CategoryName($this->$nameField);
+        return $categoryName;
     }
 
-    public function getNameRu() 
+    public function getApiId(): string
     {
-        return $this->name_ru;
+        return $this->api_id;
     }
 
-    public function getDescriptionEn() 
+    public function getDescription(): CategoryDescription
     {
-        return $this->description_en;
+        $nameField = 'name_' . LocaleHelper::getLocale();
+        $categoryDescription = new CategoryDescription($this->$nameField);
+        return $categoryDescription;
     }
 
-    public function getDescriptionRu() 
+    public function getCreatedAt(): string
     {
-        return $this->description_ru;
+        $data = Carbon::createFromDate($this->created_at)->format('d.m.Y');
+        return $data;
     }
 
-    public function getCreatedAt() 
+    public function getUpdatedAt(): string
     {
-        return $this->created_at;
+        $data = Carbon::createFromDate($this->updated_at)->format('d.m.Y');
+        return $data;
     }
 
-    public function getUpdatedAt() 
+    public function toBusinessModel(): ?BusinessBaseModel
     {
-        return $this->updated_at;
+        if (!$this->getName()->getValue()) {
+            Log::warning(
+                'Отсутствует название у категории с id = ' . $this->getId() .
+                    ' по локали: ' . LocaleHelper::getLocale()
+            );
+            return null;
+        } else {
+            return new BusinessModelsCategory(
+                id: $this->getId(),
+                apiId:$this->getApiId(),
+                name: $this->getName(),
+                description: $this->getDescription(),
+                lang: $this->getLang(),
+                created_at: $this->getCreatedAt()
+            );
+        }
     }
 
     protected static function newFactory()

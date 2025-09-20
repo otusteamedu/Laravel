@@ -5,7 +5,6 @@ namespace App\Infrastructure\EloquentModels;
 use App\Domain\BusinessModels\Area as BusinessModelArea;
 use App\Domain\BusinessModels\BaseModel as BusinessBaseModel;
 use App\Infrastructure\Helpers\LocaleHelper;
-use App\Domain\ValueObjects\Area\AreaLang;
 use App\Domain\ValueObjects\Area\AreaName;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Log;
@@ -32,12 +31,6 @@ class Area extends BaseModel implements EloquentModelsInterface
         $nameField = 'name_' . LocaleHelper::getLocale();
         $areaName = new AreaName($this->$nameField);
         return $areaName;
-    }
-
-    public function getLang(): AreaLang 
-    {
-        $areaLang = new AreaLang(LocaleHelper::getLocale());
-        return $areaLang;
     }
 
     public function getCreatedAt(): string 

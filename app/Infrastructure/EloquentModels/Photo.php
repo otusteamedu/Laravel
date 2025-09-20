@@ -2,6 +2,12 @@
 
 namespace App\Infrastructure\EloquentModels;
 
+use App\Domain\BusinessModels\Photo as BusinessModelsPhoto;
+use App\Domain\BusinessModels\BaseModel as BusinessBaseModel;
+use App\Domain\ValueObjects\Photo\PhotoPath;
+use App\Domain\ValueObjects\Photo\PhotoUrl;
+use Carbon\Carbon;
+
 class Photo extends BaseModel
 {
     /**
@@ -17,51 +23,66 @@ class Photo extends BaseModel
      * @property \Illuminate\Support\Carbon $updated_at
      */
 
-    public function recipe() 
+    public function recipe()
     {
         return $this->morphTo('photo');
     }
 
-    public function product() 
+    public function product()
     {
         return $this->morphTo('photo');
     }
 
-    public function getURL() 
+    public function getURL(): PhotoUrl
     {
-        return $this->url;
+        return new PhotoUrl($this->url);
     }
 
-    public function getPath() 
+    public function getPath(): PhotoPath
     {
-        return $this->path;
+        return new PhotoPath($this->path);
     }
 
-    public function getIsPreview() 
+    public function getIsPreview(): bool
     {
         return $this->is_preview;
     }
 
-    public function getPhotoType() 
+    public function getPhotoType(): string
     {
         return $this->photo_type;
     }
 
-    public function getPhotoId() 
+    public function getPhotoId(): int
     {
         return $this->photo_id;
     }
 
-    public function getCreatedAt() 
+    public function getCreatedAt(): string
     {
-        return $this->created_at;
+        $data = Carbon::createFromDate($this->created_at)->format('d.m.Y');
+        return $data;
     }
 
-    public function getUpdatedAt() 
+    public function getUpdatedAt(): string
     {
-        return $this->updated_at;
+        $data = Carbon::createFromDate($this->updated_at)->format('d.m.Y');
+        return $data;
     }
-    
+
+    public function toBusinessModel(): ?BusinessBaseModel
+    {
+        return new BusinessModelsPhoto(
+            id: $this->getId(),
+            url: $this->getURL(),
+            path: $this->getPat(),
+            is_preview: $this->getIsPreview(),
+            photo_type: $this->getPhotoType(),
+            photo_id: $this->getPhotoId(),
+            created_at: $this->getCreatedAt()
+        );
+    }
+
     protected static function newFactory()
     {
         return \Database\Factories\PhotoFactory::new();

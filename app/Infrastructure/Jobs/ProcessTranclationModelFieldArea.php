@@ -4,8 +4,11 @@ namespace App\Infrastructure\Jobs;
 
 use App\Application\Exceptions\NotFoundServiceException;
 use App\Application\Services\Area\AreaRepositoryInterface;
+use App\Application\Services\Measure\MeasureRepositoryInterface;
+use App\Application\Services\Product\ProductRepositoryInterface;
+use App\Application\Services\Recipe\RecipeRepositoryInterface;
 use App\Domain\BusinessModels\Area;
-use App\Domain\ValueObjects\Area\AreaLang;
+use App\Domain\ValueObjects\Lang;
 use App\Domain\ValueObjects\Area\AreaName;
 use App\Interfaces\Response\WebResponse;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -13,7 +16,7 @@ use Illuminate\Foundation\Queue\Queueable;
 use Illuminate\Support\Facades\Log;
 use Stronger21012\Autotranslator\Services\Translation\TranslatorInterface;
 
-class ProcessTranclationModelField implements ShouldQueue
+class ProcessTranclationModelFieldArea implements ShouldQueue
 {
     use Queueable;
 
@@ -37,6 +40,7 @@ class ProcessTranclationModelField implements ShouldQueue
      * @var AreaRepositoryInterface
      */
     private AreaRepositoryInterface $areaRepository;
+
     /**
      * Репозитории, с которыми будет работать задача.
      * @var array<int, \App\Domain\Repositories\...RepositoryInterface>
@@ -81,7 +85,7 @@ class ProcessTranclationModelField implements ShouldQueue
                 $presenceLang = [];
                 if (empty($idsModels)) {
                     $e = new NotFoundServiceException(
-                        'При выполнении задачи translationModelFeild не найдены записи с пустым переводом по языку ' . $lang,
+                        'При выполнении задачи translationModelFeildArea не найдены записи с пустым переводом по языку ' . $lang,
                         404
                     );
                     $response = new WebResponse(false, null, $e->getMessage(), [], $e->getCode());
@@ -93,10 +97,10 @@ class ProcessTranclationModelField implements ShouldQueue
                         $presenceLang = $repositoryModel->findPresenceLangById($idModel);
                         $searchedLangValue = $translator->translate($presenceLang['value'], $presenceLang['lang'], $lang);
                         $name = new AreaName($searchedLangValue);
-                        $lang = new AreaLang($lang);
+                        $langModel = new Lang($lang);
                         $model = new Area(
                             name:$name,
-                            lang:$lang,
+                            lang:$langModel,
                             id:$idModel,
                             created_at:$presenceLang['created_at'],
                         );

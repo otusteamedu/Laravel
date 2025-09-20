@@ -2,6 +2,14 @@
 
 namespace App\Infrastructure\EloquentModels;
 
+use App\Domain\BusinessModels\MeasureProductRecipe as BusinessModelMeasureProductRecipe;
+use App\Domain\BusinessModels\BaseModel as BusinessBaseModel;
+use App\Domain\BusinessModels\Measure as BusinessModelMeasure;
+use App\Domain\BusinessModels\Product as BusinessModelProduct;
+use App\Domain\BusinessModels\Recipe as BusinessModelRecipe;
+use App\Domain\ValueObjects\MeasureProductRecipe\MeasureProductRecipeValue;
+use Carbon\Carbon;
+
 class MeasureProductRecipe extends BaseModel
 {
     protected $table = 'measure_product_recipe';
@@ -18,51 +26,71 @@ class MeasureProductRecipe extends BaseModel
      * @property \Illuminate\Support\Carbon $updated_at
      */
 
-    public function recipe() 
+    public function recipe()
     {
         return $this->belongsTo(Recipe::class, 'recipe_id', 'id');
     }
 
-    public function product() 
+    public function product()
     {
         return $this->belongsTo(Product::class, 'product_id', 'id');
     }
 
-    public function measure() 
+    public function measure()
     {
         return $this->belongsTo(Measure::class, 'measure_id', 'id');
     }
 
-    public function getRecipeId() 
+    public function getRecipe(): BusinessModelRecipe
     {
-        return $this->recipe_id;
+        $recipeEloquent = $this->recipe;
+        $recipe = $recipeEloquent->toBusinessModel();
+        return $recipe;
     }
 
-    public function getProductId() 
+    public function getProduct(): BusinessModelProduct
     {
-        return $this->product_id;
+        $productEloquent = $this->product;
+        $product = $productEloquent->toBusinessModel();
+        return $product;
     }
 
-    public function getMeasureId() 
+    public function getMeasure(): BusinessModelMeasure
     {
-        return $this->measure_id;
+        $measureEloquent = $this->measure;
+        $measure = $measureEloquent->toBusinessModel();
+        return $measure;
     }
 
-    public function getValue() 
+    public function getValue(): MeasureProductRecipeValue
     {
-        return $this->value;
+        return new MeasureProductRecipeValue($this->value);
     }
 
-    public function getCreatedAt() 
+    public function getCreatedAt(): string
     {
-        return $this->created_at;
+        $data = Carbon::createFromDate($this->created_at)->format('d.m.Y');
+        return $data;
     }
 
-    public function getUpdatedAt() 
+    public function getUpdatedAt(): string
     {
-        return $this->updated_at;
+        $data = Carbon::createFromDate($this->updated_at)->format('d.m.Y');
+        return $data;
     }
-    
+
+    public function toBusinessModel(): ?BusinessBaseModel
+    {
+        return new BusinessModelMeasureProductRecipe(
+            recipe: $this->getRecipe(),
+            product: $this->getProduct(),
+            measure: $this->getMeasure(),
+            value: $this->getValue(),
+            id: $this->getId(),
+            created_at: $this->getCreatedAt()
+        );
+    }
+
     protected static function newFactory()
     {
         return \Database\Factories\MeasureProductRecipeFactory::new();

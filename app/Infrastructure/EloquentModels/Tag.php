@@ -2,6 +2,13 @@
 
 namespace App\Infrastructure\EloquentModels;
 
+use App\Domain\BusinessModels\BaseModel as BusinessBaseModel;
+use App\Domain\BusinessModels\Tag as BusinessModelsTag;
+use App\Domain\ValueObjects\Tag\TagName;
+use App\Infrastructure\Helpers\LocaleHelper;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Log;
+
 class Tag extends BaseModel
 {
     /**
@@ -19,24 +26,41 @@ class Tag extends BaseModel
         return $this->belongsToMany(Recipe::class, 'recipe_tag');
     }
 
-    public function getNameEn() 
+    public function getName(): TagName 
     {
-        return $this->name_en;
+        $nameField = 'name_' . LocaleHelper::getLocale();
+        $tagName = new TagName($this->$nameField);
+        return $tagName;
     }
 
-    public function getNameRu() 
+    public function getCreatedAt(): string 
     {
-        return $this->name_ru;
+        $data = Carbon::createFromDate($this->created_at)->format('d.m.Y');
+        return $data;
     }
 
-    public function getCreatedAt() 
+    public function getUpdatedAt(): string 
     {
-        return $this->created_at;
+        $data = Carbon::createFromDate($this->updated_at)->format('d.m.Y');
+        return $data;
     }
 
-    public function getUpdatedAt() 
+    public function toBusinessModel(): ?BusinessBaseModel
     {
-        return $this->updated_at;
+        if (!$this->getName()->getValue()) {
+            Log::warning(
+                'Отсутствует название у территории с id = ' . $this->getId() . 
+                ' по локали: ' . LocaleHelper::getLocale()
+            );
+            return null;
+        } else {
+            return new BusinessModelsTag(
+                id:$this->getId(), 
+                name:$this->getName(), 
+                lang:$this->getLang(), 
+                created_at:$this->getCreatedAt()
+            );
+        }
     }
     
     protected static function newFactory()

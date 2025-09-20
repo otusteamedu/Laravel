@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Domain\ValueObjects\Area;
+namespace App\Domain\ValueObjects;
 
 use App\Domain\Exceptions\NotValidItemDomainException;
 
-class AreaLang 
+class Lang 
 {
     private string $lang;
 

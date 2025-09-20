@@ -3,18 +3,17 @@
 namespace App\Domain\BusinessModels;
 
 use App\Domain\Exceptions\NotValidItemDomainException;
-use App\Domain\ValueObjects\Area\AreaLang;
+use App\Domain\ValueObjects\Lang;
 use App\Domain\ValueObjects\Area\AreaName;
 
 class Area extends BaseModel implements BusinessModelsInterface
 {
     private AreaName $name;
-    private AreaLang $lang;
     private ?string $created_at;
 
     public function __construct(
         AreaName $name, 
-        AreaLang $lang,
+        Lang $lang,
         ?int $id = null, 
         ?string $created_at = null,
     ) {
@@ -27,11 +26,6 @@ class Area extends BaseModel implements BusinessModelsInterface
     public function getName(): AreaName 
     {
         return $this->name;
-    }
-
-    public function getLang(): AreaLang 
-    {
-        return $this->lang;
     }
 
     public function rename(AreaName $newName): void 
@@ -47,19 +41,12 @@ class Area extends BaseModel implements BusinessModelsInterface
         return $this->created_at;
     }
 
-    public function toArray(?string $lang = null): array 
+    public function toArray(): array 
     {
-        if (is_null($this->getId())) {
-            $array = [
-                'name_' . $this->getLang()->getValue() => $this->getName()->getValue(),
-            ];
-        } else {
-            $array = [
-                'id' => $this->getId(),
-                'name_' . ($lang ?? $this->getLang()->getValue()) => $this->getName()->getValue(),
-                'created_at' => $this->getCreatedAt(),
-            ];
-        }
+        $array = [
+            'name' => $this->getName()->getValue(),
+            'created_at' => $this->getCreatedAt(),
+        ];
         return $array;
     }
 }

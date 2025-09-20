@@ -22,7 +22,7 @@ class CategoryFactory extends Factory
         return [
             'name_ru' => $this->faker->word(),
             'description_en' => $this->faker->text(),
-            
+            'api_id' => $this->faker->unique()->numberBetween(1, 10000),
         ];
     }
 }

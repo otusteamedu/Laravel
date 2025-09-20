@@ -8,7 +8,7 @@ use App\Domain\BusinessModels\Area;
 use App\Application\Services\Area\AreaDTO;
 use App\Application\Services\Area\AreaRepositoryInterface;
 use App\Application\Services\Area\AreaService;
-use App\Domain\ValueObjects\Area\AreaLang;
+use App\Domain\ValueObjects\Lang;
 use App\Domain\ValueObjects\Area\AreaName;
 use Mockery;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
@@ -69,7 +69,7 @@ class AreaServiceTest extends TestCase
         $lang = LocaleHelper::getLocale();
         $expectedArea = new Area(
             new AreaName($name),
-            new AreaLang($lang),
+            new Lang($lang),
         );
         $this->repository->shouldReceive('store')
             ->once()
@@ -91,7 +91,7 @@ class AreaServiceTest extends TestCase
         $areaMock = \Mockery::mock(Area::class);
         $areaMock->shouldReceive('getId')->andReturn($id);
         $areaMock->shouldReceive('getName')->andReturn(new AreaName($name));
-        $areaMock->shouldReceive('getLang')->andReturn(new AreaLang($lang));
+        $areaMock->shouldReceive('getLang')->andReturn(new Lang($lang));
         $areaMock->shouldReceive('getCreatedAt')->andReturn('2025-01-01 12:00:00');
         $this->repository->shouldReceive('findById')
             ->once()

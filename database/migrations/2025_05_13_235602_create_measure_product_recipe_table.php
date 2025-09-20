@@ -16,7 +16,7 @@ return new class extends Migration
             $table->foreignId('product_id')->constrained('products');
             $table->foreignId('recipe_id')->constrained('recipes');
             $table->foreignId('measure_id')->constrained('measures');
-            $table->string('value');
+            $table->string('value')->nullable();
             $table->timestamps();
 
             $table->index(['measure_id', 'product_id', 'recipe_id']);

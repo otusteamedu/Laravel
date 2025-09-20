@@ -2,16 +2,6 @@
 
 namespace App\Interfaces\Console\Commands;
 
-use App\Domain\BusinessModels\Area as BusinessModelsArea;
-use App\Interfaces\CacheDecorator\Area\AreaRepositoryCacheDecorator;
-use App\Infrastructure\EloquentModels\Area;
-use App\Infrastructure\EloquentModels\MeasureProductRecipe;
-use App\Infrastructure\EloquentModels\Photo;
-use App\Infrastructure\EloquentModels\Product;
-use App\Infrastructure\EloquentModels\Recipe;
-use App\Infrastructure\EloquentModels\Video;
-use App\Infrastructure\Repositories\Area\AreaRepository;
-use App\Application\Services\Area\AreaRepositoryInterface;
 use App\Application\Services\Area\AreaService;
 use App\Interfaces\CacheDecorator\Area\CachedAreaService;
 use Illuminate\Console\Command;

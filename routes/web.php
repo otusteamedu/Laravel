@@ -2,27 +2,23 @@
 
 use App\Interfaces\Http\Controllers\AreaController;
 use App\Interfaces\Http\Controllers\FibonachiController;
+use App\Interfaces\Http\Controllers\HomeController;
 use App\Interfaces\Http\Controllers\MeasureController;
 use App\Interfaces\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Route;
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
 
-Route::get('/', function () {
-    return view('layouts.main');
-});
-
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->name('dashboard');
-
-Route::resource('area', AreaController::class);
+Route::get('/', [HomeController::class, 'index'])->name('home.index');
+Route::post('/get-recipe', [HomeController::class, 'getRecipe'])->name('home.getRecipe');
+Route::get('/get-measure-by-product/{id}', [HomeController::class, 'getMeasureByProduct'])->name('home.getMeasureByProduct');
 
 Route::middleware(['auth'])->group(function () {
 
     Route::resource('mesaure', MeasureController::class);
+    Route::resource('area', AreaController::class);
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
@@ -45,12 +41,12 @@ Route::prefix('fibonachi')
  * для кеширования сессии
  */
 
-Route::get('/log', function() {
+Route::get('/log', function () {
     Log::error('Test error for Telegram');
     dd('Test error for Telegram');
 });
 
-Route::prefix('/session')->group(function() {
+Route::prefix('/session')->group(function () {
     Route::get('/set', function () {
         session(['key' => 'value']);
         return 'Session set';
@@ -61,9 +57,9 @@ Route::prefix('/session')->group(function() {
     Route::get('/id', function () {
         return 'Session ID: ' . session()->getId();
     });
-}); 
+});
 
-Route::prefix('/cache')->group(function() {
+Route::prefix('/cache')->group(function () {
     Route::get('/get', function () {
         return Cache::get('area.getAll');
     });

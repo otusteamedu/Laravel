@@ -9,7 +9,8 @@ export default defineConfig({
                 'resources/js/app.js',
                 'resources/views/area/index/js/index.js',
                 'resources/views/fibonachi/index/js/index.js',
-                'resources/views/area/create/js/index.js'
+                'resources/views/area/create/js/index.js',
+                'resources/views/home/js/index.js',
             ],
             refresh: true,
         }),

@@ -10,11 +10,11 @@ class AreaDTO
     public ?string $name;
     public ?string $created_at;
 
-    public function __construct(Area $area)
+    public function __construct(Area $model)
     {
-        $this->id = $area->getId();
-        $this->name = $area->getName()->getValue();
-        $this->created_at = $area->getCreatedAt();
+        $this->id = $model->getId();
+        $this->name = $model->getName()->getValue();
+        $this->created_at = $model->getCreatedAt();
     }
 
     public function toArray(): array 

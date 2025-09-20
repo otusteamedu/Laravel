@@ -3,7 +3,11 @@
 namespace App\Interfaces\Console\Commands;
 
 use Illuminate\Console\Command;
-use App\Infrastructure\Jobs\ProcessTranclationModelField;
+use App\Infrastructure\Jobs\ProcessTranclationModelFieldArea;
+use App\Infrastructure\Jobs\ProcessTranclationModelFieldCategory;
+use App\Infrastructure\Jobs\ProcessTranclationModelFieldMeasure;
+use App\Infrastructure\Jobs\ProcessTranclationModelFieldProduct;
+use App\Infrastructure\Jobs\ProcessTranclationModelFieldRecipe;
 
 class CreateJobsForTranslationFromBD extends Command
 {
@@ -24,6 +28,10 @@ class CreateJobsForTranslationFromBD extends Command
      */
     public function handle() 
     {
-        ProcessTranclationModelField::dispatch();
+        ProcessTranclationModelFieldArea::dispatch();
+        ProcessTranclationModelFieldRecipe::dispatch();
+        ProcessTranclationModelFieldProduct::dispatch();
+        ProcessTranclationModelFieldMeasure::dispatch();
+        ProcessTranclationModelFieldCategory::dispatch();
     }
 }
