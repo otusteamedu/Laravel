@@ -2,6 +2,9 @@
 
 namespace App\Infrastructure\Providers;
 
+use App\Application\Actions\Translation\TranslateAction;
+use App\Application\Actions\Translation\TranslateActionInfrastructureInterface;
+use App\Application\Actions\Translation\TranslateActionInterface;
 use App\Interfaces\CacheDecorator\Area\CachedAreaService;
 use App\Infrastructure\EloquentModels\User;
 use App\Domain\Policies\Fibonachi\FibonachiPolicy;
@@ -27,6 +30,7 @@ use App\Application\Services\Product\ProductServiceInterface;
 use App\Application\Services\Recipe\RecipeRepositoryInterface;
 use App\Application\Services\Recipe\RecipeService;
 use App\Application\Services\Recipe\RecipeServiceInterface;
+use App\Infrastructure\Actions\Translation\TranslateAction as TranslationTranslateAction;
 use App\Infrastructure\Repositories\Category\CategoryRepository;
 use App\Infrastructure\Repositories\MeasureProductRecipe\MeasureProductRecipeRepository;
 use App\Infrastructure\Repositories\Product\ProductRepository;
@@ -103,6 +107,15 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(
             HomeServiceInterface::class,
             HomeService::class
+        );
+
+        $this->app->bind(
+            TranslateActionInterface::class,
+            TranslateAction::class
+        );
+        $this->app->bind(
+            TranslateActionInfrastructureInterface::class,
+            TranslationTranslateAction::class
         );
 
         $this->app->singleton(

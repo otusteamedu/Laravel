@@ -2,7 +2,6 @@
 
 namespace App\Interfaces\Console\Commands;
 
-use App\Application\Exceptions\ServiceException;
 use App\Application\Services\Category\CategoryService;
 use App\Infrastructure\Jobs\ProcessImportApiIdRecipeFromCategory;
 use App\Interfaces\Response\WebResponse;
@@ -25,9 +24,6 @@ class ImportCategories extends Command
         HttpClient $http,
         CategoryService $service,
     ): int {
-        // $responseApi = json_decode(file_get_contents(
-        //     base_path('storage/info/categories.json')
-        // ), true);
         $url = "https://www.themealdb.com/api/json/v1/1/categories.php";
         $response = $http->get($url);
         if ($response->failed()) {

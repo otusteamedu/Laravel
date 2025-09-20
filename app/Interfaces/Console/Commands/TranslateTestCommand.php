@@ -2,8 +2,8 @@
 
 namespace App\Interfaces\Console\Commands;
 
+use App\Application\Actions\Translation\TranslateActionInterface;
 use Illuminate\Console\Command;
-use Stronger21012\Autotranslator\Services\Translation\TranslatorInterface;
 
 class TranslateTestCommand extends Command
 {
@@ -13,11 +13,11 @@ class TranslateTestCommand extends Command
                             {--to=ru}';
 
     protected $description = 'Тестирует автоперевод через AutoTranslator';
-    
-    protected TranslatorInterface $translator;
+
+    protected TranslateActionInterface $translator;
 
     public function __construct(
-        TranslatorInterface $translator
+        TranslateActionInterface $translator
     ) {
         $this->translator = $translator;
         parent::__construct();
@@ -30,10 +30,10 @@ class TranslateTestCommand extends Command
         $to = $this->option('to');
 
         try {
-            $translated = $this->translator->translate($text, $from, $to);
-
+            $translation = $this->translator->translate($from, $to, $text);
+            
             $this->info("Оригинал: {$text}");
-            $this->info("Перевод: {$translated}");
+            $this->info("Перевод: {$translation['textTo']}");
         } catch (\Throwable $e) {
             $this->error("Ошибка перевода: " . $e->getMessage());
             return self::FAILURE;
