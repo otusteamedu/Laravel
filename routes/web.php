@@ -28,3 +28,5 @@ Route::view(
         "names" => ["John", "Kate", "Mike"]
     ]
 );
+
+Route::view('/page', 'pages.hello');
