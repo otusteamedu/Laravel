@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App;
 use App\Http\Requests\ProfileUpdateRequest;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -16,6 +17,8 @@ class ProfileController extends Controller
      */
     public function edit(Request $request): View
     {
+        App::setLocale(mb_substr($request->header("accept-language"), 0, 2));
+
         return view('profile.edit', [
             'user' => $request->user(),
         ]);
