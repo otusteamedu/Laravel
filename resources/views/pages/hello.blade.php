@@ -13,6 +13,8 @@
 
 @section('content')
     <h1>Test page</h1>
+    <x-super-input label="User name" type="text"></x-super-input>
+    <x-super-input label="Password" type="password"></x-super-input>
 @endsection
 
 @section('body-bottom')
