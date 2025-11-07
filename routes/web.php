@@ -13,3 +13,18 @@ Route::get('/hello', function () {
 Route::get('/hello.txt', function () {
     return "<h1>Hello world</h1>";
 });
+
+Route::view("/first", "first");
+Route::view(
+    "/second",
+    "second",
+    ["name" => request("name")]
+);
+
+Route::view(
+    "/third",
+    "third",
+    [
+        "names" => ["John", "Kate", "Mike"]
+    ]
+);
