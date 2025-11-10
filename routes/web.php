@@ -1,6 +1,9 @@
 <?php
 
+use App\DbQueries\PostTableQueries;
 use App\Http\Controllers\ProfileController;
+use App\Repositories\PostRepo;
+use Illuminate\Database\Migrations\Migration;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -17,6 +20,12 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::view('/main', 'pages.hello');
+Route::view('/main', '/pages/hello');
+
+Route::get('/posts', function (PostRepo $postRepo) {
+    $posts = $postRepo->getTrickyPosts();
+    dump($posts);
+    return '';
+});
 
 require __DIR__ . '/auth.php';
