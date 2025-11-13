@@ -2,21 +2,19 @@
 
 namespace Database\Seeders;
 
+use App\Models\Comment;
 use App\Models\Post;
-use App\Models\User;
-use DB;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
-class PostSeeder extends Seeder
+class CommentSeeder extends Seeder
 {
     /**
      * Run the database seeds.
      */
     public function run(): void
     {
-        Post::factory()->count(10)->hasTags(3)->hasComments(3)->create();
-
-
+        $comment = Post::first()->comments()->first();
+        Comment::factory()->create(['parent_type' => Comment::class, 'parent_id' => $comment->id]);
     }
 }
