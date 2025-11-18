@@ -1,8 +1,10 @@
 <?php
 
 use App\DbQueries\PostTableQueries;
+use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProfileController;
 use App\Models\Post;
+use App\Models\User;
 use App\Repositories\PostRepo;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Support\Facades\Route;
@@ -23,70 +25,44 @@ Route::middleware('auth')->group(function () {
 
 Route::view('/main', '/pages/hello');
 
-Route::get('/posts', function () {
-    $posts = Post::with('author')->get();
+Route::get('/csrf', function () {
+    return csrf_token();
+})->name('csrf');
 
-    $posts->map(fn($post) => dump($post->author->name));
-    dump($posts);
-    return '';
+Route::view('/route_name', 'route');
+
+Route::post('/test', function () {
+    return "test";
 });
 
-Route::get('/posts/{post}', function (Post $post) {
-    dump($post->author);
-    dump($post->tags);
+Route::resource('posts', PostController::class);
+
+Route::get('/google', fn() => redirect()->route('csrf', []));
+
+Route::group(['prefix' => '/qwe', 'as' => 'qwe.', 'middleware' => ['auth']], function ($route) {
+    Route::get('/calc/{a}/{b}/{prefix?}/{suffix?}', function (Request $request, int $x1, int $x2) {
+
+        $prefix = request()->route('prefix', 'default');
+        $suffix = request()->route('suffix', 'default');
+        dump($x1);
+        dump($x2);
+        dump($x1 + $x2);
+
+        return $prefix . ' = ' . $x1 + $x2 . " $suffix";
+    })->whereNumber('a')->whereNumber('b')->name('calc');
+});
+
+Route::get('/posts/by_author/{author}/{post}', function (User $author, Post $post) {
+    dump($author);
     dump($post);
     return '';
+})->scopeBindings()->missing(function () {
+    return response('not found');
 });
 
-Route::get('/posts/create', function () {
-    // $post = new Post();
-    // $post->title = 'created post';
-    // $post->text = 'text post';
-    // $post->user_id = 1;
-
-    // $post->save();
-
-    Post::create([
-        'title' => 'created post',
-        'text' => 'text post',
-        'user_id' => 1
-    ]);
-
-    return 'ok';
-});
-
-Route::get('/posts/edit/{post}', function (Post $post) {
-    $post->text = 'edited';
-    $post->save();
-
-    return "edited";
-});
-
-Route::get('/posts/delete/{post}', function ($postId) {
-    $post = Post::find($postId);
-    if ($post) {
-        $post->delete();
-        return "deleted";
-    } else {
-        return "already deleted";
-    }
-});
-
-Route::get('/posts/force-delete/{post}', function ($postId) {
-    $post = Post::find($postId);
-    if ($post) {
-        $post->forceDelete();
-        return "deleted";
-    } else {
-        return "already deleted";
-    }
-});
-
-Route::get('/posts/restore/{post}', function ($postId) {
-    $post = Post::withTrashed()->find($postId);
-    dump($post);
-    $post->restore();
-    return '';
+Route::fallback(function () {
+    return '404';
 });
 
 require __DIR__ . '/auth.php';
+
