@@ -18,7 +18,7 @@ class Post extends Model
     protected $fillable = [
         'title',
         'text',
-        'user_id',
+        'author_id',
     ];
 
     #[Scope]
@@ -40,5 +40,10 @@ class Post extends Model
     public function comments()
     {
         return $this->morphMany(Comment::class, 'parent');
+    }
+
+    public function likes()
+    {
+        return $this->morphMany(Like::class, 'likable');
     }
 }

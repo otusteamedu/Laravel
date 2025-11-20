@@ -1,7 +1,9 @@
 <?php
 
+use App\Http\Controllers\InvokableController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\PostCommentController;
+use App\Http\Controllers\PostLikeController;
 use App\Http\Controllers\ProfileController;
 use App\Models\Post;
 use App\Models\User;
@@ -23,6 +25,10 @@ Route::middleware('auth')->group(function () {
 
 Route::resource('posts', PostController::class);
 Route::resource('posts.comments', PostCommentController::class);
+
+Route::get('/invokable', InvokableController::class);
+
+Route::post('/posts/{post}/like', [PostLikeController::class, 'likePost'])->name('posts.like');
 
 require __DIR__ . '/auth.php';
 
