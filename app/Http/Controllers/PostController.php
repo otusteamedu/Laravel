@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\DTO\CreatePostRequestDTO;
 use App\Http\Requests\CreatePostRequest;
 use App\Models\Post;
-use App\Services\PostService;
+use App\Services\PostService\PostServiceInterface;
 use App\VO\PostText;
 use App\VO\PostTitle;
 use Illuminate\Http\Request;
@@ -15,7 +15,7 @@ class PostController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(PostService $postService)
+    public function index(PostServiceInterface $postService)
     {
         $posts = $postService->getRecentPosts();
         return view('posts.index', compact('posts'));
@@ -32,7 +32,7 @@ class PostController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(CreatePostRequest $request, PostService $postService)
+    public function store(CreatePostRequest $request, PostServiceInterface $postService)
     {
         $title = new PostTitle($request->title);
         $text = new PostText($request->text);

@@ -1,15 +1,15 @@
 <?php
 
-namespace App\Services;
+namespace App\Services\PostService;
 
 use App\DTO\CreatePostRequestDTO;
 use App\Models\Post;
-use App\Repositories\EloquentPostRepo;
+use App\Repositories\PostRepo\PostRepoInterface;
 
 
-class PostService
+class PostService implements PostServiceInterface
 {
-    public function __construct(private EloquentPostRepo $postRepo)
+    public function __construct(private PostRepoInterface $postRepo)
     {
 
     }

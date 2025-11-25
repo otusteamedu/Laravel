@@ -29,6 +29,7 @@ Route::resource('posts.comments', PostCommentController::class);
 Route::get('/invokable', InvokableController::class);
 
 Route::post('/posts/{post}/like', [PostLikeController::class, 'likePost'])->name('posts.like');
+Route::post('/posts/{post}/unlike', [PostLikeController::class, 'unlikePost'])->name('posts.unlike');
 
 require __DIR__ . '/auth.php';
 

@@ -21,7 +21,7 @@
                     <div class="mb-4">
                         @php($liked = $post->likes()->where('user_id', auth()->id())->exists())
                         @if($liked)
-                            <form action="#">
+                            <form action="{{  route('posts.unlike', ['post' => $post]) }}" method="post">
                                 @csrf
                                 <button class="btn" type="submit">
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"

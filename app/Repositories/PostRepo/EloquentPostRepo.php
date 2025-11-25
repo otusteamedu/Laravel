@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Repositories;
+namespace App\Repositories\PostRepo;
 
 use App\DTO\CreatePostRequestDTO;
 use App\Models\Like;
@@ -36,5 +36,21 @@ class EloquentPostRepo implements PostRepoInterface
         $like->save();
 
         return $like;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function unlikePost(Post $post, User $user): void
+    {
+        $post->likes()->whereUserId($user->id)->delete();
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getPostAuthor(Post $post): User
+    {
+        return $post->author;
     }
 }
