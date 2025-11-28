@@ -9,6 +9,7 @@ use App\Services\PostService\PostServiceInterface;
 use App\VO\PostText;
 use App\VO\PostTitle;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 
 class PostController extends Controller
 {
@@ -17,6 +18,8 @@ class PostController extends Controller
      */
     public function index(PostServiceInterface $postService)
     {
+        Gate::authorize("list-posts");
+
         $posts = $postService->getRecentPosts();
         return view('posts.index', compact('posts'));
     }
@@ -49,7 +52,7 @@ class PostController extends Controller
      */
     public function show(Post $post)
     {
-        //
+        return $post;
     }
 
     /**
