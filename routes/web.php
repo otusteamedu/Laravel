@@ -31,5 +31,23 @@ Route::get('/invokable', InvokableController::class);
 Route::post('/posts/{post}/like', [PostLikeController::class, 'likePost'])->name('posts.like');
 Route::post('/posts/{post}/unlike', [PostLikeController::class, 'unlikePost'])->name('posts.unlike');
 
+Route::get('/login_as/{user}', function (Request $request, User $user) {
+    Auth::login($user);
+    return "ok";
+});
+
+Route::get('/user', function () {
+    dump(Auth::check());
+});
+
+Route::get('/a/basic', function () {
+    return "protected";
+})->middleware('auth.basic');
+
+Route::get('/a/by_email/{email}', function () {
+    dump(Auth::user());
+    return 'by_email';
+})->middleware('auth:email');
+
 require __DIR__ . '/auth.php';
 

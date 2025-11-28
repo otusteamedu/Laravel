@@ -16,14 +16,13 @@ class NotificationServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        $this->app->singleton(MultiNotificationServiceInterface::class, MultiNotificationService::class);
-        $this->app->singleton(NotificationServiceInterface::class, LogNotificationService::class);
+        $this->app->singleton(NotificationServiceInterface::class, MultiNotificationService::class);
 
         $this->app->tag([LogNotificationService::class, EmailNotificationService::class], 'notifiers');
 
         $this->app->when(MultiNotificationService::class)
             ->needs('$notificationServices')
-            ->give([LogNotificationService::class, EmailNotificationService::class]);
+            ->giveTagged('notifiers');
 
         $this->app
             ->when(EmailNotificationService::class)

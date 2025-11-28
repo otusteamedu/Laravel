@@ -2,13 +2,11 @@
 
 namespace App\Services\NotificationService;
 
-use Illuminate\Log\LogManager;
 
-class MultiNotificationService implements MultiNotificationServiceInterface
+class MultiNotificationService implements NotificationServiceInterface
 {
-
     private $notificationServices;
-    public function __construct(NotificationServiceInterface ...$notificationServices)
+    public function __construct(...$notificationServices)
     {
         $this->notificationServices = $notificationServices;
     }
