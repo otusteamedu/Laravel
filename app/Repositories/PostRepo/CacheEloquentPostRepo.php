@@ -6,12 +6,18 @@ use App\DTO\CreatePostRequestDTO;
 use App\Models\Like;
 use App\Models\Post;
 use App\Models\User;
+use Cache;
 
-class EloquentPostRepo implements PostRepoInterface
+class CacheEloquentPostRepo implements PostRepoInterface
 {
+    public function __construct(private EloquentPostRepo $postRepo)
+    {
+
+    }
+
     public function getRecentPosts(int $count): \Illuminate\Database\Eloquent\Collection
     {
-        return Post::orderByDesc("created_at")->remember(10)->take($count)->get();
+        return Cache::remember('posts', 10, fn() => $this->postRepo->getRecentPosts($count));
     }
 
     public function findById(int $id): \App\Models\Post

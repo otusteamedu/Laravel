@@ -4,11 +4,14 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Watson\Rememberable\Rememberable;
 
 class Like extends Model
 {
     /** @use HasFactory<\Database\Factories\LikeFactory> */
     use HasFactory;
+
+    use Rememberable;
 
     public function likable()
     {

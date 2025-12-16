@@ -7,10 +7,14 @@ use App\Http\Controllers\PostLikeController;
 use App\Http\Controllers\ProfileController;
 use App\Models\Post;
 use App\Models\User;
+use Illuminate\Contracts\Cache\LockTimeoutException;
 use Illuminate\Support\Facades\Route;
+use function PHPUnit\Framework\returnArgument;
 
 Route::get('/', function () {
-    return view('welcome');
+    $cacheSuffix = Auth::user() ? 'user' : 'anon';
+
+    return Cache::rememberForever('view_welcome:' . $cacheSuffix, fn() => view('welcome')->render());
 });
 
 Route::get('/dashboard', function () {
@@ -50,6 +54,36 @@ Route::get('/a/by_email/{email}', function () {
     dump(Auth::user());
     return 'by_email';
 })->middleware('auth:email');
+
+Route::get('/c/get', function () {
+    $name = Cache::tags(['name', 'user'])->get('name', 'anon');
+
+    dump($name);
+
+    return $name;
+});
+
+Route::get('/c/set', function () {
+    $name = Cache::tags(['name', 'user'])->set('name', 'John');
+
+    dump($name);
+
+    return $name;
+});
+
+Route::get('/lock', function () {
+    $lock = Cache::lock('qwe', seconds: 10);
+
+    dump($lock);
+    try {
+        return $lock->block(3, function () {
+            sleep(4);
+            return 'done';
+        });
+    } catch (LockTimeoutException $e) {
+        return 'locked';
+    }
+});
 
 require __DIR__ . '/auth.php';
 
