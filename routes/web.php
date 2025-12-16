@@ -85,5 +85,6 @@ Route::get('/lock', function () {
     }
 });
 
-require __DIR__ . '/auth.php';
+Route::get('/ascii', fn() => "from framework");
 
+require __DIR__ . '/auth.php';
