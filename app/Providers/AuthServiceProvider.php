@@ -28,7 +28,7 @@ class AuthServiceProvider extends ServiceProvider
         });
 
         Gate::define('list-posts', function (User $user) {
-            return $user->id === 1;
+            return !empty($user);
         });
 
         Gate::define('like-post', function (User $user, Post $post) {

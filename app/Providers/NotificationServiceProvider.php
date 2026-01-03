@@ -18,7 +18,7 @@ class NotificationServiceProvider extends ServiceProvider
     {
         $this->app->singleton(NotificationServiceInterface::class, MultiNotificationService::class);
 
-        $this->app->tag([LogNotificationService::class, EmailNotificationService::class], 'notifiers');
+        $this->app->tag([LogNotificationService::class], 'notifiers');
 
         $this->app->when(MultiNotificationService::class)
             ->needs('$notificationServices')

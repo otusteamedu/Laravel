@@ -2,19 +2,20 @@
 
 namespace App\Services\PostLikeService;
 
+use App\Jobs\SendNotificationJob;
 use App\Models\Post;
 use App\Models\User;
 use App\Repositories\LikeRepo\LikeRepoInterface;
 use App\Repositories\PostRepo\PostRepoInterface;
 use App\Services\NotificationService\NotificationServiceInterface;
 use App\VO\NotificationText;
+use Log;
 
 class PostLikeService implements PostLikeServiceInterface
 {
     public function __construct(
         private readonly PostRepoInterface $postRepo,
         private readonly LikeRepoInterface $likeRepo,
-        private readonly NotificationServiceInterface $notificationService,
     ) {
 
     }
@@ -25,10 +26,11 @@ class PostLikeService implements PostLikeServiceInterface
         if (!$likeExists) {
             $postAuthor = $this->postRepo->getPostAuthor($post);
             $this->postRepo->likePost($post, $user);
-            $this->notificationService->notify(
-                $postAuthor,
-                new NotificationText("Ваш пост ({$post->id}, {$post->title}) был лайкнут")
-            );
+            $notificationText = new NotificationText("Ваш пост ({$post->id}, {$post->title}) был лайкнут");
+
+            SendNotificationJob::dispatch($postAuthor, $notificationText);
+
+            \Log::info("first");
         }
     }
 
