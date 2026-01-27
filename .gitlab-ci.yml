@@ -1,0 +1,17 @@
+stages:
+  - build
+  #- test
+  - deploy
+
+  #test-job:
+  #  stage: test
+  #script:
+  #  - php artisan test
+
+deploy_server1:
+  stage: build
+  script:
+    - cd $DEPLOY_DIR
+    - bash ./scripts/deploy.sh
+  only:
+    - main
