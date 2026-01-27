@@ -457,7 +457,23 @@
         disable_symlinks off;
         listen 80;
         index index.php;
-        charset utf-8;
+        charset utf-8;stages:
+      - build
+      #- test
+      - deploy
+
+    #test-job:
+    #  stage: test
+    #script:
+    #  - php artisan test
+
+    deploy_server1:
+      stage: build
+      script:
+        - cd $DEPLOY_DIR
+        - bash ./scripts/deploy.sh
+      only:
+        - main
         error_log  /var/log/nginx/error.log;
         access_log /var/log/nginx/access.log;
         root /var/www/html/public;
@@ -481,21 +497,5 @@
     ```
 4. Создаём файл `.gitlab-ci.yml`
     ```yml    
-    stages:
-      - build
-      #- test
-      - deploy
-
-    #test-job:
-    #  stage: test
-    #script:
-    #  - php artisan test
-
-    deploy_server1:
-      stage: build
-      script:
-        - cd $DEPLOY_DIR
-        - bash ./scripts/deploy.sh
-      only:
-        - main
+    
     ```

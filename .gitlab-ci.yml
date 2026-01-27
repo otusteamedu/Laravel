@@ -14,4 +14,4 @@ deploy_server1:
     - cd $DEPLOY_DIR
     - bash ./scripts/deploy.sh
   only:
-    - main
+    - master
