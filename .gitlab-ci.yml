@@ -1,17 +1,21 @@
+before_script:
+  - curl -fsSL https://bun.sh/install | bash
+
 stages:
-  - build
-  #- test
+  - test
   - deploy
 
-  #test-job:
-  #  stage: test
-  #script:
-  #  - php artisan test
+tests:
+  stage: test
+  script:
+    - cd $DEPLOY_DIR
+    - bash ./scripts/test.sh
+  only:
+    - master
 
-deploy_server1:
-  stage: build
+deploy:
+  stage: deploy
   script:
     - cd $DEPLOY_DIR
     - bash ./scripts/deploy.sh
-  only:
-    - master
+  when: manual
