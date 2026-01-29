@@ -1,4 +1,4 @@
-@servers(['web' => '158.160.216.159'])
+@servers(['web' => 'localhost'])
 
 @task('check')
     echo "Hello from Envoyed script"
