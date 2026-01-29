@@ -560,7 +560,7 @@
     ```shell
     #!/bin/bash
     
-    cd /app/deploy/scripts
+    cd $DEPLOY_DIR/scripts
     
     if [ "$(sudo docker ps -q -f name=green)" ]; then
         echo "Container 'green' is running."
@@ -590,12 +590,14 @@
         cd $DEPLOY_DIR/releases
         sudo docker compose up -d $PREV ${PREV}_nginx
         sleep 10
-        sudo docker exec --user root gateway sh -c "echo \"set server blue_green/${PREV} state ready\" | socat stdio unix-connect:/sock/admin.sock"
+        echo "set server blue_green/${PREV} state ready"
+        sudo docker exec --user root gateway sh -c "socat stdio unix-connect:/sock/admin.sock"
     }
     
     function stopCurrentRelease {
         cd $DEPLOY_DIR/releases
-        sudo docker exec --user root gateway sh -c "echo \"set server blue_green/${CURRENT} state maint\" | socat stdio unix-connect:/sock/admin.sock"
+        echo "set server blue_green/${CURRENT} state maint"
+        sudo docker exec --user root gateway sh -c "socat stdio unix-connect:/sock/admin.sock"
         sleep 10
         sudo docker compose stop $CURRENT ${CURRENT}_nginx
     }
@@ -603,3 +605,50 @@
     startPrevRelease
     stopCurrentRelease
     ```
+3. Создаём файл `.gitlab-ci.yml`
+    ```yaml
+    stages:
+      - test
+      - deploy
+      - rollback
+    
+    tests:
+      stage: test
+      script:
+        - cd $DEPLOY_DIR
+        - bash ./scripts/test.sh
+      only:
+        - master
+    
+    deploy:
+      stage: deploy
+      script:
+        - cd $DEPLOY_DIR
+        - bash ./scripts/deploy.sh
+      when: manual
+    
+    rollback:
+      stage: rollback
+      script:
+        - cd $DEPLOY_DIR
+        - bash ./scripts/rollback.sh
+      when: manual
+    ```
+4. Пушим код в ветку `master`. Видим в `Build -> Pipelines`, что добавился пайплайн `rollback`. Пробуем запустить `rollback`
+
+## Используем `Envoy`
+
+1. Подключаемся к контейнеру Laravel в sail
+    ```shell
+    docker exec -it laravel-laravel.test-1 bash
+    ```
+2. Устанавливаем пакет
+    ```shell
+    composer require laravel/envoy --dev
+    ```
+3. Инициализируем
+    ```shell
+    ./vendor/bin/envoy init localhost
+    ```
+4. Исправляем файл `Envoy.blade.php` в корне проекта
+   

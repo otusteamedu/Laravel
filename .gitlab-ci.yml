@@ -1,6 +1,7 @@
 stages:
   - test
   - deploy
+  - envoy_check
   - rollback
 
 tests:
@@ -16,6 +17,15 @@ deploy:
   script:
     - cd $DEPLOY_DIR
     - bash ./scripts/deploy.sh
+  when: manual
+
+envoy_check:
+  stage: envoy_check
+  environment:
+    name: production
+  script:
+    - '[ "$(sudo docker ps -q -f name=blue)" ] && sudo docker exec --user root blue php ./vendor/bin/envoy run check'
+    - '[ "$(sudo docker ps -q -f name=green)" ] && sudo docker exec --user root green php ./vendor/bin/envoy run check'
   when: manual
 
 rollback:
