@@ -154,7 +154,7 @@
 9. Меняем параметры в файле:
     ```shell
     APP_ENV=testing
-    APP_URL=http://localhost
+    APP_URL=http://SERVER_URL_OR_HOST
     
     DB_HOST=test_mysql
     DB_PORT=3306
