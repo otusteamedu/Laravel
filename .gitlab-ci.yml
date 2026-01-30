@@ -17,6 +17,8 @@ deploy:
   script:
     - cd $DEPLOY_DIR
     - bash ./scripts/deploy.sh
+    - '[ "$(sudo docker ps -q -f name=blue)" ] && sudo docker exec blue php /var/www/html/vendor/bin/envoy run optimize'
+    - '[ "$(sudo docker ps -q -f name=green)" ] && sudo docker exec green php /var/www/html/vendor/bin/envoy run optimize'
   when: manual
 
 envoy_check:
@@ -33,4 +35,6 @@ rollback:
   script:
     - cd $DEPLOY_DIR
     - bash ./scripts/rollback.sh
+    - '[ "$(sudo docker ps -q -f name=blue)" ] && sudo docker exec blue php /var/www/html/vendor/bin/envoy run optimize'
+    - '[ "$(sudo docker ps -q -f name=green)" ] && sudo docker exec green php /var/www/html/vendor/bin/envoy run optimize'
   when: manual

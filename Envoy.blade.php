@@ -1,6 +1,6 @@
 @servers(['web' => 'localhost'])
 
-@task('check')
-    pwd
-    echo "Hello from Envoyed script"
+@task('optimize')
+    php artisan optimize:clear
+    php artisan optimize
 @endtask
