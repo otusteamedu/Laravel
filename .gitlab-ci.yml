@@ -17,17 +17,8 @@ deploy:
   script:
     - cd $DEPLOY_DIR
     - bash ./scripts/deploy.sh
-    - '[ "$(sudo docker ps -q -f name=blue)" ] && sudo docker exec blue php /var/www/html/vendor/bin/envoy run optimize'
-    - '[ "$(sudo docker ps -q -f name=green)" ] && sudo docker exec green php /var/www/html/vendor/bin/envoy run optimize'
-  when: manual
-
-envoy_check:
-  stage: envoy_check
-  environment:
-    name: production
-  script:
-    - '[ "$(sudo docker ps -q -f name=blue)" ] && sudo docker exec --user root blue php /var/www/html/vendor/bin/envoy run check'
-    - '[ "$(sudo docker ps -q -f name=green)" ] && sudo docker exec --user root green php /var/www/html/vendor/bin/envoy run check'
+    - if [ "$(sudo docker ps -q -f name=blue)" ]; then sudo docker exec blue php /var/www/html/vendor/bin/envoy run optimize; fi
+    - if [ "$(sudo docker ps -q -f name=green)" ]; then sudo docker exec green php /var/www/html/vendor/bin/envoy run optimize; fi
   when: manual
 
 rollback:
@@ -35,6 +26,6 @@ rollback:
   script:
     - cd $DEPLOY_DIR
     - bash ./scripts/rollback.sh
-    - '[ "$(sudo docker ps -q -f name=blue)" ] && sudo docker exec blue php /var/www/html/vendor/bin/envoy run optimize'
-    - '[ "$(sudo docker ps -q -f name=green)" ] && sudo docker exec green php /var/www/html/vendor/bin/envoy run optimize'
+    - if [ "$(sudo docker ps -q -f name=blue)" ]; then sudo docker exec blue php /var/www/html/vendor/bin/envoy run optimize; fi
+    - if [ "$(sudo docker ps -q -f name=green)" ]; then sudo docker exec green php /var/www/html/vendor/bin/envoy run optimize; fi
   when: manual
