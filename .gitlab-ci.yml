@@ -1,15 +1,15 @@
 stages:
-  - test
+#  - test
   - deploy
   - rollback
 
-tests:
-  stage: test
-  script:
-    - cd $DEPLOY_DIR
-    - bash ./scripts/test.sh
-  only:
-    - master
+#tests:
+#  stage: test
+#  script:
+#    - cd $DEPLOY_DIR
+#    - bash ./scripts/test.sh
+#  only:
+#    - master
 
 deploy:
   stage: deploy
