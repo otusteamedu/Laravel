@@ -107,6 +107,13 @@
     ```
 15. Проверяем в интерфейсе, что runner появился
 
+## Устанавливаем `bun`
+1. Скачиваем скрипт установщика и запускаем под root'ом
+    ```shell
+    curl -fsSL https://bun.sh/install
+    sudo bash ./install
+    ```
+
 ## Создаём директории для деплоев
 
 1. Переходим в каталог `/app`
@@ -213,126 +220,121 @@
 1. Создаём файл `/app/deploy/docker-compose.yml`
     ```yaml
     services:
-       gateway:
-         build: haproxy
-         container_name: gateway
-         ports:
-           - '80:80'
-         volumes:
-           - './haproxy/gateway.cfg:/usr/local/etc/haproxy/haproxy.cfg:r'
-         networks:
-           - main
+        gateway:
+            build: haproxy
+            container_name: gateway
+            ports:
+                - '80:80'
+            volumes:
+                - './haproxy/gateway.cfg:/usr/local/etc/haproxy/haproxy.cfg:r'
+            networks:
+                - main
     
-       green_nginx:
-         image: nginx:alpine
-         container_name: greennginx
-         volumes:
-           - './nginx/green.conf:/etc/nginx/conf.d/default.conf:r'
-           - './releases/green:/var/www/html'
-           - './releases/shared/app_storage/public:/var/www/html/public/storage'
-         networks:
-           main:
-             ipv4_address: 172.20.0.10
-         depends_on:
-           - green
-         healthcheck:
-           test: ["CMD", "curl", "-f", "http://localhost/"]
-           interval: 5s
-           timeout: 10s
-           retries: 3
+        green_nginx:
+            image: nginx:alpine
+            container_name: greennginx
+            volumes:
+                - './nginx/green.conf:/etc/nginx/conf.d/default.conf:r'
+                - './releases/green:/var/www/html:delegated'
+            networks:
+                main:
+                    ipv4_address: 172.20.0.10
+            depends_on:
+                - green
+            healthcheck:
+                test: ["CMD", "curl", "-f", "http://localhost/"]
+                interval: 5s
+                timeout: 10s
+                retries: 3
     
-       blue_nginx:
-         image: nginx:alpine
-         container_name: bluenginx
-         volumes:
-           - './nginx/blue.conf:/etc/nginx/conf.d/default.conf:r'
-           - './releases/blue:/var/www/html'
-           - './releases/shared/app_storage/public:/var/www/html/public/storage'
-         networks:
-           main:
-             ipv4_address: 172.20.0.11
-         depends_on:
-           - blue
-         healthcheck:
-           test: ["CMD", "curl", "-f", "http://localhost/"]
-           interval: 5s
-           timeout: 10s
-           retries: 3
+        blue_nginx:
+            image: nginx:alpine
+            container_name: bluenginx
+            volumes:
+                - './nginx/blue.conf:/etc/nginx/conf.d/default.conf:r'
+                - './releases/blue:/var/www/html:delegated'
+            networks:
+                main:
+                    ipv4_address: 172.20.0.11
+            depends_on:
+                - blue
+            healthcheck:
+                test: ["CMD", "curl", "-f", "http://localhost/"]
+                interval: 5s
+                timeout: 10s
+                retries: 3
     
-       blue:
-         image: jkaninda/laravel-php-fpm:latest
-         container_name: blue
-         restart: unless-stopped
-         user: www-data # For production
-         environment:
-           COLOR: blue
-         volumes:
-           - ./releases/blue:/var/www/html
-           - ./releases/shared/app_storage:/var/www/html/storage/app
-           - ./releases/shared/.env:/var/www/html/.env:r
-         networks:
-           main:
-             ipv4_address: 172.20.0.20
+        blue:
+            image: jkaninda/laravel-php-fpm:latest
+            container_name: blue
+            restart: unless-stopped
+            user: www-data # For production
+            environment:
+                COLOR: blue
+            volumes:
+                - ./releases/blue:/var/www/html:delegated
+                - ./releases/shared/.env:/var/www/html/.env:r
+            networks:
+                main:
+                    ipv4_address: 172.20.0.20
     
-       green:
-         image: jkaninda/laravel-php-fpm:latest
-         container_name: green
-         restart: unless-stopped
-         environment:
-           COLOR: green
-         user: www-data # For production
-         volumes:
-           - ./releases/green:/var/www/html
-           - ./releases/shared/app_storage:/var/www/html/storage/app
-           - ./releases/shared/.env:/var/www/html/.env:r
-         networks:
-           main:
-             ipv4_address: 172.20.0.21
+        green:
+            image: jkaninda/laravel-php-fpm:latest
+            container_name: green
+            restart: unless-stopped
+            environment:
+                COLOR: green
+            user: www-data # For production
+            volumes:
+                - ./releases/green:/var/www/html:delegated
+                - ./releases/shared/.env:/var/www/html/.env:r
+            networks:
+                main:
+                    ipv4_address: 172.20.0.21
     
-       test:
-         image: jkaninda/laravel-php-fpm:latest
-         container_name: test
-         restart: unless-stopped
-         depends_on:
-           test_mysql:
-             condition: service_healthy
-         volumes:
-           - ./releases/test:/var/www/html
-           - ./releases/shared/.env.testing:/var/www/html/.env.testing:r
+        test:
+            image: jkaninda/laravel-php-fpm:latest
+            container_name: test
+            restart: unless-stopped
+            depends_on:
+                test_mysql:
+                    condition: service_healthy
+            volumes:
+                - ./releases/test:/var/www/html
+                - ./releases/shared/.env.testing:/var/www/html/.env.testing:r
     
-       test_mysql:
-         image: mysql/mysql-server:8.0
-         container_name: test_mysql
-         environment:
-           MYSQL_DATABASE: testing
-           MYSQL_USER: testing
-           MYSQL_PASSWORD: testing
-           MYSQL_ROOT_PASSWORD: testing
-         healthcheck:
-           test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
-           timeout: 20s
-           retries: 10
+        test_mysql:
+            image: mysql/mysql-server:8.0
+            container_name: test_mysql
+            environment:
+                MYSQL_DATABASE: testing
+                MYSQL_USER: testing
+                MYSQL_PASSWORD: testing
+                MYSQL_ROOT_PASSWORD: testing
+            healthcheck:
+                test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+                timeout: 20s
+                retries: 10
     
-       mysql:
-         image: mysql/mysql-server:8.0
-         container_name: mysql
-         environment:
-           MYSQL_DATABASE: laravel
-           MYSQL_USER: prod
-           MYSQL_PASSWORD: prod
-           MYSQL_ROOT_PASSWORD: rootpassword
-         volumes:
-           - ./mysql:/var/lib/mysql
-         networks:
-           - main
+        mysql:
+            image: mysql/mysql-server:8.0
+            container_name: mysql
+            environment:
+                MYSQL_DATABASE: laravel
+                MYSQL_USER: prod
+                MYSQL_PASSWORD: prod
+                MYSQL_ROOT_PASSWORD: rootpassword
+            volumes:
+                - ./mysql:/var/lib/mysql
+            networks:
+                - main
     
     networks:
-       main:
-         driver: bridge
-         ipam:
-           config:
-             - subnet: 172.20.0.0/24
-    
+        main:
+            driver: bridge
+            ipam:
+                config:
+                    - subnet: 172.20.0.0/24
     ```
 
 ## Добавляем скрипты деплоев
@@ -379,18 +381,15 @@
         sudo /root/.bun/bin/bun run build
     }
     
-    
     function runTests {
         sudo docker exec --user root test php artisan test
     }
-    
     
     function stopTestsContainer {
         cd $DEPLOY_DIR
     
         sudo docker compose down test test_mysql --remove-orphans
     }
-    
     
     downloadNewCode
     buildApp
@@ -420,9 +419,14 @@
     function buildApp {
         cd $DEPLOY_DIR
     
-        sudo docker compose up -d $CURRENT
+        sudo docker compose up -d $CURRENT ${CURRENT}_nginx
+    
         sudo docker exec --user root $CURRENT composer install
         sudo docker exec --user root $CURRENT php artisan migrate
+        sudo docker exec --user root $CURRENT chmod a+rwx -R storage
+        sudo docker exec --user root $CURRENT chmod a+rwx bootstrap
+        sudo docker exec --user root $CURRENT chmod a+rwx -R bootstrap/cache
+    
     
         cd $DEPLOY_DIR/releases/$CURRENT
     
@@ -433,15 +437,18 @@
     function optimizeResources {
         cd $DEPLOY_DIR
     
-        sudo docker exec --user root $CURRENT php artisan optimize:clear
-        sudo docker exec --user root $CURRENT php artisan optimize
+        sudo docker exec $CURRENT php artisan optimize:clear -vvv
+        sudo docker exec $CURRENT php artisan optimize
+    
     }
     
     function startCurrentRelease {
         cd $DEPLOY_DIR
     
         sudo docker compose up -d ${CURRENT}_nginx
+    
         sleep 10
+    
         sudo docker exec --user root gateway sh -c "echo \"set server blue_green/${CURRENT} state ready\" | socat stdio unix-connect:/sock/admin.sock"
     }
     
@@ -449,18 +456,22 @@
         cd $DEPLOY_DIR
     
         sudo docker exec --user root gateway sh -c "echo \"set server blue_green/${PREV} state maint\" | socat stdio unix-connect:/sock/admin.sock"
+    
         sleep 10
-        sudo docker compose down $PREV ${PREV}_nginx --remove-orphans
+        sudo docker compose stop $PREV ${PREV}_nginx
     }
     
     function changeOwnership {
-        sudo chown www-data:www-data -R $DEPLOY_DIR/releases/$CURRENT
+        sudo chown 1000:1000 -R $DEPLOY_DIR/releases/$CURRENT
+    
     }
     
     downloadNewCode
     buildApp
-    optimizeResources
+    
     changeOwnership
+    
+    optimizeResources
     
     startCurrentRelease
     stopPrevRelease
@@ -517,14 +528,13 @@
         }
     
         location ~ ^/index\.php(/|$) {
-                fastcgi_pass 172.20.0.21:9000;
-    
-                fastcgi_param SCRIPT_FILENAME $realpath_root$fastcgi_script_name;
-    
-                include fastcgi_params;
-    
-                fastcgi_hide_header X-Powered-By;
-    
+            fastcgi_pass 172.20.0.21:9000;
+
+            fastcgi_param SCRIPT_FILENAME $realpath_root$fastcgi_script_name;
+
+            include fastcgi_params;
+
+            fastcgi_hide_header X-Powered-By;
         }
     }
     ```
@@ -577,31 +587,34 @@
     #!/bin/bash
     
     if [ -z "$CURRENT" ]; then
-        echo "Please set CURRENT variable"
-        exit 1
+         echo "Please set CURRENT variable"
+         exit 1
     fi
     
     if [ -z "$PREV" ]; then
-        echo "Please set PREV variable"
-        exit 1
+         echo "Please set PREV variable"
+         exit 1
     fi
     
     function startPrevRelease {
-        cd $DEPLOY_DIR/releases
-        sudo docker compose up -d $PREV ${PREV}_nginx
-        sleep 10
-        echo "set server blue_green/${PREV} state ready"
-        sudo docker exec --user root gateway sh -c "socat stdio unix-connect:/sock/admin.sock"
+         cd $DEPLOY_DIR
+         echo "Starting previous container: ${PREV}"
+         sudo docker compose up -d $PREV ${PREV}_nginx
+    
+         sleep 10
+    
+         sudo docker exec --user root gateway sh -c "echo \"set server blue_green/${PREV} state ready\" | socat stdio unix-connect:/sock/admin.sock"
     }
     
     function stopCurrentRelease {
-        cd $DEPLOY_DIR/releases
-        echo "set server blue_green/${CURRENT} state maint"
-        sudo docker exec --user root gateway sh -c "socat stdio unix-connect:/sock/admin.sock"
-        sleep 10
-        sudo docker compose stop $CURRENT ${CURRENT}_nginx
+         cd $DEPLOY_DIR
+         sudo docker exec --user root gateway sh -c "echo \"set server blue_green/${CURRENT} state maint\" | socat stdio unix-connect:/sock/admin.sock"
+    
+         sleep 10
+    
+         sudo docker compose stop $CURRENT ${CURRENT}_nginx
     }
-   
+    
     startPrevRelease
     stopCurrentRelease
     ```
@@ -654,8 +667,43 @@
     ```php
     @servers(['web' => 'localhost'])
     
-    @task('check')
-        echo "Hello from Envoyed script"
+    @task('optimize')
+        php artisan optimize:clear
+        php artisan optimize
     @endtask
+    ```
+5. Исправляем файл `.gitlab-ci.yml`
+    ```yaml
+    stages:
+      - test
+      - deploy
+      - envoy_check
+      - rollback
+    
+    tests:
+      stage: test
+      script:
+        - cd $DEPLOY_DIR
+        - bash ./scripts/test.sh
+      only:
+        - master
+    
+    deploy:
+      stage: deploy
+      script:
+        - cd $DEPLOY_DIR
+        - bash ./scripts/deploy.sh
+        - if [ "$(sudo docker ps -q -f name=blue)" ]; then sudo docker exec blue php /var/www/html/vendor/bin/envoy run optimize; fi
+        - if [ "$(sudo docker ps -q -f name=green)" ]; then sudo docker exec green php /var/www/html/vendor/bin/envoy run optimize; fi
+      when: manual
+    
+    rollback:
+      stage: rollback
+      script:
+        - cd $DEPLOY_DIR
+        - bash ./scripts/rollback.sh
+        - if [ "$(sudo docker ps -q -f name=blue)" ]; then sudo docker exec blue php /var/www/html/vendor/bin/envoy run optimize; fi
+        - if [ "$(sudo docker ps -q -f name=green)" ]; then sudo docker exec green php /var/www/html/vendor/bin/envoy run optimize; fi
+      when: manual
     ```
    
