@@ -1,6 +1,7 @@
 stages:
 #  - test
   - deploy
+  - envoy_check
   - rollback
 
 #tests:
@@ -16,6 +17,8 @@ deploy:
   script:
     - cd $DEPLOY_DIR
     - bash ./scripts/deploy.sh
+    - if [ "$(sudo docker ps -q -f name=blue)" ]; then sudo docker exec blue php /var/www/html/vendor/bin/envoy run optimize; fi
+    - if [ "$(sudo docker ps -q -f name=green)" ]; then sudo docker exec green php /var/www/html/vendor/bin/envoy run optimize; fi
   when: manual
 
 rollback:
@@ -23,4 +26,6 @@ rollback:
   script:
     - cd $DEPLOY_DIR
     - bash ./scripts/rollback.sh
+    - if [ "$(sudo docker ps -q -f name=blue)" ]; then sudo docker exec blue php /var/www/html/vendor/bin/envoy run optimize; fi
+    - if [ "$(sudo docker ps -q -f name=green)" ]; then sudo docker exec green php /var/www/html/vendor/bin/envoy run optimize; fi
   when: manual
