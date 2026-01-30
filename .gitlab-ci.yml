@@ -1,6 +1,7 @@
 stages:
   - test
   - deploy
+  - rollback
 
 tests:
   stage: test
@@ -15,4 +16,11 @@ deploy:
   script:
     - cd $DEPLOY_DIR
     - bash ./scripts/deploy.sh
+  when: manual
+
+rollback:
+  stage: rollback
+  script:
+    - cd $DEPLOY_DIR
+    - bash ./scripts/rollback.sh
   when: manual
