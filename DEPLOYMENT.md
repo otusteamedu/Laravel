@@ -651,4 +651,11 @@
     ./vendor/bin/envoy init localhost
     ```
 4. Исправляем файл `Envoy.blade.php` в корне проекта
+    ```php
+    @servers(['web' => 'localhost'])
+    
+    @task('check')
+        echo "Hello from Envoyed script"
+    @endtask
+    ```
    
