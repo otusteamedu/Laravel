@@ -1,18 +1,24 @@
 <?php
 
 use App\Http\Controllers\PostController;
+use App\Models\Post;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Route;
 
-Route::view('/', 'welcome')->name('home');
+Route::get('/', function () {
+    $suffix = Auth::user() ? '.user' : '.guest';
+
+    return Cache::remember('homePage' . $suffix, 20, fn() => view('welcome')->render());
+
+})->name('home');
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::view('dashboard', 'dashboard')->name('dashboard');
 });
 
-Route::apiResource('posts', PostController::class)->middleware('auth');
+Route::apiResource('posts', PostController::class);
 
 Route::get('/log', function (Request $request) {
     $amount = '200.00';
@@ -71,3 +77,32 @@ Route::post('/upload-file', function () {
 })->name('upload-file');
 
 require __DIR__ . '/settings.php';
+
+Route::get('/cache/get', function () {
+    $value = Cache::remember('number', 5, function () {
+        \Debugbar::info('from code');
+        return '123';
+    });
+
+    return $value;
+});
+
+Route::get('/lock', function () {
+    try {
+        $res = Cache::lock('op_name', 30)->block(2, function () {
+            sleep(5);
+            return true;
+        });
+
+        return 'захватили блокировку';
+    } catch (Illuminate\Contracts\Cache\LockTimeoutException $e) {
+        return 'НЕ захватили блокировку';
+    }
+});
+
+Route::get('/cache-tags', function () {
+    Cache::tags(['posts', 'articles'])->put('posts', 'from db');
+
+
+    return Cache::tags(['posts', 'articles'])->get('posts', 'none');
+});

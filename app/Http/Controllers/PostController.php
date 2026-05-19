@@ -13,7 +13,9 @@ class PostController extends Controller
      */
     public function index()
     {
-        return Post::all();
+        \Debugbar::info(Post::remember(10)->get());
+
+        return 'ok';
     }
 
     /**
