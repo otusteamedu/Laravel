@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\PostController;
+use App\Jobs\SendEmail;
 use App\Models\Post;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -98,6 +99,21 @@ Route::get('/lock', function () {
     } catch (Illuminate\Contracts\Cache\LockTimeoutException $e) {
         return 'НЕ захватили блокировку';
     }
+});
+
+Route::get('/dispatch', function () {
+    $job = new SendEmail("to@example.com", "Testing queue", "Email body");
+
+    dispatch($job);
+
+
+    // SendEmail::dispatch("to@example.com", "Testing queue", "Email body");
+
+    // dispatch(function () {
+    //     \Log::info("dispatch closure");
+    // });
+
+    return "ok";
 });
 
 Route::get('/cache-tags', function () {
